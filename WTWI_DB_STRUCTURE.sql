@@ -709,6 +709,47 @@ DROP SEQUENCE SEQ_CM_NO;
 -- 이 아래부터는 VIEW 작성해주시면 됩니다. (또는 추가할 시퀀스라던지...) 윗부분에는 되도록 추가 X !
 ---------------------------------------------------------------------------------------------------------
 
+---------------------------------------------------------------------------------------------------------
+-- 07/31 추가
 
+-- 자유게시판 카테고리 샘플
+INSERT INTO FREE_CATEGORY VALUES(1, '잡담');
+INSERT INTO FREE_CATEGORY VALUES(2, '추천');
+INSERT INTO FREE_CATEGORY VALUES(3, '궁금');
+INSERT INTO FREE_CATEGORY VALUES(4, '같이');
+INSERT INTO FREE_CATEGORY VALUES(5, '기타');
 
+SET SERVEROUTPUT ON;
+
+-- 자유게시판 게시글 샘플
+BEGIN
+    FOR N IN 1..100 LOOP
+        INSERT INTO FREE_BOARD
+        VALUES(SEQ_FRNO.NEXTVAL,
+                    N || '번째 게시글',
+                    N || '번째 게시글 내용',
+                    DEFAULT, DEFAULT, DEFAULT, DEFAULT, 999,
+                    FLOOR(DBMS_RANDOM.VALUE(1,6)));
+    END LOOP;
+END;
+/
+
+COMMIT;
+
+-- 자유게시판 목록 조회를 위한 VIEW
+CREATE OR REPLACE VIEW FREE_LIST AS
+    SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, MEMBER_NICK, FREE_CREATE_DT, FREE_READ_COUNT,
+               NVL(REPLY_COUNT, 0) REPLY_COUNT, NVL(LIKE_COUNT, 0) LIKE_COUNT,
+               FREE_STATUS
+    FROM FREE_BOARD
+    JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO)
+    LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
+                    FROM FREE_REPLY
+                    GROUP BY FREE_NO) USING(FREE_NO)
+    LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
+                    FROM FREE_LIKE
+                    GROUP BY FREE_NO) USING(FREE_NO)
+;
+---------------------------------------------------------------------------------------------------------
 
