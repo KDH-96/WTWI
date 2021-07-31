@@ -1,8 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
-	
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+		<property name="username" value="wtwi" />
+		<property name="password" value="wtwi" />
+
+		<property name="defaultAutoCommit" value="false" />
+
+		<!-- 커넥션 풀 설정 -->
+		<property name="initialSize" value="10" /> <!-- 초기 커넥션 수, 기본 0 -->
+		<property name="maxTotal" value="500" /> <!-- 최대 커넥션 수, 기본 8 -->
+		<property name="maxIdle" value="100" /> <!-- 유휴 상태로 존재할 수 있는 커넥션 최대 수, 기본 8 -->
+		<property name="minIdle" value="10" /> <!-- 유휴 상태로 존재할 수 있는 커넥션 최소 수, 기본 0 -->
+		<property name="maxWaitMillis" value="-1" /> <!-- 예외 발생 전 커넥션이 반환 될 떄 까지 대기하는 최대 시간(ms), 기본 -1(무기한) -->
+	</bean>
+
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactoryBean" />
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="104857600"/>
+		<property name="maxUploadSizePerFile" value="104857600"/>
+		<property name="maxInMemorySize" value="104857600"/>
+	</bean>
 </beans>

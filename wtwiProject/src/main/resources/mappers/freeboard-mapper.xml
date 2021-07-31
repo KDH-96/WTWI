@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="freeboardMapper">
+	
+	<!-- 카테고리 -->
+	<resultMap type="FreeCategory" id="category_rm">
+		<id property="categoryNo" column="CATEGORY_NO"/>
+		<result property="categoryName" column="CATEGORY_NM"/>
+	</resultMap>
+	
+	<!-- 페이지네이션 -->
+	<resultMap type="FreePagination" id="pg_rm">
+		<result property="listCount" column="CNT"/>
+	</resultMap>
+
+	<!-- 게시글 -->
+	<resultMap type="FreeBoard" id="free_rm">
+		<id property="freeNo" column="FREE_NO"/>
+		
+		<result property="freeCategoryName" column="FREE_CATEGORY_NM"/>
+		<result property="freeTitle" column="FREE_TITLE"/>
+		<result property="memberNick" column="MEMBER_NICK"/>
+		<result property="freeCreateDate" column="FREE_CREATE_DT"/>
+		<result property="freeReadCount" column="FREE_READ_COUNT"/>
+		<result property="replyCount" column="REPLY_COUNT"/>
+		<result property="likeCount" column="LIKE_COUNT"/>
+	</resultMap>
+	
+	<!-- 전체 게시글 수 조회(1) -->
+	<select id="getListCount" resultMap="pg_rm">
+		SELECT COUNT(*) CNT FROM FREE_LIST WHERE FREE_STATUS='Y' 
+	</select>
+	
+	<!-- 게시글 목록 조회(2) -->
+	<select id="selectBoardList" parameterType="_int" resultMap="free_rm">
+		SELECT * FROM FREE_LIST
+		WHERE FREE_STATUS='Y'
+		ORDER BY FREE_NO DESC
+	</select>
+</mapper>
