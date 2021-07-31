@@ -3,7 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -23,6 +25,19 @@
 	
 	<context:component-scan base-package="com.wtwi.fin" />
 	
+	<!-- ChatWebSocketHandler 클래스를 bean으로 등록 -->
+	<!-- <beans:bean id="chatHandler" class="com.wtwi.fin.chat.websocket.ChatWebSocketHandler" /> -->
 	
+	<!-- /chat 이라는 주소로 오는 웹소켓 요청을 ChatWebSocketHandler와 연결하기 -->
+<!-- 	<websocket:handlers>
+		<websocket:mapping handler="chatHandler" path="/chat" />
+		<websocket:handshake-interceptors> -->
+			<!-- interceptor : HTTP 통신에서 requests, response를 가로채는 역할 
+				 handshake	 : HttpSession에 있는 값을 가로채서 WebSocketSession에 넣어주는 역할
+			-->
+<!-- 			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+		</websocket:handshake-interceptors>
+		<websocket:sockjs />
+	</websocket:handlers> -->
 	
 </beans:beans>

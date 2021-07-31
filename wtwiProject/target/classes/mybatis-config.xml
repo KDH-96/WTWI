@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+	
+	<!-- 별칭 작성 -->
+	<typeAliases>
+		<typeAlias type="com.wtwi.fin.freeboard.model.vo.Board" alias="FreeBoard" />
+		<typeAlias type="com.wtwi.fin.freeboard.model.vo.Category" alias="FreeCategory" />
+		<typeAlias type="com.wtwi.fin.freeboard.model.vo.Pagination" alias="FreePagination" />
+	</typeAliases>
+	
+	<!-- mapper 파일 위치 등록 -->
+	<mappers>
+		<mapper resource="/mappers/freeboard-mapper.xml" />
+	</mappers>
+
+</configuration>
