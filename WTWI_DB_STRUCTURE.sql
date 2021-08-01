@@ -751,4 +751,22 @@ CREATE OR REPLACE VIEW FREE_LIST AS
                     GROUP BY FREE_NO) USING(FREE_NO)
 ;
 ---------------------------------------------------------------------------------------------------------
+-- By 지원.
+-- MEMBER 테이블 MEMBER_NM 컬럼 삭제
+ALTER TABLE MEMBER DROP COLUMN MEMBER_NM;
+
+-- MEMBER 테이블 MEMBER_GRADE 컬럼 CHECK 제약 조건 추가 
+ALTER TABLE MEMBER
+DROP CONSTRAINT SYS_C008250;
+
+ALTER TABLE MEMBER
+ADD CONSTRAINT SYS_C008250 check ("MEMBER_GRADE" IN('B', 'A', 'M', 'G', 'N', 'K'));
+
+-- MEMBER 테이블 MEMBER_GRADE 컬럼 CHECK 제약 조건 COMMENT 수정
+COMMENT ON COLUMN MEMBER.MEMBER_GRADE  IS '회원등급(일반B/관리자A/담딩자M/구글G/네이버N/카카오K)';
+
+-- MEMBER 테이블 SEQ_MNO 시퀀스 생성 
+CREATE SEQUENCE SEQ_MNO;
+
+COMMIT;
 
