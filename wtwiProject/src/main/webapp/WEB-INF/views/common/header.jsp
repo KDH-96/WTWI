@@ -194,7 +194,7 @@
 
             <div class="col-4 d-flex justify-content-end align-items-center">
                 <button type="button" class="btn btn-dark mr-2">ID/PW 찾기</button>
-                <button type="button" class="btn btn-dark mr-2">로그인</button>
+                <a class="btn btn-dark mr-2" href="${contextPath}/member/login"">로그인</a>
                 <button type="button" class="btn btn-dark mr-2">회원가입</button>
             </div>
 

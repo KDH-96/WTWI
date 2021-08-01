@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="memberMapper">
+	<!-- mapper 태그 namespace 속성  
+		 mapper 파일들을 구분하기 위한 별칭
+	-->
+	
+	<!-- resultMap : 조회된 Result Set의 컬럼명과  VO 필드명이 일치하지 않을 때 
+					 컬럼과 필드를 매핑시키는 역할을 하는 태그 
+		 type : 매핑시킬 VO 풀네임(패키지+클래스명) 또는 등록된 별칭(mybatis-config.xml에 작성되어 있음)을 작성하는 부분
+		 id : resultMap을 구분하는 문자열
+	 -->
+	<resultMap type="Member" id="member_rm">
+	
+		<!-- 기본키(PK)에 해당하는 컬럼, 필드 매핑 -->
+		<id property="memberNo" column="MEMBER_NO"/>
+		
+		<!-- 기본키 외 컬럼, 필드 매핑 -->
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="memberPw" column="MEMBER_PW"/>
+		<result property="memberNick" column="MEMBER_NICK"/>
+		<result property="memberPhone" column="MEMBER_PHONE"/>
+		<result property="memberEmail" column="MEMBER_EMAIL"/>
+		<result property="memberAddress" column="MEMBER_ADDR"/>
+		<result property="enrollDate" column="ENROLL_DATE"/>
+		<result property="memberStatus" column="MEMBER_STATUS"/>
+		<result property="memberGrade" column="MEMBER_GRADE"/>
+	
+	</resultMap>
+	
+	<!-- 로그인 -->
+	<!-- parameterType : 전달받은 데이터의 자료형 -->
+	<!-- resultMap : 조회결과 컬럼명과 VO 필드명이 다를 때 이를 매핑할 때 사용하는 태그 id -->
+	<select id="login" parameterType="string" resultMap="member_rm">
+		SELECT * FROM MEMBER 
+		WHERE MEMBER_STATUS = 'Y'
+		AND MEMBER_ID = #{memberId}
+	</select>
+	
+	<!-- 아이디 중복체크 -->
+	<select id="idDupCheck" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER
+		WHERE MEMBER_STATUS = 'Y'
+		AND MEMBER_ID = #{id}
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="signUp" parameterType="Member">
+		INSERT INTO MEMBER 
+		VALUES(SEQ_MNO.NEXTVAL, #{memberId}, #{memberPw}, #{memberPhone}, #{memberEmail}, #{memberAddress},
+				DEFAULT, DEFAULT, DEFAULT)
+	</insert>
+	
+	<!-- 내 정보수정 -->
+	<update id="updateMember" parameterType="Member">
+		UPDATE MEMBER 
+		SET 
+		MEMBER_EMAIL = #{memberEmail}, 
+		MEMBER_PHONE = #{memberPhone}, 
+		MEMBER_ADDR = #{memberAddress}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
+	<!-- 비밀번호 조회  -->
+	<select id="selectPassword" parameterType="_int" resultType="string">
+		SELECT MEMBER_PW FROM MEMBER 
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="changePwd" parameterType="Member">
+		UPDATE MEMBER 
+		SET 
+		MEMBER_PW = #{memberPw}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
+	<!-- 회원 탈퇴 -->
+	<update id="secession" parameterType="Member">
+		UPDATE MEMBER 
+		SET 
+		MEMBER_STATUS = 'N'
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
+	<!-- 소셜 로그인 이메일  -->
+	<select id="getSnsEmail" parameterType="Member" resultMap="member_rm">
+		SELECT * FROM MEMBER 
+		WHERE MEMBER_EMAIL = #{memberEmail} 
+		AND MEMBER_GRADE = #{memberGrade}
+	</select>
+	
+	<!-- 소셜 로그인 회원가입 -->
+	<insert id="snsSignUp" parameterType="Member">
+		INSERT INTO MEMBER 
+		VALUES(SEQ_MNO.NEXTVAL, 'social'||SEQ_MNO.NEXTVAL, 'social'||SEQ_MNO.NEXTVAL, #{memberNick},  #{memberEmail}, '010-1111-1111', 
+				DEFAULT, DEFAULT, #{memberGrade})
+	</insert>
+  
+</mapper>
