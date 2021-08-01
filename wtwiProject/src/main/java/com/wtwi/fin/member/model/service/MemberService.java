@@ -19,4 +19,4 @@ public interface MemberService {
 	Member getSnsEmail(Member snsMember);
 
 	Member snsSignup(Member snsMember);
-}
+} 

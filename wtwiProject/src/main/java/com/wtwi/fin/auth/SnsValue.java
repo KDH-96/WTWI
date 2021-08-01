@@ -11,14 +11,14 @@ import lombok.Data;
 public class SnsValue implements SnsUrls {
 	private String service;
 	private String clientId;
-	private String clientSecret;
+	private String clientSecret; 
 	private String redirectUrl;
 	private DefaultApi20 api20Instance;
 	private String profileUrl;
 	
 	private boolean isNaver;
 	private boolean isGoogle;
-	 
+	  
 	public SnsValue(String service, String clientId, String clientSecret, String redirectUrl) {
 		super();
 		this.service = service;

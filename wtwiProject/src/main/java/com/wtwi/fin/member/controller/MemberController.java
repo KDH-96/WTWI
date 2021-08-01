@@ -47,7 +47,7 @@ public class MemberController {
 
 	@Autowired
 	private RSAUtil rsaUtil;
-
+  
 	@Inject
 	private SnsValue naverSns;
 	@Inject

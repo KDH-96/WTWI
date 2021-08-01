@@ -18,7 +18,7 @@ public class RSA {
  
     public PrivateKey getPrivateKey() {
         return privateKey;
-    }
+    } 
  
     public void setPrivateKey(PrivateKey privateKey) {
         this.privateKey = privateKey;
@@ -26,7 +26,7 @@ public class RSA {
  
     public String getModulus() {
         return modulus;
-    }
+    } 
  
     public void setModulus(String modulus) {
         this.modulus = modulus;

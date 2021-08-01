@@ -14,11 +14,11 @@
 		
 		<typeAlias type="com.wtwi.fin.member.model.vo.Member" alias="Member" /> 
 	</typeAliases>
-	
+	 
 	<!-- mapper 파일 위치 등록 -->
 	<mappers>
 		<mapper resource="/mappers/freeboard-mapper.xml" />
 		<mapper resource="/mappers/member-mapper.xml"></mapper>
 	</mappers>
 
-</configuration>
+</configuration> 

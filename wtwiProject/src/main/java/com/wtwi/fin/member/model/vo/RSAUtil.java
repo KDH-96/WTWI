@@ -33,9 +33,9 @@ public class RSAUtil {
             cipher = Cipher.getInstance("RSA");
         } catch (Exception e) {
             logger.warn("RSAUtil 생성 실패.", e);
-        }
+        } 
     }
- 
+  
     /** 새로운 키값을 가진 RSA 생성
      *  @return vo.other.RSA **/
     public RSA createRSA() {

@@ -7,3 +7,4 @@ public interface SnsUrls {
 	static final String GOOGLE_PROFILE_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
 	static final String NAVER_PROFILE_URL = "https://openapi.naver.com/v1/nid/me";
 }
+  

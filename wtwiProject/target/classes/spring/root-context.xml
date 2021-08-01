@@ -12,9 +12,9 @@
 		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
 		<property name="username" value="wtwi" />
 		<property name="password" value="wtwi" />
-
+ 
 		<property name="defaultAutoCommit" value="false" />
-
+ 
 		<!-- 커넥션 풀 설정 -->
 		<property name="initialSize" value="10" /> <!-- 초기 커넥션 수, 기본 0 -->
 		<property name="maxTotal" value="500" /> <!-- 최대 커넥션 수, 기본 8 -->

@@ -17,7 +17,7 @@
             height: 150px;
             background-color: white;
             animation: slide_right 1.2s linear forwards;
-        }
+        } 
 
         #logo-area {
             margin-left: 60%;

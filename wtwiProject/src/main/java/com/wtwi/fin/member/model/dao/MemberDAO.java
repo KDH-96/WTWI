@@ -23,7 +23,7 @@ public class MemberDAO {
 
 		return sqlSession.selectOne("memberMapper.login", memberId);
 
-	}
+	} 
 
 	/**
 	 * 아이디 중복체크 DAO

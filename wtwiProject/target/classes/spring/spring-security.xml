@@ -11,7 +11,7 @@
 	<!-- bcrypt 암호화 관련 bean 등록 -->
 	<bean id="bCryptPasswordEncoder" 
 	      class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-	      
+	        
 	<!-- bCrypt 암호화
 		기존 사용했던 암호화 방식은 : SHA-512 
 		-> 입력된 문자열을 특정 길이의 문자열로 변환하는 해시함수(길게 쓰든 짧게 쓰든 -> 512BYTE짜리로 변환)

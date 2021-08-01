@@ -17,15 +17,15 @@ public class SNSLogin {
 	// 빌드패턴으로 만들어져 있기 때문에 new해서 생성하는 것이 아니라 빌더로 빌드하는 것임
 	// 밑에 메소드도 원래라면 우리가 네이버 왔다갔다 해야되고 그런 건데 그게 귀찮으니까 scribejava 쓰는 거임
 	private OAuth20Service oauthService;
-	private SnsValue sns;
+	private SnsValue sns; 
 
 	public SNSLogin(SnsValue sns) {
 		this.oauthService = new ServiceBuilder(sns.getClientId()).apiSecret(sns.getClientSecret())
 				.callback(sns.getRedirectUrl()).defaultScope("profile").build(sns.getApi20Instance());
 
 		this.sns = sns;
-
-	}
+ 
+	} 
 
 	public String getNaverAuthURL() {
 		return this.oauthService.getAuthorizationUrl();

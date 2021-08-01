@@ -14,7 +14,7 @@
 	
 		<!-- 기본키(PK)에 해당하는 컬럼, 필드 매핑 -->
 		<id property="memberNo" column="MEMBER_NO"/>
-		
+		 
 		<!-- 기본키 외 컬럼, 필드 매핑 -->
 		<result property="memberId" column="MEMBER_ID"/>
 		<result property="memberPw" column="MEMBER_PW"/>
@@ -25,7 +25,7 @@
 		<result property="enrollDate" column="ENROLL_DATE"/>
 		<result property="memberStatus" column="MEMBER_STATUS"/>
 		<result property="memberGrade" column="MEMBER_GRADE"/>
-	
+	 
 	</resultMap>
 	
 	<!-- 로그인 -->

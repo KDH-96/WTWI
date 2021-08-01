@@ -30,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
 				loginMember = null;
 
 			} else {
-
+ 
 				loginMember.setMemberPw(null);
 
 			}
