@@ -23,7 +23,9 @@
 	<script src="${contextPath}/resources/js/summernote/summernote-lite.js"></script>
 	<script src="${contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="${contextPath}/resources/css/summernote/summernote-lite.css">
-
+	
+	<link href="${contextPath}/resources/css/style.css" rel="stylesheet">
+	
     <style>
         /* 헤더 영역 시작 */
         header {

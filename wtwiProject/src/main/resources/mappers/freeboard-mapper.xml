@@ -29,10 +29,12 @@
 		<result property="freeCategoryName" column="FREE_CATEGORY_NM"/>
 		<result property="freeTitle" column="FREE_TITLE"/>
 		<result property="memberNick" column="MEMBER_NICK"/>
-		<result property="freeCreateDate" column="FREE_CREATE_DT"/>
 		<result property="freeReadCount" column="FREE_READ_COUNT"/>
-		<result property="replyCount" column="REPLY_COUNT"/>
+		<result property="freeCreateDate" column="FREE_CREATE_DT"/>
+		<result property="freeModifyDate" column="FREE_MODIFY_DT"/>
+		<result property="freeContent" column="FREE_CONTENT"/>
 		<result property="likeCount" column="LIKE_COUNT"/>
+		<result property="replyCount" column="REPLY_COUNT"/>
 		
 		<!-- 게시글 첨부 이미지 정보 -->
 		<collection property="atList" column="FREE_NO" javaType="java.util.ArrayList" ofType="Image" select="selectImage"/>
