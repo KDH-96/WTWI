@@ -8,7 +8,7 @@ import lombok.Data;
 
 // 상태값을 가지고 있는 건 SnsValue
 @Data
-public class SnsValue implements SnsUrls {
+public class SNSValue implements SnsUrls {
 	private String service;
 	private String clientId;
 	private String clientSecret; 
@@ -18,8 +18,9 @@ public class SnsValue implements SnsUrls {
 	
 	private boolean isNaver;
 	private boolean isGoogle;
+	private boolean isKakao;
 	  
-	public SnsValue(String service, String clientId, String clientSecret, String redirectUrl) {
+	public SNSValue(String service, String clientId, String clientSecret, String redirectUrl) {
 		super();
 		this.service = service;
 		this.clientId = clientId;
@@ -35,7 +36,7 @@ public class SnsValue implements SnsUrls {
 		} else if(isGoogle){
 			this.api20Instance = GoogleApi20.instance();
 			this.profileUrl = GOOGLE_PROFILE_URL;
-		}
+		} 
 	}
 	
 	public boolean isNaver() {
@@ -104,10 +105,13 @@ public class SnsValue implements SnsUrls {
 
 	@Override
 	public String toString() {
-		return "SnsValue [service=" + service + ", clientId=" + clientId + ", clientSecret=" + clientSecret
+		return "SNSValue [service=" + service + ", clientId=" + clientId + ", clientSecret=" + clientSecret
 				+ ", redirectUrl=" + redirectUrl + ", api20Instance=" + api20Instance + ", profileUrl=" + profileUrl
-				+ ", isNaver=" + isNaver + ", isGoogle=" + isGoogle + "]";
+				+ ", isNaver=" + isNaver + ", isGoogle=" + isGoogle + ", isKakao=" + isKakao + "]";
 	}
+
+
+	
 
 	
 

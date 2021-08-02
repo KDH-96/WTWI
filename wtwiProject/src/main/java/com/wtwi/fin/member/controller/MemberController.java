@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.collections.bag.SynchronizedSortedBag;
 import org.apache.maven.shared.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.oauth2.GrantType;
 import org.springframework.social.oauth2.OAuth2Operations;
@@ -30,28 +32,32 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.wtwi.fin.auth.SNSLogin;
-import com.wtwi.fin.auth.SnsValue;
+import com.wtwi.fin.auth.SNSValue;
 import com.wtwi.fin.member.model.service.MemberService;
 import com.wtwi.fin.member.model.service.MemberServiceImpl;
 import com.wtwi.fin.member.model.vo.Member;
 import com.wtwi.fin.member.model.vo.RSA;
 import com.wtwi.fin.member.model.vo.RSAUtil;
 
+
 @Controller
 @RequestMapping(value = "/member/*", method = RequestMethod.GET)
 @SessionAttributes({ "loginMember" })
 public class MemberController {
- 
+
 	@Autowired
 	private MemberService service;
-
+ 
 	@Autowired
 	private RSAUtil rsaUtil;
   
-	@Inject
-	private SnsValue naverSns;
-	@Inject
-	private SnsValue googleSns;
+	@Autowired
+	@Qualifier("naverSns")
+	private SNSValue naverSns;
+	@Autowired
+	@Qualifier("googleSns")
+	private SNSValue googleSns;
+
 	@Inject
 	private GoogleConnectionFactory googleConnectionFactory;
 	@Inject
@@ -61,34 +67,43 @@ public class MemberController {
 	@RequestMapping(value="auth/{snsService}/callback", method=RequestMethod.GET) 
 	public String snsLoginCallback(@PathVariable("snsService") String snsService, Model model, @RequestParam("code") String code/*access Token 발급을 위한 code가 들어옴*/, RedirectAttributes ra) throws Exception{
 		
-		// 1) code를 이용해서 access_token 받기 
-		// 2) access_token을 이용해서 사용자 profile 정보 가져오기
-		SnsValue sns = null;
-		if(StringUtils.equals("naver", snsService)) sns = naverSns;
-		else sns = googleSns;
-		
-		SNSLogin snsLogin = new SNSLogin(sns);
-		Member snsMember = snsLogin.getUserProfile(code);
-		model.addAttribute("result", snsMember);
-	
-		// 3) DB에 해당 유저가 존재하는지 Check
+		SNSValue sns = null;
 		Member member = null;
-		member = service.getSnsEmail(snsMember);
-		// 4) 존재 시 강제 로그인, 미 존재시 가입페이지로!!
-		if(member == null) { // 존재X -> 회원가입 
+		Member snsMember = null;
+		
+		if(StringUtils.equals("kakao", snsService)) {
+			SNSLogin snsLogin = new SNSLogin();
+			snsMember = snsLogin.getKakaoProfile(code);		
+			member = service.getSnsEmail(snsMember);
+
+			
+		}else {
+			
+			if(StringUtils.equals("naver", snsService)) {
+				sns = naverSns;
+			}else if(StringUtils.equals("google", snsService)) {
+				sns = googleSns;
+			}
+			
+			SNSLogin snsLogin = new SNSLogin(sns);
+			snsMember = snsLogin.getUserProfile(code);
+			
+			member = service.getSnsEmail(snsMember);
+		}
+		
+		if(member == null) { 
 			member = service.snsSignup(snsMember);
-			if(member != null) { // 회원가입 성공
+			if(member != null) {
 				swalSetMessage(ra, "success", "환영합니다 :)", null);
 				model.addAttribute("loginMember", member);
-			} else { // 회원가입 실패
+			} else { 
 				swalSetMessage(ra, "error", "회원가입 실패", "문제가 지속될 경우, 대표전화로 문의해주세요.");	
-				
 			}
-		} else { // 존재O -> 로그인
+		} else { 
 			model.addAttribute("loginMember", member);
 		}
 		
-		return "redirect:/";
+		return "member/loginResult";
 	}
 
 	@RequestMapping("signUpActive")
@@ -133,12 +148,15 @@ public class MemberController {
 		model.addAttribute("exponent", rsa.getExponent());
 		session.setAttribute("RSAprivateKey", rsa.getPrivateKey());
 
-		///////////////////////////// 소셜 로그인//////////////////////////////////
+		///////////////////////////// 소셜 로그인 //////////////////////////////////
 		// 1) Naver
-		SNSLogin snsLogin = new SNSLogin(naverSns);
-		model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
+		SNSLogin naverLogin = new SNSLogin(naverSns);
+		model.addAttribute("naver_url", naverLogin.getSNSAuthURL());
+		
+		// 2) 카카오는 RestTemplate을 이용한 방식 
+		model.addAttribute("kakao_url", SNSValue.KAKAO_LOGIN_URL);
 
-		// 2) Google
+		// 3) Google
 		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
 		String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
 		model.addAttribute("google_url", url);
@@ -151,24 +169,19 @@ public class MemberController {
 			HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "save", required = false) String save) {
 
-		// 1) session에 올려져있는 개인키가 있나 찾아보고 key 변수에 저장
 		PrivateKey key = (PrivateKey) session.getAttribute("RSAprivateKey");
 
-		// 2) 없으면 요청 파기하고 다시 메인으로
 		if (key == null) {
 			swalSetMessage(ra, "error", "로그인 실패", "문제가 지속될 경우, 대표번호로 문의바랍니다.");
 			return "redirect:/";
 		}
 
-		// 3) 있다면 안전하게 로그인 정보가 도착했으니 session에서는 내리기
 		session.removeAttribute("RSAprivateKey");
 
-		// 4) 암호화되어서 도착한 아이디/비밀번호를 개인키를 이용해 복호화
 		try {
 			String memberId = rsaUtil.getDecryptText(key, member.getMemberId());
 			String memberPw = rsaUtil.getDecryptText(key, member.getMemberPw());
 
-			// 복호화된 정보를 로그인을 위해 다시 member 객체에 set
 			member.setMemberId(memberId);
 			member.setMemberPw(memberPw);
 		} catch (Exception e) {

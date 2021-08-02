@@ -93,8 +93,6 @@ public class MemberDAO {
 	 */
 	public Member getSnsEmail(Member snsMember) {
 		Member member = sqlSession.selectOne("memberMapper.getSnsEmail", snsMember);
-		System.out.println("넘어오긴 하니?" + snsMember);
-		System.out.println("DAO에서 이메일 골라왔을 때 : "+member);
 		return member;
 			
 	}
