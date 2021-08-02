@@ -41,7 +41,7 @@ import com.wtwi.fin.member.model.vo.RSAUtil;
 @RequestMapping(value = "/member/*", method = RequestMethod.GET)
 @SessionAttributes({ "loginMember" })
 public class MemberController {
-
+ 
 	@Autowired
 	private MemberService service;
 

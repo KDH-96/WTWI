@@ -202,7 +202,7 @@
                 <li>P</li>
                 <li>?</li>
             </ul>
-            <a href="#" class="enter-button">Enter</a>
+            <a href="main" class="enter-button">Enter</a>
         </div>
     </div>
 
