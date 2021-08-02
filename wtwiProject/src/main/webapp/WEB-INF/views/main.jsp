@@ -417,7 +417,7 @@
 		var position;
 		var marker = {};
 		var data;
-
+ 
 		$.getJSON("https://raw.githubusercontent.com/Jun-Seok-K/coja/master/all_attraction_list.json",
 						function(json) {
 							data = json.records; // json 파일 data 변수에 담기
