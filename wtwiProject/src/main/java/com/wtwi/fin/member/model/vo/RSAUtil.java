@@ -51,6 +51,7 @@ public class RSAUtil {
             String modulus = publicSpec.getModulus().toString(16);
             String exponent = publicSpec.getPublicExponent().toString(16);
             rsa = new RSA(privateKey, modulus, exponent);
+            
         } catch (Exception e) {
             logger.warn("RSAUtil.createRSA()", e);
         }
