@@ -5,8 +5,8 @@
 	
 	<!-- 카테고리 -->
 	<resultMap type="FreeCategory" id="category_rm">
-		<id property="categoryNo" column="CATEGORY_NO"/>
-		<result property="categoryName" column="CATEGORY_NM"/>
+		<id property="freeCategoryNo" column="FREE_CATEGORY_NO"/>
+		<result property="freeCategoryName" column="FREE_CATEGORY_NM"/>
 	</resultMap>
 	
 	<!-- 페이지네이션 -->
@@ -67,4 +67,9 @@
 		FREE_READ_COUNT = FREE_READ_COUNT + 1
 		WHERE FREE_NO = #{freeNo}
 	</update>
+	
+	<!-- 카테고리 목록 조회(4) -->
+	<select id="selectCategory" resultMap="category_rm">
+		SELECT * FROM FREE_CATEGORY
+	</select>
 </mapper>
