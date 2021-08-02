@@ -56,7 +56,7 @@ public class BoardDAO {
 	}
 
 	/** 카테고리 목록 조회(4)
-	 * @return
+	 * @return category
 	 */
 	public List<Category> selectCategory() {
 		return sqlSession.selectList("freeboardMapper.selectCategory");

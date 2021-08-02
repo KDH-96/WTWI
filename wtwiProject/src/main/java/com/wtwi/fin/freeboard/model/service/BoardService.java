@@ -30,7 +30,7 @@ public interface BoardService {
 	Board selectBoard(int boardNo);
 
 	/** 카테고리 조회(4)
-	 * @return
+	 * @return category
 	 */
 	List<Category> selectCategory();
 

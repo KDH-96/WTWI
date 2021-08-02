@@ -32,10 +32,6 @@
         .input-value{
             width: 50px;
         }
-        a{
-            color: black;
-            text-decoration: none;
-        }
     </style>
 </head>
 <body>
@@ -52,8 +48,7 @@
                 <th scope="col" class="fb-date">작성일자
                     <span>
                         <a href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>
+                        	<i class="bi bi-caret-down-fill"></i>
                         </a>
                     </span>
                 </th>
@@ -61,8 +56,7 @@
                 <th scope="col" class="fb-like">좋아요
                     <span>
                         <a href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>
+                        	<i class="bi bi-caret-down-fill"></i>
                         </a>
                     </span>
                 </th>
