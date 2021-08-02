@@ -2,7 +2,7 @@ package com.wtwi.fin.qnaboard.model.vo;
 
 import java.sql.Timestamp;
 
-public class Board {
+public class QnaBoard {
 
 	private int qnaNo;			// 답글번호
 	private int qnaPno;			// 글번호
@@ -14,7 +14,7 @@ public class Board {
 	private int qnaCategoryNo;	// 카테고리 코드
 	private int memberNo;		// 회원 번호
 	
-	public Board() {}
+	public QnaBoard() {}
 
 	public int getQnaNo() {
 		return qnaNo;
