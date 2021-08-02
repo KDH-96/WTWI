@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
 
+/**
+ * @author 세은
+ */
 @Repository
 public class BoardDAO {
 	
@@ -32,8 +35,23 @@ public class BoardDAO {
 		int offset = (pagination.getCurrentPage()-1)*pagination.getLimit();
 		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
 		
-		// 매개변수가 안 맞는데.. 될까
+		// 매개변수가 안 맞는데.. 될까 -> 의미 없는 숫자 1 넘기기
 		return sqlSession.selectList("freeboardMapper.selectBoardList", 1, rowBounds);
+	}
+
+	/** 게시글 상세 조회(3-1)
+	 * @param boardNo
+	 * @return board
+	 */
+	public Board selectBoard(int freeNo) {
+		return sqlSession.selectOne("freeboardMapper.selectBoard", freeNo);
+	}
+
+	/** 게시글 조회수 증가(3-2)
+	 * @param freeNo
+	 */
+	public int increaseReadCount(int freeNo) {
+		return sqlSession.update("freeboardMapper.increaseReadCount", freeNo);
 	}
 
 	

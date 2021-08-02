@@ -1,6 +1,7 @@
 package com.wtwi.fin.freeboard.model.vo;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Board {
 	
@@ -10,13 +11,15 @@ public class Board {
 	private int freeReadCount;		  // 조회수
 	private Timestamp freeCreateDate; // 작성일
 	private Timestamp freeModifyDate; // 수정일
-	private int memberNo;			  // 회원번호(작성자)
+	private int memberNo;			  // 작성자(회원번호)
 	private int freeCategoryNo;		  // 카테고리 번호
 	
 	private String freeCategoryName;  // 카테고리 이름
 	private String memberNick;		  // 회원닉네임
-	private int replyCount; // 댓글수
-	private int likeCount; // 좋아요수
+	private int replyCount; 		  // 댓글수
+	private int likeCount; 			  // 좋아요수
+	
+	private List<Image> atList; 	  // 첨부 이미지 목록
 	
 	public Board() {
 	}
