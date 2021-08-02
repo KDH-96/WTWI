@@ -4,11 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wtwi.fin.freeboard.model.dao.BoardDAO;
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
 
+/**
+ * @author 세은
+ */
 @Service
 public class BoardServiceImpl implements BoardService {
 	
@@ -27,6 +31,22 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<Board> selectBoardList(Pagination pagination) {
 		return dao.selectBoardList(pagination);
+	}
+
+	// 게시글 상세 조회(3)
+	@Transactional(rollbackFor=Exception.class)
+	@Override
+	public Board selectBoard(int freeNo) {
+		
+		// 3-1) 게시글 상세 조회
+		Board board = dao.selectBoard(freeNo);
+		
+		// 3-2) 게시글 상세 조회 성공 후 조회수 1 증가
+		if(board!=null) {
+			dao.increaseReadCount(freeNo);
+			board.setFreeReadCount(board.getFreeReadCount()+1);
+		}
+		return board;
 	}
 	
 	

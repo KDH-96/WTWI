@@ -5,6 +5,9 @@ import java.util.List;
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
 
+/**
+ * @author 세은
+ */
 public interface BoardService {
 	
 	/** 전체 게시글 수 조회(1)
@@ -18,5 +21,11 @@ public interface BoardService {
 	 * @return boardList
 	 */
 	List<Board> selectBoardList(Pagination pagination);
+
+	/** 게시글 상세 조회(3)
+	 * @param boardNo
+	 * @return
+	 */
+	Board selectBoard(int boardNo);
 
 }
