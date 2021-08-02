@@ -1,5 +1,5 @@
 package com.wtwi.fin.qnaboard.model.service;
 
-public interface BoardService {
+public interface QnaBoardService {
 
 }

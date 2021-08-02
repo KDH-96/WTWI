@@ -17,11 +17,9 @@
     
     
 
-		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.Board" alias="QnaBoard" />
-    
-    
-    
-    
+
+		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaBoard" alias="QnaBoard" />
+
 
 		
 		<typeAlias type="com.wtwi.fin.member.model.vo.Member" alias="Member" /> 

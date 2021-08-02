@@ -3,11 +3,11 @@ package com.wtwi.fin.qnaboard.model.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.wtwi.fin.qnaboard.model.dao.BoardDAO;
+import com.wtwi.fin.qnaboard.model.dao.QnaBoardDAO;
 
 @Service
-public class BoardServiceImpl implements BoardService{
+public class QnaBoardServiceImpl implements QnaBoardService{
 
 	@Autowired
-	private BoardDAO dao;
+	private QnaBoardDAO dao;
 }
