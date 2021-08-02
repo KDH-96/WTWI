@@ -13,6 +13,14 @@
 	<resultMap type="FreePagination" id="pg_rm">
 		<result property="listCount" column="CNT"/>
 	</resultMap>
+	
+	<!-- 첨부 이미지 -->
+	<resultMap type="FreeImage" id="image_rm">
+		<id property="fileNo" column="FILE_NO"/>
+		<result property="fileName" column="FILE_NM"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="freeNo" column="FREE_NO"/>
+	</resultMap>
 
 	<!-- 게시글 -->
 	<resultMap type="FreeBoard" id="free_rm">
@@ -25,6 +33,9 @@
 		<result property="freeReadCount" column="FREE_READ_COUNT"/>
 		<result property="replyCount" column="REPLY_COUNT"/>
 		<result property="likeCount" column="LIKE_COUNT"/>
+		
+		<!-- 게시글 첨부 이미지 정보 -->
+		<collection property="atList" column="FREE_NO" javaType="java.util.ArrayList" ofType="Image" select="selectImage"/>
 	</resultMap>
 	
 	<!-- 전체 게시글 수 조회(1) -->
@@ -38,4 +49,22 @@
 		WHERE FREE_STATUS='Y'
 		ORDER BY FREE_NO DESC
 	</select>
+	
+	<!-- 게시글 상세 조회(3-1) 및 첨부 이미지 정보 조회 -->
+	<select id="selectBoard" parameterType="_int" resultMap="free_rm">
+		SELECT * FROM FREE_DETAIL
+		WHERE FREE_NO = #{freeNo}
+		AND FREE_STATUS = 'Y'
+	</select>
+	<select id="selectImage" parameterType="_int" resultMap="image_rm">
+		SELECT * FROM FREE_IMAGE
+		WHERE FREE_NO = #{freeNo}
+	</select>
+	
+	<!-- 게시글 조회수 증가(3-2) -->
+	<update id="increaseReadCount" parameterType="_int">
+		UPDATE FREE_BOARD SET
+		FREE_READ_COUNT = FREE_READ_COUNT + 1
+		WHERE FREE_NO = #{freeNo}
+	</update>
 </mapper>

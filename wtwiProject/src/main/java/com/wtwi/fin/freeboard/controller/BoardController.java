@@ -5,15 +5,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.wtwi.fin.freeboard.model.service.BoardService;
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
+import com.wtwi.fin.member.controller.MemberController;
 
+/**
+ * @author 세은
+ */
 @Controller
 @RequestMapping("/freeboard/*")
 public class BoardController {
@@ -39,4 +45,45 @@ public class BoardController {
 		
 		return "freeboard/boardList";
 	}
+	
+	// 자유게시판 게시글 상세 조회(3)
+	@RequestMapping(value="/{freeNo}", method=RequestMethod.GET)
+	public String boardView(@PathVariable("freeNo") int freeNo,
+							@RequestParam(value="cp", required=false, defaultValue="1") int cp,
+							Model model,
+							RedirectAttributes ra) {
+		
+		Board board = service.selectBoard(freeNo);
+		
+		if(board!=null) {
+			// 댓글 조회 추가하기
+			
+			model.addAttribute("board", board);
+			
+			return "freeboard/boardView";
+			
+		} else {
+			MemberController.swalSetMessage(ra, "error", "존재하지 않는 게시글입니다.", null);
+			return "redirect:list";
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
