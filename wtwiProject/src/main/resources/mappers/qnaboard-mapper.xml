@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="qnaboardMapper">
+
+	<!-- 문의게시글  -->
+	<resultMap type="QnaBoard" id="qna_rm">
+		<id property="qnaNo" column="QNA_NO"/>
+		
+		<result property="qnaPno" column="QNA_PNO"/>
+		<result property="qnaPno" column="QNA_PNO"/>
+		<result property="qnaTitle" column="QNA_TITLE"/>
+		<result property="qnaContent" column="QNA_CONTENT"/>
+		<result property="qnaReadCount" column="QNA_READ_COUNT"/>
+		<result property="qnaCreateDt" column="QNA_CREATE_DT"/>
+		<result property="qnaModifyDt" column="QNA_MODIFY_DT"/>
+		<result property="qnaCategoryNo" column="QNA_CATEGORY_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+	
+	</resultMap>
+</mapper>

@@ -47,7 +47,7 @@
 	<!-- 회원가입 -->
 	<insert id="signUp" parameterType="Member">
 		INSERT INTO MEMBER 
-		VALUES(SEQ_MNO.NEXTVAL, #{memberId}, #{memberPw}, #{memberPhone}, #{memberEmail}, #{memberAddress},
+		VALUES(SEQ_MNO.NEXTVAL, #{memberId}, #{memberPw}, #{memberNick}, #{memberEmail}, #{memberPhone},
 				DEFAULT, DEFAULT, DEFAULT)
 	</insert>
 	
@@ -57,7 +57,6 @@
 		SET 
 		MEMBER_EMAIL = #{memberEmail}, 
 		MEMBER_PHONE = #{memberPhone}, 
-		MEMBER_ADDR = #{memberAddress}
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
 	
@@ -86,7 +85,8 @@
 	<!-- 소셜 로그인 이메일  -->
 	<select id="getSnsEmail" parameterType="Member" resultMap="member_rm">
 		SELECT * FROM MEMBER 
-		WHERE MEMBER_EMAIL = #{memberEmail} 
+		WHERE MEMBER_STATUS = 'Y'
+		AND MEMBER_EMAIL = #{memberEmail} 
 		AND MEMBER_GRADE = #{memberGrade}
 	</select>
 	

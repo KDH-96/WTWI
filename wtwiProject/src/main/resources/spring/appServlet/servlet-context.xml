@@ -34,12 +34,13 @@
 	<beans:bean id="naverRedirectUrl" class="java.lang.String">
 		<beans:constructor-arg value="http://localhost:8080/fin/member/auth/naver/callback"/>
 	</beans:bean>
-	<beans:bean id="naverSns" class="com.wtwi.fin.auth.SnsValue">
+	<beans:bean id="naverSns" class="com.wtwi.fin.auth.SNSValue">
 		<beans:constructor-arg value="naver"/>
 		<beans:constructor-arg ref="naverClientID"/>
 		<beans:constructor-arg ref="naverClientSecret"/>
 		<beans:constructor-arg ref="naverRedirectUrl"/>
 	</beans:bean>
+
 	
 	<!-- oauth2 login / google -->
 	<beans:bean id="googleClientID" class="java.lang.String">
@@ -51,12 +52,13 @@
 	<beans:bean id="googleRedirectUrl" class="java.lang.String">
 		<beans:constructor-arg value="http://localhost:8080/fin/member/auth/google/callback"/>
 	</beans:bean>
-	<beans:bean id="googleSns" class="com.wtwi.fin.auth.SnsValue">
+	<beans:bean id="googleSns" class="com.wtwi.fin.auth.SNSValue">
 		<beans:constructor-arg value="google"/>
 		<beans:constructor-arg ref="googleClientID"/>
 		<beans:constructor-arg ref="googleClientSecret"/>
 		<beans:constructor-arg ref="googleRedirectUrl"/>
 	</beans:bean>
+	
 	
 	<beans:bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
 		<beans:constructor-arg ref="googleClientID"/>

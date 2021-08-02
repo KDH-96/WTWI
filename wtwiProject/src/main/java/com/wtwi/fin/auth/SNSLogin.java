@@ -1,5 +1,19 @@
 package com.wtwi.fin.auth;
 
+import java.nio.file.spi.FileSystemProvider;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.lang.StringUtils;
+import org.json.simple.JSONObject;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -13,56 +27,116 @@ import com.wtwi.fin.member.model.vo.Member;
 
 public class SNSLogin {
 
-	// scribejava가 제공하는 service
-	// 빌드패턴으로 만들어져 있기 때문에 new해서 생성하는 것이 아니라 빌더로 빌드하는 것임
-	// 밑에 메소드도 원래라면 우리가 네이버 왔다갔다 해야되고 그런 건데 그게 귀찮으니까 scribejava 쓰는 거임
 	private OAuth20Service oauthService;
-	private SnsValue sns; 
+	private SNSValue sns;
 
-	public SNSLogin(SnsValue sns) {
+	public SNSLogin() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public SNSLogin(SNSValue sns) {
+
 		this.oauthService = new ServiceBuilder(sns.getClientId()).apiSecret(sns.getClientSecret())
-				.callback(sns.getRedirectUrl()).defaultScope("profile").build(sns.getApi20Instance());
+				.callback(sns.getRedirectUrl()).build(sns.getApi20Instance());
 
 		this.sns = sns;
- 
-	} 
 
-	public String getNaverAuthURL() {
+	}
+
+	public String getSNSAuthURL() {
 		return this.oauthService.getAuthorizationUrl();
 	}
 
 	public Member getUserProfile(String code) throws Exception {
-		System.out.println("code : " + code);
-		System.out.println("naver.getprofileurl : " + this.sns.getProfileUrl());
 		OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
 
-		OAuthRequest request = new OAuthRequest(Verb.GET, this.sns.getProfileUrl()); 
+		OAuthRequest request = new OAuthRequest(Verb.GET, this.sns.getProfileUrl());
 		oauthService.signRequest(accessToken, request);
 
 		Response response = oauthService.execute(request);
-		
+
 		return parseJson(response.getBody());
 
 	}
 
 	private Member parseJson(String body) throws Exception {
 		Member member = new Member();
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(body);
-		
+		System.out.println(rootNode);
+
 		if (this.sns.isGoogle()) {
 			if (sns.isGoogle())
-			member.setMemberNick(rootNode.get("name").asText("여행자"));   
+				member.setMemberNick(rootNode.get("name").asText("여행자"));
 			member.setMemberEmail(rootNode.get("email").asText());
 			member.setMemberGrade("G");
+			
 		} else if (this.sns.isNaver()) {
 			JsonNode resNode = rootNode.get("response");
 			member.setMemberNick(resNode.get("nickname").asText("여행자"));
 			member.setMemberEmail(resNode.get("email").asText());
 			member.setMemberGrade("N");
 		}
+
+		return member;
+	}
+	
+	
+	// 카카오
+	public Member getKakaoProfile(String code) throws Exception {
+
+		String accessToken = "";
+		RestTemplate rt = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("grant_type", "authorization_code");
+		params.add("client_id", "b87de33b6c8fe6b2977868b55731dae3");
+		params.add("redirect_uri", "http://localhost:8080/fin/member/auth/kakao/callback");
+		params.add("code", code);
+		params.add("client_secret", "flqtQy9HB3KdhcMBhnlDllJetmlSg4kf");
+
+		HttpEntity<MultiValueMap<String, String>> kakaoRequest = new HttpEntity<>(params, headers);
+
+		ResponseEntity<JSONObject> apiResponse = rt.postForEntity("https://kauth.kakao.com/oauth/token", kakaoRequest,
+				JSONObject.class);
+		JSONObject responseBody = apiResponse.getBody();
+
+		accessToken = (String) responseBody.get("access_token");
+		return getKaKaoMember(accessToken);
+	}
+
+	private Member getKaKaoMember(String accessToken) throws Exception {
+		RestTemplate rt = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "bearer " + accessToken);
+		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+		HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers);
+
+		ResponseEntity<String> response = rt.exchange("https://kapi.kakao.com/v2/user/me", HttpMethod.POST,
+				kakaoProfileRequest, String.class);
+		return parseKakaoJson(response.getBody());
+	}
+
+	private Member parseKakaoJson(String body) throws Exception {
+		Member member = new Member();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode rootNode = mapper.readTree(body);
+
+		JsonNode properties = rootNode.path("properties");
+		member.setMemberNick(properties.get("nickname").asText("여행자"));
+		
+		JsonNode kakaoAccount = rootNode.path("kakao_account");
+		member.setMemberEmail(kakaoAccount.get("email").asText());
+		member.setMemberGrade("K");
 		
 		return member;
 	}
+
 }
