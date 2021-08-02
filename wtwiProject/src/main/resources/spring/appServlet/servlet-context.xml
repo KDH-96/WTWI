@@ -13,7 +13,7 @@
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
-
+  
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 
@@ -21,6 +21,53 @@
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<!-- By 지원. 소셜 로그인 Bean 등록 -->
+	<!-- oauth2 login / naver -->
+	<beans:bean id="naverClientID" class="java.lang.String">
+		<beans:constructor-arg value="0pbxHHRrlWo9BKNmQb_g"/>
+	</beans:bean>
+	<beans:bean id="naverClientSecret" class="java.lang.String">
+		<beans:constructor-arg value="tMnpH84LBV"/>
+	</beans:bean>
+	<beans:bean id="naverRedirectUrl" class="java.lang.String">
+		<beans:constructor-arg value="http://localhost:8080/fin/member/auth/naver/callback"/>
+	</beans:bean>
+	<beans:bean id="naverSns" class="com.wtwi.fin.auth.SNSValue">
+		<beans:constructor-arg value="naver"/>
+		<beans:constructor-arg ref="naverClientID"/>
+		<beans:constructor-arg ref="naverClientSecret"/>
+		<beans:constructor-arg ref="naverRedirectUrl"/>
+	</beans:bean>
+
+	
+	<!-- oauth2 login / google -->
+	<beans:bean id="googleClientID" class="java.lang.String">
+		<beans:constructor-arg value="908088894096-skhooibsicepdvthfedldfhdb1ajipcd.apps.googleusercontent.com"/>
+	</beans:bean>
+	<beans:bean id="googleClientSecret" class="java.lang.String">
+		<beans:constructor-arg value="2JJtZSsgj1yfux1e5X7JCmY9"/>
+	</beans:bean>
+	<beans:bean id="googleRedirectUrl" class="java.lang.String">
+		<beans:constructor-arg value="http://localhost:8080/fin/member/auth/google/callback"/>
+	</beans:bean>
+	<beans:bean id="googleSns" class="com.wtwi.fin.auth.SNSValue">
+		<beans:constructor-arg value="google"/>
+		<beans:constructor-arg ref="googleClientID"/>
+		<beans:constructor-arg ref="googleClientSecret"/>
+		<beans:constructor-arg ref="googleRedirectUrl"/>
+	</beans:bean>
+	
+	
+	<beans:bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
+		<beans:constructor-arg ref="googleClientID"/>
+		<beans:constructor-arg ref="googleClientSecret"/>
+	</beans:bean>
+	<beans:bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
+		<beans:property name="scope" value="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"/>
+		<!-- bean<beans:property name="scope" value=""https://www.googleapis.com/auth/plus.login"/> -->
+		<beans:property name="redirectUri" value="http://localhost:8080/fin/member/auth/google/callback"/>
 	</beans:bean>
 	
 	<context:component-scan base-package="com.wtwi.fin" />

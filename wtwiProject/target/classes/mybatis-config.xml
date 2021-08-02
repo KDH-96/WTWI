@@ -11,13 +11,22 @@
 		<typeAlias type="com.wtwi.fin.freeboard.model.vo.Board" alias="FreeBoard" />
 		<typeAlias type="com.wtwi.fin.freeboard.model.vo.Category" alias="FreeCategory" />
 		<typeAlias type="com.wtwi.fin.freeboard.model.vo.Pagination" alias="FreePagination" />
+
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.Board" alias="QnaBoard" />
+
+		
+		<typeAlias type="com.wtwi.fin.member.model.vo.Member" alias="Member" /> 
+
 	</typeAliases>
-	
+	 
 	<!-- mapper 파일 위치 등록 -->
 	<mappers>
 		<mapper resource="/mappers/freeboard-mapper.xml" />
+
 		<mapper resource="/mappers/qnaboard-mapper.xml" />
+
+		<mapper resource="/mappers/member-mapper.xml"></mapper>
+
 	</mappers>
 
-</configuration>
+</configuration> 

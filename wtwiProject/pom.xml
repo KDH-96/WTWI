@@ -10,7 +10,7 @@
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	
 	<!-- 공통적으로 사용할 버전 또는 설정 값 정보를 작성하는 태그 -->
-	<properties>
+	<properties> 
 		<java-version>1.8</java-version>
 		<org.springframework-version>5.2.8.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.9.4</org.aspectj-version>
@@ -106,6 +106,59 @@
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.9.8</version>
 		</dependency>
+		
+		
+		<!-- By 지원. jackson / 소셜 로그인 / lombok / 휴대폰 인증 라이브러리 추가 -->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.9.8</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.9.8</version>
+		</dependency>
+		
+		<!--  소셜 로그인 -->
+		<dependency>
+			<groupId>com.github.scribejava</groupId>
+			<artifactId>scribejava-apis</artifactId>
+			<version>6.9.0</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.github.scribejava/scribejava-core -->
+		<dependency>
+			<groupId>com.github.scribejava</groupId>
+			<artifactId>scribejava-core</artifactId>
+			<version>6.9.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.social/spring-social-google -->
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-google</artifactId>
+			<version>1.0.0.RELEASE</version>
+		</dependency>
+		
+		<!-- LomBok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.10</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- 휴대폰 인증 -->
+		<dependency>
+			<groupId>net.nurigo</groupId>
+			<artifactId>javaSDK</artifactId>
+			<version>2.2</version>
+		</dependency>
+		
 
 		<!-- Spring -->
 		<dependency>
