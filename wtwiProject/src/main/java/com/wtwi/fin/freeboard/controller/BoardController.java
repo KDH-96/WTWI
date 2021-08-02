@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.wtwi.fin.freeboard.model.service.BoardService;
 import com.wtwi.fin.freeboard.model.vo.Board;
+import com.wtwi.fin.freeboard.model.vo.Category;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
 import com.wtwi.fin.member.controller.MemberController;
 
@@ -66,6 +67,17 @@ public class BoardController {
 			MemberController.swalSetMessage(ra, "error", "존재하지 않는 게시글입니다.", null);
 			return "redirect:list";
 		}
+	}
+	
+	// 자유게시판 게시글 작성 화면 전환(4)
+	@RequestMapping(value="insertForm", method=RequestMethod.GET)
+	public String insertForm(Model model) {
+		
+		// 자유게시판 카테고리 목록 조회(4)
+		List<Category> category = service.selectCategory();
+		model.addAttribute("category", category);
+		
+		return "freeboard/boardInsert";
 	}
 	
 	

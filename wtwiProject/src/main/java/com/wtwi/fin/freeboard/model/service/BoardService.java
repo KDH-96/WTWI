@@ -3,6 +3,7 @@ package com.wtwi.fin.freeboard.model.service;
 import java.util.List;
 
 import com.wtwi.fin.freeboard.model.vo.Board;
+import com.wtwi.fin.freeboard.model.vo.Category;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
 
 /**
@@ -27,5 +28,10 @@ public interface BoardService {
 	 * @return
 	 */
 	Board selectBoard(int boardNo);
+
+	/** 카테고리 조회(4)
+	 * @return
+	 */
+	List<Category> selectCategory();
 
 }

@@ -3,9 +3,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>자유게시판</title>
     <style>
         .free-board-list{
@@ -104,7 +105,7 @@
             </tbody>
         </table>
         <div class="row d-flex justify-content-end">
-            <button type="button" class="btn btn-outline-secondary">글작성</button>
+            <a class="btn btn-outline-secondary" href="${contextPath}/freeboard/insertForm">글작성</a>
         </div>
         <%-- 페이지네이션 --%>
         <c:set var="pageURL" value="list"/>

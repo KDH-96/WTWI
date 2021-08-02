@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.wtwi.fin.freeboard.model.vo.Board;
+import com.wtwi.fin.freeboard.model.vo.Category;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
 
 /**
@@ -52,6 +53,13 @@ public class BoardDAO {
 	 */
 	public int increaseReadCount(int freeNo) {
 		return sqlSession.update("freeboardMapper.increaseReadCount", freeNo);
+	}
+
+	/** 카테고리 목록 조회(4)
+	 * @return
+	 */
+	public List<Category> selectCategory() {
+		return sqlSession.selectList("freeboardMapper.selectCategory");
 	}
 
 	
