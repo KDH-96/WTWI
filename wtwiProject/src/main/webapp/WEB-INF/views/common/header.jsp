@@ -209,13 +209,15 @@
 			<c:choose>
 				<c:when test="${empty loginMember }">				
 		            <div class="col-4 d-flex justify-content-end align-items-center">
-		                <a class="btn btn-dark mr-2" href="${contextPath}/member/login"">ID/PW찾기</a>
+		                <a class="btn btn-dark mr-2" href="${contextPath}/member/searchIdForm"">ID/PW찾기</a>
 		                <a class="btn btn-dark mr-2" href="${contextPath}/member/login"">로그인</a>
 		            </div>
 				</c:when>
 				<c:otherwise>
-					<a class="btn btn-dark mr-3" href="${contextPath}/member/myPage"">${loginMember.memberNick }</a>
-					<a class="btn btn-dark mr-3" href="${contextPath}/member/logout"">로그아웃</a>
+					<div class="col-4 d-flex justify-content-end align-items-center">
+						<a class="btn btn-dark mr-3" href="${contextPath}/member/myPage"">${loginMember.memberNick }</a>
+						<a class="btn btn-dark mr-3" href="${contextPath}/member/logout"">로그아웃</a>
+					</div>
 				</c:otherwise>
 			</c:choose>
 
@@ -231,7 +233,7 @@
 
                     <li><a class="p-2" href="#">오늘의 날씨</a></li>
                     <li><a class="p-2" href="${contextPath}/freeboard/list">자유게시판</a></li>
-                    <li><a class="p-2" href="${contextPath}/qnaboard/list">문의게시판</a></li>
+                    <li><a class="p-2" href="inquiry-board-list.html">문의게시판</a></li>
             </nav>
         </div>
 
