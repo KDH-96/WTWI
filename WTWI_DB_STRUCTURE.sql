@@ -787,3 +787,10 @@ CREATE OR REPLACE VIEW FREE_DETAIL AS
                     FROM FREE_LIKE
                     GROUP BY FREE_NO) USING(FREE_NO)
 ;
+
+-----------------------------------------------------------------------------------------------08/03 추가
+-- By 지원.
+-- MEMBER 테이블 MEMBER_GRADE 컬럼 DEFAULT 값 변경(일반회원 = 'B')
+ALTER TABLE MEMBER MODIFY (MEMBER_GRADE DEFAULT 'B');
+
+COMMIT;
