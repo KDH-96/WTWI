@@ -2,31 +2,31 @@ package com.wtwi.fin.freeboard.model.vo;
 
 public class Category {
 	
-	private int categoryNo;
-	private String categoryName;
+	private int freeCategoryNo;
+	private String freeCategoryName;
 	
 	public Category() {
 	}
 
-	public int getCategoryNo() {
-		return categoryNo;
+	public int getFreeCategoryNo() {
+		return freeCategoryNo;
 	}
 
-	public void setCategoryNo(int categoryNo) {
-		this.categoryNo = categoryNo;
+	public void setFreeCategoryNo(int freeCategoryNo) {
+		this.freeCategoryNo = freeCategoryNo;
 	}
 
-	public String getCategoryName() {
-		return categoryName;
+	public String getFreeCategoryName() {
+		return freeCategoryName;
 	}
 
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
+	public void setFreeCategoryName(String freeCategoryName) {
+		this.freeCategoryName = freeCategoryName;
 	}
 
 	@Override
 	public String toString() {
-		return "Category [categoryNo=" + categoryNo + ", categoryName=" + categoryName + "]";
+		return "Category [freeCategoryNo=" + freeCategoryNo + ", freeCategoryName=" + freeCategoryName + "]";
 	}
-
+	
 }

@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.wtwi.fin.freeboard.model.vo.Board;
+import com.wtwi.fin.freeboard.model.vo.Category;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
+import com.wtwi.fin.freeboard.model.vo.Search;
 
 /**
  * @author 세은
@@ -54,5 +56,33 @@ public class BoardDAO {
 		return sqlSession.update("freeboardMapper.increaseReadCount", freeNo);
 	}
 
+	/** 카테고리 목록 조회(4)
+	 * @return category
+	 */
+	public List<Category> selectCategory() {
+		return sqlSession.selectList("freeboardMapper.selectCategory");
+	}
+
+	/** 검색 게시글 수 조회(5)
+	 * @param search 
+	 * @return
+	 */
+	public Pagination getSearchListCount(Search search) {
+		return sqlSession.selectOne("freeboardMapper.selectSearchListCount", search);
+	}
+
+	/** 검색 게시글 목록 조회(6)
+	 * @param search
+	 * @param pagination
+	 * @return boardList
+	 */
+	public List<Board> selectSearchBoardList(Search search, Pagination pagination) {
+		
+		int offset = (pagination.getCurrentPage()-1)*pagination.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
+		return sqlSession.selectList("freeboardMapper.selectSearchBoardList", search, rowBounds);
+	}
+	
+	
 	
 }

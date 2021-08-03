@@ -736,20 +736,8 @@ END;
 COMMIT;
 
 -- 자유게시판 목록 조회를 위한 VIEW
-CREATE OR REPLACE VIEW FREE_LIST AS
-    SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, MEMBER_NICK, FREE_CREATE_DT, FREE_READ_COUNT,
-               NVL(REPLY_COUNT, 0) REPLY_COUNT, NVL(LIKE_COUNT, 0) LIKE_COUNT,
-               FREE_STATUS
-    FROM FREE_BOARD
-    JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
-    JOIN MEMBER USING(MEMBER_NO)
-    LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
-                    FROM FREE_REPLY
-                    GROUP BY FREE_NO) USING(FREE_NO)
-    LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
-                    FROM FREE_LIKE
-                    GROUP BY FREE_NO) USING(FREE_NO)
-;
+--삭제
+
 ---------------------------------------------------------------------------------------------------------
 -- By 지원.
 -- MEMBER 테이블 MEMBER_NM 컬럼 삭제
@@ -777,6 +765,35 @@ CREATE OR REPLACE VIEW FREE_DETAIL AS
                FREE_CONTENT,
                NVL(LIKE_COUNT, 0) LIKE_COUNT, NVL(REPLY_COUNT, 0) REPLY_COUNT, 
                FREE_STATUS
+    FROM FREE_BOARD
+    JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO)
+    LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
+                    FROM FREE_REPLY
+                    GROUP BY FREE_NO) USING(FREE_NO)
+    LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
+                    FROM FREE_LIKE
+                    GROUP BY FREE_NO) USING(FREE_NO)
+;
+
+-----------------------------------------------------------------------------------------------08/03 추가
+-- By 지원.
+-- MEMBER 테이블 MEMBER_GRADE 컬럼 DEFAULT 값 변경(일반회원 = 'B')
+ALTER TABLE MEMBER MODIFY (MEMBER_GRADE DEFAULT 'B');
+
+COMMIT;
+
+
+-- 세은
+-- 자유게시판 목록 조회를 위한 VIEW 생성 구문에 변동이 있습니다. 
+-- 07/31 작성한 구문은 삭제했으며, 아래 구문으로 다시 실행해주세요!
+
+-- 자유게시판 목록 조회를 위한 VIEW
+CREATE OR REPLACE VIEW FREE_LIST AS
+    SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, MEMBER_NICK, FREE_CREATE_DT, FREE_READ_COUNT,
+               NVL(REPLY_COUNT, 0) REPLY_COUNT, NVL(LIKE_COUNT, 0) LIKE_COUNT,
+               FREE_STATUS,
+               FREE_CONTENT, FREE_CATEGORY_NO
     FROM FREE_BOARD
     JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
     JOIN MEMBER USING(MEMBER_NO)

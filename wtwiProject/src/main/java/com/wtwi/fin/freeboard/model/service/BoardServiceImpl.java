@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.wtwi.fin.freeboard.model.dao.BoardDAO;
 import com.wtwi.fin.freeboard.model.vo.Board;
+import com.wtwi.fin.freeboard.model.vo.Category;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
+import com.wtwi.fin.freeboard.model.vo.Search;
 
 /**
  * @author 세은
@@ -47,6 +49,26 @@ public class BoardServiceImpl implements BoardService {
 			board.setFreeReadCount(board.getFreeReadCount()+1);
 		}
 		return board;
+	}
+
+	// 카테고리 목록 조회(4)
+	@Override
+	public List<Category> selectCategory() {
+		return dao.selectCategory();
+	}
+
+	// 검색 게시글 수 조회(5)
+	@Override
+	public Pagination getPaganation(Search search, Pagination pg) {
+		
+		Pagination selectPg = dao.getSearchListCount(search);
+		return new Pagination(pg.getCurrentPage(), selectPg.getListCount());
+	}
+
+	// 검색 게시글 목록 조회(6)
+	@Override
+	public List<Board> selectBoardList(Search search, Pagination pagination) {
+		return dao.selectSearchBoardList(search, pagination);
 	}
 	
 	

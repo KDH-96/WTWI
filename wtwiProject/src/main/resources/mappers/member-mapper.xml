@@ -93,8 +93,15 @@
 	<!-- 소셜 로그인 회원가입 -->
 	<insert id="snsSignUp" parameterType="Member">
 		INSERT INTO MEMBER 
-		VALUES(SEQ_MNO.NEXTVAL, 'social'||SEQ_MNO.NEXTVAL, 'social'||SEQ_MNO.NEXTVAL, #{memberNick},  #{memberEmail}, '010-1111-1111', 
+		VALUES(SEQ_MNO.NEXTVAL, 'social'||SEQ_MNO.NEXTVAL, #{memberPw}, #{memberNick},  #{memberEmail}, '010-1111-1111', 
 				DEFAULT, DEFAULT, #{memberGrade})
 	</insert>
   
+  	<!-- coolSMS 핸드폰 중복 검사 -->
+  	<select id="selectPhone" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER
+  		WHERE MEMBER_PHONE = #{memberPhone}
+  		AND MEMBER_STATUS = 'Y'
+  		AND MEMBER_GRADE = 'B'
+  	</select>
 </mapper>

@@ -103,18 +103,19 @@ public class MemberController {
 			model.addAttribute("loginMember", member);
 		}
 		
-		return "member/loginResult";
+		return "redirect:/";
 	}
 
-	@RequestMapping("signUpActive")
+	@RequestMapping("signUp")
 	public String signUp() {
 
 		return "member/signUp";
 
 	}
 
-	@RequestMapping(value = "signUp", method = RequestMethod.POST)
+	@RequestMapping(value = "signUpAction", method = RequestMethod.POST)
 	public String signUp(@ModelAttribute Member inputMember, RedirectAttributes ra) {
+
 		int result = service.signUp(inputMember);
 		if (result > 0) {
 			swalSetMessage(ra, "success", "회원가입 성공!", "로그인 후 사이트를 이용해주세요 :)");
