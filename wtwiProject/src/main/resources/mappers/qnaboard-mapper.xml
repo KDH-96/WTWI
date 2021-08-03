@@ -2,19 +2,53 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="qnaboardMapper">
 
-	<!-- 문의게시글  -->
-	<resultMap type="QnaBoard" id="qna_rm">
-		<id property="qnaNo" column="QNA_NO"/>
-		
-		<result property="qnaPno" column="QNA_PNO"/>
-		<result property="qnaPno" column="QNA_PNO"/>
-		<result property="qnaTitle" column="QNA_TITLE"/>
-		<result property="qnaContent" column="QNA_CONTENT"/>
-		<result property="qnaReadCount" column="QNA_READ_COUNT"/>
-		<result property="qnaCreateDt" column="QNA_CREATE_DT"/>
-		<result property="qnaModifyDt" column="QNA_MODIFY_DT"/>
-		<result property="qnaCategoryNo" column="QNA_CATEGORY_NO"/>
-		<result property="memberNo" column="MEMBER_NO"/>
-	
+
+	<!-- 페이지네이션 -->
+	<resultMap type="QnaPagination" id="pg_rm">
+		<result property="listCount" column="CNT" />
 	</resultMap>
+
+	<!-- 카테고리 -->
+	<resultMap type="QnaCategory" id="category_rm">
+		<id property="qnaCategoryNo" column="QNA_CATEGORY_NO" />
+		<result property="qnaCategoryNm" column="QNA_CATEGORY_NM" />
+	</resultMap>
+
+	<!-- 문의게시글 -->
+	<resultMap type="QnaBoard" id="qna_rm">
+		<id property="qnaNo" column="QNA_NO" />
+
+		<result property="qnaPno" column="QNA_PNO" />
+		<result property="qnaPno" column="QNA_PNO" />
+		<result property="qnaTitle" column="QNA_TITLE" />
+		<result property="qnaContent" column="QNA_CONTENT" />
+		<result property="qnaReadCount" column="QNA_READ_COUNT" />
+		<result property="qnaCreateDt" column="QNA_CREATE_DT" />
+		<result property="qnaModifyDt" column="QNA_MODIFY_DT" />
+		<result property="qnaStatus" column="QNA_STATUS" />
+		<result property="qnaCategoryNo" column="QNA_CATEGORY_NO" />
+		<result property="qnaCategoryNm" column="QNA_CATEGORY_NM" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="memberNick" column="MEMBER_NICK" />
+
+	</resultMap>
+
+
+	<!-- 게시글 목록 갯수 조회 -->
+	<select id="getListCount" resultMap="pg_rm">
+		SELECT COUNT(*) CNT FROM
+		QNA_LIST WHERE QNA_STATUS='Y' OR QNA_STATUS= 'S'
+	</select>
+
+	<!-- 계층형 게시글 목록 조회  -->
+	<select id="selectBoardList" parameterType="_int" resultMap="qna_rm">
+		SELECT QNA_NO, QNA_PNO, QNA_CATEGORY_NM,
+		(LPAD('', 3*(LEVEL)) || QNA_TITLE) AS QNA_TITLE,
+		MEMBER_NICK, QNA_READ_COUNT, QNA_CREATE_DT, QNA_STATUS
+		FROM QNA_LIST
+		WHERE QNA_STATUS IN ('Y','S')
+		START WITH QNA_PNO IS NULL
+		CONNECT BY PRIOR QNA_NO = QNA_PNO
+		ORDER SIBLINGS BY QNA_NO DESC
+	</select>
 </mapper>

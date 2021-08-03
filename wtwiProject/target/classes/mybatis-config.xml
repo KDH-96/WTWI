@@ -11,6 +11,7 @@
 		<typeAlias type="com.wtwi.fin.freeboard.model.vo.Board" alias="FreeBoard" />
 		<typeAlias type="com.wtwi.fin.freeboard.model.vo.Category" alias="FreeCategory" />
 		<typeAlias type="com.wtwi.fin.freeboard.model.vo.Pagination" alias="FreePagination" />
+
     	<typeAlias type="com.wtwi.fin.freeboard.model.vo.Image" alias="FreeImage" />
     	<typeAlias type="com.wtwi.fin.freeboard.model.vo.Search" alias="FreeSearch" />
     
@@ -19,6 +20,8 @@
 
 
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaBoard" alias="QnaBoard" />
+		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaCategory" alias="QnaCategory" />
+		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.Pagination" alias="QnaPagination" />
 
 
 		
