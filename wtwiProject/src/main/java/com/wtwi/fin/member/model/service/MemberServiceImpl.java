@@ -116,12 +116,26 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Member snsSignup(Member snsMember) {
+		
+		String encPwd = bCryptPasswordEncoder.encode(snsMember.getMemberPw());
+		snsMember.setMemberPw(encPwd);
 		int result = dao.snsSignup(snsMember);
+		
 		Member member = null;
+		
 		if(result > 0) {
 			member = dao.getSnsEmail(snsMember);
 		}
 		return member;
 	}
+	
+	// coolSMS 핸드폰 번호 중복 검사
+	@Override
+	public int selectPhone(String memberPhone) {
+		// TODO Auto-generated method stub
+		return dao.selectPhone(memberPhone);
+	}
+	
+	
 
 }

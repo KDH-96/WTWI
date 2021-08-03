@@ -108,4 +108,13 @@ public class MemberDAO {
 
 	}
 
+	/** coolSMS 핸드폰 번호 중복 검사
+	 * @param memberPhone
+	 * @return
+	 */
+	public int selectPhone(String memberPhone) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("memberMapper.selectPhone", memberPhone);
+	}
+
 }
