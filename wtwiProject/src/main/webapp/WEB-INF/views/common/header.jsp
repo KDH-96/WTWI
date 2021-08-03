@@ -206,12 +206,18 @@
             </div>
 
 
-
-            <div class="col-4 d-flex justify-content-end align-items-center">
-                <button type="button" class="btn btn-dark mr-2">ID/PW 찾기</button>
-                <a class="btn btn-dark mr-2" href="${contextPath}/member/login"">로그인</a>
-                <button type="button" class="btn btn-dark mr-2">회원가입</button>
-            </div>
+			<c:choose>
+				<c:when test="${empty loginMember }">				
+		            <div class="col-4 d-flex justify-content-end align-items-center">
+		                <a class="btn btn-dark mr-2" href="${contextPath}/member/login"">ID/PW찾기</a>
+		                <a class="btn btn-dark mr-2" href="${contextPath}/member/login"">로그인</a>
+		            </div>
+				</c:when>
+				<c:otherwise>
+					<a class="btn btn-dark mr-3" href="${contextPath}/member/myPage"">${loginMember.memberNick }</a>
+					<a class="btn btn-dark mr-3" href="${contextPath}/member/logout"">로그아웃</a>
+				</c:otherwise>
+			</c:choose>
 
 
         </header>

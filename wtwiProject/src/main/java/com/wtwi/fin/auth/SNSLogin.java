@@ -64,17 +64,17 @@ public class SNSLogin {
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(body);
-		System.out.println(rootNode);
 
 		if (this.sns.isGoogle()) {
-			if (sns.isGoogle())
-				member.setMemberNick(rootNode.get("name").asText("여행자"));
+			member.setMemberNick(rootNode.get("name").asText("여행자"));
+			member.setMemberPw("socialLogin");
 			member.setMemberEmail(rootNode.get("email").asText());
 			member.setMemberGrade("G");
 			
 		} else if (this.sns.isNaver()) {
 			JsonNode resNode = rootNode.get("response");
 			member.setMemberNick(resNode.get("nickname").asText("여행자"));
+			member.setMemberPw("socialLogin");
 			member.setMemberEmail(resNode.get("email").asText());
 			member.setMemberGrade("N");
 		}
@@ -131,6 +131,7 @@ public class SNSLogin {
 
 		JsonNode properties = rootNode.path("properties");
 		member.setMemberNick(properties.get("nickname").asText("여행자"));
+		member.setMemberPw("socialLogin");
 		
 		JsonNode kakaoAccount = rootNode.path("kakao_account");
 		member.setMemberEmail(kakaoAccount.get("email").asText());
