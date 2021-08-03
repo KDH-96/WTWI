@@ -16,6 +16,7 @@ import com.wtwi.fin.freeboard.model.service.BoardService;
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Category;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
+import com.wtwi.fin.freeboard.model.vo.Search;
 import com.wtwi.fin.member.controller.MemberController;
 
 /**
@@ -28,18 +29,34 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 	
-	// 자유게시판 목록 조회(1, 2)
+	// 자유게시판 목록 조회(1, 2) + 검색(5, 6)
 	@RequestMapping(value="list", method=RequestMethod.GET)
 	public String boardList(@RequestParam(value="cp", required=false, defaultValue="1") int cp,
 							Model model, 
-							Pagination pg) {
+							Pagination pg,
+							Search search) {
 		
-		// 전체 게시글 수 조회 및 페이지네이션 객체 생성(1)
 		pg.setCurrentPage(cp);
-		Pagination pagination = service.getPaganation(pg);
 		
-		// 게시글 목록 조회(2)
-		List<Board> boardList = service.selectBoardList(pagination);
+		Pagination pagination = null;
+		List<Board> boardList = null;
+		
+		// 전체 목록 조회
+		if(search.getSk()==null) {
+			// 전체 게시글 수 조회 및 페이지네이션 객체 생성(1)
+			pagination = service.getPaganation(pg);
+			
+			// 게시글 목록 조회(2)
+			boardList = service.selectBoardList(pagination);
+		
+		// 검색 시 목록 조회
+		} else {
+			// 검색 게시글 수 조회(5)
+			pagination = service.getPaganation(search, pg);
+			
+			// 검색 게시글 목록 조회(6)
+			boardList = service.selectBoardList(search, pagination);
+		}
 		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pagination", pagination);
