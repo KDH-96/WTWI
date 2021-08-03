@@ -5,6 +5,7 @@ import java.util.List;
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Category;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
+import com.wtwi.fin.freeboard.model.vo.Search;
 
 /**
  * @author 세은
@@ -33,5 +34,19 @@ public interface BoardService {
 	 * @return category
 	 */
 	List<Category> selectCategory();
+
+	/** 검색 게시글 수 조회(5)
+	 * @param search
+	 * @param pg
+	 * @return pagination
+	 */
+	Pagination getPaganation(Search search, Pagination pg);
+
+	/** 검색 게시글 목록 조회(6)
+	 * @param search
+	 * @param pagination
+	 * @return boardList
+	 */
+	List<Board> selectBoardList(Search search, Pagination pagination);
 
 }
