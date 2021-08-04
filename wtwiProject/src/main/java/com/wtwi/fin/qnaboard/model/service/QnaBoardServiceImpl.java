@@ -69,11 +69,33 @@ public class QnaBoardServiceImpl implements QnaBoardService{
 	}
 
 	// 게시글 삽입
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int insertBoard(QnaBoard board) {
+		// 크로스 사이트 방지 + 개행문자 처리
+		board.setQnaTitle(replaceParameter(board.getQnaTitle()));
+		board.setQnaContent(replaceParameter(board.getQnaContent()));
 		
-		return 0;
+		board.setQnaContent(board.getQnaContent().replaceAll("(\r\n|\r|\n|\n\r)", "<br>"));
+		
+		int boardNo = dao.insertBoard(board);
+		
+		return boardNo;
 	}
+	
+	// 크로스 사이트 스크립트 방지 처리 메소드
+	public static String replaceParameter(String param) {
+		String result = param;
+		if (param != null) {
+			result = result.replaceAll("&", "&amp;");
+			result = result.replaceAll("<", "&lt;");
+			result = result.replaceAll(">", "&gt;");
+			result = result.replaceAll("\"", "&quot;");
+		}
+
+		return result;
+	}
+	
 	
 	
 }

@@ -82,5 +82,13 @@ public class QnaBoardDAO {
 		return sqlSession.selectList("qnaboardMapper.selectCategory");
 	}
 
+	/** 게시글 작성
+	 * @param board
+	 * @return
+	 */
+	public int insertBoard(QnaBoard board) {
+		return sqlSession.insert("qnaboardMapper.insertBoard", board);
+	}
+
 
 }

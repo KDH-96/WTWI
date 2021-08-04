@@ -26,7 +26,7 @@ import com.wtwi.fin.qnaboard.model.vo.Search;
 
 @Controller
 @RequestMapping("/qnaboard/*")
-//@SessionAttributes({"loginMember"})
+@SessionAttributes({"loginMember"})
 public class QnaBoardController {
 
 	@Autowired
