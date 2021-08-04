@@ -19,7 +19,7 @@ public class Board {
 	private int replyCount; 		  // 댓글수
 	private int likeCount; 			  // 좋아요수
 	
-	private List<Image> atList; 	  // 첨부 이미지 목록
+	private List<Image> images; 	  // 첨부 이미지 목록
 	
 	public Board() {
 	}
@@ -120,13 +120,21 @@ public class Board {
 		this.likeCount = likeCount;
 	}
 
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
+	}
+
 	@Override
 	public String toString() {
 		return "Board [freeNo=" + freeNo + ", freeTitle=" + freeTitle + ", freeContent=" + freeContent
 				+ ", freeReadCount=" + freeReadCount + ", freeCreateDate=" + freeCreateDate + ", freeModifyDate="
 				+ freeModifyDate + ", memberNo=" + memberNo + ", freeCategoryNo=" + freeCategoryNo
 				+ ", freeCategoryName=" + freeCategoryName + ", memberNick=" + memberNick + ", replyCount=" + replyCount
-				+ ", likeCount=" + likeCount + "]";
+				+ ", likeCount=" + likeCount + ", images=" + images + "]";
 	}
 
 }
