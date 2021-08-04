@@ -190,7 +190,7 @@
 
 		<h3>문의게시글 등록</h3>
 		<hr>
-		<form action="insert" method="post" role="form"  onsubmit="return boardValidate();">
+		<form action="insertForm" method="post" role="form"  onsubmit="return boardValidate();">
 			<!-- 카테고리 선택 -->
 			<c:if test="${ !empty category}"> 			
 				<div id="category-pick-area">
@@ -202,6 +202,11 @@
 					</select>
 				</div>
 			</c:if>
+			
+							<div class="form-inline mb-2">
+					<label class="input-group-addon mr-3 insert-label">작성자</label>
+					<h5 class="my-0" id="writer">${loginMember.memberNick }</h5>
+				</div>
 			<hr>
 
 			<!-- 게시글 제목 입력 칸 -->
@@ -213,7 +218,7 @@
 				
 				<div id="input-title-box">
 					<input type="text" class="form-control"  id="boardTitle" aria-label="Sizing example input"
-					aria-describedby="inputGroup-sizing-default" placeholder="제목을 입력해주세요.">
+					aria-describedby="inputGroup-sizing-default" name="qnaTitle" placeholder="제목을 입력해주세요.">
 				</div>
 
 				<div class="custom-control custom-switch" style="margin-left: auto;">
@@ -222,10 +227,10 @@
 						<label for="checkbox" id="show-ask">공개</label>
 					</div>
 					
-					<input type="checkbox" id="switch1" name="switch1"
-						class="input__on-off"> <label for="switch1"
-						class="label__on-off"> <span class="marble"></span> <span
-						class="on">on</span> <span class="off">off</span>
+					<input type="checkbox" id="switch1" name="qnaStatus" class="input__on-off"> 
+					
+					<label for="switch1" class="label__on-off"> <span class="marble"></span>
+					<span class="on">on</span> <span class="off">off</span>
 					</label>
 
 				</div>
@@ -239,7 +244,7 @@
 
 			<div class="form-group" id="content-title" style="width: 1100px;">
 				<label for="exampleFormControlTextarea1">내용</label>
-				<textarea class="form-control" id="exampleFormControlTextarea1" rows="20" style="resize: none; width: 1100px;"></textarea>
+				<textarea class="form-control" id="exampleFormControlTextarea1" name="qnaContent" rows="20" style="resize: none; width: 1100px;"></textarea>
 			</div>
 
 
@@ -321,6 +326,8 @@
     
             });
           });
+		
+		
 		
 	</script>
 </body>

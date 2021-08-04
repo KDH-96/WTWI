@@ -130,4 +130,9 @@
 	<select id="selectCategory" resultMap="category_rm">
 		SELECT * FROM QNA_CATEGORY
 	</select>
+	
+	<insert id="insertBoard" parameterType="QnaBoard">
+		INSERT INTO QNA_BOARD
+		VALUES(SEQ_QBNO.NEXTVAL,NULL,#{qnaTitle},#{qnaContent},DEFAULT,DEFAULT,DEFAULT,DEFAULT,#{qnaCategoryNo},#{memberNo})
+	</insert>
 </mapper>
