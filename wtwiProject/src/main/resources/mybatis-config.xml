@@ -22,6 +22,7 @@
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaBoard" alias="QnaBoard" />
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaCategory" alias="QnaCategory" />
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.Pagination" alias="QnaPagination" />
+		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.Search" alias="QnaSearch" />
 
 
 		

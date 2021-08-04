@@ -97,9 +97,8 @@ opacity
 	text-align: center;
 }
 
-/* 게시글 목록의 높이가 최소 540px은 유지하도록 설정 */
 .list-wrapper {
-	min-height: 540px;
+	min-height: 350px;
 }
 
 #list-table th:nth-child(3) {
@@ -134,9 +133,6 @@ opacity
 	top: 0;
 }
 
-.event-header {
-	display: flex;
-}
 </style>
 
 </head>
@@ -144,9 +140,13 @@ opacity
 	<jsp:include page="../common/header.jsp"></jsp:include>
 	<div class="container my-5">
 
-		<div class="event-header">
+		<div class="qna-header">
+			<div style="float: left;">
 			<i class="fas fa-question fa-2x" style="margin: 25px 10px"></i>
+			</div>
+			<div style="float: left;">
 			<h3 class="my-4 font-weight-bold">문의게시판</h1>
+			</div>
 		</div>
 		<div class="list-wrapper">
 			<table class="table table-hover table-striped my-5" id="list-table">
@@ -158,14 +158,7 @@ opacity
 						<th scope="col" class="qb-writer">작성자</th>
 						<th scope="col" class="qb-count">조회수</th>
 						<th scope="col" class="qb-date">작성일</th>
-						<th scope="col" class="qb-status">공개여부
-						    <span>
-                       			 <a href="#">
-                            	<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                            	<path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>
-                        		</a>
-                    		</span>
-						</th>
+						<th scope="col" class="qb-status">공개여부</th>
 					</tr>
 				</thead>
 
@@ -216,7 +209,7 @@ opacity
 									<%-- 글 제목 --%>
 									<td class="boardTitle">
 									
-									<a href="${qnaBoard.qnaNo}?cp=${pagination.currentPage}">
+									<a href="${qnaBoard.qnaNo}?cp=${pagination.currentPage}${searchStr}">
 									<c:if test="${qnaPno > 0}"> &nbsp;&nbsp;&nbsp; -> [답글] ${qnaBoard.qnaTitle}</c:if>
 									<c:if test="${qnaPno == 0}">${qnaBoard.qnaTitle}</c:if>
 									</a>
@@ -261,7 +254,7 @@ opacity
 		<%-- <c:if test="${!empty loginMember }"> --%>
 			<%-- <button type="button" class="btn btn-primary float-right" id="insertBtn"
 				 onclick="location.href='../board2/insertForm?type=${pagination.boardType}';">글쓰기</button> --%>
-			<a class="btn btn-primary float-right" id="insertBtn" href='#'>글쓰기</a>
+			<a class="btn btn-primary float-right" id="insertBtn" href='${contextPath}/qnaboard/insertForm'>글쓰기</a>
 		<%-- </c:if> --%>
 
 
@@ -328,22 +321,26 @@ opacity
 
 
 		<!-- 검색창 -->
-		<div class="my-5">
+		<div class="row d-flex justify-content-center">
 			<form action="list" method="GET" class="text-center" id="searchForm">
-
-				<!-- 게시판 타입 유지를 위한 태그 -->
-				<input type="hidden" name="type" value="#">
-
-				<select name="sk" class="form-control"
-					style="width: 100px; display: inline-block;">
-					<option value="title">글제목</option>
-					<option value="content">내용</option>
-					<option value="titcont">제목+내용</option>
-					<option value="writer">작성자</option>
-				</select> <input type="text" name="sv" class="form-control"
-					style="width: 25%; display: inline-block;">
-				<button class="form-control btn btn-primary"
-					style="width: 100px; display: inline-block;">검색</button>
+				<div class="input-group mb-3">
+					<select name="sk" class="form-control col-4" id="formKey" ">
+						<option value="title">글제목</option>
+						<option value="content">내용</option>
+						<option value="titcont">제목+내용</option>
+						<option value="writer">작성자</option>
+						<option value="category">카테고리</option>
+					</select>
+					&nbsp;
+					<select name="sc" class="form-control col-4" id="formCategory" style="display:none;">
+						<option value="1">명소 정보</option>
+						<option value="2">시스템</option>
+						<option value="3">기타</option>
+					</select>
+					&nbsp;
+					<input type="text" name="sv" class="form-control col-6">
+					<button class="btn btn-primary">검색</button>
+				</div>
 			</form>
 		</div>
 	</div>
@@ -357,6 +354,7 @@ opacity
 			// 파라미터 중 sk가 있을 경우   ex)  "abc"
 			// 파라미터 중 sk가 없을 경우   ex)  ""
 			var searchValue = "${param.sv}";
+			var searchCategory = "${param.sc}";
 
 			// 검색창 select의 option을 반복 접근
 			$("select[name=sk] > option").each(function(index, item) {
@@ -365,12 +363,36 @@ opacity
 				// content            content
 				if ($(item).val() == searchKey) {
 					$(item).prop("selected", true);
+					
+						if($(item).val()=="category"){
+							$("#formCategory").attr("style","");
+							
+							$("#formCategory > option").each(function(index,item){
+								if($(item).val()==searchCategory){
+									$(item).prop("selected",true);
+								}
+							});
+						}
 				}
 			});
 
 			// 검색어 입력창에 searcValue 값 출력
 			$("input[name=sv]").val(searchValue);
 		})();
+		
+		$(document).ready(function(){
+			
+			$("#formKey").on("change", function(){
+				var element = $("#formKey option:selected").val();
+				if(element == "category"){
+					$("#formCategory").attr("style", "");
+				} else {
+					$("#formCategory").attr("style", "display:none;");
+				}
+			});
+			
+		});
+		
 	</script>
 
 </body>

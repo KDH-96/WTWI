@@ -123,14 +123,14 @@
             }
         }
 
-        li {
+        summary li {
             width: 100%;
             height: 100%;
             float: left;
             list-style: none;
         }
 
-        li a {
+        summary li a {
             color: black;
             font-weight: bold;
         }
@@ -169,14 +169,14 @@
         }
 
         #write-date-area {
-            width: 200px;
+            width: 250px;
             height: 100%;
             float: left;
 
         }
 
         #writer-modify-area {
-            width: 200px;
+            width: 250px;
             height: 100%;
             float: left;
 
@@ -217,19 +217,19 @@
 
             <div id="category-area">
                 <!-- Category -->
-                <h6 style="line-height: 35px;">[말머리]</h6>
+                <h6 style="line-height: 35px;">[${board.qnaCategoryNm}]</h6>
             </div>
 
             <div id="content-title-area">
-                <h6 style="line-height: 35px;">제목</h6>
+                <h6 style="line-height: 35px;">${board.qnaTitle}</h6>
             </div>
 
             <div id="more-area">
                 <details>
                     <summary>더보기</summary>
                     <ul>
-                        <li><a href="#">수정</a></li>
-                        <li><a href="#">삭제</a></li>
+                        <li id="update"><a href="#">수정</a></li>
+                        <li id="delete"><a href="#">삭제</a></li>
                     </ul>
                 </details>
             </div>
@@ -240,13 +240,8 @@
 
             <div id="writer-area">
                 <!-- 회원이 글 쓴 내용 -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                    class="bi bi-person-circle" viewBox="0 0 16 16">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                    <path fill-rule="evenodd"
-                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-                </svg>
-                <i class="bi bi-person-circle" style="line-height: 35px;">작성자</i>
+  
+                <i class="bi bi-person-circle" style="line-height: 35px;">${board.memberNick}</i>
             </div>
 
             <div id="view-count-area" style="display: flex;">
@@ -257,22 +252,42 @@
                     <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                 </svg>
                 &nbsp;
-                <h6 style="line-height: 35px;">조회수</h6>
+                <h6 style="line-height: 35px;">${board.qnaReadCount}</h6>
             </div>
 
             <div id="write-date-area">
-                <h6 style="line-height: 35px;">작성일 :</h6>
+                <fmt:formatDate var="qnaCreateDt" value="${board.qnaCreateDt}" pattern="yyyy-MM-dd"/>
+               	<fmt:formatDate var="qnaModifyDt" value="${board.qnaModifyDt}" pattern="yyyy-MM-dd"/>
+		        <fmt:formatDate var="today" value="<%= new java.util.Date() %>" pattern="yyyy-MM-dd"/>
+		        <c:choose>
+		        	<c:when test="${qnaCreatedt!=today}">
+  		              <h6 style="line-height: 35px;">작성일 : ${qnaCreateDt}</h6>
+		        	</c:when>
+		        	<c:otherwise>
+  		              <h6 style="line-height: 35px;">작성일 : <fmt:formatDate value="${qnaCreateDt}" pattern="yyyy-MM-dd (HH:mm)"/></h6>
+		        	</c:otherwise>
+		        </c:choose>
             </div>
 
             <div id="writer-modify-area">
-                <h6 style="line-height: 35px;">수정일 : </h6>
+	            <c:choose>
+			        	<c:when test="${qnaModifydt!=today}">
+			                <h6 style="line-height: 35px;">수정일 : ${qnaModifyDt}</h6>
+			        	</c:when>
+			        	<c:otherwise>
+			                <h6 style="line-height: 35px;">수정일 : <fmt:formatDate value="${qnaModifyDt}" pattern="yyyy-MM-dd (HH:mm)"/></h6>
+			        	</c:otherwise>
+			        </c:choose>
             </div>
 
             <div id="writer-visible-area">
-                <i class="fas fa-lock" style="line-height: 35px;"></i>
-                &nbsp;
-                &nbsp;
-                <h6 style="line-height: 35px;">공개/비공개</h6>
+                <c:set var="qnaStatus" value="${board.qnaStatus}"/>
+		        	<c:if test="${qnaStatus == 'Y'}">
+		                <span class="bi bi-unlock-fill" style="line-height: 35px; font-weight: bold;">공개</span>
+		        	</c:if>
+		        	<c:if test="${qnaStatus == 'S'}">
+		                <span class="fas fa-lock" style="line-height: 35px;">비공개</span>
+		        	</c:if>
             </div>
 
 
@@ -284,7 +299,7 @@
         <!-- 관리자가 글 쓴 내용  -->
 
         <div id="content-box">
-            <span id="member-content-detail">글쓴 내용</span>
+            <span id="member-content-detail">${board.qnaContent}</span>
             <br>
             <br>
             <br>
@@ -317,7 +332,7 @@
 	
 	
 	<form action="#" method="POST" name="requestForm">
-		<input type="hidden" name="boardNo" value="${board.boardNo}">
+		<input type="hidden" name="qnaNo" value="${board.qnaNo}">
 		<input type="hidden" name="cp" value="${param.cp}">
 	</form>
 	

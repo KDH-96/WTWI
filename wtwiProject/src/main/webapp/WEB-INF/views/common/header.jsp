@@ -116,7 +116,7 @@
                 height: inherit;
             }
             
-            li {
+            .nav li {
                 flex-direction: column;
                 text-align: center;
                 padding : 8px 24px;
@@ -233,7 +233,7 @@
 
                     <li><a class="p-2" href="#">오늘의 날씨</a></li>
                     <li><a class="p-2" href="${contextPath}/freeboard/list">자유게시판</a></li>
-                    <li><a class="p-2" href="inquiry-board-list.html">문의게시판</a></li>
+                    <li><a class="p-2" href="${contextPath}/qnaboard/list">문의게시판</a></li>
             </nav>
         </div>
 
