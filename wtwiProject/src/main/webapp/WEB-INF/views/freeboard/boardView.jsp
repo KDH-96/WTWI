@@ -67,10 +67,8 @@
                 	</c:otherwise>
                 </c:choose>
             </div>
-            <div class="col-md-4">
-                <div class="row mb-2 col-12 free-content">
-                    <p>${board.freeContent}</p>
-                </div>
+            <div class="row mb-2 col-12 free-content">
+                ${board.freeContent}
             </div>
             <div class="col-md-4">
                 <div class="row mb-2 col-12">

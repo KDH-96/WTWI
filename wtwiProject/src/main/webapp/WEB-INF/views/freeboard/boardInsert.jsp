@@ -52,7 +52,7 @@ $(document).ready(function() {
 			['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
 			['color', ['forecolor','color']],
 			['table', ['table']],
-			['para', ['ul', 'ol', 'paragraph']],
+			['para', ['ul', 'ol']],
 			['height', ['height']],
 			['insert',['picture','link']],
 			['view', ['codeview']]
@@ -66,6 +66,10 @@ $(document).ready(function() {
 				}
 			}
 		}
+	});
+	$("#summernote").on("summernote.enter", function(we, e) {
+	     $(this).summernote("pasteHTML", "<br><br>");
+	     e.preventDefault();
 	});
        
 	function uploadFile(file, el){

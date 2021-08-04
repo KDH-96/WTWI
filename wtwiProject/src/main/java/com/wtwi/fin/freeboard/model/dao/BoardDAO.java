@@ -101,7 +101,13 @@ public class BoardDAO {
 	public int insertImages(List<Image> images) {
 		return sqlSession.insert("freeboardMapper.insertImages", images);
 	}
-	
-	
+
+	/** DB에서 24시간보다 이전에 추가된 파일명 조회(9)
+	 * @param standard
+	 * @return dbList
+	 */
+	public List<String> selectDbList(String standard) {
+		return sqlSession.selectList("freeboardMapper.selectDbList", standard);
+	}
 	
 }

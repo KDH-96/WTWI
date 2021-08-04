@@ -101,7 +101,9 @@
             </tbody>
         </table>
         <div class="row d-flex justify-content-end">
-            <a class="btn btn-outline-secondary" href="${contextPath}/freeboard/insertForm">글작성</a>
+        	<c:if test="${!empty loginMember}">
+            	<a class="btn btn-outline-secondary" href="${contextPath}/freeboard/insertForm">글작성</a>
+            </c:if>
         </div>
         <%-- 페이지네이션 --%>
         <c:set var="pageURL" value="list"/>

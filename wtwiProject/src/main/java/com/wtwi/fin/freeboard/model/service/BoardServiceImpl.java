@@ -100,8 +100,11 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int insertBoard(Board board, List<String> imgs, String webPath) {
 		
-		// XSS 방지처리 & 개행문자 처리
-		// .. 추후
+		// XSS 방지처리 -> 추후
+		
+		// 개행문자 처리
+		board.setFreeContent(board.getFreeContent().replaceAll("<p>", ""));
+		board.setFreeContent(board.getFreeContent().replaceAll("</p>", ""));
 		
 		// 8-1) 게시글 삽입하고 게시글 번호 얻어오기
 		int freeNo = dao.insertBoard(board);
@@ -131,8 +134,11 @@ public class BoardServiceImpl implements BoardService {
 		return freeNo;
 	}
 	
-	
-	
+	// DB에서 24시간보다 이전에 추가된 파일명 조회(9)
+	@Override
+	public List<String> selectDbList(String standard) {
+		return dao.selectDbList(standard);
+	}
 
 	// 크로스 사이트 스크립트 방지 처리 메소드
 	public static String replaceParameter(String param) {
