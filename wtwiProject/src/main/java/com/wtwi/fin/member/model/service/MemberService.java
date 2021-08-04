@@ -14,11 +14,16 @@ public interface MemberService {
 	
 	int changePwd(String currentPwd, String newPwd, Member loginMember);
 	
+	int changePwd(Member loginMember);
+	
 	int secession(String currentPwd, Member loginMember);
 
 	Member getSnsEmail(Member snsMember);
 
 	Member snsSignup(Member snsMember);
 
-	int selectPhone(String memberPhone);
+	Member selectPhone(Member member);
+
+	Member searchId(String memberEmail);
+
 } 
