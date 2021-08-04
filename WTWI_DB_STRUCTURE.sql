@@ -805,7 +805,7 @@ CREATE OR REPLACE VIEW FREE_LIST AS
                     GROUP BY FREE_NO) USING(FREE_NO)
 ;
 
------------------------------------------------------------------------------------------------08/03 추가
+-----------------------------------------------------------------------------------------------08/04 추가
 
 -- 문의게시판 view 생성 및 샘플데이터 삽입(도헌)
 
@@ -854,7 +854,7 @@ COMMIT;
 
 
 -- By 지원.
--- 자유게시판 목록 조회를 위한 VIEW + 컬럼추가(MEMBER_NO)
+-- 마이페이지 자유게시판 목록 조회를 위한 VIEW + 컬럼추가(MEMBER_NO)
 -- 아래 구문 실행해주시면 됩니다.
 CREATE OR REPLACE VIEW FREE_LIST AS
     SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, MEMBER_NICK, FREE_CREATE_DT, FREE_READ_COUNT,
@@ -871,3 +871,15 @@ CREATE OR REPLACE VIEW FREE_LIST AS
                     FROM FREE_LIKE
                     GROUP BY FREE_NO) USING(FREE_NO)
 ;
+
+-----------------------------------------------------------------------------------------------08/05 추가
+
+-- By 지원.
+-- 마이페이지 문의게시판 목록 조회를 위한 VIEW + 컬럼추가(MEMBER_NO)
+-- 아래 구문 실행해주시면 됩니다.
+CREATE OR REPLACE VIEW QNA_LIST AS
+    SELECT QNA_NO, QNA_PNO,QNA_CATEGORY_NO, QNA_CATEGORY_NM, QNA_TITLE, QNA_CONTENT, MEMBER_NICK, QNA_CREATE_DT, QNA_READ_COUNT,
+               QNA_STATUS, MEMBER_NO
+    FROM QNA_BOARD
+    JOIN QNA_CATEGORY USING(QNA_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO);
