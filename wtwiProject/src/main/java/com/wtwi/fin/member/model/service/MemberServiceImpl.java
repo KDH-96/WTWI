@@ -87,6 +87,22 @@ public class MemberServiceImpl implements MemberService {
 
 		return result;
 	}
+	
+	// 임시비밀번호 수정 Service
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int changePwd(Member member) {
+		int result = 0;
+		String encPwd = bCryptPasswordEncoder.encode(member.getMemberPw());
+
+		member.setMemberPw(encPwd);
+
+		result = dao.changePassword(member);
+		
+		member.setMemberPw(null);
+		
+		return result;
+	}
 
 	// 회원탈퇴 Service
 	@Transactional(rollbackFor = Exception.class)
@@ -96,11 +112,13 @@ public class MemberServiceImpl implements MemberService {
 		String savePwd = dao.selectPassword(loginMember.getMemberNo());
 
 		int result = 0;
-
-		if (bCryptPasswordEncoder.matches(currentPwd, savePwd)) {
-
-			result = dao.secession(loginMember);
-
+		
+		if(currentPwd == null) {
+			result = dao.secession(loginMember);			
+		} else {			
+			if (bCryptPasswordEncoder.matches(currentPwd, savePwd)) {
+				result = dao.secession(loginMember);
+			}
 		}
 		return result;
 	}
@@ -129,12 +147,25 @@ public class MemberServiceImpl implements MemberService {
 		return member;
 	}
 	
+	// 아이디 찾기
+	@Override
+	public Member searchId(String memberEmail) {
+		// TODO Auto-generated method stub
+		return dao.searchId(memberEmail);
+	}
+
 	// coolSMS 핸드폰 번호 중복 검사
 	@Override
-	public int selectPhone(String memberPhone) {
-		// TODO Auto-generated method stub
-		return dao.selectPhone(memberPhone);
+	public Member selectPhone(Member inputMember) {
+		Member member = dao.selectPhone(inputMember);
+		if(member != null) {
+			member.setMemberPw(null);			
+		}
+		return member;
 	}
+
+
+	
 	
 	
 

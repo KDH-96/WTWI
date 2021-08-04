@@ -215,7 +215,7 @@
 	                swal("인증 실패", "이미 가입되어 있는 번호입니다.", "error");
                 } else{
 	                swal("인증번호 전송 완료", "문자를 확인하고 인증번호를 입력해주세요.", "success");
-					console.log(result);
+
 	                $("#smsCheck").on("click", function(event){
 	                	
 	                    if(result == $("#smsNum").val().trim()){

@@ -107,14 +107,38 @@ public class MemberDAO {
 		return sqlSession.insert("memberMapper.snsSignUp", snsMember);
 
 	}
+	
+	/** 아이디 찾기
+	 * @param memberEmail
+	 * @return member
+	 */
+	public Member searchId(String memberEmail) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("memberMapper.searchId", memberEmail);
+	}
+	
+	/** 비밀번호 찾기 
+	 * @param member
+	 * @return member
+	 */
+	public Member searchPw(Member member) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("memberMapper.searchPw", member);
+	}
+
 
 	/** coolSMS 핸드폰 번호 중복 검사
 	 * @param memberPhone
 	 * @return
 	 */
-	public int selectPhone(String memberPhone) {
+	public Member selectPhone(Member member) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("memberMapper.selectPhone", memberPhone);
+		return sqlSession.selectOne("memberMapper.selectPhone", member);
 	}
+
+
+
+	
+	
 
 }

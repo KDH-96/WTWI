@@ -103,7 +103,7 @@ public class MemberController {
 			model.addAttribute("loginMember", member);
 		}
 		
-		return "redirect:/";
+		return "redirect:/main";
 	}
 
 	@RequestMapping("signUp")
@@ -122,7 +122,7 @@ public class MemberController {
 		} else {
 			swalSetMessage(ra, "error", "회원가입 실패", "문제가 지속될 경우, 대표전화로 문의해주세요.");
 		}
-		return "redirect:/";
+		return "redirect:/main";
 
 	}
 
@@ -174,7 +174,7 @@ public class MemberController {
 
 		if (key == null) {
 			swalSetMessage(ra, "error", "로그인 실패", "문제가 지속될 경우, 대표번호로 문의바랍니다.");
-			return "redirect:/";
+			return "redirect:/main";
 		}
 
 		session.removeAttribute("RSAprivateKey");
@@ -188,7 +188,7 @@ public class MemberController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			swalSetMessage(ra, "error", "로그인 실패", "문제가 지속될 경우, 대표번호로 문의바랍니다.");
-			return "redirect:/";
+			return "redirect:/main";
 		}
 
 		// 로그인 로직 실행
@@ -213,7 +213,7 @@ public class MemberController {
 			ra.addFlashAttribute("text", "아이디 또는 비밀번호가 일치하지 않습니다.");
 		}
 
-		return "redirect:/";
+		return "redirect:/main";
 
 	}
 
@@ -222,31 +222,51 @@ public class MemberController {
 
 		status.setComplete();
 
-		return "redirect:" + referer;
+		return "redirect:/main";
+	}
+	
+	@RequestMapping(value="searchIdForm", method=RequestMethod.GET)
+		public String searchIdForm() {
+		return "member/searchId";
+	}
+	
+	@RequestMapping(value="searchPwForm", method=RequestMethod.GET)
+	public String searchPwForm() {
+	return "member/searchPw";
 	}
 
 	@RequestMapping(value = "myPage", method = RequestMethod.GET)
 	public String myPage() {
-		return "member/myPage";
+		return "myPage/main";
+	}
+	
+	@RequestMapping(value="update", method=RequestMethod.GET)
+	public String update() {
+		return "member/update";
 	}
 
-	@RequestMapping(value = "update", method = RequestMethod.POST)
-	public String update(@ModelAttribute("loginMember") Member loginMember, Member inputMember, String inputEmail,
-			String inputPhone, String inputAddress, RedirectAttributes ra) {
+	@RequestMapping(value = "updateAction", method = RequestMethod.POST)
+	public String updateAction(@ModelAttribute("loginMember") Member loginMember, Member inputMember, String inputEmail, String inputNickname, 
+			String inputPhone, RedirectAttributes ra) {
 
 		inputMember.setMemberNo(loginMember.getMemberNo());
 		inputMember.setMemberEmail(inputEmail);
 		inputMember.setMemberPhone(inputPhone);
-		inputMember.setMemberAddress(inputAddress);
+		inputMember.setMemberNick(inputNickname);
 
 		int result = service.updateMember(inputMember);
 
 		if (result > 0) {
 			swalSetMessage(ra, "success", "내 정보 수정 성공!", null);
+			if(inputEmail != null) {				
+				loginMember.setMemberEmail(inputEmail);
+				loginMember.setMemberPhone(inputPhone);
+			}
+			loginMember.setMemberNick(inputNickname);
 		} else {
 			swalSetMessage(ra, "error", "내 정보 수정 실패", null);
 		}
-		return "redirect:/member/myPage";
+		return "redirect:/myPage/main";
 	}
 
 	public static void swalSetMessage(RedirectAttributes ra, String icon, String title, String text) {
@@ -255,30 +275,7 @@ public class MemberController {
 		ra.addFlashAttribute("text", text);
 	}
 
-	@RequestMapping(value = "updateAction", method = RequestMethod.POST)
-	public String update(@ModelAttribute("loginMember") Member loginMember,
-			@RequestParam("inputEmail") String inputEmail, String inputPhone, String inputAddress, Member inputMember,
-			RedirectAttributes ra) {
 
-		inputMember.setMemberNo(loginMember.getMemberNo());
-		inputMember.setMemberEmail(inputEmail);
-		inputMember.setMemberPhone(inputPhone);
-		inputMember.setMemberAddress(inputAddress);
-
-		int result = service.updateMember(inputMember);
-
-		if (result > 0) {
-			swalSetMessage(ra, "success", "회원정보 수정 성공", null);
-
-			loginMember.setMemberEmail(inputEmail);
-			loginMember.setMemberPhone(inputPhone);
-			loginMember.setMemberAddress(inputAddress);
-		} else {
-			swalSetMessage(ra, "error", "회원정보 수정 실패", null);
-		}
-
-		return "redirect:/member/myPage";
-	}
 
 	@RequestMapping(value = "changePwd", method = RequestMethod.GET)
 	public String changPwd() {
@@ -290,16 +287,13 @@ public class MemberController {
 			@RequestParam("newPwd1") String newPwd, RedirectAttributes ra) {
 
 		int result = service.changePwd(currentPwd, newPwd, loginMember);
-		String path = "redirect:";
-		if (result > 0) {
+		if(result > 0) {
 			swalSetMessage(ra, "success", "비밀번호 수정 성공", null);
-			path += "myPage";
 		} else {
 			swalSetMessage(ra, "error", "비밀번호 수정 실패", null);
-			path += "changePwd";
 		}
-
-		return path;
+		
+		return "redirect:changePwd";
 	}
 
 	@RequestMapping(value = "secession", method = RequestMethod.GET)
@@ -309,7 +303,7 @@ public class MemberController {
 
 	@RequestMapping(value = "secessionAction", method = RequestMethod.POST)
 	public String secession(@ModelAttribute("loginMember") Member loginMember,
-			@RequestParam("currentPwd") String currentPwd, RedirectAttributes ra, SessionStatus status) {
+			@RequestParam(value="currentPwd", required = false) String currentPwd, RedirectAttributes ra, SessionStatus status) {
 
 		int result = service.secession(currentPwd, loginMember);
 
@@ -320,9 +314,21 @@ public class MemberController {
 			path += "/";
 		} else {
 			swalSetMessage(ra, "error", "회원탈퇴를 실패하였습니다.", null);
-			path += "myPage";
+			path += "secession";
 		}
 		return path;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="searchId", method=RequestMethod.POST)
+	public String searchId(String memberEmail) {
+		Member member = service.searchId(memberEmail);
+		System.out.println(member);
+		String memberId = null;
+		if(member != null) {
+			memberId = member.getMemberId();
+		} 
+		return memberId;
 	}
 
 }
