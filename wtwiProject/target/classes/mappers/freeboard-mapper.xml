@@ -148,5 +148,10 @@
 		) I
 	</insert>
 	
+	<!-- DB에서 24시간보다 이전에 추가된 파일명 조회(9) -->
+	<select id="selectDbList" parameterType="string" resultType="string">
+		SELECT FILE_NM FROM FREE_IMAGE
+		WHERE SUBSTR(FILE_NM, 0, 10) <![CDATA[ < ]]> #{standard}
+	</select>
 	
 </mapper>

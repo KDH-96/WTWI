@@ -67,4 +67,10 @@ public interface BoardService {
 	 */
 	int insertBoard(Board board, List<String> imgs, String webPath);
 
+	/** DB에서 24시간보다 이전에 추가된 파일명 조회(9)
+	 * @param standard
+	 * @return dbList
+	 */
+	List<String> selectDbList(String standard);
+
 }
