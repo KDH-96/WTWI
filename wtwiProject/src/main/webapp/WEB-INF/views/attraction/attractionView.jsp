@@ -58,76 +58,97 @@
       	display: inline-block;
       	float : left;
       }
-      
       .my-2{
       	display: inline-block;
       }
       .list-class{
       	display: inline-block;
       }
+      #cute-area-div{
+      	height: 15%;
+      }
+      #attrNm-div{
+      	height: 20%;
+      }
+      #attrVirtual-content{
+      	height: 300px;
+      	border : 1px solid black;
+      }
+      #attr-photo-div{
+      	display: inline-blocl;
+      	float : left;
+      	height: 100%;
+      	width: 50%;
+      }
+      #attr-photo-div > img {
+      }
+      #attr-weatherAddr-div{
+      	height: 100%;
+      	width: 50%;
+      	display: inline-blocl;
+      	float : left;
+      	background-color : green;
+      }
+      #attr-weather-div{
+      	height: 50%;
+      	background-color : pink;
+      }
+      #attr-addr-div{
+      	height : 50%;
+      }
+      #attrInfo-div{
+      	background-color : yellow;
+      	margin-top : 30px;
+      	margin-left : 30px;
+      	margin-right : 30px;
+      }
+      #attrNavi-div{
+      	margin-top : 50px;
+      }
+      #attrReview-div{
+      	margin-top : 50px;
+      }
+      #attrMap-div{
+      	margin-top : 50px;
+      }
+      #btn-div{
+      	margin-top : 50px;
+      }
       /* ------------------------------영역구분선------------------------------ */
    </style>
 </head>
 
 <body>
-
    <jsp:include page="../common/header.jsp" />
+   <!-- ===============================영역구분선=============================== -->
    <!-- 전체 div를 포함하는 영역 -->
-      <!-- ===============================영역구분선=============================== -->
    <div id="contentContainer">
-   
       <div id="contentArea">
-
          <div class="list-wrapper">
-							<table class="table">
-		            <tbody>
-		              <tr>
-		                <th></th>
-		                <td><a id="memberIdA" href="#">id</a></td>
-		                <td>name</td>
-		                <td>nickname</td>
-		                <td>warnning point</td>
-		                <td>Y / S / N</td>
-		                <td>
-		                  <select>
-		                    <option>Y</option>
-		                    <option>S</option>
-		                    <option>N</option>
-		                  </select>
-		                  <button>변경</button>
-		                </td>
-		              </tr>
-		
-		            </tbody>
-		          </table>
+         
+         			<div id="cute-area-div"><br><br>★여행정보★</div>
+         			<div id="attrNm-div"><h2>${attr.attractionNm}</h2></div>
+         			<div id="attrVirtual-content">
+         					<div id="attr-photo-div"><img src=${attr.attractionPhoto}></div>
+         					<div id="attr-weatherAddr-div">
+         							<div id="attr-weather-div">날씨</div>
+         							<div id="attr-addr-div">${attr.attractionAddr}</div>
+         					</div>
+         			</div>
+         			<div id="attrInfo-div">${attr.attractionInfo}</div>
+         			<div id="attrReview-div">최신 리뷰 5개 들어갈 div</div>
+         			<div id="attrMap-div">지도 들어갈 div</div>
+         			<div id="attrNavi-div">혹시모를 div</div>
+         			<div id="btn-div">              
+         					<button class="form-control btn btn-primary"
+              		style="width:100px; display: inline-block; background-color: black; border: black;">뒤로가기</button>
+              </div>
+         		
          </div>
          <!----------------------------------------------------------------------------------------------  content end -->
 
 
          <!-- 검색창 -->
-         <div class="my-2">
-            <form action="#" method="GET" class="text-center" id="searchForm">
-               <div class="container2">
-                  <div class="row">
-                     <div class="col-sm" >
-
-                      <select name="sk" class="form-control" style="width: 200px; display: inline-block; ">
-                        <option value="attrName">명소이름</option>
-                        <option value="attrNo">명소번호</option>
-                     </select>
-
-                     </div>
-                     <div class="col-sm">
-                        <input type="text" name="sv" class="form-control" style="width: 50%; display: inline-block;">
-                     </div>
-                     <div class="col-sm">
-                        <button class="form-control btn btn-primary"
-                        style="width:100px; display: inline-block; background-color: black; border: black;">검색</button>
-                     </div>
-                  </div>
-               </div>
-            </form>
-         </div>
          
       </div><!-- contentarea 끝 -->
    </div>
