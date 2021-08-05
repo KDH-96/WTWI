@@ -39,6 +39,7 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 
 	<div id="map" style="width:100%;height:100vh;">
+	
 
         <!-- =================================== 명소 상세정보 영역 시작 =================================== -->
 
