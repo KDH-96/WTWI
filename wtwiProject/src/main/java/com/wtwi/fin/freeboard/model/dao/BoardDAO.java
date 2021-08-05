@@ -109,5 +109,29 @@ public class BoardDAO {
 	public List<String> selectDbList(String standard) {
 		return sqlSession.selectList("freeboardMapper.selectDbList", standard);
 	}
+
+	/** 게시글 삭제(10)
+	 * @param freeNo
+	 * @return result
+	 */
+	public int deleteBoard(int freeNo) {
+		return sqlSession.update("freeboardMapper.deleteBoard", freeNo);
+	}
+
+	/** 게시글 수정(13-1)
+	 * @param board
+	 * @return result
+	 */
+	public int updateBoard(Board board) {
+		return sqlSession.update("freeboardMapper.updateBoard", board);
+	}
+
+	/** 삭제된 이미지 정보 DB에서 제거(13-3)
+	 * @param deleteImages
+	 * @return 
+	 */
+	public int deleteImages(List<Image> deleteImages) {
+		return sqlSession.delete("freeboardMapper.deleteImages", deleteImages);
+	}
 	
 }

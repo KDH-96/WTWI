@@ -155,4 +155,28 @@
 		WHERE SUBSTR(FILE_NM, 0, 10) <![CDATA[ < ]]> #{standard}
 	</select>
 	
+	<!-- 게시글 삭제(10) -->
+	<update id="deleteBoard" parameterType="_int">
+		UPDATE FREE_BOARD SET
+		FREE_STATUS='N'
+		WHERE FREE_NO = #{freeNo}
+	</update>
+	
+	<!-- 게시글 수정(13-1) -->
+	<update id="updateBoard" parameterType="FreeBoard">
+		UPDATE FREE_BOARD SET
+		FREE_CATEGORY_NO = ${freeCategoryNo}, FREE_TITLE = #{freeTitle}, FREE_CONTENT = #{freeContent}
+		WHERE FREE_NO = #{freeNo}
+	</update>
+	
+	<!-- 삭제된 이미지 정보 DB에서 제거(13-3) -->
+	<delete id="deleteImages" parameterType="list">
+		DELETE FROM FREE_IMAGE
+		WHERE FILE_NM IN (
+		<foreach collection="list" item="i" separator=",">
+			#{i.fileName}
+		</foreach>
+		)
+	</delete>
+	
 </mapper>

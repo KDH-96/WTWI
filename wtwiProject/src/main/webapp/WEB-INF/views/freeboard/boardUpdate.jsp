@@ -13,7 +13,7 @@
 <jsp:include page="../common/header.jsp" />
     <div class="container">
         <h3 class="my-4 font-weight-bold">자유게시판</h3>
-        <form action="insert" method="POST" id="insertForm">
+        <form action="update" method="POST" id="updateForm">
             <div class="row mb-3">
 	            <div class="col-2">
 	                <select class="form-control" id="freeCategory" name="freeCategoryNo">
@@ -23,13 +23,15 @@
 	                </select>
 	            </div>
 	            <div class="col-10">
-	                <input type="text" class="form-control" placeholder="제목을 입력하세요." id="freeTitle" name="freeTitle">
+	                <input type="text" class="form-control" value="${board.freeTitle}" id="freeTitle" name="freeTitle">
 	            </div>
             </div>
             <div class="mb-3">
-                <textarea id="summernote" name="editordata"></textarea>
+                <textarea id="summernote" name="editordata">${board.freeContent}</textarea>
             </div>
             <input type="hidden" name="imgs" id="imgs">
+            <input type="hidden" name="deleteImgs" id="deleteImgs">
+            <input type="hidden" name="freeNo" value="${board.freeNo}">
             <button type="button" class="btn btn-outline-secondary" onclick="">취소</button>
             <button type="submit" class="btn btn-secondary float-right">등록</button>
         </form>
@@ -37,6 +39,7 @@
 </body>
 <script>
 var imgs = [];
+var deleteImgs = [];
 
 $(document).ready(function() {
 	$('#summernote').summernote({
@@ -64,6 +67,11 @@ $(document).ready(function() {
 				for(var i=files.length-1; i>=0; i--){
 					uploadFile(files[i], this);
 				}
+			},
+			
+			onMediaDelete: function(target){
+				//console.log(target[0].src);
+				deleteFile(target[0].src);
 			}
 		}
 	});
@@ -74,7 +82,6 @@ $(document).ready(function() {
 	     $(this).summernote("pasteHTML", "<br><br>");
 	     e.preventDefault();
 	});
-
        
 	function uploadFile(file, el){
 		data = new FormData();
@@ -89,7 +96,7 @@ $(document).ready(function() {
 			processData: false,
            	
 			success: function(fileName) {
-				//console.log(fileName);
+				console.log(fileName);
 				imgs.push(fileName);
 				var image = "${contextPath}/"+fileName;
 				$(el).summernote('editor.insertImage', image, function($image){
@@ -106,8 +113,25 @@ $(document).ready(function() {
 		});
 	}
 	
+	function deleteFile(src){
+		$.ajax({
+			url : "${contextPath}/freeboard/deleteImage",
+			type : "POST",
+			data : {"src" : src},
+			cache: false,
+	        
+			success: function(fileName){
+				deleteImgs.push(fileName);
+			},
+			
+			error: function(e){
+				console.log(e);
+			}
+		});
+	}
+	
 	// 유효성 검사
-	$("#insertForm").on("submit", function(){
+	$("#updateForm").on("submit", function(){
 		if($("#freeTitle").val().trim().length==0){
 			swal({
 				icon:"warning",
@@ -125,7 +149,17 @@ $(document).ready(function() {
 			return false;
 		}
 		$("#imgs").val(imgs);
+		$("#deleteImgs").val(deleteImgs);
 	});
+	
+	// 카테고리 선택
+	const freeCategoryName = "${board.freeCategoryName}";
+	$("#freeCategory > option").each(function(index, item){
+		if($(item).text()==freeCategoryName){
+			$(item).prop("selected", true);
+		}
+	});
+	
 });
 </script>
 </html>
