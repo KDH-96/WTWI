@@ -89,7 +89,7 @@
 		<div class="myPage-postBtnArea">
 			<a href="${contextPath }/myPage/post" class="btn btn-light">자유게시판</a>
 			<a href="${contextPath }/myPage/qnaBoard" class="btn btn-secondary">문의게시판</a>
-			<a href="${contextPath }/myPage/review" class="btn btn-light">후기</a>
+			<a href="${contextPath }/myPage/reviewBoard" class="btn btn-light">명소 후기</a>
 		</div>
 		<div>
 			<table class="table">

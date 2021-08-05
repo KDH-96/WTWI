@@ -80,7 +80,7 @@ $("#nickName").on("input", function(){
         checkObj.name = true;
     }else{
         
-        $("#checkNickName").text("두 글자 이상 5글자 이하 이름을 입력해주세요.").css("color", "red");
+        $("#checkNickName").text("세 글자 이상 5글자 이하 이름을 입력해주세요.").css("color", "red");
         checkObj.name = false;
     }
 

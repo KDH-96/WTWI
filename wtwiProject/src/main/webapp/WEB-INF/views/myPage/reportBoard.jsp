@@ -96,35 +96,28 @@ a:hover {
 	</c:if>
 
 	<main class="myPage-main">
-		<h2>내가 쓴 게시글</h2>
-		<div class="myPage-postBtnArea">
-			<a href="${contextPath }/myPage/post" class="btn btn-secondary">자유게시판</a>
-			<a href="${contextPath }/myPage/qnaBoard" class="btn btn-light">문의게시판</a>
-			<a href="${contextPath }/myPage/reviewBoard" class="btn btn-light">명소 후기</a>
-		</div>
+		<h2>신고 내역</h2>
 		<div>
 			<table class="table">
 				<colgroup>
-					<col width="8%" />
-					<col width="10%" />
-					<col width="55%" />
-					<col width="10%" />
-					<col width="8%" />
-					<col width="8%" />
+					<col width="5%"/>
+                    <col width="13%"/>
+                    <col width="30%"/>
+                    <col width="30%"/>
+                    <col width="13%"/>
 				</colgroup>
 				<thead>
 					<tr>
 						<th scope="col">No</th>
-						<th scope="col">게시판 유형</th>
-						<th scope="col">게시글제목</th>
-						<th scope="col">작성일자</th>
-						<th scope="col">좋아요 수</th>
-						<th scope="col">조회수</th>
+	                    <th scope="col">유형</th>
+	                    <th scope="col">신고제목</th>
+	                    <th scope="col">신고내용</th>
+	                    <th scope="col">신고일자</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:choose>
-						<c:when test="${empty freeBoardList }">
+						<c:when test="${empty reportBoardList }">
 
 							<!-- 작성한 게시글이 없을 때 -->
 							<tr>
@@ -134,21 +127,21 @@ a:hover {
 						</c:when>
 						<c:otherwise>
 
-							<c:forEach items="${freeBoardList }" var="board" varStatus="b">
+							<c:forEach items="${reportBoardList }" var="board" varStatus="b">
 
 								<tr>
 									<!-- 글번호 -->
 									<th scope="row">${board.freeNo}</th>
 
-									<%-- 카테고리 --%>
+									<%-- 유형(게시글/댓글) --%>
 									<td>${board.freeCategoryName}</td>
 
-									<!-- 글 제목 -->
-									<td class="boardTitle"><a
-										href="${contextPath}/freeboard/${board.freeNo}?cp=${pagination.currentPage}">${board.freeTitle}</a>
-										<c:if test="${board.replyCount!=0}">
-											<span>[${board.replyCount}]</span>
-										</c:if></td>
+									<!-- 해당 게시글 -->
+									<td class="boardTitle">
+										<a href="${contextPath}/freeboard/${board.freeNo}?cp=${pagination.currentPage}"><!-- 이동 아이콘 --></a>
+									</td>
+									<%-- 신고 내용 --%>
+									<td>${board.freeCategoryName}</td>
 									<%-- 작성일 --%>
 									<td><fmt:formatDate var="createDate"
 											value="${board.freeCreateDate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
@@ -166,11 +159,6 @@ a:hover {
 											</c:otherwise>
 										</c:choose></td>
 
-									<!-- 좋아요수 -->
-									<td>${board.likeCount}</td>
-
-									<!-- 조회수 -->
-									<td>${board.freeReadCount}</td>
 								</tr>
 
 							</c:forEach>
@@ -251,18 +239,10 @@ a:hover {
 		</div>
 		<!-- 검색창 -->
 		<div class="my-5">
-			<form action="post" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
-				<select class="form-control" id="formCategory" name="sc" >
-                  		<option value="0">전체</option>
-                  		<option value="1">잡담</option>
-                  		<option value="2">추천</option>
-                  		<option value="3">궁금</option>
-                  		<option value="4">같이</option>
-                  		<option value="5">기타</option>
-                  	</select>
+			<form action="chatBoard" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
 				<select class="form-control" name="sk" >
-					<option value="title">글제목</option>
-					<option value="content">내용</option>
+					<option value="title">게시글</option>
+					<option value="reply">댓글</option>
 				</select>
 				<input type="text" id="sv" name="sv" class="form-control" style="width: 25%; display: inline-block;">
 				<button class="form-control btn btn-primary" style="width: 100px; display: inline-block;">검색</button>

@@ -6,6 +6,7 @@ import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.member.model.vo.Pagination;
 import com.wtwi.fin.member.model.vo.Search;
 import com.wtwi.fin.qnaboard.model.vo.QnaBoard;
+import com.wtwi.fin.member.model.vo.Chat;
 import com.wtwi.fin.member.model.vo.Member;
 
 public interface MypageService {
@@ -65,5 +66,32 @@ public interface MypageService {
 	 * @return
 	 */
 	List<QnaBoard> selectSearchQnABoardList(Search search, Pagination pagination);
+
+	/** 1:1 문의내역 페이징 처리
+	 * @param memberNo
+	 * @param pg
+	 * @return
+	 */
+	Pagination getChatPagination(Member member, Pagination pg);
+
+	/**  1:1 문의내역 전체 게시글 목록
+	 * @param pagination
+	 * @return
+	 */
+	List<Chat> selectChatBoardList(Pagination pagination);
+
+	/** 1:1 문의내역 전체 게시글 수 조회(검색)
+	 * @param search
+	 * @param pg
+	 * @return
+	 */
+	Pagination getChatPagination(Search search, Pagination pg);
+
+	/** 1:1 문의내역 전체 게시글 목록(검색)
+	 * @param search
+	 * @param pagination
+	 * @return
+	 */
+	List<Chat> selectSearchChatBoardList(Search search, Pagination pagination);
 
 }
