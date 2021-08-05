@@ -14,7 +14,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>내가 쓴 글 - 후기</title>
+<title>명소 후기</title>
 <style>
  		a {
             text-decoration: none;
@@ -85,11 +85,11 @@
 	</c:if>
 
 	<main class="myPage-main">
-		<h2>내가 쓴 게시글</h2>
+		<h2>명소 후기</h2>
 		<div class="myPage-postBtnArea">
 			<a href="${contextPath }/myPage/post" class="btn btn-light">자유게시판</a>
 			<a href="${contextPath }/myPage/qnaBoard" class="btn btn-light">문의게시판</a>
-			<a href="${contextPath }/myPage/review" class="btn btn-secondary">후기</a>
+			<a href="${contextPath }/myPage/review" class="btn btn-secondary">명소 후기</a>
 		</div>
 		<div>
 			<table class="table">
@@ -126,16 +126,20 @@
 							<c:forEach items="${reviewBoardList }" var="board" varStatus="b">
 							
 								<tr>
-									<!-- 글번호 -->
-									<th scope="row">${board.reviewNo}</th>
+									<!-- 명소이름 -->
+									<th scope="row">
+										<a href="#"> ${board.reviewNo}</a>
+									</th>
 									
-									<%-- 카테고리 --%>
+									<%-- 후기내용 --%>
 									<td>${board.qnaCategoryNm}</td>
 									
-									<!-- 글 제목 -->
-									<td class="boardTitle">
-										<a href="${board.qnaNo}?cp=${pagination.currentPage}${searchStr}">${board.qnaTitle }</a>
-									</td>
+									<!-- 별점 -->
+									<td><!-- 아이콘 --></td>
+									
+									<!-- 추천수 -->
+									<td>${board.good }</td>
+									
 									<%-- 작성일 --%>
 									<td>
 										
@@ -156,15 +160,7 @@
 										
 									</td>
 									
-									<!-- 답변여부 -->
-									<c:choose>
-										<c:when test="${board.qnaNo != board.qnaPno }">
-											<td>답변대기</td>
-										</c:when>
-										<c:otherwise>
-											<td>답변완료</td>										
-										</c:otherwise>
-									</c:choose>
+									
 
 								</tr>
 							

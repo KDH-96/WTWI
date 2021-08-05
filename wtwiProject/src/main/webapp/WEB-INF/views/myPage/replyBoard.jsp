@@ -14,7 +14,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>내가 쓴 글 - 자유게시판</title>
+<title>내가 쓴 댓글</title>
 <style>
 a {
 	text-decoration: none;
@@ -96,62 +96,52 @@ a:hover {
 	</c:if>
 
 	<main class="myPage-main">
-		<h2>내가 쓴 게시글</h2>
-		<div class="myPage-postBtnArea">
-			<a href="${contextPath }/myPage/post" class="btn btn-secondary">자유게시판</a>
-			<a href="${contextPath }/myPage/qnaBoard" class="btn btn-light">문의게시판</a>
-			<a href="${contextPath }/myPage/reviewBoard" class="btn btn-light">명소 후기</a>
-		</div>
+		<h2>내가 쓴 댓글</h2>
+
 		<div>
 			<table class="table">
 				<colgroup>
-					<col width="8%" />
-					<col width="10%" />
-					<col width="55%" />
-					<col width="10%" />
-					<col width="8%" />
-					<col width="8%" />
+					<col width="7%"/>
+                    <col width="40%"/>
+                    <col width="40%"/>
+                    <col width="13%"/>
 				</colgroup>
 				<thead>
 					<tr>
 						<th scope="col">No</th>
-						<th scope="col">게시판 유형</th>
-						<th scope="col">게시글제목</th>
-						<th scope="col">작성일자</th>
-						<th scope="col">좋아요 수</th>
-						<th scope="col">조회수</th>
+	                    <th scope="col">게시글제목</th>
+	                    <th scope="col">댓글 내용</th>
+	                    <th scope="col">작성일자</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:choose>
-						<c:when test="${empty freeBoardList }">
+						<c:when test="${empty replyList }">
 
 							<!-- 작성한 게시글이 없을 때 -->
 							<tr>
-								<td colspan="6">아직 작성한 게시글이 없습니다</td>
+								<td colspan="6">작성한 댓글이 없습니다.</td>
 							</tr>
 
 						</c:when>
 						<c:otherwise>
 
-							<c:forEach items="${freeBoardList }" var="board" varStatus="b">
+							<c:forEach items="${replyList }" var="board" varStatus="b">
 
 								<tr>
 									<!-- 글번호 -->
-									<th scope="row">${board.freeNo}</th>
+									<th scope="row">0</th>
 
-									<%-- 카테고리 --%>
-									<td>${board.freeCategoryName}</td>
+									<%-- 글제목 --%>
+									<td>${board.attractionNm}</td>
 
-									<!-- 글 제목 -->
-									<td class="boardTitle"><a
-										href="${contextPath}/freeboard/${board.freeNo}?cp=${pagination.currentPage}">${board.freeTitle}</a>
-										<c:if test="${board.replyCount!=0}">
-											<span>[${board.replyCount}]</span>
-										</c:if></td>
-									<%-- 작성일 --%>
+									<!-- 댓글 내용 -->
+									<td class="boardTitle">
+										<a href="${contextPath}/?cp=${pagination.currentPage}">${board.chatContent}</a>
+									</td>
+									<%-- 작성일자 --%>
 									<td><fmt:formatDate var="createDate"
-											value="${board.freeCreateDate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
+											value="${board.chatCreateDt}" pattern="yyyy-MM-dd" /> <fmt:formatDate
 											var="today" value="<%=new java.util.Date()%>"
 											pattern="yyyy-MM-dd" /> <c:choose>
 											<%-- 글 작성일이 오늘이 아닐 경우 --%>
@@ -161,16 +151,11 @@ a:hover {
 
 											<%-- 글 작성일이 오늘일 경우 --%>
 											<c:otherwise>
-												<fmt:formatDate value="${board.freeCreateDate}"
+												<fmt:formatDate value="${board.chatCreateDt}"
 													pattern="HH:mm" />
 											</c:otherwise>
 										</c:choose></td>
 
-									<!-- 좋아요수 -->
-									<td>${board.likeCount}</td>
-
-									<!-- 조회수 -->
-									<td>${board.freeReadCount}</td>
 								</tr>
 
 							</c:forEach>
@@ -188,7 +173,7 @@ a:hover {
 			<!-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 -->
 
 
-			<c:set var="pageURL" value="post"></c:set>
+			<c:set var="pageURL" value="chat"></c:set>
 	
 
 			<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage }${searchStr}"></c:set>
@@ -251,19 +236,7 @@ a:hover {
 		</div>
 		<!-- 검색창 -->
 		<div class="my-5">
-			<form action="post" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
-				<select class="form-control" id="formCategory" name="sc" >
-                  		<option value="0">전체</option>
-                  		<option value="1">잡담</option>
-                  		<option value="2">추천</option>
-                  		<option value="3">궁금</option>
-                  		<option value="4">같이</option>
-                  		<option value="5">기타</option>
-                  	</select>
-				<select class="form-control" name="sk" >
-					<option value="title">글제목</option>
-					<option value="content">내용</option>
-				</select>
+			<form action="chat" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
 				<input type="text" id="sv" name="sv" class="form-control" style="width: 25%; display: inline-block;">
 				<button class="form-control btn btn-primary" style="width: 100px; display: inline-block;">검색</button>
 			</form>
@@ -273,28 +246,7 @@ a:hover {
 	<script>
 		// 검색 내용이 있을 경우 검색창에 해당 내용을 작성해두는 기능
 		(function(){
-			var searchCategory = "${param.sc}";
-			var searchKey = "${param.sk}"; 
 			var searchValue = "${param.sv}";
-			
-			// 검색창 select의 option을 반복 접근
-			$("select[name=sc] > option").each(function(index, item){
-				// index : 현재 접근중인 요소의 인덱스
-				// item : 현재 접근중인 요소
-							// content            content
-				if( $(item).val() == searchCategory  ){
-					$(item).prop("selected", true);
-				}
-			});		
-			
-			$("select[name=sk] > option").each(function(index, item){
-				// index : 현재 접근중인 요소의 인덱스
-				// item : 현재 접근중인 요소
-							// content            content
-				if( $(item).val() == searchKey  ){
-					$(item).prop("selected", true);
-				}
-			});		
 			
 			// 검색어 입력창에 searcValue 값 출력
 			$("input[name=sv]").val(searchValue);

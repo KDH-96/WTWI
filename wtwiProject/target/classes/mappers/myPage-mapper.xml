@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="myPageMapper">
-  <resultMap type="MyPagePagination" id="pg_rm">
+	<resultMap type="MyPagePagination" id="pg_rm">
 		<result property="listCount" column="CNT" />
 	</resultMap>
-	
-	
+
+
 	<!-- 자유게시판 -->
 	<resultMap type="FreeBoard" id="free_rm">
 		<id property="freeNo" column="FREE_NO" />
@@ -20,8 +20,8 @@
 		<result property="likeCount" column="LIKE_COUNT" />
 		<result property="replyCount" column="REPLY_COUNT" />
 	</resultMap>
-	
-	<!-- 문의게시판  -->
+
+	<!-- 문의게시판 -->
 	<resultMap type="QnaBoard" id="qna_rm">
 		<id property="qnaNo" column="QNA_NO" />
 
@@ -38,24 +38,38 @@
 		<result property="memberNick" column="MEMBER_NICK" />
 
 	</resultMap>
-	
-	
-	
-	
+
+	<!-- 1:1 문의내역 -->
+	<resultMap type="Chat" id="chat_rm">
+		<id property="chatNo" column="CHAT_NO" />
+
+		<result property="chatContent" column="CHAT_CONTENT" />
+		<result property="chatCreateDt" column="CHAT_CREATE_DT" />
+		<result property="chatReadYn" column="CHAT_READ_YN" />
+		<result property="chatRoomNo" column="CHAT_ROOM_NO" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="attractionNm" column="ATTRACTION_NM" />
+	</resultMap>
+
+
 	<!-- 자유게시판 -->
 	<!-- 자유게시판 게시글 수 조회 -->
-	<select id="getFreeListCount" parameterType="Member" resultMap="pg_rm">
+	<select id="getFreeListCount" parameterType="Member"
+		resultMap="pg_rm">
 		SELECT
 		COUNT(*) CNT FROM FREE_LIST
-		WHERE MEMBER_NO = #{memberNo}
+		WHERE MEMBER_NO =
+		#{memberNo}
 		AND
 		FREE_STATUS = 'Y'
 	</select>
 	<!-- 자유게시판 게시글 수 조회(검색) -->
-	<select id="getSearchFreeListCount" parameterType="MyPageSearch" resultMap="pg_rm">
+	<select id="getSearchFreeListCount" parameterType="MyPageSearch"
+		resultMap="pg_rm">
 		SELECT COUNT(*) CNT FROM FREE_LIST
 		WHERE MEMBER_NO = #{memberNo}
-		AND FREE_STATUS = 'Y'
+		AND
+		FREE_STATUS = 'Y'
 		<if test="sv != ''">
 			AND
 			<bind name="val" value="'%' + sv + '%'" />
@@ -76,20 +90,23 @@
 	</select>
 
 	<!-- 자유게시판 게시글 목록 조회 -->
-	<select id="selectFreeBoardList" parameterType="Member" resultMap="free_rm">
+	<select id="selectFreeBoardList" parameterType="Member"
+		resultMap="free_rm">
 		SELECT * FROM
 		FREE_LIST
 		WHERE FREE_STATUS = 'Y'
-		AND MEMBER_NO = 
+		AND MEMBER_NO =
 		#{memberNo}
 		ORDER BY FREE_NO DESC
 	</select>
 	<!-- 자유게시판 게시글 목록 조회(검색) -->
-	<select id="selectSearchFreeBoardList" parameterType="MyPageSearch" resultMap="free_rm">
+	<select id="selectSearchFreeBoardList"
+		parameterType="MyPageSearch" resultMap="free_rm">
 		SELECT * FROM
 		FREE_LIST
 		WHERE FREE_STATUS = 'Y'
-		AND MEMBER_NO = #{memberNo}
+		AND MEMBER_NO =
+		#{memberNo}
 		<if test="sv != ''">
 			AND
 			<bind name="val" value="'%' + sv + '%'" />
@@ -109,25 +126,28 @@
 		</if>
 		ORDER BY FREE_NO DESC
 	</select>
-	
-	
-	
-	
-	
-	<!-- 문의게시판 -->
+
+
+
+
+
 	<!-- 문의게시판 -->
 	<!-- 문의게시판 게시글 수 조회 -->
-	<select id="getQnAListCount" parameterType="Member" resultMap="pg_rm">
+	<select id="getQnAListCount" parameterType="Member"
+		resultMap="pg_rm">
 		SELECT
 		COUNT(*) CNT FROM QNA_LIST
-		WHERE MEMBER_NO = #{memberNo}
+		WHERE MEMBER_NO =
+		#{memberNo}
 		AND QNA_STATUS IN('Y', 'S')
 	</select>
 	<!-- 문의게시판 게시글 수 조회(검색) -->
-	<select id="getSearchQnAListCount" parameterType="MyPageSearch" resultMap="pg_rm">
+	<select id="getSearchQnAListCount" parameterType="MyPageSearch"
+		resultMap="pg_rm">
 		SELECT COUNT(*) CNT FROM QNA_LIST
 		WHERE MEMBER_NO = #{memberNo}
-		AND QNA_STATUS IN('Y', 'S')
+		AND
+		QNA_STATUS IN('Y', 'S')
 		<if test="sv != ''">
 			AND
 			<bind name="val" value="'%' + sv + '%'" />
@@ -148,20 +168,24 @@
 	</select>
 
 	<!-- 문의게시판 게시글 목록 조회 -->
-	<select id="selectQnABoardList" parameterType="Member" resultMap="qna_rm">
+	<select id="selectQnABoardList" parameterType="Member"
+		resultMap="qna_rm">
+		SELECT * FROM
+		QNA_LIST
+		WHERE QNA_STATUS IN('Y', 'S')
+		AND
+		MEMBER_NO =
+		#{memberNo}
+		ORDER BY QNA_NO DESC
+	</select>
+	<!-- 문의게시판 게시글 목록 조회(검색) -->
+	<select id="selectSearchQnABoardList"
+		parameterType="MyPageSearch" resultMap="qna_rm">
 		SELECT * FROM
 		QNA_LIST
 		WHERE QNA_STATUS IN('Y', 'S')
 		AND MEMBER_NO =
 		#{memberNo}
-		ORDER BY QNA_NO DESC
-	</select>
-	<!-- 문의게시판 게시글 목록 조회(검색) -->
-	<select id="selectSearchQnABoardList" parameterType="MyPageSearch" resultMap="qna_rm">
-		SELECT * FROM
-		QNA_LIST
-		WHERE QNA_STATUS IN('Y', 'S')
-		AND MEMBER_NO = #{memberNo}
 		<if test="sv != ''">
 			AND
 			<bind name="val" value="'%' + sv + '%'" />
@@ -181,4 +205,48 @@
 		</if>
 		ORDER BY QNA_NO DESC
 	</select>
+
+
+
+	<!-- 1:1문의내역 -->
+	<!-- 1:1문의내역 수 조회 -->
+	<select id="getChatListCount" parameterType="Member"
+		resultMap="pg_rm">
+		SELECT COUNT(*) CNT FROM
+		CHAT_ROOM
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	<!-- 1:1문의내역 조회(검색) -->
+	<select id="selectSearchChatBoardList" parameterType="MyPageSearch" resultMap="chat_rm">
+		SELECT CHAT_NO, A.CHAT_ROOM_NO, CHAT_CONTENT,
+		CHAT_CREATE_DT, CHAT_READ_YN,
+		(SELECT ATTRACTION_NM FROM CHAT_MANAGER_LIST B WHERE B.CHAT_ROOM_NO =
+		A.CHAT_ROOM_NO
+		<if test="sv != ''">
+			<bind name="val" value="'%' + sv + '%'" />
+			AND ATTRACTION_NM LIKE #{val}
+		</if>
+		) ATTRACTION_NM FROM
+		(SELECT MAX(CHAT_NO) AS CHAT_NO, CHAT_ROOM_NO
+		FROM CHAT_MESSAGE
+		WHERE CHAT_ROOM_NO IN (SELECT DISTINCT CHAT_ROOM_NO FROM CHAT_ROOM
+		WHERE MEMBER_NO = #{memberNo})
+		GROUP BY CHAT_ROOM_NO) A
+		JOIN CHAT_MESSAGE USING(CHAT_NO)
+	</select>
+
+	<!-- 1:1문의내역 목록 조회 -->
+	<select id="selectChatBoardList" parameterType="Member" resultMap="chat_rm">
+		SELECT CHAT_NO, A.CHAT_ROOM_NO, CHAT_CONTENT,
+		CHAT_CREATE_DT, CHAT_READ_YN,
+		(SELECT ATTRACTION_NM FROM CHAT_MANAGER_LIST B WHERE B.CHAT_ROOM_NO =
+		A.CHAT_ROOM_NO) ATTRACTION_NM FROM
+		(SELECT MAX(CHAT_NO) AS CHAT_NO, CHAT_ROOM_NO
+		FROM CHAT_MESSAGE
+		WHERE CHAT_ROOM_NO IN (SELECT DISTINCT CHAT_ROOM_NO FROM CHAT_ROOM
+		WHERE MEMBER_NO = #{memberNo})
+		GROUP BY CHAT_ROOM_NO) A
+		JOIN CHAT_MESSAGE USING(CHAT_NO)
+	</select>
+	
 </mapper>
