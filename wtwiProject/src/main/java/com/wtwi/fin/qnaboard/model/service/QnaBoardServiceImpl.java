@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wtwi.fin.qnaboard.model.dao.QnaBoardDAO;
 import com.wtwi.fin.qnaboard.model.vo.Pagination;
 import com.wtwi.fin.qnaboard.model.vo.QnaBoard;
+import com.wtwi.fin.qnaboard.model.vo.QnaCategory;
+import com.wtwi.fin.qnaboard.model.vo.Search;
 
 @Service
 public class QnaBoardServiceImpl implements QnaBoardService{
@@ -24,9 +27,75 @@ public class QnaBoardServiceImpl implements QnaBoardService{
 		return new Pagination(pg.getCurrentPage(),selectPg.getListCount());
 	}
 
+	// 전체 게시글 수 조회 (검색)
+	@Override
+	public Pagination getPagination(Search search, Pagination pg) {
+		
+		Pagination selectPg = dao.getSearchListCount(search);
+		return new Pagination(pg.getCurrentPage(),selectPg.getListCount());
+	}
+
 	// 전체 게시글 수 + 게시판 이름 조회
 	@Override
 	public List<QnaBoard> selectBoardList(Pagination pagination) {
 		return dao.selectBoardList(pagination);
 	}
+
+	// 전체 게시글 수 + 게시판 이름 조회(검색)
+	@Override
+	public List<QnaBoard> selectBoardList(Search search, Pagination pagination) {
+		return dao.selectSearchBoardList(search,pagination);
+	}
+
+	// 게시글 상세 조회
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public QnaBoard selectqnaBoard(int qnaNo) {
+		
+		QnaBoard qnaBoard = dao.selectBoard(qnaNo);
+		
+		// 게시글 조회수 증가 update
+		if(qnaBoard != null) {
+			dao.increaseReadCount(qnaNo);
+			qnaBoard.setQnaReadCount(qnaBoard.getQnaReadCount()+1);
+		}
+		return qnaBoard;
+	}
+
+	// 카테고리 조회
+	@Override
+	public List<QnaCategory> selectCategory() {
+		return dao.selectCategory();
+	}
+
+	// 게시글 삽입
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int insertBoard(QnaBoard board) {
+		// 크로스 사이트 방지 + 개행문자 처리
+		board.setQnaTitle(replaceParameter(board.getQnaTitle()));
+		board.setQnaContent(replaceParameter(board.getQnaContent()));
+		
+		board.setQnaContent(board.getQnaContent().replaceAll("(\r\n|\r|\n|\n\r)", "<br>"));
+		
+		int boardNo = dao.insertBoard(board);
+		
+		return boardNo;
+	}
+	
+	// 크로스 사이트 스크립트 방지 처리 메소드
+	public static String replaceParameter(String param) {
+		String result = param;
+		if (param != null) {
+			result = result.replaceAll("&", "&amp;");
+			result = result.replaceAll("<", "&lt;");
+			result = result.replaceAll(">", "&gt;");
+			result = result.replaceAll("\"", "&quot;");
+		}
+
+		return result;
+	}
+	
+	
+	
 }

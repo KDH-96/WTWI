@@ -22,13 +22,6 @@
         .divide{
             border-left: 1px solid rgb(222, 226, 230);
         }
-        .free-reply{
-            width: 1200px;
-            border-bottom: 1px solid rgb(222, 226, 230);
-        }
-        .free-reply-date{
-            font-size: 12px;
-        }
     </style>
 </head>
 <body>
@@ -40,37 +33,48 @@
                 <div class="badge badge-dark free-category col-1">${board.freeCategoryName}</div>
                 <div class="col-10">${board.freeTitle}</div>
                 <div class="free-menu col-1">
-                    <a href="#">
-                    	<i class="bi bi-three-dots"></i>
-                    </a>
+                	<c:if test="${!empty loginMember }">
+	                    <a class="btn dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                    	<i class="bi bi-three-dots"></i>
+	                    </a>
+                    </c:if>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenu">
+						<c:choose>
+							<c:when test="${board.memberNo == loginMember.memberNo }">
+								<button class="dropdown-item" type="button">수정</button>
+								<button class="dropdown-item" type="button">삭제</button>
+							</c:when>
+							<c:otherwise>
+								<button class="dropdown-item" type="button">신고</button>
+							</c:otherwise>
+						</c:choose>
+					</div>
                 </div>
             </div>
             <div class="row mb-4 col-12 free-info2">
-                <span class="col-2">작성자 ${board.memberNick}</span>
-                <span class="col-2 divide">조회수 ${board.freeReadCount}</span>
+                <span class="col-2"><i class="bi bi-person-circle"> </i> ${board.memberNick}</span>
+                <span class="col-2 divide"><i class="bi bi-eye"> </i> ${board.freeReadCount}</span>
                	<fmt:formatDate var="createDate" value="${board.freeCreateDate}" pattern="yyyy-MM-dd"/>
                	<fmt:formatDate var="modifyDate" value="${board.freeModifyDate}" pattern="yyyy-MM-dd"/>
 		        <fmt:formatDate var="today" value="<%= new java.util.Date() %>" pattern="yyyy-MM-dd"/>
                	<c:choose>
-               		<c:when test="${createDate!=today}"><span class="col-2 divide">작성일 ${createDate}</span></c:when>
-               		<c:otherwise><span class="col-2 divide">작성일 <fmt:formatDate value="${board.freeCreateDate}" pattern="HH:mm"/></span></c:otherwise>
+               		<c:when test="${createDate!=today}"><span class="col-2 divide">작성일  ${createDate}</span></c:when>
+               		<c:otherwise><span class="col-2 divide">작성일  <fmt:formatDate value="${board.freeCreateDate}" pattern="HH:mm"/></span></c:otherwise>
                	</c:choose>
                 <c:choose>
                 	<c:when test="${createDate!=modifyDate}">
 		               	<c:choose>
-		               		<c:when test="${modifyDate!=today}"><span class="col-2 divide">수정일 ${modifyDate}</span></c:when>
-		               		<c:otherwise><span class="col-2 divide">수정일 <fmt:formatDate value="${board.freeModifyDate}" pattern="HH:mm"/></span></c:otherwise>
+		               		<c:when test="${modifyDate!=today}"><span class="col-2 divide">수정일  ${modifyDate}</span></c:when>
+		               		<c:otherwise><span class="col-2 divide">수정일  <fmt:formatDate value="${board.freeModifyDate}" pattern="HH:mm"/></span></c:otherwise>
 		               	</c:choose>
                 	</c:when>
                 	<c:otherwise>
-                		<span class="col-2 divide">수정일 -</span>
+                		<span class="col-2 divide">수정일  -</span>
                 	</c:otherwise>
                 </c:choose>
             </div>
-            <div class="col-md-4">
-                <div class="row mb-2 col-12 free-content">
-                    <p>${board.freeContent}</p>
-                </div>
+            <div class="row mb-2 col-12 free-content">
+                <p class="w-100">${board.freeContent}</p>
             </div>
             <div class="col-md-4">
                 <div class="row mb-2 col-12">
@@ -85,27 +89,12 @@
                 </div>
             </div>
         </div>
-        <div class="free-reply mt-4">
-            <div class="row mb-2 col-12 free-reply-content">
-                <div class="col-1">
-                    <div class="row-6">{닉네임}</div>
-                    <div class="row-6 free-reply-date">{작성일}</div>
-                </div>
-                <div class="col-10">
-                    <p>{댓글 내용}</p>
-                </div>
-                <div class="free-menu col-1">
-                    <a href="#">
-                    	<i class="bi bi-three-dots"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="input-group mt-4 mb-2 col-12 free-new-reply">
-                <textarea class="form-control" rows="3"></textarea>
-                <button class="btn btn-outline-secondary" onclick="">작성</button>
-            </div>
-        </div>
+		<jsp:include page="../freeboard/reply.jsp" />
         <button class="btn btn-outline-secondary mt-2" onclick="">이전 목록</button>
     </div>
+<!-- footer include -->
+<script>
+
+</script>
 </body>
 </html>

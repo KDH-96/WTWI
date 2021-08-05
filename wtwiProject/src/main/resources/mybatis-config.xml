@@ -22,10 +22,13 @@
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaBoard" alias="QnaBoard" />
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaCategory" alias="QnaCategory" />
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.Pagination" alias="QnaPagination" />
+		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.Search" alias="QnaSearch" />
 
 
 		
 		<typeAlias type="com.wtwi.fin.member.model.vo.Member" alias="Member" /> 
+		<typeAlias type="com.wtwi.fin.member.model.vo.Pagination" alias="MyPagePagination" />
+		<typeAlias type="com.wtwi.fin.member.model.vo.Search" alias="MyPageSearch" />
     
     
     
@@ -42,7 +45,8 @@
     
     
 
-		<mapper resource="/mappers/member-mapper.xml"></mapper>
+		<mapper resource="/mappers/member-mapper.xml"/>
+		<mapper resource="/mappers/myPage-mapper.xml"/>
     
     
 

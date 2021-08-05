@@ -29,6 +29,7 @@
 		<result property="freeCategoryName" column="FREE_CATEGORY_NM"/>
 		<result property="freeTitle" column="FREE_TITLE"/>
 		<result property="memberNick" column="MEMBER_NICK"/>
+		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="freeReadCount" column="FREE_READ_COUNT"/>
 		<result property="freeCreateDate" column="FREE_CREATE_DT"/>
 		<result property="freeModifyDate" column="FREE_MODIFY_DT"/>
@@ -37,7 +38,7 @@
 		<result property="replyCount" column="REPLY_COUNT"/>
 		
 		<!-- 게시글 첨부 이미지 정보 -->
-		<collection property="atList" column="FREE_NO" javaType="java.util.ArrayList" ofType="Image" select="selectImage"/>
+		<collection property="images" column="FREE_NO" javaType="java.util.ArrayList" ofType="Image" select="selectImage"/>
 	</resultMap>
 	
 	<!-- 전체 게시글 수 조회(1) -->
@@ -127,7 +128,31 @@
 			</choose>
 		</if>
 		ORDER BY FREE_NO DESC
-	</select>	
+	</select>
 	
+	<!-- 게시글 삽입(8-1) -->
+	<insert id="insertBoard" parameterType="FreeBoard" useGeneratedKeys="true">
+		<selectKey keyProperty="freeNo" resultType="_int" order="BEFORE">
+			SELECT SEQ_FRNO.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO FREE_BOARD VALUES
+		(#{freeNo}, #{freeTitle}, #{freeContent}, DEFAULT, DEFAULT, DEFAULT, DEFAULT, #{memberNo}, #{freeCategoryNo})
+	</insert>
+	
+	<!-- 이미지 파일 정보 삽입(8-2) -->
+	<insert id="insertImages" parameterType="list">
+		INSERT INTO FREE_IMAGE
+		SELECT SEQ_FR_INO.NEXTVAL, I.* FROM(
+			<foreach collection="list" item="i" separator="UNION ALL">
+				SELECT #{i.fileName} FILE_NM, #{i.filePath} FILE_PATH, #{i.freeNo} FREE_NO FROM DUAL
+			</foreach>
+		) I
+	</insert>
+	
+	<!-- DB에서 24시간보다 이전에 추가된 파일명 조회(9) -->
+	<select id="selectDbList" parameterType="string" resultType="string">
+		SELECT FILE_NM FROM FREE_IMAGE
+		WHERE SUBSTR(FILE_NM, 0, 10) <![CDATA[ < ]]> #{standard}
+	</select>
 	
 </mapper>

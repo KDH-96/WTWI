@@ -2,6 +2,8 @@ package com.wtwi.fin.freeboard.model.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Category;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
@@ -48,5 +50,27 @@ public interface BoardService {
 	 * @return boardList
 	 */
 	List<Board> selectBoardList(Search search, Pagination pagination);
+
+	/** 이미지 파일을 서버에 저장(7)
+	 * @param file
+	 * @param webPath
+	 * @param savePath
+	 * @return fileName
+	 */
+	String uploadFile(MultipartFile file, String webPath, String savePath);
+
+	/** 게시글 삽입(8)
+	 * @param board
+	 * @param imgs
+	 * @param webPath
+	 * @return
+	 */
+	int insertBoard(Board board, List<String> imgs, String webPath);
+
+	/** DB에서 24시간보다 이전에 추가된 파일명 조회(9)
+	 * @param standard
+	 * @return dbList
+	 */
+	List<String> selectDbList(String standard);
 
 }

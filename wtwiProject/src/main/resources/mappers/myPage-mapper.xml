@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="myPageMapper">
+  <resultMap type="MyPagePagination" id="pg_rm">
+		<result property="listCount" column="CNT" />
+	</resultMap>
+	
+	
+	<!-- 자유게시판 -->
+	<resultMap type="FreeBoard" id="free_rm">
+		<id property="freeNo" column="FREE_NO" />
+
+		<result property="freeCategoryName" column="FREE_CATEGORY_NM" />
+		<result property="freeTitle" column="FREE_TITLE" />
+		<result property="memberNick" column="MEMBER_NICK" />
+		<result property="freeReadCount" column="FREE_READ_COUNT" />
+		<result property="freeCreateDate" column="FREE_CREATE_DT" />
+		<result property="freeModifyDate" column="FREE_MODIFY_DT" />
+		<result property="freeContent" column="FREE_CONTENT" />
+		<result property="likeCount" column="LIKE_COUNT" />
+		<result property="replyCount" column="REPLY_COUNT" />
+	</resultMap>
+	
+	<!-- 문의게시판  -->
+	<resultMap type="QnaBoard" id="qna_rm">
+		<id property="qnaNo" column="QNA_NO" />
+
+		<result property="qnaPno" column="QNA_PNO" />
+		<result property="qnaTitle" column="QNA_TITLE" />
+		<result property="qnaContent" column="QNA_CONTENT" />
+		<result property="qnaReadCount" column="QNA_READ_COUNT" />
+		<result property="qnaCreateDt" column="QNA_CREATE_DT" />
+		<result property="qnaModifyDt" column="QNA_MODIFY_DT" />
+		<result property="qnaStatus" column="QNA_STATUS" />
+		<result property="qnaCategoryNo" column="QNA_CATEGORY_NO" />
+		<result property="qnaCategoryNm" column="QNA_CATEGORY_NM" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="memberNick" column="MEMBER_NICK" />
+
+	</resultMap>
+	
+	
+	
+	
+	<!-- 자유게시판 -->
+	<!-- 자유게시판 게시글 수 조회 -->
+	<select id="getFreeListCount" parameterType="Member" resultMap="pg_rm">
+		SELECT
+		COUNT(*) CNT FROM FREE_LIST
+		WHERE MEMBER_NO = #{memberNo}
+		AND
+		FREE_STATUS = 'Y'
+	</select>
+	<!-- 자유게시판 게시글 수 조회(검색) -->
+	<select id="getSearchFreeListCount" parameterType="MyPageSearch" resultMap="pg_rm">
+		SELECT COUNT(*) CNT FROM FREE_LIST
+		WHERE MEMBER_NO = #{memberNo}
+		AND FREE_STATUS = 'Y'
+		<if test="sv != ''">
+			AND
+			<bind name="val" value="'%' + sv + '%'" />
+			<!-- sk에 따라서 조건절을 선택함 -->
+			<choose>
+				<when test="sk == 'title'">
+					FREE_TITLE LIKE #{val}
+				</when>
+				<when test="sk == 'content'">
+					FREE_CONTENT LIKE #{val}
+				</when>
+			</choose>
+			<if test="sc != 0">
+				AND FREE_CATEGORY_NO = ${sc}
+			</if>
+
+		</if>
+	</select>
+
+	<!-- 자유게시판 게시글 목록 조회 -->
+	<select id="selectFreeBoardList" parameterType="Member" resultMap="free_rm">
+		SELECT * FROM
+		FREE_LIST
+		WHERE FREE_STATUS = 'Y'
+		AND MEMBER_NO = 
+		#{memberNo}
+		ORDER BY FREE_NO DESC
+	</select>
+	<!-- 자유게시판 게시글 목록 조회(검색) -->
+	<select id="selectSearchFreeBoardList" parameterType="MyPageSearch" resultMap="free_rm">
+		SELECT * FROM
+		FREE_LIST
+		WHERE FREE_STATUS = 'Y'
+		AND MEMBER_NO = #{memberNo}
+		<if test="sv != ''">
+			AND
+			<bind name="val" value="'%' + sv + '%'" />
+			<!-- sk에 따라서 조건절을 선택함 -->
+			<choose>
+				<when test="sk == 'title'">
+					FREE_TITLE LIKE #{val}
+				</when>
+				<when test="sk == 'content'">
+					FREE_CONTENT LIKE #{val}
+				</when>
+			</choose>
+			<if test="sc != 0">
+				AND FREE_CATEGORY_NO = ${sc}
+			</if>
+
+		</if>
+		ORDER BY FREE_NO DESC
+	</select>
+	
+	
+	
+	
+	
+	<!-- 문의게시판 -->
+	<!-- 문의게시판 -->
+	<!-- 문의게시판 게시글 수 조회 -->
+	<select id="getQnAListCount" parameterType="Member" resultMap="pg_rm">
+		SELECT
+		COUNT(*) CNT FROM QNA_LIST
+		WHERE MEMBER_NO = #{memberNo}
+		AND QNA_STATUS IN('Y', 'S')
+	</select>
+	<!-- 문의게시판 게시글 수 조회(검색) -->
+	<select id="getSearchQnAListCount" parameterType="MyPageSearch" resultMap="pg_rm">
+		SELECT COUNT(*) CNT FROM QNA_LIST
+		WHERE MEMBER_NO = #{memberNo}
+		AND QNA_STATUS IN('Y', 'S')
+		<if test="sv != ''">
+			AND
+			<bind name="val" value="'%' + sv + '%'" />
+			<!-- sk에 따라서 조건절을 선택함 -->
+			<choose>
+				<when test="sk == 'title'">
+					QNA_TITLE LIKE #{val}
+				</when>
+				<when test="sk == 'content'">
+					QNA_CONTENT LIKE #{val}
+				</when>
+			</choose>
+			<if test="sc != 0">
+				AND QNA_CATEGORY_NO = ${sc}
+			</if>
+
+		</if>
+	</select>
+
+	<!-- 문의게시판 게시글 목록 조회 -->
+	<select id="selectQnABoardList" parameterType="Member" resultMap="qna_rm">
+		SELECT * FROM
+		QNA_LIST
+		WHERE QNA_STATUS IN('Y', 'S')
+		AND MEMBER_NO =
+		#{memberNo}
+		ORDER BY QNA_NO DESC
+	</select>
+	<!-- 문의게시판 게시글 목록 조회(검색) -->
+	<select id="selectSearchQnABoardList" parameterType="MyPageSearch" resultMap="qna_rm">
+		SELECT * FROM
+		QNA_LIST
+		WHERE QNA_STATUS IN('Y', 'S')
+		AND MEMBER_NO = #{memberNo}
+		<if test="sv != ''">
+			AND
+			<bind name="val" value="'%' + sv + '%'" />
+			<!-- sk에 따라서 조건절을 선택함 -->
+			<choose>
+				<when test="sk == 'title'">
+					QNA_TITLE LIKE #{val}
+				</when>
+				<when test="sk == 'content'">
+					QNA_CONTENT LIKE #{val}
+				</when>
+			</choose>
+			<if test="sc != 0">
+				AND QNA_CATEGORY_NO = ${sc}
+			</if>
+
+		</if>
+		ORDER BY QNA_NO DESC
+	</select>
+</mapper>

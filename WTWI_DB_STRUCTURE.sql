@@ -759,22 +759,7 @@ COMMIT;
 -----------------------------------------------------------------------------------------------08/02 추가
 
 -- 자유게시판 상세 조회를 위한 VIEW
-CREATE OR REPLACE VIEW FREE_DETAIL AS
-    SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, 
-               MEMBER_NICK, FREE_READ_COUNT, FREE_CREATE_DT, FREE_MODIFY_DT,
-               FREE_CONTENT,
-               NVL(LIKE_COUNT, 0) LIKE_COUNT, NVL(REPLY_COUNT, 0) REPLY_COUNT, 
-               FREE_STATUS
-    FROM FREE_BOARD
-    JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
-    JOIN MEMBER USING(MEMBER_NO)
-    LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
-                    FROM FREE_REPLY
-                    GROUP BY FREE_NO) USING(FREE_NO)
-    LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
-                    FROM FREE_LIKE
-                    GROUP BY FREE_NO) USING(FREE_NO)
-;
+--
 
 -----------------------------------------------------------------------------------------------08/03 추가
 -- By 지원.
@@ -789,11 +774,96 @@ COMMIT;
 -- 07/31 작성한 구문은 삭제했으며, 아래 구문으로 다시 실행해주세요!
 
 -- 자유게시판 목록 조회를 위한 VIEW
+--삭제
+
+-----------------------------------------------------------------------------------------------08/04 추가
+
+-- 문의게시판 view 생성 및 샘플데이터 삽입(도헌)
+
+-- PL/SQL을 이용한 게시판 샘플 데이터 500개 생성
+CREATE SEQUENCE SEQ_QBNO;
+
+-- 문의게시판 카테고리 샘플
+INSERT INTO QNA_CATEGORY VALUES(1,'명소 정보');
+INSERT INTO QNA_CATEGORY VALUES(2,'시스템');
+INSERT INTO QNA_CATEGORY VALUES(3,'기타');
+COMMIT;
+
+SET SERVEROUTPUT ON;
+
+-- 문의게시판 게시글 샘플(맨 뒤의 1은 회원번호)
+BEGIN
+    FOR N IN 1..500 LOOP
+        INSERT INTO QNA_BOARD
+        VALUES(SEQ_QBNO.NEXTVAL,NULL,
+                    N || '번째 게시글',
+                    N || '번째 게시글 입니다.',
+                    DEFAULT, DEFAULT, DEFAULT, DEFAULT,
+                    FLOOR(DBMS_RANDOM.VALUE(1,3)), 1);
+    END LOOP;
+END;
+/
+COMMIT;
+
+-- 문의게시판 목록 조회를 위한 VIEW
+CREATE OR REPLACE VIEW QNA_LIST AS
+    SELECT QNA_NO, QNA_PNO,QNA_CATEGORY_NO, QNA_CATEGORY_NM, QNA_TITLE, QNA_CONTENT, MEMBER_NICK, QNA_CREATE_DT, QNA_READ_COUNT,
+               QNA_STATUS
+    FROM QNA_BOARD
+    JOIN QNA_CATEGORY USING(QNA_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO);
+
+ -- 비공개용 게시글 목록 생성
+    INSERT INTO QNA_BOARD
+    VALUES(SEQ_QBNO.NEXTVAL,NULL,'비공개샘플제목','비공개샘플내용',DEFAULT,DEFAULT,DEFAULT,'S',2,1);
+
+-- 답글 게시글 생성
+    INSERT INTO QNA_BOARD
+    VALUES(SEQ_QBNO.NEXTVAL, 503,'답글제목','내용',DEFAULT,DEFAULT,DEFAULT,'S',2,1);
+
+COMMIT;
+
+
+-- By 지원.
+-- 마이페이지 자유게시판 목록 조회를 위한 VIEW + 컬럼추가(MEMBER_NO)
+-- 아래 구문 실행해주시면 됩니다.
 CREATE OR REPLACE VIEW FREE_LIST AS
     SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, MEMBER_NICK, FREE_CREATE_DT, FREE_READ_COUNT,
-               NVL(REPLY_COUNT, 0) REPLY_COUNT, NVL(LIKE_COUNT, 0) LIKE_COUNT,
+               NVL(REPLY_COUNT, 0) REPLY_COUNT, NVL(LIKE_COUNT, 0) LIKE_COUNT, MEMBER_NO,
                FREE_STATUS,
                FREE_CONTENT, FREE_CATEGORY_NO
+    FROM FREE_BOARD
+    JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO)
+    LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
+                    FROM FREE_REPLY
+                    GROUP BY FREE_NO) USING(FREE_NO)
+    LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
+                    FROM FREE_LIKE
+                    GROUP BY FREE_NO) USING(FREE_NO)
+;
+
+-----------------------------------------------------------------------------------------------08/05 추가
+
+-- By 지원.
+-- 마이페이지 문의게시판 목록 조회를 위한 VIEW + 컬럼추가(MEMBER_NO)
+-- 아래 구문 실행해주시면 됩니다.
+CREATE OR REPLACE VIEW QNA_LIST AS
+    SELECT QNA_NO, QNA_PNO,QNA_CATEGORY_NO, QNA_CATEGORY_NM, QNA_TITLE, QNA_CONTENT, MEMBER_NICK, QNA_CREATE_DT, QNA_READ_COUNT,
+               QNA_STATUS, MEMBER_NO
+    FROM QNA_BOARD
+    JOIN QNA_CATEGORY USING(QNA_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO);
+
+-- 세은
+-- 자유게시판 상세 조회 VIEW 컬럼 추가(MEMBER_NO)
+CREATE OR REPLACE VIEW FREE_DETAIL AS
+    SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, 
+               MEMBER_NICK, FREE_READ_COUNT, FREE_CREATE_DT, FREE_MODIFY_DT,
+               FREE_CONTENT,
+               NVL(LIKE_COUNT, 0) LIKE_COUNT, NVL(REPLY_COUNT, 0) REPLY_COUNT, 
+               FREE_STATUS,
+               MEMBER_NO
     FROM FREE_BOARD
     JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
     JOIN MEMBER USING(MEMBER_NO)

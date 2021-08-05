@@ -40,6 +40,32 @@
 		QNA_LIST WHERE QNA_STATUS='Y' OR QNA_STATUS= 'S'
 	</select>
 
+	<!-- 게시글 목록 갯수 조회 (검색)  -->
+	<select id="getSearchListCount" parameterType="QnaSearch" resultMap="pg_rm">
+			SELECT COUNT(*) CNT FROM QNA_LIST WHERE QNA_STATUS='Y' OR QNA_STATUS= 'S'
+			<if test="sv!=null">
+				AND
+				<bind name="val" value="'%' +sv+ '%'"/>
+				<choose>
+					<when test="sk=='title'">
+						QNA_TITLE LIKE #{val}
+					</when>
+					<when test="sk=='content'">
+						QNA_CONTENT LIKE #{val}
+					</when>
+					<when test="sk=='ticontent'">
+						(QNA_TITLE LIKE #{val} OR QNA_CONTENT LIKE #{val})
+					</when>
+					<when test="sk=='writer'">
+						MEMBER_NICK LIKE #{val}
+					</when>
+					<when test="sk=='category'">
+						QNA_CATEGORY_NO = #{sc} AND (QNA_TITLE LIKE #{val} OR QNA_CONTENT LIKE #{val})
+					</when>
+				</choose>
+			</if>
+	</select>
+
 	<!-- 계층형 게시글 목록 조회  -->
 	<select id="selectBoardList" parameterType="_int" resultMap="qna_rm">
 		SELECT QNA_NO, QNA_PNO, QNA_CATEGORY_NM,
@@ -51,4 +77,62 @@
 		CONNECT BY PRIOR QNA_NO = QNA_PNO
 		ORDER SIBLINGS BY QNA_NO DESC
 	</select>
+	
+	<select id="selectSearchBoardList" parameterType="QnaSearch" resultMap="qna_rm">
+        SELECT QNA_NO, QNA_PNO,QNA_CATEGORY_NO, QNA_CATEGORY_NM,
+        LPAD(' ', 3*(LEVEL)) || QNA_TITLE AS QNA_TITLE,
+        QNA_CONTENT,
+        MEMBER_NICK, QNA_READ_COUNT, QNA_CREATE_DT, QNA_STATUS
+        FROM QNA_LIST
+        WHERE QNA_STATUS IN ('Y','S')
+        START WITH QNA_PNO IS NULL
+        CONNECT BY PRIOR QNA_NO = QNA_PNO
+		<if test="sv!=null">
+				AND
+				<bind name="val" value="'%' +sv+ '%'"/>
+				<choose>
+					<when test="sk=='title'">
+						QNA_TITLE LIKE #{val}
+					</when>
+					<when test="sk=='content'">
+						QNA_CONTENT LIKE #{val}
+					</when>
+					<when test="sk=='ticontent'">
+						(QNA_TITLE LIKE #{val} OR QNA_CONTENT LIKE #{val})
+					</when>
+					<when test="sk=='writer'">
+						MEMBER_NICK LIKE #{val}
+					</when>
+					<when test="sk=='category'">
+						QNA_CATEGORY_NO = #{sc} AND (QNA_TITLE LIKE #{val} OR QNA_CONTENT LIKE #{val})
+					</when>
+				</choose>
+			</if>
+		ORDER SIBLINGS BY QNA_NO DESC
+	</select>
+	
+	<select id="selectBoard" parameterType="_int" resultMap="qna_rm">
+		SELECT QNA_NO, QNA_CATEGORY_NM, QNA_TITLE, QNA_CONTENT,
+		MEMBER_NO, MEMBER_NICK, QNA_READ_COUNT, QNA_CREATE_DT, QNA_MODIFY_DT,QNA_STATUS
+		FROM QNA_BOARD
+		JOIN QNA_CATEGORY USING(QNA_CATEGORY_NO)
+		JOIN MEMBER USING(MEMBER_NO)
+		WHERE QNA_NO = #{qnaNo}
+		AND QNA_STATUS IN ('Y','S') 
+	</select>
+	
+	<update id="increaseReadCount" parameterType="_int">
+		 UPDATE QNA_BOARD SET
+		 QNA_READ_COUNT = QNA_READ_COUNT + 1
+		 WHERE QNA_NO = #{qnaNo}
+	</update>
+	
+	<select id="selectCategory" resultMap="category_rm">
+		SELECT * FROM QNA_CATEGORY
+	</select>
+	
+	<insert id="insertBoard" parameterType="QnaBoard">
+		INSERT INTO QNA_BOARD
+		VALUES(SEQ_QBNO.NEXTVAL,NULL,#{qnaTitle},#{qnaContent},DEFAULT,DEFAULT,DEFAULT,DEFAULT,#{qnaCategoryNo},#{memberNo})
+	</insert>
 </mapper>

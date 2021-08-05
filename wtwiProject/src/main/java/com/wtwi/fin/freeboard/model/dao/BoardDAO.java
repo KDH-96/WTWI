@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Category;
+import com.wtwi.fin.freeboard.model.vo.Image;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
 import com.wtwi.fin.freeboard.model.vo.Search;
 
@@ -82,7 +83,31 @@ public class BoardDAO {
 		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
 		return sqlSession.selectList("freeboardMapper.selectSearchBoardList", search, rowBounds);
 	}
-	
-	
+
+	/** 게시글 삽입(8-1)
+	 * @param board
+	 * @return freeNo
+	 */
+	public int insertBoard(Board board) {
+		int result = sqlSession.insert("freeboardMapper.insertBoard", board);
+		if(result>0) return board.getFreeNo();
+		else 		 return 0;
+	}
+
+	/** 이미지 파일 정보 삽입(8-2)
+	 * @param images
+	 * @return result
+	 */
+	public int insertImages(List<Image> images) {
+		return sqlSession.insert("freeboardMapper.insertImages", images);
+	}
+
+	/** DB에서 24시간보다 이전에 추가된 파일명 조회(9)
+	 * @param standard
+	 * @return dbList
+	 */
+	public List<String> selectDbList(String standard) {
+		return sqlSession.selectList("freeboardMapper.selectDbList", standard);
+	}
 	
 }
