@@ -46,11 +46,17 @@ public interface QnaBoardService {
 	 */
 	List<QnaCategory> selectCategory();
 
-	/**
+	/** 게시글 작성
 	 * @param board
 	 * @return boardNo
 	 */
 	int insertBoard(QnaBoard board);
+
+	/** 게시판 답글 작성
+	 * @param board
+	 * @return
+	 */
+	int insertBoardRe(QnaBoard board);
 
 
 }
