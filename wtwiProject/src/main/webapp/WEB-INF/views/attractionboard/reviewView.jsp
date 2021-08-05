@@ -112,7 +112,7 @@
 					</tr>
 				</table>
 				</p>
-				<a href="#" class="badge badge-pill badge-primary">리뷰작성</a> <a
+				<a href="#" class="badge badge-pill badge-primary" id="write-btn">리뷰작성</a> <a
 					href="#" class="badge badge-pill badge-info" id="chat-btn">1:1채팅</a>
 				<hr>
 				<span>작성된 리뷰가 없습니다.</span>

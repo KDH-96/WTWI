@@ -5,32 +5,46 @@
 
 <head>
 <meta charset="utf-8">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-	crossorigin="anonymous"></script>
 
-<!-- Bootstrap core CSS -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-	integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
-	crossorigin="anonymous">
-
-<!-- Bootstrap core JS -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
-	crossorigin="anonymous"></script>
-
-<!-- jQuery CDN -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-	crossorigin="anonymous"></script>
-
+        
 <title>Where the weather is...</title>
 <style>
+/* 검색조건 드롭다운 시작 */
+#dropdown-wrap {
+	top: 30px;
+	left: 30px;
+	position: absolute;
+	z-index: 2;
+}
+
+#dropdown-type-wrap {
+	left: 0;
+	top: 0;
+	z-index: 2;
+	float: left;
+}
+
+#dropdown-type {
+	background-color: whitesmoke;
+	opacity: 90%;
+	width: 100px;
+}
+
+#dropdown-area-wrap {
+	left: 0;
+	top: 0;
+	z-index: 2;
+	float: left;
+}
+
+#dropdown-area {
+	background-color: whitesmoke;
+	opacity: 90%;
+	width: 100px;
+}
+
+/* 검색조건 드롭다운 끝 */
+
 
 </style>
 </head>
@@ -39,8 +53,45 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 
 	<div id="map" style="width:100%;height:100vh;">
-	
-
+		<!-- =================================== 리뷰 작성 폼 시작 =================================== -->
+		
+		<jsp:include page="/WEB-INF/views/attractionboard/reviewInsert.jsp"></jsp:include>
+		
+		<!-- =================================== 리뷰 작성 폼 시작 =================================== -->
+		
+		<!-- =================================== 명소 구분 드롭다운 시작 =================================== -->
+        <div id="dropdown-wrap">
+            <div id="dropdown-type-wrap">
+                <button class="btn btn-outline-secondary dropdown-toggle mx-1" id="dropdown-type" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">구 분</button>
+                <div class="dropdown-menu" id="contentTypeS" name="contentTypeS">
+                    <a class="dropdown-item" href="#" value="12">관광지</a>
+                    <a class="dropdown-item" href="#" value="14">문화시설</a>
+                    <a class="dropdown-item" href="#" value="15">축제/공연/행사</a>
+                    <a class="dropdown-item" href="#" value="25">여행코스</a>
+                    <a class="dropdown-item" href="#" value="28">레포츠</a>
+                    <a class="dropdown-item" href="#" value="32">숙박</a>
+                    <a class="dropdown-item" href="#" value="38">쇼핑</a>
+                    <a class="dropdown-item" href="#" value="39">음식</a>
+                </div>
+            </div>
+            <div id="dropdown-area-wrap">
+                <button class="btn btn-outline-secondary dropdown-toggle mx-1" id="dropdown-area" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">지 역</button>
+                <div class="dropdown-menu" id="areaCode" name="areaCode">
+                    <a class="dropdown-item" href="#" value="1">서울</a>
+                    <a class="dropdown-item" href="#" value="2">인천</a>
+                    <a class="dropdown-item" href="#" value="3">대전</a>
+                    <a class="dropdown-item" href="#" value="4">대구</a>
+                    <a class="dropdown-item" href="#" value="5">광주</a>
+                    <a class="dropdown-item" href="#" value="6">부산</a>
+                    <a class="dropdown-item" href="#" value="7">울산</a>
+                    <a class="dropdown-item" href="#" value="8">세종</a>
+                </div>
+            </div>
+        </div>
+        <!-- =================================== 명소 구분 드롭다운 종료 =================================== -->
+		
         <!-- =================================== 명소 상세정보 영역 시작 =================================== -->
 
       	<jsp:include page="/WEB-INF/views/attractionboard/reviewView.jsp"></jsp:include>
@@ -51,13 +102,18 @@
 
 
     <script type="text/javascript"
-        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=eebe96b9065dd3994c199f0822ac2038"></script>|
+        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=eebe96b9065dd3994c199f0822ac2038"></script>
+        
     <script>
         // 지도 로딩속도 향상을 위한 코드
         kakao.maps.disableHD();
 
+        // 지도 로딩 시 후기작성 폼 고정영역 숨기기
+        $("#write-review-wrapper").hide();
+        
         // 지도 로딩 시 명소정보 고정영역 숨기기
         $("#attraction-info").hide();
+
 
         // 지도의 확대레벨이 13을 초과하지 못하도록 막는 함수(레벨 14부터는 화면 깨짐)
         $(function () {
@@ -136,7 +192,7 @@
                 center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
                 level: 13 // 지도의 확대 레벨
             };
-            
+
         var map = new kakao.maps.Map(mapContainer, mapOption),
             customOverlay = new kakao.maps.CustomOverlay({}),
             infowindow = new kakao.maps.InfoWindow({ removable: true });
@@ -208,9 +264,8 @@
             if (map.getLevel() < 12) {
 
                 // 테스트용 JSON 파일 불러오기
-                $.getJSON("https://raw.githubusercontent.com/Jun-Seok-K/coja/master/all_attraction_list.json", function (json) {
-
-                    data = json.records; // json 파일 data 변수에 담기
+                $.getJSON("http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D&contentTypeId=14&areaCode=1&listYN=Y&MobileOS=ETC&MobileApp=WhereTheWeatherIs&arrange=B&_type=json", function (json) {
+                    data = json.response.body.items.item; // json 파일 data 변수에 담기
 
                     var lat = ''; // 위도를 담을 변수
                     var lng = ''; // 경도를 담을 변수
@@ -218,9 +273,8 @@
                     var clickedOverlay = null; // 클릭된 오버레이 전역변수로 선언
 
                     $.each(data, function (index, val) {
-                        lat = val.위도; // 각 명소의 위도정보 from json
-                        lng = val.경도; // 각 명소의 경도정보 from json
-
+                        lat = Number(data[index].mapy); // 각 명소의 위도정보 from json
+                        lng = Number(data[index].mapx); // 각 명소의 경도정보 from json
                         // 각 마커의 요소로 들어갈 좌표객체 생성
                         position = new kakao.maps.LatLng(lat, lng);
 
@@ -246,8 +300,8 @@
                         var content = document.createElement('div');
                         content.id = 'attraction-info-area';
                         content.className = 'card-body';
-                        content.innerHTML = data[index].관광지명 + "<br>" + data[index].관광지구분
-                            + "<br>" + "주소: " + data[index].소재지도로명주소 + "<br>" + "전화번호: " + data[index].관리기관전화번호 + "<br>";
+                        content.innerHTML = data[index].title + "<br>" + data[index].contenttypeid
+                            + "<br>" + "주소: " + data[index].addr1 + "<br>";
                         content.style.cssText = 'background-color: white; border: 1px solid black;';
                         content.append(closeBtn);
 
@@ -284,7 +338,7 @@
 
                         // 마커 클릭 시 부드럽게 마커의 위치로 이동
                         kakao.maps.event.addListener(marker, 'click', function () {
-                            var moveLatLng = new kakao.maps.LatLng(data[index].위도, data[index].경도);
+                            var moveLatLng = new kakao.maps.LatLng(data[index].mapy, data[index].mapx);
                             map.panTo(moveLatLng);
                         });
 
@@ -299,8 +353,19 @@
                             $("#attraction-info").fadeOut(100);
                         });
 
-                    });
+                     	// 후기작성 버튼 클릭 시 후기작성 폼 등장하는 메소드
+                        $("#write-btn").on('click', function () {
+                        	$("#write-review-wrapper").fadeIn(100);
+                        });
 
+                        // 취소버튼 클릭 시 후기작성 폼을 닫는 메소드
+                        $("#cancel-btn").on('click', function(){
+                        	$("#write-review-wrapper").fadeOut(100);
+                        });
+
+                    }); // 마커 생성 for문 종료
+                    
+                 	
                 }); // 명소 정보가 담긴 JSON파일의 getJSON의 닫는 괄호
 
 
@@ -317,6 +382,7 @@
         });
 
     </script>
+    
 
 </body>
 
