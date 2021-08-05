@@ -59,7 +59,7 @@ $(document).ready(function() {
 		],
 		callbacks: {
 			// summernote가 지원하는 callbacks함수 중 
-			// onImageUpload : 이미지를 업로드했을 때 동작
+			// onImageUpload : 이미지를 업로드했을 때 동작(이미지를 첨부할 때마다 files에 이미지가 들어오고 콜백 함수가 호출됨)
 			onImageUpload: function(files, editor, welEditable){
 				for(var i=files.length-1; i>=0; i--){
 					uploadFile(files[i], this);
@@ -67,10 +67,12 @@ $(document).ready(function() {
 			}
 		}
 	});
+	
 	$("#summernote").on("summernote.enter", function(we, e) {
 	     $(this).summernote("pasteHTML", "<br><br>");
 	     e.preventDefault();
 	});
+
        
 	function uploadFile(file, el){
 		data = new FormData();
@@ -88,7 +90,12 @@ $(document).ready(function() {
 				console.log(fileName);
 				imgs.push(fileName);
 				var image = "${contextPath}/"+fileName;
-				$(el).summernote('editor.insertImage', image);
+				$(el).summernote('editor.insertImage', image, function($image){
+					var width = $image.prop('naturalWidth');
+					var height = $image.prop('naturalHeight');
+					$image.css('width', width);
+					$image.css('height', height);
+				});
 			},
            	
 			error: function(e){

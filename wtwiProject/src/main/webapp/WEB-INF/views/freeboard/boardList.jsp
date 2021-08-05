@@ -155,14 +155,14 @@
                     	<option value="author">작성자</option>
                     	<option value="category">카테고리</option>
                     </select>
-                   	<select class="form-control col-2" id="formCategory" name="sc" style="display:none;">
+                   	<select class="form-control col-2 ml-1" id="formCategory" name="sc" style="display:none;">
                    		<option value="1">잡담</option>
                    		<option value="2">추천</option>
                    		<option value="3">궁금</option>
                    		<option value="4">같이</option>
                    		<option value="5">기타</option>
                    	</select>
-                    <input type="text" class="form-control col-6" placeholder="검색어를 입력하세요." name="sv">
+                    <input type="text" class="form-control col-6 ml-1" placeholder="검색어를 입력하세요." name="sv">
                     <button class="btn btn-outline-secondary">검색</button>
                 </div>
               </form>
