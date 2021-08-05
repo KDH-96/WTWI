@@ -60,22 +60,26 @@ public class QnaBoardController {
 		return "qnaboard/qnaBoardList";
 	}
 	
+	// 게시글 상세 조회
 	@RequestMapping(value="/{qnaNo}", method = RequestMethod.GET)
 	private String qnaBoardView(@PathVariable("qnaNo") int qnaNo,
 								@RequestParam(value="cp", required=false, defaultValue = "1") int cp,
+								@ModelAttribute("loginMember") Member loginMember,
 								Model model, RedirectAttributes ra) {
 		
 		QnaBoard board = service.selectqnaBoard(qnaNo);
+		System.out.println(board);
 		if(board!=null) {
 			model.addAttribute("board", board);
-			System.out.println(board);
 			
-			if(board.getQnaStatus()=="S") { // 게시글 공개 여부가 S일 때
-				if(board.getMemberGrade()!="A" || board.getMemberNo()!=board.getMemberNo()) { // 회원 등급이 "A"
-						MemberController.swalSetMessage(ra, "error", "해당 게시글은 비공개 입니다.", "작성 본인과 관리자만 조회 가능합니다.");
-						return "redirect:list";
+			
+			if(board.getQnaStatus().equals("S")) { // 게시글 상태가 S == 비공개
+				if(!board.getMemberGrade().equals("A") || loginMember.getMemberNo() != board.getMemberNo()) { // 회원 등급이 A 매니저이거나 로그인한 멤버의 번호와 게시글 번호의 회원 번호가 같지 않다면
+					MemberController.swalSetMessage(ra, "error", "비공개 게시글입니다", "작성 본인 혹은 관리자만 조회가 가능합니다.");
+					return "redirect:list";
 				}
 			}
+			// System.out.println(board);
 			return "qnaboard/qnaBoardView";
 		}else {
 			MemberController.swalSetMessage(ra, "error", "존재하지 않는 게시글입니다", null);
@@ -97,27 +101,32 @@ public class QnaBoardController {
 	// 문의게시판 작성
 	@RequestMapping(value="insertForm", method=RequestMethod.POST)
 	public String insertBoard(@ModelAttribute QnaBoard board,
+								String qnaStatus,
 								@ModelAttribute("loginMember") Member loginMember,
 								HttpServletRequest request,
 								RedirectAttributes ra) {
 		// 회원 정보 얻어오기
 		board.setMemberNo(loginMember.getMemberNo());
+		board.setQnaStatus(qnaStatus);
+
+		System.out.println("전 : " + board.getQnaStatus());
+		if(board.getQnaStatus()==null) {
+			board.setQnaStatus("Y");
+		}
+		System.out.println("후 : " + board.getQnaStatus());
 		
 		int boardNo = service.insertBoard(board);
 		
-		System.out.println(board);
-		
-		String path = null;
-		
-		if(boardNo>0) {
-			path = "redirect:" + boardNo;
-			MemberController.swalSetMessage(ra, "success", "게시글 삽입 성공!", null);
-		}else {
-			path = "redirect:" + request.getHeader("referer");
-			MemberController.swalSetMessage(ra, "error", "게시글 삽입 실패", null);
-		}
+		String path = null ;
+			if(boardNo>0) {
+				path = "redirect:" + boardNo;
+				MemberController.swalSetMessage(ra, "success", "게시글 삽입 성공!", null);
+			}else {
+				path = "redirect:" + request.getHeader("referer");
+				MemberController.swalSetMessage(ra, "error", "게시글 삽입 실패", null);
+			}
 		return path;
-	}
+	} // 어디
 	
 	
 	// 문의게시판 게시글 답글작성 화면 조회
@@ -135,23 +144,30 @@ public class QnaBoardController {
 	// 문의게시판 답글작성
 	@RequestMapping(value="insertFormRE", method=RequestMethod.POST)
 	public String insertBoardRE(@ModelAttribute QnaBoard board,
+			String qnaStatus,
 			@ModelAttribute("loginMember") Member loginMember,
 			HttpServletRequest request,
 			RedirectAttributes ra) {
 		// 회원 정보 얻어오기
 		board.setMemberNo(loginMember.getMemberNo());
-		
-		if(board.getQnaStatus() == null) {
-			board.setQnaStatus("S");
+		board.setQnaStatus(qnaStatus);
+
+		System.out.println("전 : " + board.getQnaStatus());
+		if(board.getQnaStatus()==null) {
+			board.setQnaStatus("Y");
 		}
-		
-		int boardNo = service.insertBoardRe(board);
+		System.out.println("후 : " + board.getQnaStatus());
 		
 		//System.out.println(board);
+		
+		int boardNo = service.insertBoardRe(board);
 		
 		String path = null;
 		
 		if(boardNo>0) {
+			if(board.getQnaStatus() == null) {
+				board.setQnaStatus("S");
+			}
 			path = "redirect:" + boardNo;
 			MemberController.swalSetMessage(ra, "success", "게시글 삽입 성공!", null);
 		}else {
@@ -159,5 +175,19 @@ public class QnaBoardController {
 			MemberController.swalSetMessage(ra, "error", "게시글 삽입 실패", null);
 		}
 		return path;
+	}
+	
+	@RequestMapping(value="updateForm", method=RequestMethod.POST)
+	public String updateForm(int qnaNo, Model model) {
+		
+		// 카테고리 목록 조회
+		List<QnaCategory> category = service.selectCategory();
+		
+		QnaBoard board = service.selectUpdateBoard(qnaNo);
+		
+		model.addAttribute("category", category);
+		model.addAttribute("board", board);
+		
+		return "qnaboard/qnaBoardUpdate";
 	}
 }

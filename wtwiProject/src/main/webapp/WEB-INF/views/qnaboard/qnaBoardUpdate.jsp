@@ -188,9 +188,9 @@
 
 	<div class="container my-5">
 
-		<h3>문의게시글 등록</h3>
+		<h3>문의게시글 수정</h3>
 		<hr>
-		<form action="insertForm" method="post" role="form"  onsubmit="return boardValidate();">
+		<form action="updateForm" method="post" role="form"  onsubmit="return boardValidate();">
 			<!-- 카테고리 선택 -->
 			<c:if test="${ !empty category}"> 			
 				<div id="category-pick-area">
@@ -202,7 +202,6 @@
 					</select>
 				</div>
 			</c:if>
-			${board.qnaStatus}
 			<hr>
 
 			<!-- 게시글 제목 입력 칸 -->
@@ -253,12 +252,12 @@
 					<!-- Button trigger modal -->
 					<button type="button" class="btn btn-primary mr-2" id="btn-cancel"
 						data-toggle="modal" data-target="#staticBackdrop">취소</button>
-					<button type="submit" class="btn btn-primary">등록</button>
+					<button type="submit" class="btn btn-primary">수정</button>
 
 				</div>
 			</div>
 			
-			
+				<input type="hidden" name="qnaNo" value="${board.qnaNo}">
 			
 		</form>
 
@@ -278,7 +277,7 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">취소 버튼을 누르시면 작성한 내용이 삭제되고 목록으로 돌아갑니다.</div>
+					<div class="modal-body">확인 버튼을 누르시면 작성한 내용이 삭제되고 목록으로 돌아갑니다.</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-dismiss="modal">취소</button>

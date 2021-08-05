@@ -332,7 +332,7 @@
 
 
         <div class=text-left>
-            <a href="inquiry-board-list.html" class="btn btn-primary">목록으로</a>
+            <a href="${contextPath}/qnaboard/list" class="btn btn-primary">목록으로</a>
         </div>
 
 

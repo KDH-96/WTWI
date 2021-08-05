@@ -132,12 +132,18 @@
 	</select>
 	
 	<insert id="insertBoard" parameterType="QnaBoard">
+		<selectKey keyProperty="qnaNo" resultType="_int" order="BEFORE">
+			SELECT SEQ_QBNO.NEXTVAL FROM DUAL
+		</selectKey>
 		INSERT INTO QNA_BOARD
-		VALUES(SEQ_QBNO.NEXTVAL,NULL,#{qnaTitle},#{qnaContent},DEFAULT,DEFAULT,DEFAULT,#{qnaStatus},#{qnaCategoryNo},#{memberNo})
+		VALUES(#{qnaNo},NULL,#{qnaTitle},#{qnaContent},DEFAULT,DEFAULT,DEFAULT,#{qnaStatus},#{qnaCategoryNo},#{memberNo})
 	</insert>
 
 	<insert id="insertBoardRe" parameterType="QnaBoard">
+		<selectKey keyProperty="qnaNo" resultType="_int" order="BEFORE">
+			SELECT SEQ_QBNO.NEXTVAL FROM DUAL
+		</selectKey>
 		INSERT INTO QNA_BOARD
-		VALUES(SEQ_QBNO.NEXTVAL,#{qnaPno},#{qnaTitle},#{qnaContent},DEFAULT,DEFAULT,DEFAULT,DEFAULT,#{qnaCategoryNo},#{memberNo})
+		VALUES(#{qnaNo},#{qnaPno},#{qnaTitle},#{qnaContent},DEFAULT,DEFAULT,DEFAULT,#{qnaStatus},#{qnaCategoryNo},#{memberNo})
 	</insert>
 </mapper>

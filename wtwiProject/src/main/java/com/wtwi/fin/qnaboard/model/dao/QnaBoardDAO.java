@@ -87,7 +87,9 @@ public class QnaBoardDAO {
 	 * @return
 	 */
 	public int insertBoard(QnaBoard board) {
-		return sqlSession.insert("qnaboardMapper.insertBoard", board);
+		int result = sqlSession.insert("qnaboardMapper.insertBoard", board);
+		if(result>0)return board.getQnaNo();
+		else		return 0;
 	}
 
 	
@@ -96,7 +98,9 @@ public class QnaBoardDAO {
 	 * @return
 	 */
 	public int insertBoardRe(QnaBoard board) {
-		return sqlSession.insert("qnaboardMapper.insertBoardRe", board);
+		int result = sqlSession.insert("qnaboardMapper.insertBoardRe", board);
+		if(result>0) return board.getQnaNo();
+		else		return 0;
 	}
 
 
