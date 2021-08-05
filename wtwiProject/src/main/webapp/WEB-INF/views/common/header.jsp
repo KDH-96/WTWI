@@ -232,6 +232,7 @@
             <nav class="nav d-flex justify-content-center">
 
                     <li><a class="p-2" href="#">오늘의 날씨</a></li>
+                    <li><a class="p-2" href="${contextPath}/attraction/list">명소</a></li>
                     <li><a class="p-2" href="${contextPath}/freeboard/list">자유게시판</a></li>
                     <li><a class="p-2" href="inquiry-board-list.html">문의게시판</a></li>
             </nav>
