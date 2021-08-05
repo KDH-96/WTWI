@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Set;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -28,6 +29,8 @@ public class AttractionController {
 	// 명소 목록 조회
 	@RequestMapping("list")
 	public String attractionView() {
+		
+		
 		return "attraction/attractionList";
 	}
 	
@@ -42,7 +45,7 @@ public class AttractionController {
 		String MobileApp = "WhereTheWeatherIs";
 		String type = "json";
 		String arrange = "B";
-		//int numOfRows = 10;
+		int numOfRows = 12;
 		//int pageNo = 1;
 		
 		String  req = url + 
@@ -52,7 +55,7 @@ public class AttractionController {
 					  "&listYN=Y&MobileOS=ETC" +
 					  "&MobileApp=" + MobileApp +
 					  "&arrange=" + arrange +
-					  //"&numOfRows" + numOfRows +
+					  "&numOfRows" + numOfRows +
 					  //"&pageNo=" + pageNo +
 					  "&_type=" + type;
 		
@@ -84,42 +87,33 @@ public class AttractionController {
 	}
 	
 	
+	
+	
+	/*****상세조회*******************************************************************************************/
+	
 	@RequestMapping(value="view/{contentid}" , method=RequestMethod.GET)
 	//@ResponseBody
-	public String attractionSelectView(@PathVariable("contentid") int contentid, 
+	public String attractionSelectView(@PathVariable("contentid") int attractionNo, 
 										Model model , 
-										@ModelAttribute Attraction attraction) {
-		
-		System.out.println(contentid);
-		
+										@ModelAttribute Attraction attr) {
 		
 		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon";
 		String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
 		String MobileOS = "ETC";
 		String MobileApp = "WhereTheWeatherIs";
 		String type = "json";
-		
 		/*
 		 	http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon
 		 	?serviceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D
-		 	&numOfRows=10
-		 	&pageNo=1
-		 	&MobileOS=ETC
-		 	&MobileApp=AppTest
-		 	&contentId=126508
-		 	&defaultYN=Y
-		 	&firstImageYN=Y
-		 	&areacodeYN=Y
-		 	&catcodeYN=Y
-		 	&addrinfoYN=Y
-		 	&mapinfoYN=Y
-		 	&overviewYN=Y
+		 	&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&contentId=126508&defaultYN=Y
+		 	&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y
 		*/
+		
 		String  req = url + 
 				  "?ServiceKey=" + serviceKey +
 				  "&MobileOS=" + MobileOS +
 				  "&MobileApp=" + MobileApp +
-				  "&contentId=" + contentid +
+				  "&contentId=" + attractionNo +
 				  "&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y" +
 				  "&_type=" + type
 				  ;
@@ -129,165 +123,135 @@ public class AttractionController {
 		try {
 			requestURL = new URL(req);
 			HttpURLConnection conn = (HttpURLConnection) requestURL.openConnection();
-			
 			conn.setRequestMethod("GET");
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8")); //공공데이터에서 값을 요때 얻어옴
-			//InputStreamReader : 바이트스트림을 문자스트림으로 
-			//BufferedReader : 성능향상
 			String line = null;
-			
 			while((line = br.readLine()) != null) {
 				result += line;
 			}
-			System.out.println(req);
-			System.out.println(result);
-			//jsonparser : String을 json Object 로 바꿔줌 -> json Object가 되면 자바에서 쓸수 있음 -> 별도의 변환작업으로 vo로 만들 수 있고 DB 저장도 가능 
-			
+			//System.out.println(req);
+			//System.out.println("요기! result : " +  result);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		// result에는 json 객체 담겨있음.
-		
+		//*** result에 json 객체가 담겨있음.****************************************************************************
+
 		
 		// JSON 형태의 문자열을 JsonObject로 변경하여 값을 꺼내쓸 수 있는 형태로 변환
 		JsonObject convertedObj = new Gson().fromJson(result.toString(), JsonObject.class);
-		/// Json 형태의 데이터(message.getPayload())를 뒤에있는 Object 형태(JsonObject.class)로 변경해서 반환해주겠다
-		
 		JsonObject response = new Gson().fromJson(convertedObj.get("response").toString(), JsonObject.class); 
 		JsonObject body = new Gson().fromJson(response.get("body").toString(), JsonObject.class); 
 		JsonObject items = new Gson().fromJson(body.get("items").toString(), JsonObject.class); 
 		JsonObject item = new Gson().fromJson(items.get("item").toString(), JsonObject.class); 
 		
-		System.out.println(response);
-		System.out.println(body);
-		System.out.println(items);
-		System.out.println(item);
+		//*** 필요한 정보들은 item에 k:v 형태로 담겨있음 ***********************************************************************
+		System.out.println("아이템 확인 : " + item);
 		
-		Attraction attr = new Attraction();
 		
 		
 		// 변경된 JsonObject에서 값 추출
 		// JsonObject.get("key") == (Object)value (Object타입의 밸류 -> 형변환이나 toString을 통해 문자열로 변환하면됨)
-		String addr1 = item.get("addr1").toString(); 
-		addr1 = addr1.substring(1, addr1.length()-1);
 		
-		System.out.println(addr1);
-		
-		String addr2 = item.get("addr2").toString(); 
-		addr2 = addr2.substring(1, addr2.length()-1);
-		
-		System.out.println(addr2);
-		
-		int areacode = Integer.parseInt(item.get("areacode").toString());
-		
-		System.out.println(areacode);
-		
-		int booktour = Integer.parseInt(item.get("booktour").toString()); 
-		
-		System.out.println(booktour);
-		
-		String cat1 = item.get("cat1").toString(); 
-		cat1 = cat1.substring(1, cat1.length()-1);
-		String cat2 = item.get("cat2").toString(); 
-		cat2 = cat2.substring(1, cat2.length()-1);
-		String cat3 = item.get("cat3").toString(); 
-		cat3 = cat3.substring(1, cat3.length()-1);
-		
-		System.out.println(cat1);
-		System.out.println(cat2);
-		System.out.println(cat3);
-		
-		int contenttypeid = Integer.parseInt(item.get("contenttypeid").toString());
-		
-		System.out.println("contenttypeid : " + contenttypeid);
-		
-		long createdtime = Long.parseLong(item.get("createdtime").toString());
-		
-		System.out.println("createdtime : " + createdtime);
-		
-		String firstImage = item.get("firstimage").toString(); 
-		firstImage = firstImage.substring(1, firstImage.length()-1);
-		
-		System.out.println(firstImage);
-		String firstImage2 = item.get("firstimage2").toString(); 
-		firstImage2 = firstImage2.substring(1, firstImage2.length()-1);
-		System.out.println(firstImage2);
-		
-		String homepage = item.get("homepage").toString(); 
-		homepage = homepage.substring(1, homepage.length()-1);
-		
-		System.out.println(homepage);
+		// 받아오지 못하는 경우가 있기 때문에 필드 기본값을 지정
+		// attraction의 PK인 attractionNo은 파라미터로 받아옴
+		String attractionAddr = null; // addr1
+		String addr2 = null;
+		int areacode = 0;
+		int booktour = 0;
+		String cat1 = null;
+		String cat2 = null;
+		String cat3 = null;
+		int attractionTypeNo = 0; // contenttypeid
+		long createdTime = 0; 
+		String attractionPhoto = null; // firstimage
+		String attractionPhoto2 = null; // firstimage2
+		String attractionHomePage = null; // homepage
+		double latitude = 0; // mapx
+		double longitude = 0; // mapy
+		int mLevel = 0;
+		long modifiedTime = 0;
+		String attractionInfo = null; // overview
+		int readCount = 0; 
+		int sigunguCode = 0;
+		String attractionPhone = null; // tel
+		String attractionNm = null; // title
+		int zipCode = 0;
+		int eventStartDate = 0;
+		int eventEndDate = 0;
 
-		double mapx = Double.parseDouble(item.get("mapx").toString()); 
-		double mapy = Double.parseDouble(item.get("mapy").toString()); 
-		int mlevel = Integer.parseInt(item.get("mlevel").toString());
+		Set<String> itemKeys = item.keySet(); // 키들을 set에 담기
 		
-		System.out.println(mapx);
-		System.out.println(mapy);
-		System.out.println(mlevel);
-		
-		long modifiedtime = Long.parseLong(item.get("modifiedtime").toString());
-		
-		System.out.println(modifiedtime);
-		
-		String overview = item.get("overview").toString(); 
-		overview = overview.substring(1, overview.length()-1);
-		
-		System.out.println(overview);
-		
-		int sigungucode = Integer.parseInt(item.get("sigungucode").toString());
-		
-		System.out.println(sigungucode);
-		
-		String title = item.get("title").toString(); 
-		title = title.substring(1, title.length()-1);
-		
-		System.out.println(title);
-		
-		int zipcode = Integer.parseInt(item.get("zipcode").toString());
-		
-		System.out.println(zipcode);
-		
-		
-		
-		
-		attr.setAddr1(addr1);
+		for(String key : itemKeys) {
+			
+			System.out.println(key + " : " + item.get(key) );  // k : v 형태로 출력
+			
+			// key에따라 형변환하여 알맞은 변수에 대입
+			switch(key) {
+			case "addr1" : attractionAddr = item.get(key).toString().replaceAll("\"", ""); break;
+			case "addr2" : addr2 = item.get(key).toString().replaceAll("\"", ""); break;
+			case "areacode" : areacode = Integer.parseInt(item.get(key).toString().replaceAll("\"", ""));break;
+			case "booktour" : booktour = Integer.parseInt(item.get(key).toString().replaceAll("\"", ""));break;
+			case "cat1" : item.get(key).toString().replaceAll("\"", "");break;
+			case "cat2" : item.get(key).toString().replaceAll("\"", "");break;
+			case "cat3" : item.get(key).toString().replaceAll("\"", "");break;
+			case "contenttypeid" : attractionTypeNo = Integer.parseInt(item.get(key).toString().replaceAll("\"", ""));break;
+			case "createdtime" : createdTime = Long.parseLong(item.get(key).toString().replaceAll("\"", ""));break;
+			case "firstimage" : attractionPhoto = item.get(key).toString().replaceAll("\"", ""); break;
+			case "firstimage2" : attractionPhoto2 = item.get(key).toString().replaceAll("\"", ""); break;
+			case "homepage" : attractionHomePage = item.get(key).toString().replaceAll("\"", ""); break;
+			case "mapx" : latitude = Double.parseDouble(item.get(key).toString().replaceAll("\"", "")); break;
+			case "mapy" : longitude = Double.parseDouble(item.get(key).toString().replaceAll("\"", "")); break;
+			case "mlevel" : mLevel = Integer.parseInt(item.get(key).toString().replaceAll("\"", ""));break;
+			case "modifiedtime" : modifiedTime = Long.parseLong(item.get(key).toString().replaceAll("\"", ""));break;
+			case "overview" : attractionInfo = item.get(key).toString().replaceAll("\"", "");break;
+			case "sigungucode" : sigunguCode = Integer.parseInt(item.get(key).toString().replaceAll("\"", ""));break;
+			case "tel" : attractionPhone = item.get(key).toString().replaceAll("\"", "");break;
+			case "title" : attractionNm = item.get(key).toString().replaceAll("\"", "");break;
+			case "zipcode" : zipCode = Integer.parseInt(item.get(key).toString().replaceAll("\"", ""));break;
+			case "readcount" : readCount = Integer.parseInt(item.get(key).toString().replaceAll("\"", ""));break;
+			case "eventstartdate" : eventStartDate = Integer.parseInt(item.get(key).toString().replaceAll("\"", ""));break;
+			case "eventenddate" : eventEndDate = Integer.parseInt(item.get(key).toString().replaceAll("\"", ""));break;
+			}
+			
+			/* 이후에 코드 줄일 때 참고 하기! -> 0805
+			 * switch(key) { case "addr1" : case "addr2": break;
+			 * case "sigunguCode" : break; }
+			 */
+		}
+
+		attr.setAttractionAddr(attractionAddr);
 		attr.setAddr2(addr2);
 		attr.setAreacode(areacode);
 		attr.setBooktour(booktour);
 		attr.setCat1(cat1);
 		attr.setCat2(cat2);
 		attr.setCat3(cat3);
-		attr.setContentid(contentid);
-		attr.setContenttypeid(contenttypeid);	
-		attr.setCreatedtime(createdtime);
-		attr.setFirstImage(firstImage);
-		attr.setFirstImage2(firstImage2);
-		attr.setHomepage(homepage);
-		attr.setMapx(mapx);
-		attr.setMapy(mapy);
-		attr.setMlevel(mlevel);
-		attr.setModifiedtime(modifiedtime);
-		attr.setOverview(overview);
-		attr.setSigungucode(sigungucode);
-		attr.setTitle(title);
-		attr.setZipcode(zipcode);
+		attr.setAttractionNo(attractionNo);
+		attr.setAttractionTypeNo(attractionTypeNo);	
+		attr.setCreatedTime(createdTime);
+		attr.setAttractionPhoto(attractionPhoto);
+		attr.setAttractionPhoto2(attractionPhoto2);
+		attr.setAttractionHomePage(attractionHomePage);
+		attr.setLatitude(latitude);
+		attr.setLongitude(longitude);
+		attr.setmLevel(mLevel);
+		attr.setModifiedTime(modifiedTime);
+		attr.setAttractionInfo(attractionInfo);
+		attr.setSigunguCode(sigunguCode);
+		attr.setAttractionNm(attractionNm);
+		attr.setZipCode(zipCode);
+		attr.setAttractionPhone(attractionPhone);
+		
+		attr.setEventStartDate(eventStartDate);
+		attr.setEventEndDate(eventEndDate);
+		attr.setReadCount(readCount);
 		
 		
-		System.out.println("attr 투스트링이다 !" + attr);
-		
-				
-		
-		model.addAttribute("attraction",result);
+		model.addAttribute("attr",attr);
 		return "attraction/attractionView";
 		
 	}
-	
-	
-	
-	
 	
 	
 	
