@@ -223,10 +223,11 @@
 						<label for="checkbox" id="show-ask">공개</label>
 					</div>
 					
-					<input type="checkbox" id="switch1" name="qnaStatus" class="input__on-off" value="Y"> 
+					<input type="checkbox" id="switch1" name="qnaStatus" class="input__on-off"> 
 					
 					<label for="switch1" class="label__on-off"> <span class="marble"></span>
-					<span class="on">on</span> <span class="off">off</span>
+					<span class="on" value="S">on</span>
+					<span class="off" value="Y">off</span>
 					</label>
 
 				</div>
@@ -296,14 +297,20 @@
 		// 유효성 검사 
 		function boardValidate() {
 			if ($("#boardTitle").val().trim().length == 0) {
-				alert("제목을 입력해 주세요.");
-				$("#title").focus();
+				swal({
+					icon:"warning",
+					title:"제목을 입력해주세요."
+				});
+				$("#boardTitle").focus();
 				return false;
 			}
 
 			if ($("#exampleFormControlTextarea1").val().trim().length == 0) {
-				alert("내용을 입력해 주세요.");
-				$("#content").focus();
+				swal({
+					icon:"warning",
+					title:"내용을 입력해주세요."
+				});
+				$("#exampleFormControlTextarea1").focus();
 				return false;
 			}
 		}
