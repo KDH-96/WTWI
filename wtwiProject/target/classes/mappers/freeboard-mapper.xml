@@ -29,6 +29,7 @@
 		<result property="freeCategoryName" column="FREE_CATEGORY_NM"/>
 		<result property="freeTitle" column="FREE_TITLE"/>
 		<result property="memberNick" column="MEMBER_NICK"/>
+		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="freeReadCount" column="FREE_READ_COUNT"/>
 		<result property="freeCreateDate" column="FREE_CREATE_DT"/>
 		<result property="freeModifyDate" column="FREE_MODIFY_DT"/>
