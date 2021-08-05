@@ -34,15 +34,15 @@
                 <div class="col-10">${board.freeTitle}</div>
                 <div class="free-menu col-1">
                 	<c:if test="${!empty loginMember }">
-	                    <a class="btn dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                    <a class="dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                    	<i class="bi bi-three-dots"></i>
 	                    </a>
                     </c:if>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenu">
 						<c:choose>
 							<c:when test="${board.memberNo == loginMember.memberNo }">
-								<button class="dropdown-item" type="button">수정</button>
-								<button class="dropdown-item" type="button">삭제</button>
+								<button class="dropdown-item" type="button" onclick="fnRequest('updateForm');">수정</button>
+								<button class="dropdown-item" type="button" onclick="deleteAlert();">삭제</button>
 							</c:when>
 							<c:otherwise>
 								<button class="dropdown-item" type="button">신고</button>
@@ -93,8 +93,28 @@
         <button class="btn btn-outline-secondary mt-2" onclick="">이전 목록</button>
     </div>
 <!-- footer include -->
+<form action="#" method="POST" name="requestForm">
+	<input type="hidden" name="freeNo" value="${board.freeNo}">
+	<input type="hidden" name="cp" value="${param.cp}">
+</form>
 <script>
-
+function fnRequest(addr){
+	document.requestForm.action = addr;
+	document.requestForm.submit();
+}
+// 삭제시 알림창 띄우기
+function deleteAlert(){
+	swal({
+		icon: "warning",
+		title: "게시글을 삭제하시겠습니까?",
+		buttons: ["취소", "삭제"],
+		dangerMode: true,
+	}).then((willDelete) => {
+		if (willDelete) {
+			onclick=fnRequest("delete");
+		} 
+	});
+}
 </script>
 </body>
 </html>

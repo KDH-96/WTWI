@@ -2,6 +2,8 @@ package com.wtwi.fin.freeboard.model.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.wtwi.fin.freeboard.model.vo.Board;
@@ -72,5 +74,21 @@ public interface BoardService {
 	 * @return dbList
 	 */
 	List<String> selectDbList(String standard);
+
+	/** 게시글 삭제(10)
+	 * @param freeNo
+	 * @return result
+	 */
+	int deleteBoard(int freeNo);
+
+	/** 게시글 수정(13)
+	 * @param board
+	 * @param imgs
+	 * @param deleteImgs
+	 * @param webPath
+	 * @param request 
+	 * @return result
+	 */
+	int updateBoard(Board board, List<String> imgs, List<String> deleteImgs, String webPath, HttpServletRequest request);
 
 }

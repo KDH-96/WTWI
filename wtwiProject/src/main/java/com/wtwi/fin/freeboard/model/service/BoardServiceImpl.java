@@ -3,13 +3,19 @@ package com.wtwi.fin.freeboard.model.service;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.collections.bag.SynchronizedSortedBag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.wtwi.fin.freeboard.exception.DeleteFileException;
 import com.wtwi.fin.freeboard.exception.SaveFileException;
 import com.wtwi.fin.freeboard.model.dao.BoardDAO;
 import com.wtwi.fin.freeboard.model.vo.Board;
@@ -100,9 +106,9 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int insertBoard(Board board, List<String> imgs, String webPath) {
 		
-		// XSS 방지처리 -> 추후
+		// XSS 방지처리 -> 추후 ..?
 		
-		// 개행문자 처리
+		// <p>태그 제거
 		board.setFreeContent(board.getFreeContent().replaceAll("<p>", ""));
 		board.setFreeContent(board.getFreeContent().replaceAll("</p>", ""));
 		
@@ -140,6 +146,79 @@ public class BoardServiceImpl implements BoardService {
 		return dao.selectDbList(standard);
 	}
 
+	// 게시글 삭제(10)
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int deleteBoard(int freeNo) {
+		return dao.deleteBoard(freeNo);
+	}
+	
+	// 게시글 수정(13)
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int updateBoard(Board board, List<String> imgs, List<String> deleteImgs, String webPath, HttpServletRequest request) {
+		
+		// XSS 방지처리 -> 추후 ..?
+		
+		// <p>태그 제거
+		board.setFreeContent(board.getFreeContent().replaceAll("<p>", ""));
+		board.setFreeContent(board.getFreeContent().replaceAll("</p>", ""));
+		
+		// 13-1) 게시글 수정
+		int result = dao.updateBoard(board);
+
+		if(result>0) { // 게시글 삽입 성공시
+					   // DB에 새로 첨부된 이미지를 추가, 삭제된 이미지는 제거
+					   // 서버에서 삭제된 이미지 제거
+			
+			// 13-2) 새로 첨부된 이미지 파일 정보 DB 삽입
+			List<Image> images = new ArrayList<Image>();
+			for(int i=0; i<imgs.size(); i++) {
+				if(!imgs.get(i).equals("")) {
+					String filePath = webPath;
+					String fileName = imgs.get(i).substring(filePath.length());
+					Image img = new Image();
+					img.setFileName(fileName);
+					img.setFilePath(filePath);
+					img.setFreeNo(board.getFreeNo());
+					images.add(img);
+				}
+			}
+			if(!images.isEmpty()) dao.insertImages(images);
+
+			// 13-3) 삭제된 이미지 정보 DB에서 제거
+			List<Image> deleteImages = new ArrayList<Image>();
+			for(int i=0; i<deleteImgs.size(); i++) {
+				if(!deleteImgs.get(i).equals("")) {
+					String filePath = webPath;
+					String fileName = deleteImgs.get(i).substring(filePath.length());
+					Image img = new Image();
+					img.setFileName(fileName);
+					//System.out.println("db에서 삭제 : "+fileName);
+					img.setFilePath(filePath);
+					img.setFreeNo(board.getFreeNo());
+					deleteImages.add(img);
+				}
+			}
+			if(!deleteImages.isEmpty()) dao.deleteImages(deleteImages);
+			
+			// 13-4) DB에서 삭제된 이미지를 서버에서도 제거
+			for(int i=0; i<deleteImages.size(); i++) {
+				try {
+					String savePath = request.getSession().getServletContext().getRealPath(webPath);
+					File file = new File(savePath+deleteImages.get(i).getFileName());
+					//System.out.println("서버에서 삭제:"+file.getName());
+					if(file.exists()) file.delete();
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new DeleteFileException();
+				}
+			}
+		}
+		return result;
+	}
+
 	// 크로스 사이트 스크립트 방지 처리 메소드
 	public static String replaceParameter(String param) {
 		String result = param;
@@ -151,7 +230,7 @@ public class BoardServiceImpl implements BoardService {
 		}
 		return result;
 	}
-	
+
 	// 파일명 변경 메소드
 	private String rename(String originFileName) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
