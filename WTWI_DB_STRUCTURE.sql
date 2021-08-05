@@ -759,22 +759,7 @@ COMMIT;
 -----------------------------------------------------------------------------------------------08/02 추가
 
 -- 자유게시판 상세 조회를 위한 VIEW
-CREATE OR REPLACE VIEW FREE_DETAIL AS
-    SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, 
-               MEMBER_NICK, FREE_READ_COUNT, FREE_CREATE_DT, FREE_MODIFY_DT,
-               FREE_CONTENT,
-               NVL(LIKE_COUNT, 0) LIKE_COUNT, NVL(REPLY_COUNT, 0) REPLY_COUNT, 
-               FREE_STATUS
-    FROM FREE_BOARD
-    JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
-    JOIN MEMBER USING(MEMBER_NO)
-    LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
-                    FROM FREE_REPLY
-                    GROUP BY FREE_NO) USING(FREE_NO)
-    LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
-                    FROM FREE_LIKE
-                    GROUP BY FREE_NO) USING(FREE_NO)
-;
+--
 
 -----------------------------------------------------------------------------------------------08/03 추가
 -- By 지원.
@@ -789,21 +774,7 @@ COMMIT;
 -- 07/31 작성한 구문은 삭제했으며, 아래 구문으로 다시 실행해주세요!
 
 -- 자유게시판 목록 조회를 위한 VIEW
-CREATE OR REPLACE VIEW FREE_LIST AS
-    SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, MEMBER_NICK, FREE_CREATE_DT, FREE_READ_COUNT,
-               NVL(REPLY_COUNT, 0) REPLY_COUNT, NVL(LIKE_COUNT, 0) LIKE_COUNT,
-               FREE_STATUS,
-               FREE_CONTENT, FREE_CATEGORY_NO
-    FROM FREE_BOARD
-    JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
-    JOIN MEMBER USING(MEMBER_NO)
-    LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
-                    FROM FREE_REPLY
-                    GROUP BY FREE_NO) USING(FREE_NO)
-    LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
-                    FROM FREE_LIKE
-                    GROUP BY FREE_NO) USING(FREE_NO)
-;
+--삭제
 
 -----------------------------------------------------------------------------------------------08/04 추가
 
@@ -883,3 +854,23 @@ CREATE OR REPLACE VIEW QNA_LIST AS
     FROM QNA_BOARD
     JOIN QNA_CATEGORY USING(QNA_CATEGORY_NO)
     JOIN MEMBER USING(MEMBER_NO);
+
+-- 세은
+-- 자유게시판 상세 조회 VIEW 컬럼 추가(MEMBER_NO)
+CREATE OR REPLACE VIEW FREE_DETAIL AS
+    SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, 
+               MEMBER_NICK, FREE_READ_COUNT, FREE_CREATE_DT, FREE_MODIFY_DT,
+               FREE_CONTENT,
+               NVL(LIKE_COUNT, 0) LIKE_COUNT, NVL(REPLY_COUNT, 0) REPLY_COUNT, 
+               FREE_STATUS,
+               MEMBER_NO
+    FROM FREE_BOARD
+    JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO)
+    LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
+                    FROM FREE_REPLY
+                    GROUP BY FREE_NO) USING(FREE_NO)
+    LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
+                    FROM FREE_LIKE
+                    GROUP BY FREE_NO) USING(FREE_NO)
+;
