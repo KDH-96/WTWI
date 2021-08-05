@@ -248,7 +248,7 @@ opacity
 				</tbody>
 			</table>
 		</div>
-
+			
 
 		<%-- 로그인 되어 있을 경우에만 글쓰기 버튼 노출 --%>
 		<c:if test="${!empty loginMember }"> 

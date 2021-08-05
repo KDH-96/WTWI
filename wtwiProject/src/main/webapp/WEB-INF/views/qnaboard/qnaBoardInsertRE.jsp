@@ -217,11 +217,11 @@
 						<label for="checkbox" id="show-ask">공개</label>
 					</div>
 					
-					<input type="checkbox" id="switch1" name="qnaStatus" class="input__on-off"> 
+					<input type="checkbox" id="switch1" name="qnaStatus" class="input__on-off" value="S"> 
 					
 					<label for="switch1" class="label__on-off"> <span class="marble"></span>
-					<span class="on" value="S">on</span>
-					<span class="off" value="Y">off</span>
+					<span class="on">on</span>
+					<span class="off">off</span>
 					</label>
 
 				</div>
