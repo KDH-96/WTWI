@@ -17,114 +17,150 @@ public class QnaBoard {
 	
 	private String qnaCategoryNm;	// 카테고리 이름
 	private String memberNick;		// 회원명
+	private String memberGrade;		// 회원등급
 	
 	
 	public QnaBoard() {}
+
 
 	public int getQnaNo() {
 		return qnaNo;
 	}
 
+
 	public void setQnaNo(int qnaNo) {
 		this.qnaNo = qnaNo;
 	}
+
 
 	public int getQnaPno() {
 		return qnaPno;
 	}
 
+
 	public void setQnaPno(int qnaPno) {
 		this.qnaPno = qnaPno;
 	}
+
 
 	public String getQnaTitle() {
 		return qnaTitle;
 	}
 
+
 	public void setQnaTitle(String qnaTitle) {
 		this.qnaTitle = qnaTitle;
 	}
+
 
 	public String getQnaContent() {
 		return qnaContent;
 	}
 
+
 	public void setQnaContent(String qnaContent) {
 		this.qnaContent = qnaContent;
 	}
+
 
 	public int getQnaReadCount() {
 		return qnaReadCount;
 	}
 
+
 	public void setQnaReadCount(int qnaReadCount) {
 		this.qnaReadCount = qnaReadCount;
 	}
+
 
 	public Timestamp getQnaCreateDt() {
 		return qnaCreateDt;
 	}
 
+
 	public void setQnaCreateDt(Timestamp qnaCreateDt) {
 		this.qnaCreateDt = qnaCreateDt;
 	}
+
 
 	public Timestamp getQnaModifyDt() {
 		return qnaModifyDt;
 	}
 
+
 	public void setQnaModifyDt(Timestamp qnaModifyDt) {
 		this.qnaModifyDt = qnaModifyDt;
 	}
+
 
 	public String getQnaStatus() {
 		return qnaStatus;
 	}
 
+
 	public void setQnaStatus(String qnaStatus) {
 		this.qnaStatus = qnaStatus;
 	}
+
 
 	public int getQnaCategoryNo() {
 		return qnaCategoryNo;
 	}
 
+
 	public void setQnaCategoryNo(int qnaCategoryNo) {
 		this.qnaCategoryNo = qnaCategoryNo;
 	}
+
 
 	public int getMemberNo() {
 		return memberNo;
 	}
 
+
 	public void setMemberNo(int memberNo) {
 		this.memberNo = memberNo;
 	}
+
 
 	public String getQnaCategoryNm() {
 		return qnaCategoryNm;
 	}
 
+
 	public void setQnaCategoryNm(String qnaCategoryNm) {
 		this.qnaCategoryNm = qnaCategoryNm;
 	}
+
 
 	public String getMemberNick() {
 		return memberNick;
 	}
 
+
 	public void setMemberNick(String memberNick) {
 		this.memberNick = memberNick;
 	}
+
+
+	public String getMemberGrade() {
+		return memberGrade;
+	}
+
+
+	public void setMemberGrade(String memberGrade) {
+		this.memberGrade = memberGrade;
+	}
+
 
 	@Override
 	public String toString() {
 		return "QnaBoard [qnaNo=" + qnaNo + ", qnaPno=" + qnaPno + ", qnaTitle=" + qnaTitle + ", qnaContent="
 				+ qnaContent + ", qnaReadCount=" + qnaReadCount + ", qnaCreateDt=" + qnaCreateDt + ", qnaModifyDt="
 				+ qnaModifyDt + ", qnaStatus=" + qnaStatus + ", qnaCategoryNo=" + qnaCategoryNo + ", memberNo="
-				+ memberNo + ", qnaCategoryNm=" + qnaCategoryNm + ", memberNick=" + memberNick + "]";
+				+ memberNo + ", qnaCategoryNm=" + qnaCategoryNm + ", memberNick=" + memberNick + ", memberGrade="
+				+ memberGrade + "]";
 	}
-
 
 	
 }

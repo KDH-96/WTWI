@@ -251,11 +251,11 @@ opacity
 
 
 		<%-- 로그인 되어 있을 경우에만 글쓰기 버튼 노출 --%>
-		<%-- <c:if test="${!empty loginMember }"> --%>
+		<c:if test="${!empty loginMember }"> 
 			<%-- <button type="button" class="btn btn-primary float-right" id="insertBtn"
 				 onclick="location.href='../board2/insertForm?type=${pagination.boardType}';">글쓰기</button> --%>
 			<a class="btn btn-primary float-right" id="insertBtn" href='${contextPath}/qnaboard/insertForm'>글쓰기</a>
-		<%-- </c:if> --%>
+		 </c:if> 
 
 
 		<%---------------------- Pagination start----------------------%>

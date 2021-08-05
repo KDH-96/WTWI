@@ -19,7 +19,6 @@
 		<id property="qnaNo" column="QNA_NO" />
 
 		<result property="qnaPno" column="QNA_PNO" />
-		<result property="qnaPno" column="QNA_PNO" />
 		<result property="qnaTitle" column="QNA_TITLE" />
 		<result property="qnaContent" column="QNA_CONTENT" />
 		<result property="qnaReadCount" column="QNA_READ_COUNT" />
@@ -30,6 +29,7 @@
 		<result property="qnaCategoryNm" column="QNA_CATEGORY_NM" />
 		<result property="memberNo" column="MEMBER_NO" />
 		<result property="memberNick" column="MEMBER_NICK" />
+		<result property="memberGrade" column="MEMBER_GRADE" />
 
 	</resultMap>
 
@@ -112,8 +112,8 @@
 	</select>
 	
 	<select id="selectBoard" parameterType="_int" resultMap="qna_rm">
-		SELECT QNA_NO, QNA_CATEGORY_NM, QNA_TITLE, QNA_CONTENT,
-		MEMBER_NO, MEMBER_NICK, QNA_READ_COUNT, QNA_CREATE_DT, QNA_MODIFY_DT,QNA_STATUS
+		SELECT QNA_NO,QNA_CATEGORY_NO, QNA_CATEGORY_NM, QNA_TITLE, QNA_CONTENT,
+		MEMBER_NO, MEMBER_NICK, MEMBER_GRADE, QNA_READ_COUNT, QNA_CREATE_DT, QNA_MODIFY_DT,QNA_STATUS
 		FROM QNA_BOARD
 		JOIN QNA_CATEGORY USING(QNA_CATEGORY_NO)
 		JOIN MEMBER USING(MEMBER_NO)
@@ -133,6 +133,11 @@
 	
 	<insert id="insertBoard" parameterType="QnaBoard">
 		INSERT INTO QNA_BOARD
-		VALUES(SEQ_QBNO.NEXTVAL,NULL,#{qnaTitle},#{qnaContent},DEFAULT,DEFAULT,DEFAULT,DEFAULT,#{qnaCategoryNo},#{memberNo})
+		VALUES(SEQ_QBNO.NEXTVAL,NULL,#{qnaTitle},#{qnaContent},DEFAULT,DEFAULT,DEFAULT,#{qnaStatus},#{qnaCategoryNo},#{memberNo})
+	</insert>
+
+	<insert id="insertBoardRe" parameterType="QnaBoard">
+		INSERT INTO QNA_BOARD
+		VALUES(SEQ_QBNO.NEXTVAL,#{qnaPno},#{qnaTitle},#{qnaContent},DEFAULT,DEFAULT,DEFAULT,DEFAULT,#{qnaCategoryNo},#{memberNo})
 	</insert>
 </mapper>

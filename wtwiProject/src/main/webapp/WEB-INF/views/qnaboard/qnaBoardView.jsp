@@ -217,7 +217,7 @@
 
             <div id="category-area">
                 <!-- Category -->
-                <h6 style="line-height: 35px;">[${board.qnaCategoryNm}]</h6>
+                <h6 name="qnaCategoryNo" style="line-height: 35px;">[${board.qnaCategoryNm}]</h6>
             </div>
 
             <div id="content-title-area">
@@ -310,8 +310,16 @@
             <br>
             <br>
         </div>
+		
+				<%-- 로그인 되어 있을 경우에만 글쓰기 버튼 노출 --%>
+		<c:if test="${loginMember.memberGrade=='A'}"> 
+			<%-- <button type="button" class="btn btn-primary float-right" id="insertBtn"
+				 onclick="location.href='../board2/insertForm?type=${pagination.boardType}';">글쓰기</button> --%>
+			<a class="btn btn-primary float-right" id="insertBtn" href='${contextPath}/qnaboard/insertFormRE?qnaPno=${board.qnaNo}&qnaCategoryNo=${board.qnaCategoryNo}'>답글달기</a>
+		 </c:if> 
 
-
+		<br>
+		<br>
         <hr>
 
 

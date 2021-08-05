@@ -80,6 +80,24 @@ public class QnaBoardServiceImpl implements QnaBoardService{
 		
 		int boardNo = dao.insertBoard(board);
 		
+		//System.out.println(board);
+		
+		return boardNo;
+	}
+	
+	// 게시판 답글 삽입
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int insertBoardRe(QnaBoard board) {
+		// 크로스 사이트 방지 + 개행문자 처리
+		board.setQnaTitle(replaceParameter(board.getQnaTitle()));
+		board.setQnaContent(replaceParameter(board.getQnaContent()));
+		
+		board.setQnaContent(board.getQnaContent().replaceAll("(\r\n|\r|\n|\n\r)", "<br>"));
+		
+		int boardNo = dao.insertBoardRe(board);
+		
+		//System.out.println(board);
 		return boardNo;
 	}
 	
@@ -95,6 +113,8 @@ public class QnaBoardServiceImpl implements QnaBoardService{
 
 		return result;
 	}
+
+	
 	
 	
 	

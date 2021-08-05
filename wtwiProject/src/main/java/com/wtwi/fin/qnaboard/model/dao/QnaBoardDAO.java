@@ -90,5 +90,14 @@ public class QnaBoardDAO {
 		return sqlSession.insert("qnaboardMapper.insertBoard", board);
 	}
 
+	
+	/** 게시글 답글 작성
+	 * @param board
+	 * @return
+	 */
+	public int insertBoardRe(QnaBoard board) {
+		return sqlSession.insert("qnaboardMapper.insertBoardRe", board);
+	}
+
 
 }

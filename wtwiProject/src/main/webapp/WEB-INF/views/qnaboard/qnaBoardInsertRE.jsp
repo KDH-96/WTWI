@@ -188,20 +188,14 @@
 
 	<div class="container my-5">
 
-		<h3>문의게시글 등록</h3>
+		<h3>답글 등록</h3>
 		<hr>
-		<form action="insertForm" method="post" role="form"  onsubmit="return boardValidate();">
-			<!-- 카테고리 선택 -->
-			<c:if test="${ !empty category}"> 			
-				<div id="category-pick-area">
-					<label for="category"> 말머리 : </label>
-					<select name="qnaCategoryNo" id="category-option">
-							<c:forEach items="${category}" var="c">
-								<option value="${c.qnaCategoryNo}">${c.qnaCategoryNm}</option>
-							</c:forEach>
-					</select>
-				</div>
-			</c:if>
+		<form action="insertFormRE" method="post" role="form"  onsubmit="return boardValidate();">
+			
+			<div class="form-inline mb-2">
+					<label class="input-group-addon mr-3 insert-label"><h5>To.</h5></label>
+			<h5 class="my-0" id="writer">${loginMember.memberNick}</h5>
+			</div>
 			
 			<hr>
 
@@ -223,10 +217,11 @@
 						<label for="checkbox" id="show-ask">공개</label>
 					</div>
 					
-					<input type="checkbox" id="switch1" name="qnaStatus" class="input__on-off" value="Y"> 
+					<input type="checkbox" id="switch1" name="qnaStatus" class="input__on-off"> 
 					
 					<label for="switch1" class="label__on-off"> <span class="marble"></span>
-					<span class="on">on</span> <span class="off">off</span>
+					<span class="on" value="S">on</span>
+					<span class="off" value="Y">off</span>
 					</label>
 
 				</div>
@@ -256,7 +251,8 @@
 
 				</div>
 			</div>
-
+			<input type="hidden" name="qnaPno" value="${param.qnaPno}">
+			<input type="hidden" name="qnaCategoryNo" value="${param.qnaCategoryNo}">
 		</form>
 
 

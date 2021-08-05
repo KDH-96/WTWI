@@ -66,10 +66,15 @@ public class QnaBoardController {
 								Model model, RedirectAttributes ra) {
 		
 		QnaBoard board = service.selectqnaBoard(qnaNo);
-		
 		if(board!=null) {
 			model.addAttribute("board", board);
-			//System.out.println(board);
+			System.out.println(board);
+			
+			if(board.getQnaStatus()=="S") { // 게시글 공개 여부가 S일 때
+				if(board.getMemberGrade()!="A" || board.getMemberNo()!=board.getMemberNo()) { // 회원 등급이 "A"
+						MemberController.swalSetMessage(ra, "error", "해당 게시글은 비공개 입니다.", "작성 본인과 관리자만 조회 가능합니다.");
+				}
+			}
 			return "qnaboard/qnaBoardView";
 		}else {
 			MemberController.swalSetMessage(ra, "error", "존재하지 않는 게시글입니다", null);
@@ -88,6 +93,7 @@ public class QnaBoardController {
 		return "qnaboard/qnaBoardInsert";
 	}
 	
+	// 문의게시판 작성
 	@RequestMapping(value="insertForm", method=RequestMethod.POST)
 	public String insertBoard(@ModelAttribute QnaBoard board,
 								@ModelAttribute("loginMember") Member loginMember,
@@ -98,14 +104,58 @@ public class QnaBoardController {
 		
 		int boardNo = service.insertBoard(board);
 		
+		System.out.println(board);
+		
 		String path = null;
 		
 		if(boardNo>0) {
 			path = "redirect:" + boardNo;
-			MemberController.swalSetMessage(ra, "success", "게시글 삽입 성공!", path);
+			MemberController.swalSetMessage(ra, "success", "게시글 삽입 성공!", null);
 		}else {
+			path = "redirect:" + request.getHeader("referer");
+			MemberController.swalSetMessage(ra, "error", "게시글 삽입 실패", null);
+		}
+		return path;
+	}
+	
+	
+	// 문의게시판 게시글 답글작성 화면 조회
+	@RequestMapping(value="insertFormRE", method=RequestMethod.GET)
+	public String insertFormRE(Model model) {
+		
+		// 카테고리 목록 조회
+		List<QnaCategory> category = service.selectCategory();
+		model.addAttribute("category", category);
+		
+		
+		return "qnaboard/qnaBoardInsertRE";
+	}
+	
+	// 문의게시판 답글작성
+	@RequestMapping(value="insertFormRE", method=RequestMethod.POST)
+	public String insertBoardRE(@ModelAttribute QnaBoard board,
+			@ModelAttribute("loginMember") Member loginMember,
+			HttpServletRequest request,
+			RedirectAttributes ra) {
+		// 회원 정보 얻어오기
+		board.setMemberNo(loginMember.getMemberNo());
+		
+		if(board.getQnaStatus() == null) {
+			board.setQnaStatus("S");
+		}
+		
+		int boardNo = service.insertBoardRe(board);
+		
+		//System.out.println(board);
+		
+		String path = null;
+		
+		if(boardNo>0) {
 			path = "redirect:" + boardNo;
-			MemberController.swalSetMessage(ra, "error", "게시글 삽입 실패", path);
+			MemberController.swalSetMessage(ra, "success", "게시글 삽입 성공!", null);
+		}else {
+			path = "redirect:" + request.getHeader("referer");
+			MemberController.swalSetMessage(ra, "error", "게시글 삽입 실패", null);
 		}
 		return path;
 	}
