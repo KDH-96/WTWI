@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 
+
 <head>
 <meta charset="utf-8">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -31,6 +32,7 @@
 
 <title>Where the weather is...</title>
 <style>
+
 #attraction-info-area {
 	right: 0;
 	position: absolute;
@@ -86,11 +88,13 @@
 .star-rating label:hover, .star-rating label:hover ~label {
 	-webkit-text-fill-color: #fff58c;
 }
+
 </style>
 </head>
 
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+
 
 	<div id="map" style="width:100%;height:100vh;">
 
@@ -339,6 +343,7 @@
 
                         // 커스텀 오버레이의 닫기 버튼
                         var closeBtn = document.createElement('button');
+
                         closeBtn.className = 'btn btn-primary';
                         closeBtn.innerHTML = '닫기';
 
@@ -365,6 +370,7 @@
                         // 마커 클릭 시 커스텀 오버레이 표시
                         kakao.maps.event.addListener(marker, 'click', function () {
 
+
                             if (clickedOverlay) {
                                 clickedOverlay.setMap(null);
                             }
@@ -378,6 +384,7 @@
                             } else {
                                 map.setLevel(map.getLevel());
                             }
+
 
                             $("#attraction-info").fadeIn(100);
 
