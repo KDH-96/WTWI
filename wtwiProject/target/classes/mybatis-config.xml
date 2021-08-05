@@ -27,6 +27,8 @@
 
 		
 		<typeAlias type="com.wtwi.fin.member.model.vo.Member" alias="Member" /> 
+		<typeAlias type="com.wtwi.fin.member.model.vo.Pagination" alias="MyPagePagination" />
+		<typeAlias type="com.wtwi.fin.member.model.vo.Search" alias="MyPageSearch" />
     
     
     
@@ -43,7 +45,8 @@
     
     
 
-		<mapper resource="/mappers/member-mapper.xml"></mapper>
+		<mapper resource="/mappers/member-mapper.xml"/>
+		<mapper resource="/mappers/myPage-mapper.xml"/>
     
     
 
