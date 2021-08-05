@@ -14,73 +14,62 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>내가 쓴 글 - 자유게시판</title>
+<title>내가 쓴 글 - 문의게시판</title>
 <style>
-a {
-	text-decoration: none;
-	color: inherit;
-}
-
-a:hover {
-	text-decoration: none;
-	color: inherit;
-	font-weight: bold;
-}
-
-.myPage-body {
-	display: flex;
-	align-items: center;
-	height: 100vh;
-}
-
-.myPage-main {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
-.myPage-main h2 {
-	margin-bottom: 30px;
-}
-
-.myPage-main>div {
-	width: 90%;
-}
-
-.myPage-postBtnArea {
-	margin-bottom: 20px;
-}
-
-.myPage-main table {
-	text-align: center;
-}
-
-.myPage-sideBar {
-	display: flex;
-	flex-direction: column;
-}
-
-.myPage-pagination {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	list-style: none;
-	width: 100%;
-	padding: 0px;
-}
-
-.myPage-pagination a {
-	border: 1px solid rgba(0, 0, 0, 0.3);
-	padding: 5px 13px;
-	margin: 0px 2px;
-	border-radius: 5px;
-}
-
-.focus-page {
-	font-weight: bold;
-}
+ 		a {
+            text-decoration: none;
+            color: inherit;
+        }
+        a:hover {
+            text-decoration: none;
+            color: inherit;
+            font-weight: bold;
+        }
+        .myPage-body {
+            display: flex;
+            align-items: center;
+            height: 100vh;
+        }
+        .myPage-main {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .myPage-main h2{
+            margin-bottom: 30px;
+        }
+        .myPage-main > div{
+            width: 90%;
+        }
+        .myPage-postBtnArea {
+            margin-bottom: 20px;
+        }
+        .myPage-main table{
+            text-align: center;
+        }
+        .myPage-sideBar {
+            display: flex;
+            flex-direction: column;
+        }
+        .myPage-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            width: 100%;
+            padding:0px;
+        }
+        .myPage-pagination a{
+        	border: 1px solid rgba(0,0,0,0.3);
+        	padding: 5px 13px;
+        	margin: 0px 2px;
+        	border-radius: 5px;
+        }
+        .focus-page {
+        	font-weight: bold;
+        }
 </style>
 </head>
 
@@ -98,85 +87,89 @@ a:hover {
 	<main class="myPage-main">
 		<h2>내가 쓴 게시글</h2>
 		<div class="myPage-postBtnArea">
-			<a href="${contextPath }/myPage/post" class="btn btn-secondary">자유게시판</a>
-			<a href="${contextPath }/myPage/qnaBoard" class="btn btn-light">문의게시판</a>
+			<a href="${contextPath }/myPage/post" class="btn btn-light">자유게시판</a>
+			<a href="${contextPath }/myPage/qnaBoard" class="btn btn-secondary">문의게시판</a>
 			<a href="${contextPath }/myPage/review" class="btn btn-light">후기</a>
 		</div>
 		<div>
 			<table class="table">
 				<colgroup>
-					<col width="8%" />
-					<col width="10%" />
-					<col width="55%" />
-					<col width="10%" />
-					<col width="8%" />
-					<col width="8%" />
+					<col width="8%"/>
+                    <col width="10%"/>
+                    <col width="55%"/>
+                    <col width="13%"/>
+                    <col width="13"/>
 				</colgroup>
 				<thead>
 					<tr>
 						<th scope="col">No</th>
-						<th scope="col">게시판 유형</th>
-						<th scope="col">게시글제목</th>
-						<th scope="col">작성일자</th>
-						<th scope="col">좋아요 수</th>
-						<th scope="col">조회수</th>
+	                    <th scope="col">게시판 유형</th>
+	                    <th scope="col">게시글제목</th>
+	                    <th scope="col">작성일자</th>
+	                    <th scope="col">답변여부</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:choose>
-						<c:when test="${empty freeBoardList }">
-
+						<c:when test="${empty QnABoardList }">
+						
 							<!-- 작성한 게시글이 없을 때 -->
 							<tr>
 								<td colspan="6">아직 작성한 게시글이 없습니다</td>
 							</tr>
-
+						
 						</c:when>
 						<c:otherwise>
-
-							<c:forEach items="${freeBoardList }" var="board" varStatus="b">
-
+						
+							<c:forEach items="${QnABoardList }" var="board" varStatus="b">
+							
 								<tr>
 									<!-- 글번호 -->
-									<th scope="row">${board.freeNo}</th>
-
+									<th scope="row">${board.qnaNo}</th>
+									
 									<%-- 카테고리 --%>
-									<td>${board.freeCategoryName}</td>
-
+									<td>${board.qnaCategoryNm}</td>
+									
 									<!-- 글 제목 -->
-									<td class="boardTitle"><a
-										href="${board.freeNo}?cp=${pagination.currentPage}">${board.freeTitle}</a>
-										<c:if test="${board.replyCount!=0}">
-											<span>[${board.replyCount}]</span>
-										</c:if></td>
+									<td class="boardTitle">
+										<a href="${board.qnaNo}?cp=${pagination.currentPage}${searchStr}">${board.qnaTitle }</a>
+									</td>
 									<%-- 작성일 --%>
-									<td><fmt:formatDate var="createDate"
-											value="${board.freeCreateDate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
-											var="today" value="<%=new java.util.Date()%>"
-											pattern="yyyy-MM-dd" /> <c:choose>
+									<td>
+										
+										<fmt:formatDate var="createDate" value="${board.qnaCreateDt}"  pattern="yyyy-MM-dd"/>                          
+										<fmt:formatDate var="today" value="<%= new java.util.Date() %>"  pattern="yyyy-MM-dd"/>                          
+										
+										<c:choose>
 											<%-- 글 작성일이 오늘이 아닐 경우 --%>
 											<c:when test="${createDate != today}">
 												${createDate}
 											</c:when>
-
+											
 											<%-- 글 작성일이 오늘일 경우 --%>
 											<c:otherwise>
-												<fmt:formatDate value="${board.freeCreateDate}"
-													pattern="HH:mm" />
+												<fmt:formatDate value="${board.qnaCreateDt}"  pattern="HH:mm"/>                          
 											</c:otherwise>
-										</c:choose></td>
+										</c:choose>
+										
+									</td>
+									
+									<!-- 답변여부 -->
+									<c:choose>
+										<c:when test="${board.qnaNo != board.qnaPno }">
+											<td>답변대기</td>
+										</c:when>
+										<c:otherwise>
+											<td>답변완료</td>										
+										</c:otherwise>
+									</c:choose>
 
-									<!-- 좋아요수 -->
-									<td>${board.likeCount}</td>
-
-									<!-- 조회수 -->
-									<td>${board.freeReadCount}</td>
 								</tr>
-
+							
 							</c:forEach>
-
+						
 						</c:otherwise>
-
+					
 					</c:choose>
 
 
@@ -187,8 +180,7 @@ a:hover {
 			<!---------------------- Pagination start---------------------->
 			<!-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 -->
 
-
-			<c:set var="pageURL" value="post"></c:set>
+			<c:set var="pageURL" value="qnaBoard"></c:set>
 	
 
 			<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage }${searchStr}"></c:set>
@@ -228,10 +220,6 @@ a:hover {
 					</c:forEach>
 
 
-
-
-
-
 					<!-- 현재 페이지가 마지막 페이지 미만인 경우 -->
 					<c:if test="${pagination.currentPage < pagination.maxPage }">
 						<li><a href="${pageURL}?cp=${pagination.currentPage+1}${searchStr}""><i
@@ -251,14 +239,12 @@ a:hover {
 		</div>
 		<!-- 검색창 -->
 		<div class="my-5">
-			<form action="post" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
+			<form action="qnaBoard" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
 				<select class="form-control" id="formCategory" name="sc" >
                   		<option value="0">전체</option>
-                  		<option value="1">잡담</option>
-                  		<option value="2">추천</option>
-                  		<option value="3">궁금</option>
-                  		<option value="4">같이</option>
-                  		<option value="5">기타</option>
+                  		<option value="1">명소 정보</option>
+                  		<option value="2">시스템</option>
+                  		<option value="3">기타</option>
                   	</select>
 				<select class="form-control" name="sk" >
 					<option value="title">글제목</option>
@@ -268,7 +254,7 @@ a:hover {
 				<button class="form-control btn btn-primary" style="width: 100px; display: inline-block;">검색</button>
 			</form>
 		</div>
-
+		
 	</main>
 	<script>
 		// 검색 내용이 있을 경우 검색창에 해당 내용을 작성해두는 기능
