@@ -73,6 +73,7 @@ public class QnaBoardController {
 			if(board.getQnaStatus()=="S") { // 게시글 공개 여부가 S일 때
 				if(board.getMemberGrade()!="A" || board.getMemberNo()!=board.getMemberNo()) { // 회원 등급이 "A"
 						MemberController.swalSetMessage(ra, "error", "해당 게시글은 비공개 입니다.", "작성 본인과 관리자만 조회 가능합니다.");
+						return "redirect:list";
 				}
 			}
 			return "qnaboard/qnaBoardView";
