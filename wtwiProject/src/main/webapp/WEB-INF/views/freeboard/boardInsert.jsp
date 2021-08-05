@@ -30,7 +30,7 @@
                 <textarea id="summernote" name="editordata"></textarea>
             </div>
             <input type="hidden" name="imgs" id="imgs">
-            <button type="button" class="btn btn-outline-secondary" onclick="">취소</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="location.href='list';">취소</button>
             <button type="submit" class="btn btn-secondary float-right">등록</button>
         </form>
     </div>

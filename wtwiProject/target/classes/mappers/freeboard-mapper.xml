@@ -78,55 +78,65 @@
 	
 	<!-- 검색 게시글 수 조회(5) -->
 	<select id="selectSearchListCount" parameterType="FreeSearch" resultMap="pg_rm">
-		SELECT COUNT(*) CNT FROM FREE_LIST WHERE FREE_STATUS='Y' 
-		<if test="sv!=null">
-			AND
-			<bind name="val" value="'%'+sv+'%'"/>
-			<choose>
-				<when test="sk=='ticontent'">
-					(FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
-				</when>
-				<when test="sk=='title'">
-					FREE_TITLE LIKE #{val}
-				</when>
-				<when test="sk=='content'">
-					FREE_CONTENT LIKE #{val}
-				</when>
-				<when test="sk=='author'">
-					MEMBER_NICK LIKE #{val}
-				</when>
-				<when test="sk=='category'">
-					FREE_CATEGORY_NO = #{sc} AND (FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
-				</when>
-			</choose>
-		</if>
+		SELECT COUNT(*) CNT FROM FREE_LIST WHERE FREE_STATUS='Y'
+		<choose>
+			<when test="sv!=null">
+				AND
+				<bind name="val" value="'%'+sv+'%'"/>
+				<choose>
+					<when test="sk=='ticontent'">
+						(FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
+					</when>
+					<when test="sk=='title'">
+						FREE_TITLE LIKE #{val}
+					</when>
+					<when test="sk=='content'">
+						FREE_CONTENT LIKE #{val}
+					</when>
+					<when test="sk=='author'">
+						MEMBER_NICK LIKE #{val}
+					</when>
+					<when test="sk=='category'">
+						FREE_CATEGORY_NO = #{sc} AND (FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
+					</when>
+				</choose>
+			</when>
+			<otherwise>
+				AND FREE_CATEGORY_NO = #{sc}
+			</otherwise>
+		</choose>
 	</select>
 	
 	<!-- 검색 게시글 목록 조회(6) -->
 	<select id="selectSearchBoardList" parameterType="FreeSearch" resultMap="free_rm">
 		SELECT * FROM FREE_LIST
 		WHERE FREE_STATUS='Y'
-		<if test="sv!=null">
-			AND
-			<bind name="val" value="'%'+sv+'%'"/>
-			<choose>
-				<when test="sk=='ticontent'">
-					(FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
-				</when>
-				<when test="sk=='title'">
-					FREE_TITLE LIKE #{val}
-				</when>
-				<when test="sk=='content'">
-					FREE_CONTENT LIKE #{val}
-				</when>
-				<when test="sk=='author'">
-					MEMBER_NICK LIKE #{val}
-				</when>
-				<when test="sk=='category'">
-					FREE_CATEGORY_NO = #{sc} AND (FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
-				</when>
-			</choose>
-		</if>
+		<choose>
+			<when test="sv!=null">
+				AND
+				<bind name="val" value="'%'+sv+'%'"/>
+				<choose>
+					<when test="sk=='ticontent'">
+						(FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
+					</when>
+					<when test="sk=='title'">
+						FREE_TITLE LIKE #{val}
+					</when>
+					<when test="sk=='content'">
+						FREE_CONTENT LIKE #{val}
+					</when>
+					<when test="sk=='author'">
+						MEMBER_NICK LIKE #{val}
+					</when>
+					<when test="sk=='category'">
+						FREE_CATEGORY_NO = #{sc} AND (FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
+					</when>
+				</choose>
+			</when>
+			<otherwise>
+				AND FREE_CATEGORY_NO = #{sc}
+			</otherwise>
+		</choose>
 		ORDER BY FREE_NO DESC
 	</select>
 	

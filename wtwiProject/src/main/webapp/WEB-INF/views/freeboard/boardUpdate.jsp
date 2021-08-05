@@ -13,6 +13,16 @@
 <jsp:include page="../common/header.jsp" />
     <div class="container">
         <h3 class="my-4 font-weight-bold">자유게시판</h3>
+        <%-- 검색 상태 유지를 위한 쿼리스트링용 변수 --%>
+        <c:if test="${!empty param.sk}">
+        	<c:if test="${param.sk=='category' && !empty param.sc}">
+        		<c:set var="searchCategory" value="&sc=${param.sc}"/>
+        	</c:if>
+        	<c:if test="${!empty param.sv && param.sv!=''}">
+        		<c:set var="searchValue" value="&sv=${param.sv}"/>
+        	</c:if>
+        	<c:set var="searchString" value="&sk=${param.sk}${searchCategory}${searchValue}"/>
+        </c:if>
         <form action="update" method="POST" id="updateForm">
             <div class="row mb-3">
 	            <div class="col-2">
@@ -32,7 +42,7 @@
             <input type="hidden" name="imgs" id="imgs">
             <input type="hidden" name="deleteImgs" id="deleteImgs">
             <input type="hidden" name="freeNo" value="${board.freeNo}">
-            <button type="button" class="btn btn-outline-secondary" onclick="">취소</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="location.href='${board.freeNo}">취소</button>
             <button type="submit" class="btn btn-secondary float-right">등록</button>
         </form>
     </div>

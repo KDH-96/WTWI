@@ -162,7 +162,7 @@
                    		<option value="4">같이</option>
                    		<option value="5">기타</option>
                    	</select>
-                    <input type="text" class="form-control col-6 ml-1" placeholder="검색어를 입력하세요." name="sv">
+                    <input type="text" class="form-control col-6 ml-1" placeholder="검색어를 입력하세요." id="formValue" name="sv">
                     <button class="btn btn-outline-secondary">검색</button>
                 </div>
               </form>
@@ -210,6 +210,19 @@ $(document).ready(function(){
 		}
 	});
 	
+	$("#searchForm").on("submit", function(){
+		if($("#formValue").val().trim().length==0){
+			if($("#formKey").val()!="category"){
+				swal({
+					icon: "warning",
+					title: "검색어를 입력해주세요."
+				});
+				return false;
+			} else{
+				$("#formValue").attr("name", "");
+			}
+		}
+	})
 });
 </script>
 </body>

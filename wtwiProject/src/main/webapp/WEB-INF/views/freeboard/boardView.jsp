@@ -90,7 +90,17 @@
             </div>
         </div>
 		<jsp:include page="../freeboard/reply.jsp" />
-        <button class="btn btn-outline-secondary mt-2" onclick="">이전 목록</button>
+		<%-- 검색 상태 유지를 위한 쿼리스트링용 변수 --%>
+        <c:if test="${!empty param.sk}">
+        	<c:if test="${param.sk=='category' && !empty param.sc}">
+        		<c:set var="searchCategory" value="&sc=${param.sc}"/>
+        	</c:if>
+        	<c:if test="${!empty param.sv && param.sv!=''}">
+        		<c:set var="searchValue" value="&sv=${param.sv}"/>
+        	</c:if>
+        	<c:set var="searchString" value="&sk=${param.sk}${searchCategory}${searchValue}"/>
+        </c:if>
+        <button class="btn btn-outline-secondary mt-2" onclick="location.href='list?cp=${param.cp}${searchString}';">이전 목록</button>
     </div>
 <!-- footer include -->
 <form action="#" method="POST" name="requestForm">
