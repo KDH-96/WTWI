@@ -111,23 +111,29 @@ likeCheck();
 
 //좋아요 여부 체크해서 표시하기
 function likeCheck(){
-	$.ajax({
-		url : "likeCheck",
-		data : {"freeNo": freeNo},
-		type : "POST",
+	
+	if(memberNo==""){
+		return false;
 		
-		success : function(flag){
+	} else{
+		$.ajax({
+			url : "likeCheck",
+			data : {"freeNo": freeNo},
+			type : "POST",
 			
-			if(flag){
-				$("#likeBtn").html("");
-				var i = $("<i>").addClass("bi bi-heart-fill");
-				$("#likeBtn").append(i);
+			success : function(flag){
+				
+				if(flag){
+					$("#likeBtn").html("");
+					var i = $("<i>").addClass("bi bi-heart-fill");
+					$("#likeBtn").append(i);
+				}
+			},
+			error : function(e){
+				console.log(e);
 			}
-		},
-		error : function(e){
-			console.log(e);
-		}
-	});
+		});
+	}
 }
 
 // 좋아요 기능

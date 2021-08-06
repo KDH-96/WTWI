@@ -278,7 +278,4 @@ public class BoardController {
 		return service.selectBoard(freeNo).getLikeCount();
 	}
 	
-	
-	
-	
 }
