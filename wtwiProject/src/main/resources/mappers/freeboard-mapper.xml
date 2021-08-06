@@ -175,7 +175,7 @@
 	<!-- 게시글 수정(13-1) -->
 	<update id="updateBoard" parameterType="FreeBoard">
 		UPDATE FREE_BOARD SET
-		FREE_CATEGORY_NO = ${freeCategoryNo}, FREE_TITLE = #{freeTitle}, FREE_CONTENT = #{freeContent}
+		FREE_CATEGORY_NO = ${freeCategoryNo}, FREE_TITLE = #{freeTitle}, FREE_CONTENT = #{freeContent}, FREE_MODIFY_DT = SYSTIMESTAMP
 		WHERE FREE_NO = #{freeNo}
 	</update>
 	
@@ -188,5 +188,40 @@
 		</foreach>
 		)
 	</delete>
+	
+	<!-- 좋아요 체크(14) -->
+	<select id="likeCheck" parameterType="map" resultType="_boolean">
+		SELECT DECODE(COUNT(*), 1, 1, 0, 0) FLAG
+		FROM FREE_LIKE
+		WHERE FREE_NO = #{freeNo} AND MEMBER_NO = #{memberNo}
+	</select>
+	
+	<!-- 좋아요 취소(15-1) -->
+	<delete id="likeCancel" parameterType="map">
+		DELETE FROM FREE_LIKE
+		WHERE FREE_NO = #{freeNo} AND MEMBER_NO = #{memberNo}
+	</delete>
+	
+	<!-- 좋아요 반영(15-2) -->
+	<insert id="likeMark" parameterType="map">
+		INSERT INTO FREE_LIKE VALUES
+		(#{freeNo}, #{memberNo})
+	</insert>
+	
+	<!-- 정렬 게시글 목록 조회(16) -->
+	<select id="selectSortList" parameterType="FreeSearch" resultMap="free_rm">
+		SELECT * FROM FREE_LIST
+		<choose>
+			<when test="sk=='date'">
+				ORDER BY FREE_CREATE_DT ASC
+			</when>
+			<when test="sk=='read'">
+				ORDER BY FREE_READ_COUNT DESC, FREE_CREATE_DT DESC
+			</when>
+			<when test="sk=='like'">
+				ORDER BY LIKE_COUNT DESC, FREE_CREATE_DT DESC
+			</when>
+		</choose>
+	</select>
 	
 </mapper>
