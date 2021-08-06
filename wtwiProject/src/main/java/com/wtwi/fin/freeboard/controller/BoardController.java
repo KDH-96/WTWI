@@ -39,7 +39,7 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 	
-	// 자유게시판 목록 조회(1, 2) + 검색(5, 6)
+	// 자유게시판 목록 조회(1, 2) + 검색(5, 6) + 정렬(16)
 	@RequestMapping(value="list", method=RequestMethod.GET)
 	public String boardList(@RequestParam(value="cp", required=false, defaultValue="1") int cp,
 							Model model, 
@@ -59,6 +59,14 @@ public class BoardController {
 			// 게시글 목록 조회(2)
 			boardList = service.selectBoardList(pagination);
 		
+		// 정렬 시 목록 조회
+		} else if(search.getSk().equals("date")||search.getSk().equals("like")||search.getSk().equals("read")) {
+			
+			pagination = service.getPaganation(pg);
+			
+			// 정렬 게시글 목록 조회(16)
+			boardList = service.selectSortList(search, pagination);
+			
 		// 검색 시 목록 조회
 		} else {
 			// 검색 게시글 수 조회(5)
@@ -238,14 +246,36 @@ public class BoardController {
 		return path;
 	}
 	
+	// 자유게시판 게시글 좋아요 체크(14)
+	@ResponseBody
+	@RequestMapping(value="likeCheck", method=RequestMethod.POST)
+	public boolean likeCheck(@RequestParam("freeNo") int freeNo,
+							 @ModelAttribute("loginMember") Member loginMember) {
+		
+		int memberNo = loginMember.getMemberNo();
+		
+		return service.likeCheck(freeNo, memberNo);
+	}
 	
+	// 자유게시판 게시글 좋아요 기능(15)
+	@ResponseBody
+	@RequestMapping(value="like", method=RequestMethod.POST)
+	public int freeboardLike(@RequestParam("freeNo") int freeNo,
+							 @ModelAttribute("loginMember") Member loginMember,
+							 RedirectAttributes ra,
+							 Model model) {
+
+		int memberNo = loginMember.getMemberNo();
+		
+		return service.freeboardLike(freeNo, memberNo);
+	}
 	
-	
-	
-	
-	
-	
-	
-	
+	// 자유게시판 게시글 좋아요 처리 후 좋아요 개수 카운트(16)
+	@ResponseBody
+	@RequestMapping(value="likeCount", method=RequestMethod.POST)
+	public int likeCount(@RequestParam("freeNo") int freeNo) {
+		
+		return service.selectBoard(freeNo).getLikeCount();
+	}
 	
 }

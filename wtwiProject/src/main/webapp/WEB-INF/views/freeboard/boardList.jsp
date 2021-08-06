@@ -14,23 +14,26 @@
             font-size: 14px;
             border-bottom: 1px solid rgb(222, 226, 230);
         }
-        th, td{
+        td{
             text-align: center;
         }
         .fb-title{
             text-align: left;
         }
         .fb-no, .fb-count{
-            width: 8%;
+            width: 8%; text-align: center;
         }
         .fb-like{
-            width: 10%;
+            width: 10%; text-align: center;
         }
         .fb-category, .fb-author, .fb-date{
-            width: 12%;
+            width: 12%; text-align: center;
         }
         .input-value{
-            width: 50px;
+            width: 50px; text-align: center;
+        }
+        .fb-titlehead{
+        	text-align: center;
         }
     </style>
 </head>
@@ -38,19 +41,46 @@
 <jsp:include page="../common/header.jsp" />
     <div class="container">
         <h3 class="my-4 font-weight-bold">자유게시판</h3>
+        <%-- 정렬 기능을 위한 태그 --%>
+		<c:set var="sortDate" value="date"/>
+		<c:set var="sortRead" value="read"/>
+		<c:set var="sortLike" value="like"/>
         <table class="table table-hover free-board-list">
             <thead>
             <tr>
                 <th scope="col" class="fb-no">글번호</th>
                 <th scope="col" class="fb-category">카테고리</th>
-                <th scope="col">제목</th>
+                <th scope="col" class="fb-titlehead">제목</th>
                 <th scope="col" class="fb-author">작성자</th>
                 <th scope="col" class="fb-date">작성일자
-                    <span><a href="#"><i class="bi bi-caret-down-fill"></i></a></span>
+                	<c:choose>
+                		<c:when test="${param.sk=='date'}">
+		                    <a href="list"><i class="bi bi-caret-down-fill"></i></a>
+                		</c:when>
+                		<c:otherwise>
+		                    <a href="list?sk=${sortDate}"><i class="bi bi-caret-down-fill"></i></a>
+                		</c:otherwise>
+                	</c:choose>
                 </th>
-                <th scope="col" class="fb-count">조회수</th>
+                <th scope="col" class="fb-count">조회수
+                	<c:choose>
+                		<c:when test="${param.sk=='read'}">
+		                    <a href="list"><i class="bi bi-caret-down-fill"></i></a>
+                		</c:when>
+                		<c:otherwise>
+		                    <a href="list?sk=${sortRead}"><i class="bi bi-caret-down-fill"></i></a>
+                		</c:otherwise>
+                	</c:choose>
+                </th>
                 <th scope="col" class="fb-like">좋아요
-                    <span><a href="#"><i class="bi bi-caret-down-fill"></i></a></span>
+                	<c:choose>
+                		<c:when test="${param.sk=='like'}">
+		                    <a href="list"><i class="bi bi-caret-down-fill"></i></a>
+                		</c:when>
+                		<c:otherwise>
+		                    <a href="list?sk=${sortLike}"><i class="bi bi-caret-down-fill"></i></a>
+                		</c:otherwise>
+                	</c:choose>
                 </th>
             </tr>
             </thead>
@@ -168,6 +198,9 @@
               </form>
         </div>
     </div>
+    <form action="list" method="GET" id="sortForm">
+    	<input type="hidden" name="sk" id="sortKey" value="">
+    </form>
 <!-- footer include -->
 <script>
 keepSearch();

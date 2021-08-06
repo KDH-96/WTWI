@@ -218,6 +218,51 @@ public class BoardServiceImpl implements BoardService {
 		}
 		return result;
 	}
+	
+	// 좋아요 체크(14)
+	@Override
+	public boolean likeCheck(int freeNo, int memberNo) {
+		
+		// 해당 게시글의 글번호와 회원번호가 일치하는 행을 조회 -> 있으면 한 행이 조회됨(1==true)
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("freeNo", freeNo);
+		map.put("memberNo", memberNo);
+		
+		return dao.likeCheck(map);
+	}
+	
+	// 좋아요 기능(15)
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int freeboardLike(int freeNo, int memberNo) {
+		
+		int result = 0;
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("freeNo", freeNo);
+		map.put("memberNo", memberNo);
+		
+		// 좋아요 여부 체크
+		boolean flag = likeCheck(freeNo, memberNo);
+
+		// 15-1) 좋아요를 이미 눌렀다? -> 좋아요 취소
+		if(flag) {
+			dao.likeCancel(map);
+			result = 0;
+			
+		// 15-2) 좋아요를 아직 안눌렀다? -> 좋아요!
+		} else {
+			dao.likeMark(map);
+			result = 1;
+		}
+		return result;
+	}
+
+	// 정렬 게시글 목록 조회(16)
+	@Override
+	public List<Board> selectSortList(Search search, Pagination pagination) {
+		return dao.selectSortList(search, pagination);
+	}
 
 	// 크로스 사이트 스크립트 방지 처리 메소드
 	public static String replaceParameter(String param) {

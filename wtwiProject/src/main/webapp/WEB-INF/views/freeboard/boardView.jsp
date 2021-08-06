@@ -2,29 +2,22 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>자유게시판</title>
-    <style>
-        .free-view{
-            width: 1200px;
-            border-top: 1px solid rgb(222, 226, 230);
-        }
-        .free-category, .free-info2>span{
-            font-size: 14px;
-        }
-        .free-menu{
-            text-align: end;
-        }
-        .divide{
-            border-left: 1px solid rgb(222, 226, 230);
-        }
-    </style>
-</head>
-<body>
+<style>
+    .free-view{
+        width: 1200px;
+        border-top: 1px solid rgb(222, 226, 230);
+        border-bottom: 1px solid rgb(222, 226, 230);
+    }
+    .free-category, .free-info2>span{
+        font-size: 14px;
+    }
+    .free-menu{
+        text-align: end;
+    }
+    .divide{
+        border-left: 1px solid rgb(222, 226, 230);
+    }
+</style>
 <jsp:include page="../common/header.jsp" />
     <div class="container">
         <h3 class="my-4 font-weight-bold">자유게시판</h3>
@@ -33,7 +26,7 @@
                 <div class="badge badge-dark free-category col-1">${board.freeCategoryName}</div>
                 <div class="col-10">${board.freeTitle}</div>
                 <div class="free-menu col-1">
-                	<c:if test="${!empty loginMember }">
+                	<c:if test="${!empty loginMember}">
 	                    <a class="dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                    	<i class="bi bi-three-dots"></i>
 	                    </a>
@@ -78,18 +71,18 @@
             </div>
             <div class="col-md-4">
                 <div class="row mb-2 col-12">
-                    <a class="mr-2" href="#">
+                    <a class="mr-2 btn btn-sm" id="likeBtn">
                     	<i class="bi bi-heart"></i>
                     </a>
-                    <span class="mr-4">${board.likeCount}</span>
-                    <a class="mr-2" href="#">
+                    <span class="mr-4" id="likeCount">${board.likeCount}</span>
+                    <a class="mr-2 btn btn-sm" id="replyBtn">
                     	<i class="bi bi-chat"></i>
                     </a>
                     <span>${board.replyCount}</span>
                 </div>
             </div>
-        </div>
 		<jsp:include page="../freeboard/reply.jsp" />
+        </div>
 		<%-- 검색 상태 유지를 위한 쿼리스트링용 변수 --%>
         <c:if test="${!empty param.sk}">
         	<c:if test="${param.sk=='category' && !empty param.sc}">
@@ -107,24 +100,92 @@
 	<input type="hidden" name="freeNo" value="${board.freeNo}">
 	<input type="hidden" name="cp" value="${param.cp}">
 </form>
+
+<script src="${contextPath}/resources/js/freeboard/boardView.js"></script>
+
 <script>
-function fnRequest(addr){
-	document.requestForm.action = addr;
-	document.requestForm.submit();
+const freeNo = ${board.freeNo};
+const memberNo = "${loginMember.memberNo}";
+
+likeCheck();
+
+//좋아요 여부 체크해서 표시하기
+function likeCheck(){
+	
+	if(memberNo==""){
+		return false;
+		
+	} else{
+		$.ajax({
+			url : "likeCheck",
+			data : {"freeNo": freeNo},
+			type : "POST",
+			
+			success : function(flag){
+				
+				if(flag){
+					$("#likeBtn").html("");
+					var i = $("<i>").addClass("bi bi-heart-fill");
+					$("#likeBtn").append(i);
+				}
+			},
+			error : function(e){
+				console.log(e);
+			}
+		});
+	}
 }
-// 삭제시 알림창 띄우기
-function deleteAlert(){
-	swal({
-		icon: "warning",
-		title: "게시글을 삭제하시겠습니까?",
-		buttons: ["취소", "삭제"],
-		dangerMode: true,
-	}).then((willDelete) => {
-		if (willDelete) {
-			onclick=fnRequest("delete");
-		} 
+
+// 좋아요 기능
+$("#likeBtn").on("click", function(){
+	
+	if(memberNo==""){
+		swal({
+			icon : "warning",
+			title : "회원만 이용 가능합니다."
+		});
+		return false;
+		
+	} else{
+		$.ajax({
+			url : "like",
+			data : {"freeNo": freeNo},
+			type : "POST",
+			
+			success : function(result){
+				
+				if(result==1){
+					$("#likeBtn").html("");
+					var i = $("<i>").addClass("bi bi-heart-fill");
+					$("#likeBtn").append(i);
+					
+				} else if(result==0){
+					$("#likeBtn").html("");
+					var i = $("<i>").addClass("bi bi-heart");
+					$("#likeBtn").append(i);
+				} 
+				likeCount();
+			},
+			error : function(e){
+				console.log(e);
+			}
+		});
+	}
+});
+
+function likeCount(){
+	
+	$.ajax({
+		url : "likeCount",
+		data : {"freeNo": freeNo},
+		type : "POST",
+		
+		success : function(likeCount){
+			$("#likeCount").text(likeCount);
+		},
+		error : function(e){
+			console.log(e);
+		}
 	});
 }
 </script>
-</body>
-</html>

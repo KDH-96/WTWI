@@ -91,4 +91,25 @@ public interface BoardService {
 	 */
 	int updateBoard(Board board, List<String> imgs, List<String> deleteImgs, String webPath, HttpServletRequest request);
 
+	/** 좋아요 체크(14)
+	 * @param freeNo
+	 * @param memberNo
+	 * @return flag
+	 */
+	boolean likeCheck(int freeNo, int memberNo);
+
+	/** 좋아요 기능(15)
+	 * @param freeNo
+	 * @param memberNo
+	 * @return result
+	 */
+	int freeboardLike(int freeNo, int memberNo);
+
+	/** 정렬 게시글 목록 조회(16)
+	 * @param search
+	 * @param pagination
+	 * @return boardList
+	 */
+	List<Board> selectSortList(Search search, Pagination pagination);
+
 }

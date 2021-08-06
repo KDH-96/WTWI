@@ -1,6 +1,7 @@
 package com.wtwi.fin.freeboard.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -128,10 +129,45 @@ public class BoardDAO {
 
 	/** 삭제된 이미지 정보 DB에서 제거(13-3)
 	 * @param deleteImages
-	 * @return 
+	 * @return result
 	 */
 	public int deleteImages(List<Image> deleteImages) {
 		return sqlSession.delete("freeboardMapper.deleteImages", deleteImages);
+	}
+
+	/** 좋아요 체크(14)
+	 * @param map
+	 * @return flag
+	 */
+	public boolean likeCheck(Map<String, Integer> map) {
+		return sqlSession.selectOne("freeboardMapper.likeCheck", map);
+	}
+
+	/** 좋아요 취소(15-1)
+	 * @param map
+	 */
+	public void likeCancel(Map<String, Integer> map) {
+		sqlSession.delete("freeboardMapper.likeCancel", map);
+	}
+
+	/** 좋아요 반영(15-2)
+	 * @param map
+	 */
+	public void likeMark(Map<String, Integer> map) {
+		sqlSession.insert("freeboardMapper.likeMark", map);
+	}
+
+	/** 정렬 게시글 목록 조회(16)
+	 * @param search
+	 * @param pagination
+	 * @return boardList
+	 */
+	public List<Board> selectSortList(Search search, Pagination pagination) {
+		
+		int offset = (pagination.getCurrentPage()-1)*pagination.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit()); 
+		
+		return sqlSession.selectList("freeboardMapper.selectSortList", search, rowBounds);
 	}
 	
 }
