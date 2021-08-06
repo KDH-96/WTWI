@@ -89,7 +89,7 @@ $(document).ready(function() {
 	// summernote에서는 enter 를 할 때마다 작성한 문자들이 <p> 태그로 감싸지게 되고
 	// 일반적인 줄바꿈(<br>)은 shift+enter로 동작한다. <p> 태그로 감싸지는 것을 바꿔줌
 	$("#summernote").on("summernote.enter", function(we, e) {
-	     $(this).summernote("pasteHTML", "<br><br>");
+	     $(this).summernote("pasteHTML", "<br>&zwnj;");
 	     e.preventDefault();
 	});
        
