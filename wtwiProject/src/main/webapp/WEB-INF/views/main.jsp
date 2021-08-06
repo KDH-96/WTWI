@@ -108,12 +108,11 @@
         // 지도 로딩속도 향상을 위한 코드
         kakao.maps.disableHD();
 
-        // 지도 로딩 시 후기작성 폼 고정영역 숨기기
-        $("#write-review-wrapper").hide();
-        
         // 지도 로딩 시 명소정보 고정영역 숨기기
         $("#attraction-info").hide();
 
+        // 지도 로딩 시 후기작성 폼 고정영역 숨기기
+        $("#write-review-wrapper").hide();
 
         // 지도의 확대레벨이 13을 초과하지 못하도록 막는 함수(레벨 14부터는 화면 깨짐)
         $(function () {
@@ -347,25 +346,27 @@
                             customOverlay.setMap(null);
                         };
 
-                        // 커스텀 오버레이 지도영역 클릭하여 닫는 메소드
+                        // 커스텀 오버레이 및 후기작성 폼 지도영역 클릭하여 닫는 메소드
                         kakao.maps.event.addListener(map, 'click', function () {
                             customOverlay.setMap(null);
                             $("#attraction-info").fadeOut(100);
+
+                            $("#write-review-wrapper").fadeOut(100);
                         });
 
-                     	// 후기작성 버튼 클릭 시 후기작성 폼 등장하는 메소드
-                        $("#write-btn").on('click', function () {
-                        	$("#write-review-wrapper").fadeIn(100);
+
+                        // 후기작성 버튼 클릭 시 후기작성 폼 등장하는 메소드
+                        $("#review-btn").on("click", function () {
+                            $("#write-review-wrapper").fadeIn(100);
                         });
 
                         // 취소버튼 클릭 시 후기작성 폼을 닫는 메소드
-                        $("#cancel-btn").on('click', function(){
-                        	$("#write-review-wrapper").fadeOut(100);
+                        $("#cancel-btn").on("click", function () {
+                            $("#write-review-wrapper").fadeOut(100);
                         });
 
                     }); // 마커 생성 for문 종료
-                    
-                 	
+
                 }); // 명소 정보가 담긴 JSON파일의 getJSON의 닫는 괄호
 
 
