@@ -886,7 +886,8 @@ CREATE OR REPLACE VIEW CHAT_MANAGER_LIST AS
     JOIN MANAGER USING(MEMBER_NO)
     JOIN ATTRACTION_INFO USING(ATTRACTION_NO);
     
------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------08/07 추가
+
 -- 도헌
 -- 문의 게시판 list sql문 수정 - 08/07
 -- 문의게시판 목록 조회를 위한 VIEW
@@ -898,3 +899,18 @@ CREATE OR REPLACE VIEW QNA_LIST AS
     FROM QNA_BOARD
     JOIN QNA_CATEGORY USING(QNA_CATEGORY_NO)
     JOIN MEMBER USING(MEMBER_NO);
+
+-- 세은
+-- 자유게시판 댓글 조회 VIEW
+CREATE OR REPLACE VIEW FREE_REPLY_LIST AS
+    SELECT FREE_REPLY_NO, FREE_REPLY_CONTENT, FREE_REPLY_CREATE_DT, FREE_REPLY_STATUS,
+              MEMBER_NO, MEMBER_NICK,
+              FREE_NO,
+              PARENT_REPLY_NO, PARENT_REPLY_NICK
+    FROM FREE_REPLY
+    JOIN MEMBER USING(MEMBER_NO)
+    LEFT JOIN (SELECT FREE_REPLY_NO AS PARENT_REPLY_NO, MEMBER_NICK AS PARENT_REPLY_NICK
+                    FROM FREE_REPLY
+                    JOIN MEMBER USING(MEMBER_NO)
+                    WHERE FREE_REPLY_NO IN(SELECT PARENT_REPLY_NO FROM FREE_REPLY)) USING(PARENT_REPLY_NO)
+;
