@@ -64,5 +64,17 @@ public interface QnaBoardService {
 	 */
 	QnaBoard selectUpdateBoard(int qnaNo);
 
+	/** 게시글 수정
+	 * @param board
+	 * @return result
+	 */
+	int updateBoard(QnaBoard board);
+
+	/** 게시글 삭제
+	 * @param qnaNo
+	 * @return result
+	 */
+	int deleteBoard(int qnaNo);
+
 
 }

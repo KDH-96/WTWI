@@ -4,47 +4,108 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <style>
 /*댓글*/
-.replyWrite>table {
-	margin-top: 100px;
-}
+  .reply-area {
+            width: 100%;
+            height: 100px;
+        }
 
-.rWriter {
-	display: inline-block;
-	vertical-align: top;
-	font-size: 1.2em;
-	font-weight: bold;
-}
+        .reply-writer-area {
+            width: 15%;
+            height: 50px;
+            float: left;
+        }
 
-.rDate {
-	display: inline-block;
-}
+        .reply-content-area {
+            width: 50%;
+            height: 100%;
+            float: left;
+        }
 
-.rContent, .replyBtnArea {
-	height: 100%;
-	width: 100%;
-}
+        .replyWrite>table {
+            margin-top: 10px;
+        }
 
-.replyBtnArea {
-	text-align: right;
-}
+        .rWriter {
+            display: inline-block;
+            vertical-align: top;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
 
-.replyUpdateContent {
-	resize: none;
-	width: 100%;
-}
+        .rDate {
+            display: inline-block;
+        }
 
-.reply-row {
-	border-top: 1px solid #ccc;
-	padding: 15px 0;
-}
+        .rContent,
+        .replyBtnArea {
+            height: 100%;
+            width: 100%;
+        }
+
+        .replyBtnArea {
+            text-align: right;
+        }
+
+        .replyUpdateContent {
+            resize: none;
+            width: 100%;
+        }
+
+        .reply-row {
+            border-top: 1px solid #ccc;
+            padding: 15px 0;
+        }
 </style>
 
 <div id="reply-area ">
+
+	<div style="height: 100%;">
+         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" fill="currentColor" class="bi bi-chat" viewBox="0 1 16 16">
+              <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z" />
+          </svg>
+          <label for="">1</label>
+    </div>
+	<!-- 댓글 출력 부분 -->
+	<div class="replyList mt-5 pt-2">
+		<ul id="replyListArea">
+			<c:forEach items="${rList}" var="reply">
+				
+				<li class="shadow p-3 mb-5 bg-white rounded reply-row">
+
+                        <div class="reply-area">
+                            <div class="reply-writer-area">
+                                <p class="rWriter">작성자</p>
+                            </div>
+						</div>
+
+						<div class="reply-content-area">
+                                <p class="rContent">작성내용</p>
+                        </div>
+
+                        <div class="more-area">
+                                <details>
+                                    <summary>더보기</summary>
+                                    <ul class="update-delete-area">
+                                        <li class="update"><a class="showUpdate" href="#" onclick="showUpdateReply(${reply.qnaReplyNo}, this)">수정</a></li>
+                                        <li class="X"><a class="deleteReply" href="#" onclick="deleteReply(${reply.qnaReplyNo})">삭제</a></li>
+                                    </ul>
+                             	</details>
+                        </div>
+
+                    </li>
+			
+			</c:forEach>
+		</ul>
+	</div>
+
+
+
 	<!-- 댓글 작성 부분 -->
 	<div class="replyWrite">
 		<table align="center">
 			<tr>
-				<td id="replyContentArea"><textArea rows="3" id="replyContent"></textArea>
+				<td id="replyContentArea">
+				<textArea rows="3" id="replyContent" style="width:700px; resize: none;"></textArea>
 				</td>
 				<td id="replyBtnArea">
 					<button class="btn btn-primary" id="addReply" onclick="addReply();">
@@ -56,33 +117,7 @@
 	</div>
 
 
-	<!-- 댓글 출력 부분 -->
-	<div class="replyList mt-5 pt-2">
-		<ul id="replyListArea">
-			<c:forEach items="${rList}" var="reply">
-				<li class="reply-row">
-					<div>
-						<p class="rWriter">${reply.memberName}</p>
-						<p class="rDate">
-							작성일 :
-							<fmt:formatDate value="${reply.createDate }"
-								pattern="yyyy년 MM월 dd일 HH:mm" />
-						</p>
-					</div>
 
-					<p class="rContent">${reply.replyContent }</p> <c:if
-						test="${reply.memberNo == loginMember.memberNo}">
-						<div class="replyBtnArea">
-							<button class="btn btn-primary btn-sm ml-1" id="updateReply"
-								onclick="showUpdateReply(${reply.replyNo}, this)">수정</button>
-							<button class="btn btn-primary btn-sm ml-1" id="deleteReply"
-								onclick="deleteReply(${reply.replyNo})">삭제</button>
-						</div>
-					</c:if>
-				</li>
-			</c:forEach>
-		</ul>
-	</div>
 
 </div>
 
@@ -92,7 +127,7 @@
 const loginMemberNo = "${loginMember.memberNo}";
 
 // 현재 게시글 번호
-const boardNo = ${board.boardNo};
+const boardNo = ${board.qnaNo};
 
 // 수정 전 댓글 요소를 저장할 변수 (댓글 수정 시 사용)
 let beforeReplyRow;
@@ -116,11 +151,11 @@ function addReply()	{
 			// 로그인 O, 댓글 작성 O
 
 			$.ajax({
-				url : "${contextPath}/reply/insertReply", // 필수 속성
+				url : "${contextPath}/qnaReply/insertReply", // 필수 속성
 				type : "POST", 
 				data : {"memberNo" : loginMemberNo,
-						"boardNo" : boardNo,
-						"replyContent" : replyContent},
+						"qnaNo" : qnaNo,
+						"qnaReplyContent" : qnaReplyContent},
 						
 				success : function(result){
 					if(result >0){ // 댓글 삽입 성공
@@ -148,8 +183,8 @@ function addReply()	{
 //해당 게시글 댓글 목록 조회
 function selectReplyList(){
  $.ajax({
-	 url : "${contextPath}/reply/list",
-	 data : {"boardNo" : boardNo},
+	 url : "${contextPath}/qnaReply/list",
+	 data : {"qnaNo" : qnaNo},
 	 type : "POST",
 	 dataType : "JSON", // 응답되는 데이터의 형식이 JSON임을 알려줌 -> 자바스크립트 객체로 변환됨
 	 success : function(rList){
@@ -168,35 +203,39 @@ function selectReplyList(){
 	        	 
 	        	 
 	            
-	            var li = $("<li>").addClass("reply-row");
+	            var li = $("<li>").addClass("shadow p-3 mb-5 bg-white rounded reply-row");
 	         
 	            // 작성자, 작성일, 수정일 영역 
-	            var div = $("<div>");
-	            var rWriter = $("<p>").addClass("rWriter").text(item.memberName);
-	            var rDate = $("<p>").addClass("rDate").text("작성일 : " + item.createDate);
-	            div.append(rWriter).append(rDate)
-	            
+	            var replyArea = $("<div>").addClass("reply-area");
+	            var replyWriterArea = $("<div>").addClass("reply-writer-area");
+	            var rWriter = $("<p>").addClass("rWriter").text(item.memberNick);
+	            replyArea.append(replyWriterArea).append(rWriter)
 	            
 	            // 댓글 내용
-	            var rContent = $("<p>").addClass("rContent").html(item.replyContent);
+	            var replyContentArea = $("<div>").addClass("reply-content-area");
+	            var rContent = $("<p>").addClass("rContent").html(item.qnaReplyContent);
+	            replyContentArea.append(rContent)
 	            
-	            
-	            // 대댓글, 수정, 삭제 버튼 영역
-	            var replyBtnArea = $("<div>").addClass("replyBtnArea");
+	            var moreArea = $("<div>").addClass("more-area");
+	            var details = $("<details>");
+	            var summary = $("<summary>");
+	            var ul = $("<ul>").addClass("update-delete-area");
+	            var update= $("<li>").addClass("update");
+	            var X= $("<li>").addClass("X");
 	            
 	            // 현재 댓글의 작성자와 로그인한 멤버의 아이디가 같을 때 버튼 추가
 	            if(item.memberNo == loginMemberNo){
 	               
+	            	var showUpdate = $("<a>").addClass("showUpdate").text("수정").attr("onclick","showUpdateReply("+item.qnaReplyNo+", this)");
+	               var deleteReply = $("<a>").addClass("deleteReply").text("삭제").attr("onclick", "deleteReply("+item.qnaReplyNo+")");
 	               // ** 추가되는 댓글에 onclick 이벤트를 부여하여 버튼 클릭 시 수정, 삭제를 수행할 수 있는 함수를 이벤트 핸들러로 추가함. 
-	               var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("수정").attr("onclick", "showUpdateReply("+item.replyNo+", this)");
-	               var deleteReply = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("삭제").attr("onclick", "deleteReply("+item.replyNo+")");
-	               
-	               replyBtnArea.append(showUpdate).append(deleteReply);
+
+	               moreArea.append(details).append(summary).append(ul).append(update).append(X).append(showUpdate).append(deleteReply);
 	            }
 	            
 	            
 	            // 댓글 요소 하나로 합치기
-	            li.append(div).append(rContent).append(replyBtnArea);
+	            li.append(replyArea).append(replyContentArea).append(moreArea);
 	            
 	            
 	            // 합쳐진 댓글을 화면에 배치
@@ -225,7 +264,7 @@ function selectReplyList(){
 // -----------------------------------------------------------------------------------------
 // 댓글 수정 폼
 
-function showUpdateReply(replyNo, el){
+function showUpdateReply(qnaReplyNo, el){
 	// el : 수정 버튼 클릭 이벤트가 발생한 요소
 
 	
@@ -266,7 +305,7 @@ function showUpdateReply(replyNo, el){
 	   
 	   
 	   // 수정 버튼
-	   var updateReply = $("<button>").addClass("btn btn-primary btn-sm ml-1 mb-4").text("댓글 수정").attr("onclick", "updateReply(" + replyNo + ", this)");
+	   var updateReply = $("<button>").addClass("btn btn-primary btn-sm ml-1 mb-4").text("댓글 수정").attr("onclick", "updateReply(" + qnaReplyNo + ", this)");
 	   
 	   // 취소 버튼
 	   var cancelBtn = $("<button>").addClass("btn btn-primary btn-sm ml-1 mb-4").text("취소").attr("onclick", "updateCancel(this)");
@@ -290,7 +329,7 @@ function updateCancel(el){
 
 //-----------------------------------------------------------------------------------------
 // 댓글 수정
-function updateReply(replyNo, el){
+function updateReply(qnaReplyNo, el){
 	
 	// 수정된 댓글 내용
 	const replyContent = $(el).parent().prev().val();
@@ -298,8 +337,8 @@ function updateReply(replyNo, el){
 	$.ajax({
 		url : "${contextPath}/reply/updateReply",
 		type : "POST",
-		data : {"replyNo" : replyNo,
-				"replyContent" : replyContent},
+		data : {"qnaReplyNo" : qnaReplyNo,
+				"qnaReplyContent" : qnaReplyContent},
 		success : function(result){
 		if(result>0){
 			swal({"icon" : "success" , "title" : "댓글 수정 성공"});
@@ -326,10 +365,10 @@ function deleteReply(replyNo){
 		      
 		      $.ajax({
 		         url : url,
-		         data : {"replyNo" : replyNo},
+		         data : {"qnaReplyNo" : qnaReplyNo},
 		         success : function(result){
 		            if(result > 0){
-		               selectReplyList(boardNo);
+		               selectReplyList(qnaNo);
 		               
 		               swal({"icon" : "success" , "title" : "댓글 삭제 성공"});
 		            }

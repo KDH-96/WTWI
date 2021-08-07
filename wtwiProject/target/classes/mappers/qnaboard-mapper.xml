@@ -70,7 +70,8 @@
 	<select id="selectBoardList" parameterType="_int" resultMap="qna_rm">
 		SELECT QNA_NO, QNA_PNO, QNA_CATEGORY_NM,
 		(LPAD('', 3*(LEVEL)) || QNA_TITLE) AS QNA_TITLE,
-		MEMBER_NICK, QNA_READ_COUNT, QNA_CREATE_DT, QNA_STATUS
+		MEMBER_NO, MEMBER_NICK, MEMBER_GRADE,
+		QNA_READ_COUNT, QNA_CREATE_DT, QNA_STATUS
 		FROM QNA_LIST
 		WHERE QNA_STATUS IN ('Y','S')
 		START WITH QNA_PNO IS NULL
@@ -146,4 +147,16 @@
 		INSERT INTO QNA_BOARD
 		VALUES(#{qnaNo},#{qnaPno},#{qnaTitle},#{qnaContent},DEFAULT,DEFAULT,DEFAULT,#{qnaStatus},#{qnaCategoryNo},#{memberNo})
 	</insert>
+	
+	<update id="updateBoard" parameterType="QnaBoard">
+		UPDATE QNA_BOARD SET
+		QNA_CATEGORY_NO = ${qnaCategoryNo}, QNA_TITLE = #{qnaTitle}, QNA_CONTENT = #{qnaContent}, QNA_STATUS = #{qnaStatus}
+		WHERE QNA_NO = #{qnaNo}
+	</update>
+	
+	<update id="deleteBoard" parameterType="_int">
+		UPDATE QNA_BOARD SET
+		QNA_STATUS='N'
+		WHERE QNA_NO = #{qnaNo}
+	</update>
 </mapper>

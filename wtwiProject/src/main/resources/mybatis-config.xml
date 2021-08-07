@@ -23,6 +23,7 @@
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaCategory" alias="QnaCategory" />
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.Pagination" alias="QnaPagination" />
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.Search" alias="QnaSearch" />
+		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaReply" alias="QnaReply" />
 
 
 		
@@ -43,6 +44,7 @@
     
 
 		<mapper resource="/mappers/qnaboard-mapper.xml" />
+		<mapper resource="/mappers/qnareply-mapper.xml" />
     
     
 
