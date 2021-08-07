@@ -8,6 +8,7 @@
         border-top: 1px solid rgb(222, 226, 230);
         border-bottom: 1px solid rgb(222, 226, 230);
     }
+
     .free-category, .free-info2>span{
         font-size: 14px;
     }
@@ -22,12 +23,12 @@
     <div class="container">
         <h3 class="my-4 font-weight-bold">자유게시판</h3>
         <div class="free-view">
-            <div class="row mt-2 mb-2 col-12">
+            <div class="row mt-2 mb-2 col-12 free-info1">
                 <div class="badge badge-dark free-category col-1">${board.freeCategoryName}</div>
                 <div class="col-10">${board.freeTitle}</div>
                 <div class="free-menu col-1">
                 	<c:if test="${!empty loginMember}">
-	                    <a class="dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                    <a class="dropdown" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                    	<i class="bi bi-three-dots"></i>
 	                    </a>
                     </c:if>
@@ -66,8 +67,10 @@
                 	</c:otherwise>
                 </c:choose>
             </div>
-            <div class="row mb-2 col-12 free-content">
-                <p class="w-100">${board.freeContent}</p>
+            <div class="col-md-4">
+	            <div class="row mb-2 col-12 free-content">
+	                <p class="w-100">${board.freeContent}</p>
+	            </div>
             </div>
             <div class="col-md-4">
                 <div class="row mb-2 col-12">
