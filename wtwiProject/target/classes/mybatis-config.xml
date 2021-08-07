@@ -11,9 +11,9 @@
 		<typeAlias type="com.wtwi.fin.freeboard.model.vo.Board" alias="FreeBoard" />
 		<typeAlias type="com.wtwi.fin.freeboard.model.vo.Category" alias="FreeCategory" />
 		<typeAlias type="com.wtwi.fin.freeboard.model.vo.Pagination" alias="FreePagination" />
-
     	<typeAlias type="com.wtwi.fin.freeboard.model.vo.Image" alias="FreeImage" />
     	<typeAlias type="com.wtwi.fin.freeboard.model.vo.Search" alias="FreeSearch" />
+    	<typeAlias type="com.wtwi.fin.freeboard.model.vo.Reply" alias="FreeReply" />
     
   
     
@@ -39,7 +39,7 @@
 	<!-- mapper 파일 위치 등록 -->
 	<mappers>
 		<mapper resource="/mappers/freeboard-mapper.xml" />
-    
+    	<mapper resource="/mappers/freereply-mapper.xml" />
     
 
 		<mapper resource="/mappers/qnaboard-mapper.xml" />

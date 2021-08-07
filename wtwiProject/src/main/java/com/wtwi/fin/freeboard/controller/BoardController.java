@@ -20,10 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.wtwi.fin.freeboard.model.service.BoardService;
+import com.wtwi.fin.freeboard.model.service.ReplyService;
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Category;
 import com.wtwi.fin.freeboard.model.vo.Image;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
+import com.wtwi.fin.freeboard.model.vo.Reply;
 import com.wtwi.fin.freeboard.model.vo.Search;
 import com.wtwi.fin.member.controller.MemberController;
 import com.wtwi.fin.member.model.vo.Member;
@@ -38,6 +40,9 @@ public class BoardController {
 
 	@Autowired
 	private BoardService service;
+	
+	@Autowired
+	private ReplyService replyService;
 	
 	// 자유게시판 목록 조회(1, 2) + 검색(5, 6) + 정렬(16)
 	@RequestMapping(value="list", method=RequestMethod.GET)
@@ -92,9 +97,12 @@ public class BoardController {
 		Board board = service.selectBoard(freeNo);
 		
 		if(board!=null) {
-			// 댓글 조회 추가하기
+			
+			// 댓글 목록 조회(17)
+			List<Reply> replyList = replyService.selectReplyList(freeNo);
 			
 			model.addAttribute("board", board);
+			model.addAttribute("replyList", replyList);
 			
 			return "freeboard/boardView";
 			
@@ -261,9 +269,7 @@ public class BoardController {
 	@ResponseBody
 	@RequestMapping(value="like", method=RequestMethod.POST)
 	public int freeboardLike(@RequestParam("freeNo") int freeNo,
-							 @ModelAttribute("loginMember") Member loginMember,
-							 RedirectAttributes ra,
-							 Model model) {
+							 @ModelAttribute("loginMember") Member loginMember) {
 
 		int memberNo = loginMember.getMemberNo();
 		
