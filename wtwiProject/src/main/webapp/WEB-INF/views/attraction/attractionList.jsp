@@ -28,6 +28,9 @@
          width: 1200px;
          height: 100vh;
       }
+      #contentArea{
+      	float : left;
+      }
       /* content ) 게시글 목록 스타일 */
       #h-menu{
          clear :both;
@@ -43,6 +46,7 @@
       /* 게시글 목록의 높이가 최소 540px은 유지하도록 설정 */
       .list-wrapper {
          min-height: 50%;
+         margin-top : 20px;
       }
       /* pagination 가운데 정렬 */
       .pagination {
@@ -57,6 +61,8 @@
       .card{
       	display: inline-block;
       	float : left;
+      	width: 286px;
+      	height : 190px;   
       }
       
       .my-2{
@@ -68,6 +74,9 @@
       .card-img-top{
       	width: 286px;
       	height : 190px;   
+      }
+      #area-abajo{
+      	margin-top : 100px;
       }
       /* ------------------------------영역구분선------------------------------ */
    </style>
@@ -105,65 +114,103 @@
 							 	<option value="7">울산</option>
 							 	<option value="8">세종</option>
 						 </select>
-						 <button id="search-btn" class="btn btn-dark">검색</button>
+						 <button id="find-btn" class="btn btn-dark">조회</button>
          
          </div>
          <div class="list-wrapper">
-
+         
+         		<c:choose>
+         			<%-- 조회된 근처 관광지 목록이 없는 경우 --%>
+							<c:when test="${empty attrList}">
+								<tr>
+									<td colspan="6">게시글이 존재하지 않습니다.</td>
+								</tr>								
+							</c:when>
+							
+							<%-- 조회된 게시글 목록이 있을 경우 --%>
+							<c:otherwise>
+							
+								<c:forEach items="${attrList}" var="attraction">
+         					<div class="card">
+         						<img class="card-img-top" src ="${attraction.attractionPhoto}">
+		         				<div class="card-body">
+		         						<p class="card-text">${attraction.attractionNm}</p>
+		         				</div>	
+         					</div>
+         				</c:forEach>
+							
+							</c:otherwise>
+							
+						</c:choose>
          </div>
+         
+         
+         
+      </div>
          <!----------------------------------------------------------------------------------------------  content end -->
 
          <!----------------------------------------------------------------------------------------------  Pagination start -->
          <!-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 -->
-
-         <div class="my-2">
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true" style="color:black">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#" style="color:black">1</a></li>
-              <li class="page-item"><a class="page-link" href="#" style="color:black">2</a></li>
-              <li class="page-item"><a class="page-link" href="#" style="color:black">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true" style="color:black">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-         </div>
-
+			<div id="area-abajo">
+        <%-- 페이지네이션 --%>
+        <c:set var="pageURL" value="list"/>
+				<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage}${searchString}"/>
+				<c:set var="next" value="${pageURL}?cp=${pagination.nextPage}${searchString}"/>
+        <div class="row d-flex justify-content-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                	<%-- 현재 페이지가 5 페이지 이하일 시 --%>
+                	<c:if test="${pagination.currentPage <= pagination.pageSize}">
+                		<li class="page-item disabled">
+                			<a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                		</li>
+                	</c:if>
+                	<%-- 현재 페이지가 5 페이지 초과일 시 --%>
+                	<c:if test="${pagination.currentPage > pagination.pageSize}">
+                		<li class="page-item">
+                			<a class="page-link" href="${prev}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                		</li>
+                	</c:if>
+                	<%-- 페이지 --%>
+					<c:forEach var="p" begin="${pagination.startPage}" end="${pagination.endPage}">
+						<c:choose>
+							<c:when test="${p==pagination.currentPage}">
+								<li class="page-item active"><a class="page-link">${p}</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link" href="${pageURL}?cp=${p}${searchString}">${p}</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					<%-- 현재 페이지가 마지막 페이지 목록이 아닌 경우 --%>
+					<c:if test="${pagination.endPage < pagination.maxPage}">
+						<li class="page-item">
+							<a class="page-link" href="${next}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+						</li> 
+					</c:if>
+                </ul>
+            </nav>
+        </div>
          <!----------------------------------------------------------------------------------------------  Pagination end -->
 
          <!-- 검색창 -->
          <div class="my-2">
-            <form action="#" method="GET" class="text-center" id="searchForm">
+            <form action="list" method="GET" class="text-center" id="searchForm">
                <div class="container2">
                   <div class="row">
-                     <div class="col-sm" >
-
-                      <select name="sk" class="form-control" style="width: 200px; display: inline-block; ">
-                        <option value="attrName">명소이름</option>
-                        <option value="attrNo">명소번호</option>
-                     </select>
-
+                     <div class="col-sm">
+                        <input type="text" id="keyword" name="keyword" class="form-control" style="width: 100%; display: inline-block;" 
+                        placeholder="검색어를 입력해주세요">
                      </div>
                      <div class="col-sm">
-                        <input type="text" name="sv" class="form-control" style="width: 50%; display: inline-block;">
-                     </div>
-                     <div class="col-sm">
-                        <button class="form-control btn btn-primary"
+                        <button type="submit" class="form-control btn btn-primary" id="search-btn"
                         style="width:100px; display: inline-block; background-color: black; border: black;">검색</button>
                      </div>
                   </div>
                </div>
             </form>
          </div>
-         
-      </div><!-- contentarea 끝 -->
+      </div>
    </div>
 
 
@@ -179,11 +226,11 @@
 
 	
 	<script>
-		$("#search-btn").on("click", function(){
+		$("#find-btn").on("click", function(){
 			const contentTypeS = $("#contentTypeS").val();
 			const areaCode = $("#areaCode").val();
 			$.ajax({
-				url : "search/area",
+				url : "find/area",
 				data : {"contentTypeS" : contentTypeS , 
 								"areaCode" : areaCode , 
 								},
@@ -236,7 +283,14 @@
 			
 		});
 		
+		/*
 		
+		http://localhost:8080/fin/attraction/search/area?keyword=seoul
+		http://localhost:8080/fin/attraction/view/125452
+		
+		
+		*/
+
 		
 		</script>
 	

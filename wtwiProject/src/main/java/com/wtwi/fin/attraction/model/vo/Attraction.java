@@ -15,8 +15,8 @@ public class Attraction {
 	private String attractionPhoto; // firstimage
 	private String attractionPhoto2; // firstimage2
 	private String attractionHomePage; // homepage
-	private double latitude; // mapx
-	private double longitude; // mapy
+	private double longitude; // mapx 경도
+	private double latitude; // mapy 위도
 	private int mLevel;
 	private long modifiedTime;
 	private String attractionInfo; // overview
