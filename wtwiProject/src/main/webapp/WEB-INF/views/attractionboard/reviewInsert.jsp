@@ -112,7 +112,7 @@
 	<div id="write-review-wrapper">
             <div class="card">
                 <div>
-                    <span style="line-height: 50px; font-size: 20px; margin-left: 15px;">후기 작성</span>
+                    <span style="line-height: 50px; font-size: 20px; margin-left: 15px;">리뷰 작성</span>
                 </div>
                 <hr>
                 <!-- 별점 영역 시작 -->
@@ -147,6 +147,5 @@
                 </div>
             </div>
         </div>
-	
 </body>
 </html>
