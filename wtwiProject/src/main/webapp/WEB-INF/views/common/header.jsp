@@ -209,14 +209,14 @@
 			<c:choose>
 				<c:when test="${empty loginMember }">				
 		            <div class="col-4 d-flex justify-content-end align-items-center">
-		                <a class="btn btn-dark mr-2" href="${contextPath}/member/searchIdForm"">ID/PW찾기</a>
-		                <a class="btn btn-dark mr-2" href="${contextPath}/member/login"">로그인</a>
+		                <a class="btn btn-dark mr-2" href="${contextPath}/member/searchIdForm">ID/PW찾기</a>
+		                <a class="btn btn-dark mr-2" href="${contextPath}/member/login">로그인</a>
 		            </div>
 				</c:when>
 				<c:otherwise>
 					<div class="col-4 d-flex justify-content-end align-items-center">
-						<a class="btn btn-dark mr-3" href="${contextPath}/member/myPage"">${loginMember.memberNick }</a>
-						<a class="btn btn-dark mr-3" href="${contextPath}/member/logout"">로그아웃</a>
+						<a class="btn btn-dark mr-3" href="${contextPath}/member/myPage">${loginMember.memberNick }</a>
+						<a class="btn btn-dark mr-3" href="${contextPath}/member/logout">로그아웃</a>
 					</div>
 				</c:otherwise>
 			</c:choose>
@@ -230,8 +230,7 @@
 
         <div class="nav-scroller py-1 mb-2">
             <nav class="nav d-flex justify-content-center">
-
-                    <li><a class="p-2" href="#">오늘의 날씨</a></li>
+                    <li><a class="p-2" href="${contextPath}/main">지도에서 찾기</a></li>
                     <li><a class="p-2" href="${contextPath}/attraction/list">명소</a></li>
                     <li><a class="p-2" href="${contextPath}/freeboard/list">자유게시판</a></li>
                     <li><a class="p-2" href="${contextPath}/qnaboard/list">문의게시판</a></li>
