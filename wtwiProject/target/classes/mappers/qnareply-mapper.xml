@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="qnareplyMapper">
+	<resultMap type="QnaReply" id="reply_rm">
+	<id property="qnaReplyNo" column="QNA_REPLY_NO"/>
+	
+	<result property="qnaReplyContent" column="QNA_REPLY_CONTENT"/>
+	<result property="qnaReplyCreateDt" column="QNA_REPLY_CREATE_DT"/>
+	<result property="qnaReplyStatus" column="QNA_REPLY_CONTENT"/>
+	<result property="qnaNo" column="QNA_NO"/>
+	<result property="memberNo" column="MEMBER_NO"/>
+	<result property="memberNick" column="MEMBER_NICK"/>
+	</resultMap>
+	
+	
+</mapper>

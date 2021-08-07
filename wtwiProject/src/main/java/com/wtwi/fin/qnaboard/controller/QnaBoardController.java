@@ -52,7 +52,7 @@ public class QnaBoardController {
 			boardList = service.selectBoardList(search,pagination);
 		}
 		
-		//System.out.println(boardList);
+		System.out.println(boardList);
 		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pagination", pagination);
@@ -64,22 +64,13 @@ public class QnaBoardController {
 	@RequestMapping(value="/{qnaNo}", method = RequestMethod.GET)
 	private String qnaBoardView(@PathVariable("qnaNo") int qnaNo,
 								@RequestParam(value="cp", required=false, defaultValue = "1") int cp,
-								@ModelAttribute("loginMember") Member loginMember,
 								Model model, RedirectAttributes ra) {
 		
 		QnaBoard board = service.selectqnaBoard(qnaNo);
 		System.out.println(board);
 		if(board!=null) {
 			model.addAttribute("board", board);
-			
-			
-			if(board.getQnaStatus().equals("S")) { // 게시글 상태가 S == 비공개
-				if(!board.getMemberGrade().equals("A") || loginMember.getMemberNo() != board.getMemberNo()) { // 회원 등급이 A 매니저이거나 로그인한 멤버의 번호와 게시글 번호의 회원 번호가 같지 않다면
-					MemberController.swalSetMessage(ra, "error", "비공개 게시글입니다", "작성 본인 혹은 관리자만 조회가 가능합니다.");
-					return "redirect:list";
-				}
-			}
-			// System.out.println(board);
+			System.out.println(board);
 			return "qnaboard/qnaBoardView";
 		}else {
 			MemberController.swalSetMessage(ra, "error", "존재하지 않는 게시글입니다", null);
@@ -126,7 +117,7 @@ public class QnaBoardController {
 				MemberController.swalSetMessage(ra, "error", "게시글 삽입 실패", null);
 			}
 		return path;
-	} // 어디
+	} 
 	
 	
 	// 문의게시판 게시글 답글작성 화면 조회
@@ -177,6 +168,7 @@ public class QnaBoardController {
 		return path;
 	}
 	
+	// 문의게시글 수정 화면 조회
 	@RequestMapping(value="updateForm", method=RequestMethod.POST)
 	public String updateForm(int qnaNo, Model model) {
 		
@@ -185,9 +177,58 @@ public class QnaBoardController {
 		
 		QnaBoard board = service.selectUpdateBoard(qnaNo);
 		
+		System.out.println(category);
 		model.addAttribute("category", category);
 		model.addAttribute("board", board);
 		
 		return "qnaboard/qnaBoardUpdate";
+	}
+	
+	// 게시글 수정
+	@RequestMapping(value="update", method=RequestMethod.POST)
+	public String updateBoard(@ModelAttribute QnaBoard board,
+								String qnaStatus,
+								HttpServletRequest request,
+								RedirectAttributes ra) {
+	
+		board.setQnaStatus(qnaStatus);
+		
+		int result = service.updateBoard(board);
+		
+		System.out.println(board);
+		
+		
+		String path = null;
+
+		if(result>0) {
+			path = "redirect:" + board.getQnaNo();
+			MemberController.swalSetMessage(ra, "success", "게시글 수정 성공", null);
+		}else {
+			path = "redirect:" + request.getHeader("referer");
+			MemberController.swalSetMessage(ra, "error", "게시글 수정 실패", null);
+		}
+		
+		return path;
+	}
+	
+	// 게시글 삭제
+	@RequestMapping(value="delete", method=RequestMethod.POST)
+	public String deleteBoard(@RequestParam(value="cp", required=false, defaultValue="1") int cp,
+							@RequestParam("qnaNo") int qnaNo,
+							RedirectAttributes ra,
+							HttpServletRequest request) {
+		
+		int result = service.deleteBoard(qnaNo);
+		
+		String path = null;
+		
+		if(result>0) {
+			path = "redirect:list";
+			MemberController.swalSetMessage(ra, "success", "게시글 삭제 성공.", null);
+		}else {
+			path = "redirect:"+request.getHeader("referer");
+			MemberController.swalSetMessage(ra, "error", "게시글 삭제에 실패하였습니다.", "관리자에게 문의 바랍니다.");
+		}
+		return path;
 	}
 }

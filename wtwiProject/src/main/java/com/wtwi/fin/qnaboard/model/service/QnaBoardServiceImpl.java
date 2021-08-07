@@ -115,6 +115,30 @@ public class QnaBoardServiceImpl implements QnaBoardService{
 		return board;
 	}
 
+	// 게시글 수정
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int updateBoard(QnaBoard board) {
+		
+		// 크로스 사이트 방지 + 개행문자 처리
+		board.setQnaTitle(replaceParameter(board.getQnaTitle()));
+		board.setQnaContent(replaceParameter(board.getQnaContent()));
+		
+		board.setQnaContent(board.getQnaContent().replaceAll("(\r\n|\r|\n|\n\r)", "<br>"));
+		
+		System.out.println("전 : " + board.getQnaStatus());
+		
+		if(board.getQnaStatus()==null) {
+			board.setQnaStatus("Y");
+		}else {
+			board.setQnaStatus("S");
+		}
+		System.out.println("후 : " + board.getQnaStatus());
+		
+		int result = dao.updateBoard(board);
+		
+		return result;
+	}
 	
 	// 크로스 사이트 스크립트 방지 처리 메소드
 	public static String replaceParameter(String param) {
@@ -128,6 +152,15 @@ public class QnaBoardServiceImpl implements QnaBoardService{
 
 		return result;
 	}
+
+	// 게시글 삭제
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int deleteBoard(int qnaNo) {
+		return dao.deleteBoard(qnaNo);
+	}
+
+
 
 	
 	

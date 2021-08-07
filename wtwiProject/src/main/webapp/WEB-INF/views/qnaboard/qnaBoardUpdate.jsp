@@ -190,12 +190,12 @@
 
 		<h3>문의게시글 수정</h3>
 		<hr>
-		<form action="updateForm" method="post" role="form"  onsubmit="return boardValidate();">
+		<form action="update" method="POST" role="form"  onsubmit="return boardValidate();">
 			<!-- 카테고리 선택 -->
 			<c:if test="${ !empty category}"> 			
 				<div id="category-pick-area">
 					<label for="category"> 말머리 : </label>
-					<select name="qnaCategoryNo" id="category-option">
+					<select name="qnaCategoryNo" id="qnaCategory">
 							<c:forEach items="${category}" var="c">
 								<option value="${c.qnaCategoryNo}">${c.qnaCategoryNm}</option>
 							</c:forEach>
@@ -213,16 +213,17 @@
 				
 				<div id="input-title-box">
 					<input type="text" class="form-control"  id="boardTitle" aria-label="Sizing example input"
-					aria-describedby="inputGroup-sizing-default" name="qnaTitle" placeholder="제목을 입력해주세요.">
+					aria-describedby="inputGroup-sizing-default" name="qnaTitle" value="${board.qnaTitle}">
 				</div>
 
 				<div class="custom-control custom-switch" style="margin-left: auto;">
 					
 					<div id="show-ask-area" style="float: left; height: 100%; line-height: 35px;">
-						<label for="checkbox" id="show-ask">공개</label>
+						<label for="checkbox" id="show-ask" value="Y">공개</label>
 					</div>
 					
 					<input type="checkbox" id="switch1" name="qnaStatus" class="input__on-off" value="S"> 
+					
 					<label for="switch1" class="label__on-off">
 					<span class="marble"></span>
 					<span class="on" >on</span>
@@ -232,7 +233,7 @@
 				</div>
 
 			</div>
-
+					${qnaStatus}
 
 			<hr>
 
@@ -240,7 +241,7 @@
 
 			<div class="form-group" id="content-title" style="width: 1100px;">
 				<label for="exampleFormControlTextarea1">내용</label>
-				<textarea class="form-control" id="exampleFormControlTextarea1" name="qnaContent" rows="20" style="resize: none; width: 1100px;"></textarea>
+				<textarea class="form-control" id="exampleFormControlTextarea1" name="qnaContent" rows="20" style="resize: none; width: 1100px;">${board.qnaContent}</textarea>
 			</div>
 
 
@@ -256,7 +257,8 @@
 
 				</div>
 			</div>
-			
+				
+				<input type="hidden" name="cp" value="${param.cp}">
 				<input type="hidden" name="qnaNo" value="${board.qnaNo}">
 			
 		</form>
@@ -316,20 +318,35 @@
 			}
 		}
 		
-		// 공개/비공개
+		// 상세조회에 있던 카테고리명들 배치
+		const qnaCategoryNm = "${board.qnaCategoryNm}";
+		$("#qnaCategory > option").each(function(index, item){
+			if($(item).text() == qnaCategoryNm){
+				$(item).prop("selected", true);
+			}
+		});
+		
+		
+		
+		const qnaStatus = "${board.qnaStatus}";
+       $('input:checkbox[name="qnaStatus"]').each(function() {
+        	if($("#switch1").val() == qnaStatus){//checked 처리된 항목의 값
+        		$(this).prop("checked", true); //checked 처리
+                $("#show-ask").text("비공개");
+        	      }
+        	 });
+		
         $(document).ready(function () {
-        	  
-            $("#switch1").click(function () {
-    
+            $("#switch1").change(function () {
               if ($("#switch1").prop("checked")) {
                 $("#show-ask").text("비공개");
-    
               } else {
                 $("#show-ask").text("공개");
               }
     
             });
           });
+		
 		
 		
 		

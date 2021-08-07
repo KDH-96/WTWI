@@ -224,16 +224,17 @@
                 <h6 style="line-height: 35px;">${board.qnaTitle}</h6>
             </div>
 
+			<c:if test="${loginMember.memberNo == board.memberNo }">
             <div id="more-area">
                 <details>
                     <summary>더보기</summary>
                     <ul>
-                        <li id="update"><a href="#">수정</a></li>
-                        <li id="delete"><a href="#">삭제</a></li>
+                        <li id="update"><a href="#" onclick="fnRequest('updateForm')">수정</a></li>
+                        <li id="delete"><a href="#" onclick="deleteAlert();">삭제</a></li>
                     </ul>
                 </details>
             </div>
-
+			</c:if>
         </div>
 
         <div id="content-area2">
@@ -323,13 +324,24 @@
         <hr>
 
 
+		<jsp:include page="qnaReply.jsp"></jsp:include> 
 
 
 
         <hr>
 
 
-
+				<%-- 검색 상태 유지를 위한 쿼리스트링용 변수 선언 --%>
+					<c:if test="${!empty param.sk && !empty param.sv }">
+						<%-- 검색은  게시글 목록 조회에 단순히 sk, sv 파라미터를 추가한 것
+								-> 목록 조회 결과 화면을 만들기 위해 boardList.jsp로 요청 위임 되기 때문에
+									 request객체가 유지되고, 파라미터도 유지된다.
+						--%>
+						
+					<c:set var="searchStr" 
+							value="&sk=${param.sk}&sv=${param.sv}"  />
+					</c:if>
+					
 
         <div class=text-left>
             <a href="${contextPath}/qnaboard/list" class="btn btn-primary">목록으로</a>
@@ -347,14 +359,25 @@
 	
 	<script>
 		function fnRequest(addr){
-			
 			// 현재 문서 내부에 name속성 값이 requestForm인 요소의 action 속성 값을 변경
 			document.requestForm.action = addr;
-			
 			// 현재 문서 내부에 name속성 값이 requestForm인 요소를 제출해라
 			document.requestForm.submit();
-			
 		}
+		// 삭제시 알림창 띄우기
+		function deleteAlert(){
+			swal({
+				icon: "warning",
+				title: "게시글을 삭제하시겠습니까?",
+				buttons: ["취소", "삭제"],
+				dangerMode: true,
+			}).then((willDelete) => {
+				if (willDelete) {
+					onclick=fnRequest("delete");
+				} 
+			});
+		}
+		
 		
 	</script>
 	

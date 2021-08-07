@@ -9,6 +9,12 @@
 <meta charset="UTF-8">
 <title>문의게시판</title>
 
+ <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.14.0/css/all.min.css">
 
@@ -209,7 +215,7 @@ opacity
 									<%-- 글 제목 --%>
 									<td class="boardTitle">
 									
-									<a href="${qnaBoard.qnaNo}?cp=${pagination.currentPage}${searchStr}">
+									<a id="boardTitle-check" href="${qnaBoard.qnaNo}?cp=${pagination.currentPage}${searchStr}" onclick="checkValidate(event, '${qnaBoard.qnaStatus}', ${qnaBoard.memberNo});">
 									<c:if test="${qnaPno > 0}"> &nbsp;&nbsp;&nbsp; -> [답글] ${qnaBoard.qnaTitle}</c:if>
 									<c:if test="${qnaPno == 0}">${qnaBoard.qnaTitle}</c:if>
 									</a>
@@ -240,6 +246,17 @@ opacity
 									<c:if test="${qnaStatus == 'S'}">비공개</c:if>
 									</td>
 								</tr>
+								
+							<%-- 	[${loginMember.memberNo}]
+								${qnaBoard.memberNo} --%>
+								<%--
+								<c:set var="memberNo" value="${qnaBoard.memberNo}"/>
+								<c:set var="loginMemberNo" value="${loginMember.memberNo}"/>
+								<c:set var="memberGrade" value="${qnaBoard.memberGrade}"/>
+			 ${memberNo}
+			${loginMemberNo}
+			${memberGrade}
+			${qnaStatus} --%>
 							</c:forEach>
 						</c:otherwise>
 					</c:choose>
@@ -341,6 +358,7 @@ opacity
 					<input type="text" name="sv" class="form-control col-6">
 					<button class="btn btn-primary">검색</button>
 				</div>
+				
 			</form>
 		</div>
 	</div>
@@ -392,6 +410,23 @@ opacity
 			});
 			
 		});
+		
+		function checkValidate(e, qnaStatus, memberNo){
+			if(qnaStatus == 'S' ){
+				if("${loginMember.memberNo}" != memberNo && "${loginMember.memberGrade}" != 'A'){
+					swal({
+						icon : "warning",
+						title : "비공개 게시글입니다",
+						text : "작성 본인과 관리자만 조회가 가능합니다."
+					});
+					//return false;
+					e.preventDefault();
+				}
+			}
+		}
+		
+		
+		
 		
 	</script>
 

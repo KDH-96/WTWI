@@ -103,5 +103,21 @@ public class QnaBoardDAO {
 		else		return 0;
 	}
 
+	/** 게시글 수정
+	 * @param board
+	 * @return
+	 */
+	public int updateBoard(QnaBoard board) {
+		return sqlSession.update("qnaboardMapper.updateBoard",board);
+	}
+
+	/** 게시글 삭제
+	 * @param qnaNo
+	 * @return
+	 */
+	public int deleteBoard(int qnaNo) {
+		return sqlSession.update("qnaboardMapper.deleteBoard", qnaNo);
+	}
+
 
 }
