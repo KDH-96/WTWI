@@ -7,14 +7,6 @@
 <title>Insert title here</title>
 
 <style>
-div {
-	border: 1px solid black;
-}
-
-* {
-	font-size: 10px;
-}
-
 /* 리뷰 리스트 조회 시작 */
 #select-review-wrapper {
 	right: 290px;
@@ -73,6 +65,7 @@ input[name="reting"] {
 
 
 </head>
+<!-- 
 <body>
 	<div id="select-review-wrapper">
 		<div class="card">
@@ -81,7 +74,7 @@ input[name="reting"] {
 					리스트 조회</span>
 			</div>
 			<ul>
-				<!-- 별점 영역 시작 -->
+				별점 영역 시작
 				<div class="star-rating space-x-4 mx-auto">
 					<input type="radio" id="5-stars" name="rating" value="5"
 						v-model="ratings" /> <label for="5-stars" class="star pr-4">★</label>
@@ -94,7 +87,7 @@ input[name="reting"] {
 					<input type="radio" id="1-star" name="rating" value="1"
 						v-model="ratings" /> <label for="1-star" class="star" id="star">★</label>
 				</div>
-				<!-- 별점 영역 끝 -->
+				별점 영역 끝
 				<li class="reply-row">
 					<div>
 						<p class="rWriter">닉네임 자리</p>
@@ -106,8 +99,9 @@ input[name="reting"] {
 			</ul>
 		</div>
 	</div>
-
+ -->
 	<script>
+	/* 
 	function selectReviewList(){
 		
 		$.ajax({
@@ -131,7 +125,7 @@ input[name="reting"] {
 		
 		
 		
-		
+	 */	
 		
 		
 		
