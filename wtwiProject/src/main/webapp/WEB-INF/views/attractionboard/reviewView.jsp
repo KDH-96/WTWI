@@ -135,7 +135,6 @@ input[name="reting"] {
 		
 		
 		
-		
 	}
 	
 	

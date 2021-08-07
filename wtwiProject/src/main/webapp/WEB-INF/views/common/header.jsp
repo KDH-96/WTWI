@@ -26,6 +26,7 @@
 	
 	<link href="${contextPath}/resources/css/style.css" rel="stylesheet">
 	
+	
     <style>
         /* 헤더 영역 시작 */
         header {

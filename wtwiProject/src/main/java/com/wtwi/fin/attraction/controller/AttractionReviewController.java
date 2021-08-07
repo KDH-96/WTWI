@@ -20,7 +20,6 @@ public class AttractionReviewController {
 	@RequestMapping(value="list", method=RequestMethod.POST)
 	public String selectReview() {
 		
-		
 		return null;
 	}
 	

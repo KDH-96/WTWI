@@ -10,4 +10,5 @@ public class ReviewDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 
+	
 }

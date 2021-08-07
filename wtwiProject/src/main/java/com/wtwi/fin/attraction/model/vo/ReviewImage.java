@@ -54,5 +54,6 @@ public class ReviewImage {
 		return "ReviewImage [fileNo=" + fileNo + ", fileNm=" + fileNm + ", filePath=" + filePath + ", reviewNo="
 				+ reviewNo + "]";
 	}
+
 	
 }

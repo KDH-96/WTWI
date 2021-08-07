@@ -5,7 +5,6 @@
 
 <head>
 <meta charset="utf-8">
-
         
 <title>Where the weather is...</title>
 <style>
