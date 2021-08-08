@@ -57,6 +57,9 @@ public class MemberController {
 	@Autowired
 	@Qualifier("googleSns")
 	private SNSValue googleSns;
+	@Autowired
+	@Qualifier("kakaoSns")
+	private SNSValue kakaoSns;
 
 	@Inject
 	private GoogleConnectionFactory googleConnectionFactory;
@@ -71,25 +74,27 @@ public class MemberController {
 		Member member = null;
 		Member snsMember = null;
 		
-		if(StringUtils.equals("kakao", snsService)) {
+	/*if(StringUtils.equals("kakao", snsService)) {
 			SNSLogin snsLogin = new SNSLogin();
 			snsMember = snsLogin.getKakaoProfile(code);		
 			member = service.getSnsEmail(snsMember);
 
 			
-		}else {
+		}else {*/
 			
 			if(StringUtils.equals("naver", snsService)) {
 				sns = naverSns;
 			}else if(StringUtils.equals("google", snsService)) {
 				sns = googleSns;
+			}else if(StringUtils.equals("kakao", snsService)) {
+				sns = kakaoSns;
 			}
 			
 			SNSLogin snsLogin = new SNSLogin(sns);
 			snsMember = snsLogin.getUserProfile(code);
 			
 			member = service.getSnsEmail(snsMember);
-		}
+		/*}*/
 		
 		if(member == null) { 
 			member = service.snsSignup(snsMember);
@@ -101,6 +106,7 @@ public class MemberController {
 			}
 		} else { 
 			model.addAttribute("loginMember", member);
+			swalSetMessage(ra, "success", "로그인 성공!", null);
 		}
 		
 		return "redirect:/main";
@@ -155,7 +161,9 @@ public class MemberController {
 		model.addAttribute("naver_url", naverLogin.getSNSAuthURL());
 		
 		// 2) 카카오는 RestTemplate을 이용한 방식 
-		model.addAttribute("kakao_url", SNSValue.KAKAO_LOGIN_URL);
+//		model.addAttribute("kakao_url", SNSValue.KAKAO_LOGIN_URL);
+		SNSLogin kakaoLogin = new SNSLogin(kakaoSns);
+		model.addAttribute("kakao_url", kakaoLogin.getSNSAuthURL());
 
 		// 3) Google
 		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
@@ -197,7 +205,9 @@ public class MemberController {
 		if (loginMember != null) {
 			model.addAttribute("loginMember", loginMember);
 			Cookie cookie = new Cookie("saveId", loginMember.getMemberId());
-
+			
+			swalSetMessage(ra, "success", "로그인 성공!", null);
+			
 			if (save != null) {
 				cookie.setMaxAge(60 * 60 * 24 * 30);
 			} else {
@@ -208,9 +218,7 @@ public class MemberController {
 			response.addCookie(cookie);
 
 		} else {
-			ra.addFlashAttribute("icon", "error");
-			ra.addFlashAttribute("title", "로그인 실패");
-			ra.addFlashAttribute("text", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			swalSetMessage(ra, "error", "로그인 실패", "아이디 또는 비밀번호가 일치하지 않습니다.");
 		}
 
 		return "redirect:/main";
