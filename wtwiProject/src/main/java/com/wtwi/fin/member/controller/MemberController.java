@@ -158,8 +158,7 @@ public class MemberController {
 		SNSLogin naverLogin = new SNSLogin(naverSns);
 		model.addAttribute("naver_url", naverLogin.getSNSAuthURL());
 		
-		// 2) 카카오는 RestTemplate을 이용한 방식 
-//		model.addAttribute("kakao_url", SNSValue.KAKAO_LOGIN_URL);
+		// 2) Kakao는 RestTemplate을 이용한 방식 
 		SNSLogin kakaoLogin = new SNSLogin(kakaoSns);
 		model.addAttribute("kakao_url", kakaoLogin.getSNSAuthURL());
 
@@ -172,9 +171,9 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "loginAction", method = RequestMethod.POST)
-	public String login(Member member, HttpSession session, RedirectAttributes ra, Model model,
-			HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(value="save", required = false) String save) {
+	public String login(@RequestParam(value="save", required=false) String save ,
+						Member member, HttpSession session, RedirectAttributes ra, Model model,
+						HttpServletRequest request, HttpServletResponse response) {
 
 		PrivateKey key = (PrivateKey) session.getAttribute("RSAprivateKey");
 
@@ -196,7 +195,8 @@ public class MemberController {
 			swalSetMessage(ra, "error", "로그인 실패", "문제가 지속될 경우, 대표번호로 문의바랍니다.");
 			return "redirect:/member/login";
 		}
-		System.out.println(save);
+		System.out.println("save : "+save);
+		System.out.println("memberId : "+member.getMemberId());
 		// 로그인 로직 실행
 		Member loginMember = service.login(member);
 

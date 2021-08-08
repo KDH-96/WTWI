@@ -2,6 +2,7 @@ package com.wtwi.fin.member.controller;
 
 import java.util.List;
 
+import org.apache.commons.collections.bag.SynchronizedSortedBag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +44,7 @@ public class MypageController {
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
 			Pagination pg/* 페이징 처리에 사용할 비어있는 객체 */, Search search/* 검색용 커맨드 객체 */,
 			@RequestParam(value = "order", required = false) String order) {
+		
 		pg.setCurrentPage(cp);
 		member.setMemberNo(loginMember.getMemberNo());
 		search.setMemberNo(loginMember.getMemberNo());
@@ -51,19 +53,15 @@ public class MypageController {
 		List<Board> freeBoardList = null;
 		int imageCount = 0;
 
-		if (search.getSc() == null) { // 검색 X --> 전체 목록 조회
-			// 2) 전체 게시글 수를 조회하여 Pagination 관련 내용을 계산하고 값을 저장한 객체 반환 받기
+		if (search.getSv() == null) { // 검색 X 
 			pagination = service.getFreePagination(member, pg);
 			pagination.setMemberNo(loginMember.getMemberNo());
-			// 3) 생성된 pagination을 이용하여 현재 목록 페이지에 보여질 게시글 목록 조회
+			
 			freeBoardList = service.selectFreeBoardList(pagination, order);
 
-		} else { // 검색 O -> 검색 목록 조회
-			// 검색이 적용된 pagination 객체 생성
+		} else { // 검색 O -> 
+			pagination = service.getFreePagination(search, pg); 
 
-			pagination = service.getFreePagination(search, pg); // 메소드 오버로딩
-
-			// 검색이 적용된 pagination을 이용하여 게시글 목록 조회
 			freeBoardList = service.selectSearchFreeBoardList(search, pagination);
 		}
 
@@ -85,18 +83,15 @@ public class MypageController {
 		Pagination pagination = null;
 		List<QnaBoard> qnaBoardList = null;
 
-		if (search.getSc() == null) { // 검색 X --> 전체 목록 조회
-			// 2) 전체 게시글 수를 조회하여 Pagination 관련 내용을 계산하고 값을 저장한 객체 반환 받기
+		if (search.getSv() == null) { // 검색 X 
 			pagination = service.getQnAPagination(member, pg);
 			pagination.setMemberNo(loginMember.getMemberNo());
-			// 3) 생성된 pagination을 이용하여 현재 목록 페이지에 보여질 게시글 목록 조회
+		
 			qnaBoardList = service.selectQnABoardList(pagination);
-		} else { // 검색 O -> 검색 목록 조회
-			// 검색이 적용된 pagination 객체 생성
+		} else { // 검색 O 
 
-			pagination = service.getQnAPagination(search, pg); // 메소드 오버로딩
-
-			// 검색이 적용된 pagination을 이용하여 게시글 목록 조회
+			pagination = service.getQnAPagination(search, pg); 
+			
 			qnaBoardList = service.selectSearchQnABoardList(search, pagination);
 		}
 		model.addAttribute("QnABoardList", qnaBoardList);
@@ -106,7 +101,33 @@ public class MypageController {
 	}
 
 	@RequestMapping(value = "reviewBoard", method = RequestMethod.GET)
-	public String viewReviewBoard() {
+	public String viewReviewBoard(@ModelAttribute("loginMember") Member loginMember, Member member,
+								@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
+								Pagination pg/* 페이징 처리에 사용할 비어있는 객체 */, Search search/* 검색용 커맨드 객체 */,
+								@RequestParam(value = "order", required = false) String order) {
+		
+		pg.setCurrentPage(cp);
+		member.setMemberNo(loginMember.getMemberNo());
+		search.setMemberNo(loginMember.getMemberNo());
+
+		Pagination pagination = null;
+		List<Reply> replyBoardList = null;
+
+		System.out.println("sv : "+ search.getSv());
+		if (search.getSv() == null) { // 검색 X 
+			pagination = service.getReplyPagination(member, pg);
+			pagination.setMemberNo(loginMember.getMemberNo());
+
+			replyBoardList = service.selectReplyBoardList(pagination, order);
+		} else { // 검색 O 
+			System.out.println("sv : "+ search.getSv());
+			pagination = service.getReplyPagination(search, pg);
+			
+			replyBoardList = service.selectSearchReplyBoardList(search, pagination);
+		}
+
+		model.addAttribute("replyBoardList", replyBoardList);
+		model.addAttribute("pagination", pagination);
 
 		return "myPage/reviewBoard";
 
@@ -118,26 +139,23 @@ public class MypageController {
 							Pagination pg/* 페이징 처리에 사용할 비어있는 객체 */, Search search/* 검색용 커맨드 객체 */,
 							@RequestParam(value = "order", required = false) String order) {
 		
-		/*pg.setCurrentPage(cp);
+		pg.setCurrentPage(cp);
 		member.setMemberNo(loginMember.getMemberNo());
 		search.setMemberNo(loginMember.getMemberNo());
 
 		Pagination pagination = null;
 		List<Reply> replyBoardList = null;
 
-
-		if (search.getSc() == null) { // 검색 X --> 전체 목록 조회
-			// 2) 전체 게시글 수를 조회하여 Pagination 관련 내용을 계산하고 값을 저장한 객체 반환 받기
+		System.out.println("sv : "+ search.getSv());
+		if (search.getSv() == null) { // 검색 X 
 			pagination = service.getReplyPagination(member, pg);
 			pagination.setMemberNo(loginMember.getMemberNo());
-			// 3) 생성된 pagination을 이용하여 현재 목록 페이지에 보여질 게시글 목록 조회
+
 			replyBoardList = service.selectReplyBoardList(pagination, order);
-		} else { // 검색 O -> 검색 목록 조회
-			// 검색이 적용된 pagination 객체 생성
-
-			pagination = service.getReplyPagination(search, pg); // 메소드 오버로딩
-
-			// 검색이 적용된 pagination을 이용하여 게시글 목록 조회
+		} else { // 검색 O 
+			System.out.println("sv : "+ search.getSv());
+			pagination = service.getReplyPagination(search, pg);
+			
 			replyBoardList = service.selectSearchReplyBoardList(search, pagination);
 		}
 
@@ -145,7 +163,7 @@ public class MypageController {
 		model.addAttribute("pagination", pagination);
 
 
-*/
+
 		return "myPage/replyBoard";
 
 	}
@@ -164,18 +182,15 @@ public class MypageController {
 		List<Report> reportBoardList = null;
 
 
-		if (search.getSc() == null) { // 검색 X --> 전체 목록 조회
-			// 2) 전체 게시글 수를 조회하여 Pagination 관련 내용을 계산하고 값을 저장한 객체 반환 받기
+		if (search.getSv() == null) { // 검색 X 
 			pagination = service.getReportPagination(member, pg);
 			pagination.setMemberNo(loginMember.getMemberNo());
-			// 3) 생성된 pagination을 이용하여 현재 목록 페이지에 보여질 게시글 목록 조회
+			
 			reportBoardList = service.selectReportBoardList(pagination, order);
-		} else { // 검색 O -> 검색 목록 조회
-			// 검색이 적용된 pagination 객체 생성
+		} else { // 검색 O
 
-			pagination = service.getReportPagination(search, pg); // 메소드 오버로딩
-
-			// 검색이 적용된 pagination을 이용하여 게시글 목록 조회
+			pagination = service.getReportPagination(search, pg); 
+			
 			reportBoardList = service.selectSearchReportBoardList(search, pagination);
 		}
 

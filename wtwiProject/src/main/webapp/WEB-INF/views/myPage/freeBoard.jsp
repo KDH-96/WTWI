@@ -81,6 +81,10 @@ a:hover {
 .focus-page {
 	font-weight: bold;
 }
+
+.order-check {
+	color: blue;
+}
 </style>
 </head>
 
@@ -125,20 +129,20 @@ a:hover {
 						<th scope="col">
 							<c:choose>
 								<c:when test="${param.order!='like'}">
-									<a href="post?order=like${searchStr}">좋아요 수</a>								
+									<a href="post?order=like${searchStr}">좋아요 수 <i class="fas fa-caret-down"></i></a>								
 								</c:when>
 								<c:otherwise>
-									<a href="post">좋아요 수</a>																
+									<a href="post">좋아요 수 <i class="fas fa-caret-down order-check"></i></a>																
 								</c:otherwise>
 							</c:choose>
 						</th>
 						<th scope="col">
 							<c:choose>
 								<c:when test="${param.order!='read'}">
-									<a href="post?order=read${searchStr}">조회수</a>							
+									<a href="post?order=read${searchStr}">조회수 <i class="fas fa-caret-down"></i></a>							
 								</c:when>
 								<c:otherwise>
-									<a href="post">조회수</a>>																
+									<a href="post">조회수 <i class="fas fa-caret-down order-check"></i></a>																
 								</c:otherwise>
 							</c:choose>
 						</th>
@@ -166,11 +170,12 @@ a:hover {
 									<td>${board.freeCategoryName}</td>
 
 									<!-- 글 제목 -->
-									<td class="boardTitle"><a
-										href="${contextPath}/freeboard/${board.freeNo}?cp=${pagination.currentPage}">${board.freeTitle}</a>
+									<td class="boardTitle">
+										<a href="${contextPath}/freeboard/${board.freeNo}?cp=${pagination.currentPage}">${board.freeTitle}</a>
 										<c:if test="${board.replyCount!=0}">
 											<span>[${board.replyCount}]</span>
-										</c:if></td>
+										</c:if>
+									</td>
 									<%-- 작성일 --%>
 									<td><fmt:formatDate var="createDate"
 											value="${board.freeCreateDate}" pattern="yyyy-MM-dd" /> <fmt:formatDate

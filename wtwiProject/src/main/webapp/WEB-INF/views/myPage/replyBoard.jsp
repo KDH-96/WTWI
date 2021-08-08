@@ -91,8 +91,7 @@ a:hover {
 
 	<%-- 검색 상태 유지를 위한 쿼리스트링용 변수 선언 --%>
 	<c:if test="${!empty param.sv }">
-		<c:set var="searchValue" value="&sv=${param.sv} "/>
-		<c:set var="searchStr" value="&sc=${param.sc}&sk=${param.sk}${searchValue }"  />
+		<c:set var="searchStr" value="&sv=${param.sv} "/>
 	</c:if>
 
 	<main class="myPage-main">
@@ -114,7 +113,7 @@ a:hover {
 				</thead>
 				<tbody>
 					<c:choose>
-						<c:when test="${empty replyList }">
+						<c:when test="${empty replyBoardList }">
 
 							<!-- 작성한 게시글이 없을 때 -->
 							<tr>
@@ -124,12 +123,12 @@ a:hover {
 						</c:when>
 						<c:otherwise>
 
-							<c:forEach items="${replyList }" var="board" varStatus="b">
+							<c:forEach items="${replyBoardList }" var="board" varStatus="b">
 
 								<tr>
 									<!-- 글번호 -->
 									<th scope="row">
-										<a href="freeboard/${board.freeNo}?cp=1">><i class="far fa-file-alt"></i></a>
+										<a href="${contextPath }/freeboard/${board.freeNo}?cp=1"><i class="far fa-file-alt"></i></a>
 									
 									</th>
 
@@ -172,7 +171,7 @@ a:hover {
 			<!-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 -->
 
 
-			<c:set var="pageURL" value="chat"></c:set>
+			<c:set var="pageURL" value="reply"></c:set>
 	
 
 			<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage }${searchStr}"></c:set>
