@@ -87,10 +87,10 @@
                 <h2>로그인</h2>
             </div>
 
-            <form action="loginAction" class="login-form" id="loginForm">
+            <form action="loginAction" class="login-form" id="loginForm" method="POST">
                 <div class="login-input form-group">
                     <label for="memberId">아이디</label>
-                    <input name="memberId" type="text" class="form-control" id="memberId">
+                    <input name="memberId" type="text" class="form-control" id="memberId"  value="${cookie.saveId.value}">
                   </div>
                   <div class="login-input form-group">
                     <label for="memberPw">비밀번호</label>
@@ -98,12 +98,11 @@
                   </div>
                   <%-- 이전에 저장해둔 아이디가 존재한다면 --%>
 				  <c:if test="${ !empty cookie.saveId.value }">
-					  <c:set var="ch" value="checked" />
+					  <c:set var="checked" value="checked" />
 				  </c:if>
-
 				  <div class="checkbox mb-3">
 					  <label> 
-						  <input type="checkbox" name="save" id="save" ${ch}> 아이디 저장
+						  <input type="checkbox" name="save" id="save" ${checked}> 아이디 저장
 					  </label>
 				  </div>
                   <div class="login-btnArea">
@@ -112,8 +111,8 @@
                   </div>
             </form>
 			  <%-- 소셜 로그인 버튼  --%>
-			  <a href="${naver_url }">네이버 로그인"</a>
-			  <a href="${google_url }">구글 로그인</a>
+			  <a href="${naver_url}">네이버 로그인</a>
+			  <a href="${google_url}">구글 로그인</a>
 			  <a href="${kakao_url}">카카오 로그인</a>
 
         </div>

@@ -57,7 +57,7 @@ public class MypageController {
 			pagination.setMemberNo(loginMember.getMemberNo());
 			// 3) 생성된 pagination을 이용하여 현재 목록 페이지에 보여질 게시글 목록 조회
 			freeBoardList = service.selectFreeBoardList(pagination, order);
-			System.out.println("freeBoardList" + freeBoardList);
+
 		} else { // 검색 O -> 검색 목록 조회
 			// 검색이 적용된 pagination 객체 생성
 
