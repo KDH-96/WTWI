@@ -23,16 +23,22 @@
     				</div>
 			        <div class="col-1 free-reply-info p-0">
 			            <div class="row-6">
-			            	${r.memberNick}
+			            	<b>${r.memberNick}</b>
 			            </div>
 			            <fmt:formatDate var="replyCreateDate" value="${r.freeReplyCreateDate}" pattern="yyyy-MM-dd"/>
 			            <fmt:formatDate var="today" value="<%= new java.util.Date() %>" pattern="yyyy-MM-dd"/>
 			            <c:choose>
 			            	<c:when test="${replyCreateDate==today}">
-			            		<div class="row-6 mt-1 free-reply-date"><fmt:formatDate value="${r.freeReplyCreateDate}" pattern="HH:mm"/></div>
+			            		<div class="row-6 mt-1 free-reply-date">
+			            			<fmt:formatDate value="${r.freeReplyCreateDate}" pattern="HH:mm"/>
+			            			<c:if test="${r.freeReplyStatus=='M'}"> 수정됨</c:if>
+			            		</div>
 			            	</c:when>
 			            	<c:otherwise>
-			            		<div class="row-6 mt-1 free-reply-date">${r.freeReplyCreateDate}</div>
+			            		<div class="row-6 mt-1 free-reply-date">
+			            			${r.freeReplyCreateDate}
+			            			<c:if test="${r.freeReplyStatus=='M'}"> 수정됨</c:if>
+			            		</div>
 			            	</c:otherwise>
 			            </c:choose>
 			    	</div>
@@ -40,16 +46,22 @@
 	   			<c:if test="${r.parentReplyNo == 0}">
 			        <div class="col-2 free-reply-info">
 			            <div class="row-6">
-			            	${r.memberNick}
+			            	<b>${r.memberNick}</b>
 			            </div>
 			            <fmt:formatDate var="replyCreateDate" value="${r.freeReplyCreateDate}" pattern="yyyy-MM-dd"/>
 			            <fmt:formatDate var="today" value="<%= new java.util.Date() %>" pattern="yyyy-MM-dd"/>
 			            <c:choose>
 			            	<c:when test="${replyCreateDate==today}">
-			            		<div class="row-6 mt-1 free-reply-date"><fmt:formatDate value="${r.freeReplyCreateDate}" pattern="HH:mm"/></div>
+			            		<div class="row-6 mt-1 free-reply-date">
+			            			<fmt:formatDate value="${r.freeReplyCreateDate}" pattern="HH:mm"/>
+			            			<c:if test="${r.freeReplyStatus=='M'}"> 수정됨</c:if>
+			            		</div>
 			            	</c:when>
 			            	<c:otherwise>
-			            		<div class="row-6 mt-1 free-reply-date">${replyCreateDate}</div>
+			            		<div class="row-6 mt-1 free-reply-date">
+			            			${replyCreateDate}
+			            			<c:if test="${r.freeReplyStatus=='M'}"> 수정됨</c:if>
+			            		</div>
 			            	</c:otherwise>
 			            </c:choose>
 			        </div>
@@ -164,6 +176,7 @@ function selectReplyList(){
 				var strLogin;
 				var strSelf;
 				var strReci="";
+				var strModi="";
 				
 				var date1 = new Date();
 				var year = date1.getFullYear();
@@ -193,14 +206,14 @@ function selectReplyList(){
 				if(freeReplyCreateDate==today){ // 오늘 작성
 					if(hour<10) hour = "0"+hour;
 					if(minute<10) minute = "0"+minute;
-					strDate = "<div class=\"row-6 mt-1 free-reply-date\">"+hour+":"+minute+"</div>";
+					strDate = "<div class=\"row-6 mt-1 free-reply-date\">"+hour+":"+minute;
 					
 				} else {
 					if(rMonth<10) rMonth = "0"+rMonth;
 					if(rDate<10) rDate = "0"+rDate;
 					freeReplyCreateDate = rYear+"-"+rMonth+"-"+rDate;
 					
-					strDate = "<div class=\"row-6 mt-1 free-reply-date\">"+freeReplyCreateDate+"</div>";
+					strDate = "<div class=\"row-6 mt-1 free-reply-date\">"+freeReplyCreateDate;
 				}
 	
 				// 3) 로그인 여부
@@ -225,10 +238,15 @@ function selectReplyList(){
 					strReci = item.parentReplyNick+"님, ";
 				}
 				
+				// 6) 수정 여부
+				if(item.freeReplyStatus=='M'){
+					strModi = " 수정됨";
+				}
+				
 				strSelf += "<button class=\"dropdown-item\" type=\"button\" id=\"reReplyBtn\" onclick=\"reReplyForm("+item.freeReplyNo+", this)\" >답글</button>";
 	
 				// merge..
-				str += "<div class=\"row free-reply-row mb-2 p-3\">"+strRep+"<div class=\"row-6\">"+item.memberNick+"</div>"+strDate
+				str += "<div class=\"row free-reply-row mb-2 p-3\">"+strRep+"<div class=\"row-6\"><b>"+item.memberNick+"</b></div>"+strDate+strModi+"</div>"
 					 + "</div><div class=\"col-9 p-0\"><p>"+strReci+item.freeReplyContent+"</p></div><div class=\"free-menu col-1\">"+strLogin
 					 + "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu\">"+strSelf+"</div></div></div>";
 			

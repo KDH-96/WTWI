@@ -15,8 +15,8 @@
     	<typeAlias type="com.wtwi.fin.freeboard.model.vo.Search" alias="FreeSearch" />
     	<typeAlias type="com.wtwi.fin.freeboard.model.vo.Reply" alias="FreeReply" />
     
-  
-    
+		<typeAlias type="com.wtwi.fin.chat.model.vo.ChatMessage" alias="ChatMessage" />
+    	<typeAlias type="com.wtwi.fin.chat.model.vo.ChatRoom" alias="ChatRoom" />
 
 
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaBoard" alias="QnaBoard" />
@@ -52,7 +52,7 @@
 		<mapper resource="/mappers/member-mapper.xml"/>
 		<mapper resource="/mappers/myPage-mapper.xml"/>
     
-    
+    	<mapper resource="/mappers/chat-mapper.xml" />
 
 	</mappers>
 

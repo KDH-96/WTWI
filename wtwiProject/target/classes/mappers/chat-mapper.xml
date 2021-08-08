@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="chatMapper">
+	
+	<!-- 채팅 메세지 -->
+	<resultMap type="ChatMessage" id="msg_rm">
+		<id property="chatNo" column="CHAT_NO"/>
+		<result property="chatContent" column="CHAT_CONTENT"/>
+		<result property="chatCreateDate" column="CHAT_CREATE_DT"/>
+		<result property="chatReadYn" column="CHAT_READ_YN"/>
+		<result property="chatRoomNo" column="CHAT_ROOM_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+	</resultMap>
+
+	<!-- 채팅방 -->
+	<resultMap type="ChatRoom" id="room_rm">
+		<id property="chatRoomNo" column="CHAT_ROOM_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+	</resultMap>
+	
+	
+	
+	
+	
+	
+</mapper>
