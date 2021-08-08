@@ -317,16 +317,16 @@ function showUpdateReply(qnaReplyNo, el){
 	   
 	   
 	   // 수정 버튼
-	   var updateReply = $("<button>").addClass("btn btn-primary btn-sm ml-1 mb-4").text("댓글 수정").attr("onclick", "updateReply(" + qnaReplyNo + ", this)");
+	   var updateReply = $("<a>").addClass("updateReply").text("댓글 수정").attr("onclick", "updateReply(" + qnaReplyNo + ", this)");
 	   
 	   // 취소 버튼
-	   var cancelBtn = $("<button>").addClass("btn btn-primary btn-sm ml-1 mb-4").text("취소").attr("onclick", "updateCancel(this)");
+	   var cancelBtn = $("<a>").addClass("cancelBtn").text("취소").attr("onclick", "updateCancel(this)");
 	   
-	   var replyBtnArea = $(el).parent();
+	   var replyBtnArea1 = $(el).parent().parent().parent().parent().parent();
 	   
-	   $(replyBtnArea).empty(); 
-	   $(replyBtnArea).append(updateReply); 
-	   $(replyBtnArea).append(cancelBtn); 
+	   $(replyBtnArea1).empty(); 
+	   $(replyBtnArea1).append(updateReply); 
+	   $(replyBtnArea1).append(cancelBtn); 
 	   
 	   
 	   
@@ -335,7 +335,7 @@ function showUpdateReply(qnaReplyNo, el){
 //-----------------------------------------------------------------------------------------
 //댓글 수정 취소 시 원래대로 돌아가기
 function updateCancel(el){
-	$(el).parent().parent().html(beforeReplyRow);
+	$(el).parent().parent().parent().parent().children().children().children().children().html(beforeReplyRow);
 }
 
 
