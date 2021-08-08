@@ -1,7 +1,9 @@
 package com.wtwi.fin.member.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -12,6 +14,7 @@ import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.member.model.vo.Chat;
 import com.wtwi.fin.member.model.vo.Member;
 import com.wtwi.fin.member.model.vo.Pagination;
+import com.wtwi.fin.member.model.vo.Report;
 import com.wtwi.fin.member.model.vo.Search;
 import com.wtwi.fin.qnaboard.model.vo.QnaBoard;
 
@@ -34,13 +37,17 @@ public class MypageDAO {
 	 * @param pagination
 	 * @return
 	 */
-	public List<Board> selectFreeBoardList(Pagination pagination) {
+	public List<Board> selectFreeBoardList(Pagination pagination, String order) {
 		
 		int offset = (pagination.getCurrentPage() - 1) * pagination.getLimit(); 
 
 		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
 		
-		return sqlSession.selectList("myPageMapper.selectFreeBoardList", pagination.getMemberNo(), rowBounds);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberNo", pagination.getMemberNo());
+		map.put("order", order);
+		System.out.println("order : "+order);
+		return sqlSession.selectList("myPageMapper.selectFreeBoardList", map, rowBounds);
 	}
 
 	/** 내가 쓴 글(자유게시판) 수 조회(검색)
@@ -176,5 +183,53 @@ public class MypageDAO {
 			}
 		}
 		return chatList;
+	}
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	/** 신고내역 수 조회
+	 * @param member
+	 * @return
+	 */
+	public Pagination getReportListCount(Member member) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("myPageMapper.getReportListCount", member);
+	}
+
+	/** 신고내역 게시글 목록 조회
+	 * @param pagination
+	 * @return
+	 */
+	public List<Report> selectReportBoardList(Pagination pagination) {
+		
+		int offset = (pagination.getCurrentPage() - 1) * pagination.getLimit(); 
+
+		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
+		
+
+		return sqlSession.selectList("myPageMapper.selectReportBoardList", pagination.getMemberNo(), rowBounds);
+	}
+
+	/** 신고내역 수 조회(검색)
+	 * @param search
+	 * @return
+	 */
+	public Pagination getSearchReportListCount(Search search) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("myPageMapper.getSearchReportListCount", search);
+	}
+
+	/** 신고내역 게시글 목록 조회(검색)
+	 * @param search
+	 * @param pagination
+	 * @return
+	 */
+	public List<Report> selectSearchReportBoardList(Search search, Pagination pagination) {
+		int offset = (pagination.getCurrentPage() - 1) * pagination.getLimit(); 
+
+		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
+		return sqlSession.selectList("myPageMapper.selectSearchReportBoardList", search, rowBounds);
 	}
 }

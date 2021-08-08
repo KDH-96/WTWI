@@ -91,8 +91,7 @@ a:hover {
 
 	<%-- 검색 상태 유지를 위한 쿼리스트링용 변수 선언 --%>
 	<c:if test="${!empty param.sv }">
-		<c:set var="searchValue" value="&sv=${param.sv} "/>
-		<c:set var="searchStr" value="&sc=${param.sc}&sk=${param.sk}${searchValue }"  />
+		<c:set var="searchStr" value="&sv=${param.sv}"  />
 	</c:if>
 
 	<main class="myPage-main">
@@ -237,6 +236,7 @@ a:hover {
 		<!-- 검색창 -->
 		<div class="my-5">
 			<form action="chat" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
+				<span>명소 이름</span>
 				<input type="text" id="sv" name="sv" class="form-control" style="width: 25%; display: inline-block;">
 				<button class="form-control btn btn-primary" style="width: 100px; display: inline-block;">검색</button>
 			</form>

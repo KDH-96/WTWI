@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.member.model.vo.Pagination;
+import com.wtwi.fin.member.model.vo.Report;
 import com.wtwi.fin.member.model.vo.Search;
 import com.wtwi.fin.qnaboard.model.vo.QnaBoard;
 import com.wtwi.fin.member.model.vo.Chat;
@@ -16,6 +17,7 @@ public interface MypageService {
 	/** 내가 쓴 글(자유게시판) 페이징 처리
 	 * @param loginMember
 	 * @param pg
+	 * @param order 
 	 * @return
 	 */
 	Pagination getFreePagination(Member member, Pagination pg);
@@ -24,7 +26,7 @@ public interface MypageService {
 	 * @param pagination
 	 * @return
 	 */
-	List<Board> selectFreeBoardList(Pagination pagination);
+	List<Board> selectFreeBoardList(Pagination pagination, String order);
 
 	/** 내가 쓴 글(자유게시판) 전체 게시글 수 조회(검색)
 	 * @param search
@@ -93,5 +95,33 @@ public interface MypageService {
 	 * @return
 	 */
 	List<Chat> selectSearchChatBoardList(Search search, Pagination pagination);
+
+	/** 신고내역 페이징 처리
+	 * @param member
+	 * @param pg
+	 * @return
+	 */
+	Pagination getReportPagination(Member member, Pagination pg);
+
+	/** 신고내역 전체 게시글 목록 
+	 * @param pagination
+	 * @param order
+	 * @return
+	 */
+	List<Report> selectReportBoardList(Pagination pagination, String order);
+
+	/** 신고내역 전체 게시글 수 조회(검색)
+	 * @param search
+	 * @param pg
+	 * @return
+	 */
+	Pagination getReportPagination(Search search, Pagination pg);
+
+	/** 신고내역 전체 게시글 목록(검색)
+	 * @param search
+	 * @param pagination
+	 * @return
+	 */
+	List<Report> selectSearchReportBoardList(Search search, Pagination pagination);
 
 }

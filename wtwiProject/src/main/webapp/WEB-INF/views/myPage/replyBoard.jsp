@@ -101,15 +101,13 @@ a:hover {
 		<div>
 			<table class="table">
 				<colgroup>
-					<col width="7%"/>
-                    <col width="40%"/>
-                    <col width="40%"/>
-                    <col width="13%"/>
+					<col width="13%"/>
+                    <col width="70%"/>
+                    <col width="15%"/>
 				</colgroup>
 				<thead>
 					<tr>
-						<th scope="col">No</th>
-	                    <th scope="col">게시글제목</th>
+						<th scope="col">게시글로 이동</th>
 	                    <th scope="col">댓글 내용</th>
 	                    <th scope="col">작성일자</th>
 					</tr>
@@ -130,18 +128,19 @@ a:hover {
 
 								<tr>
 									<!-- 글번호 -->
-									<th scope="row">0</th>
+									<th scope="row">
+										<a href="freeboard/${board.freeNo}?cp=1">><i class="far fa-file-alt"></i></a>
+									
+									</th>
 
-									<%-- 글제목 --%>
-									<td>${board.attractionNm}</td>
 
 									<!-- 댓글 내용 -->
 									<td class="boardTitle">
-										<a href="${contextPath}/?cp=${pagination.currentPage}">${board.chatContent}</a>
+										<a href="${contextPath}/?cp=${pagination.currentPage}">${board.freeReplyContent}</a>
 									</td>
 									<%-- 작성일자 --%>
 									<td><fmt:formatDate var="createDate"
-											value="${board.chatCreateDt}" pattern="yyyy-MM-dd" /> <fmt:formatDate
+											value="${board.freeReplyCreateDate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
 											var="today" value="<%=new java.util.Date()%>"
 											pattern="yyyy-MM-dd" /> <c:choose>
 											<%-- 글 작성일이 오늘이 아닐 경우 --%>
@@ -151,7 +150,7 @@ a:hover {
 
 											<%-- 글 작성일이 오늘일 경우 --%>
 											<c:otherwise>
-												<fmt:formatDate value="${board.chatCreateDt}"
+												<fmt:formatDate value="${board.freeReplyCreateDate}"
 													pattern="HH:mm" />
 											</c:otherwise>
 										</c:choose></td>
@@ -236,7 +235,7 @@ a:hover {
 		</div>
 		<!-- 검색창 -->
 		<div class="my-5">
-			<form action="chat" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
+			<form action="reply" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
 				<input type="text" id="sv" name="sv" class="form-control" style="width: 25%; display: inline-block;">
 				<button class="form-control btn btn-primary" style="width: 100px; display: inline-block;">검색</button>
 			</form>

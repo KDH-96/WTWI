@@ -14,7 +14,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>내가 쓴 글 - 자유게시판</title>
+<title>신고 내역</title>
 <style>
 a {
 	text-decoration: none;
@@ -108,7 +108,7 @@ a:hover {
 				</colgroup>
 				<thead>
 					<tr>
-						<th scope="col">No</th>
+						<th scope="col">이동</th>
 	                    <th scope="col">유형</th>
 	                    <th scope="col">신고제목</th>
 	                    <th scope="col">신고내용</th>
@@ -131,20 +131,20 @@ a:hover {
 
 								<tr>
 									<!-- 글번호 -->
-									<th scope="row">${board.freeNo}</th>
+									<th scope="row">
+										<a href="freeboard/${board.reportTypeNo}?cp=1"><i class="far fa-bell"></i></a>
+									</th>
 
 									<%-- 유형(게시글/댓글) --%>
-									<td>${board.freeCategoryName}</td>
+									<td>${board.reportCategoryNm}</td>
 
 									<!-- 해당 게시글 -->
-									<td class="boardTitle">
-										<a href="${contextPath}/freeboard/${board.freeNo}?cp=${pagination.currentPage}"><!-- 이동 아이콘 --></a>
-									</td>
+									<td class="boardTitle">${board.reportTitle }</td>
 									<%-- 신고 내용 --%>
-									<td>${board.freeCategoryName}</td>
+									<td>${board.reportContent}</td>
 									<%-- 작성일 --%>
 									<td><fmt:formatDate var="createDate"
-											value="${board.freeCreateDate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
+											value="${board.reportCreateDt}" pattern="yyyy-MM-dd" /> <fmt:formatDate
 											var="today" value="<%=new java.util.Date()%>"
 											pattern="yyyy-MM-dd" /> <c:choose>
 											<%-- 글 작성일이 오늘이 아닐 경우 --%>
@@ -154,7 +154,7 @@ a:hover {
 
 											<%-- 글 작성일이 오늘일 경우 --%>
 											<c:otherwise>
-												<fmt:formatDate value="${board.freeCreateDate}"
+												<fmt:formatDate value="${board.reportCreateDt}"
 													pattern="HH:mm" />
 											</c:otherwise>
 										</c:choose></td>
@@ -176,7 +176,7 @@ a:hover {
 			<!-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 -->
 
 
-			<c:set var="pageURL" value="post"></c:set>
+			<c:set var="pageURL" value="report"></c:set>
 	
 
 			<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage }${searchStr}"></c:set>
@@ -239,10 +239,17 @@ a:hover {
 		</div>
 		<!-- 검색창 -->
 		<div class="my-5">
-			<form action="chatBoard" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
+			<form action="report" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
+				<select class="form-control" id="formCategory" name="sc" >
+                  		<option value="0">전체</option>
+                  		<option value="1">광고성</option>
+                  		<option value="2">비방</option>
+                  		<option value="3">욕설</option>
+                  		<option value="4">성희롱</option>
+                  	</select>
 				<select class="form-control" name="sk" >
-					<option value="title">게시글</option>
-					<option value="reply">댓글</option>
+					<option value="title">신고제목</option>
+					<option value="content">신고내용</option>
 				</select>
 				<input type="text" id="sv" name="sv" class="form-control" style="width: 25%; display: inline-block;">
 				<button class="form-control btn btn-primary" style="width: 100px; display: inline-block;">검색</button>
