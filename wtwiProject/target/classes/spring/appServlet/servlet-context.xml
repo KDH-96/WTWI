@@ -34,7 +34,7 @@
 		<beans:constructor-arg value="tMnpH84LBV"/>
 	</beans:bean>
 	<beans:bean id="naverRedirectUrl" class="java.lang.String">
-		<beans:constructor-arg value="http://localhost:8080/fin/member/auth/naver/callback"/>
+		<beans:constructor-arg value="http://localhost:8080/wtwi/member/auth/naver/callback"/>
 	</beans:bean>
 	<beans:bean id="naverSns" class="com.wtwi.fin.auth.SNSValue">
 		<beans:constructor-arg value="naver"/>
@@ -69,7 +69,7 @@
 		<beans:constructor-arg value="2JJtZSsgj1yfux1e5X7JCmY9"/>
 	</beans:bean>
 	<beans:bean id="googleRedirectUrl" class="java.lang.String">
-		<beans:constructor-arg value="http://localhost:8080/fin/member/auth/google/callback"/>
+		<beans:constructor-arg value="http://localhost:8080/wtwi/member/auth/google/callback"/>
 	</beans:bean>
 	<beans:bean id="googleSns" class="com.wtwi.fin.auth.SNSValue">
 		<beans:constructor-arg value="google"/>
@@ -86,7 +86,7 @@
 	<beans:bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
 		<beans:property name="scope" value="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"/>
 		<!-- bean<beans:property name="scope" value=""https://www.googleapis.com/auth/plus.login"/> -->
-		<beans:property name="redirectUri" value="http://localhost:8080/fin/member/auth/google/callback"/>
+		<beans:property name="redirectUri" value="http://localhost:8080/wtwi/member/auth/google/callback"/>
 	</beans:bean>
 	
 	<context:component-scan base-package="com.wtwi.fin" />
