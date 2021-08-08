@@ -7,18 +7,16 @@
   .reply-area {
             width: 100%;
             height: 100px;
+            position: relative;
         }
 
-        .reply-writer-area {
-            width: 15%;
-            height: 50px;
-            float: left;
-        }
-
-        .reply-content-area {
-            width: 50%;
+        .more-reply-area {
+            width: 9%;
             height: 100%;
-            float: left;
+            text-align: center;
+            position : absolute;
+            top : 0%;
+            right : 0%; 
         }
 
         .replyWrite>table {
@@ -27,16 +25,25 @@
 
         .rWriter {
             display: inline-block;
+            float: left;
+            width : 100px;
             vertical-align: top;
             font-size: 1.2em;
             font-weight: bold;
         }
-
         .rDate {
             display: inline-block;
+            background-color : orange;
+            color : white;
+            border-radius : 2.0rem;
         }
 
-        .rContent,
+        .rContent{
+            height: 100%;
+            width: 50%;
+            float: left;
+        }
+        
         .replyBtnArea {
             height: 100%;
             width: 100%;
@@ -65,6 +72,7 @@
           </svg>
           <label for="">1</label>
     </div>
+    
 	<!-- 댓글 출력 부분 -->
 	<div class="replyList mt-5 pt-2">
 		<ul id="replyListArea">
@@ -73,31 +81,31 @@
 				<li class="shadow p-3 mb-5 bg-white rounded reply-row">
 
                         <div class="reply-area">
-                            <div class="reply-writer-area">
-                                <p class="rWriter">작성자</p>
-                            </div>
+                        			<div class="rDate-area">
+		                           	<p class="rDate">
+		                           	작성일 : <fmt:formatDate value="${reply.qnaReplyCreateDt}" pattern="yyyy년 MM월 dd일" />
+									</p>
+                        			</div>
+	                               
+	                                <p class="rWriter">${reply.memberNick}</p>
+		                            <p class="rContent">${reply.qnaReplyContent}</p>
+	
+		                        <div class="more-reply-area">
+		                                <details>
+		                                    <summary>더보기</summary>
+		                                    <ul class="update-delete-area">
+		                                        <li class="update"><a class="showUpdate" href="#" onclick="showUpdateReply(${reply.qnaReplyNo}, this)">수정</a></li>
+		                                        <li class="X"><a class="deleteReply" href="#" onclick="deleteReply(${reply.qnaReplyNo})">삭제</a></li>
+		                                    </ul>
+		                             	</details>
+		                        </div>
 						</div>
-
-						<div class="reply-content-area">
-                                <p class="rContent">작성내용</p>
-                        </div>
-
-                        <div class="more-area">
-                                <details>
-                                    <summary>더보기</summary>
-                                    <ul class="update-delete-area">
-                                        <li class="update"><a class="showUpdate" href="#" onclick="showUpdateReply(${reply.qnaReplyNo}, this)">수정</a></li>
-                                        <li class="X"><a class="deleteReply" href="#" onclick="deleteReply(${reply.qnaReplyNo})">삭제</a></li>
-                                    </ul>
-                             	</details>
-                        </div>
 
                     </li>
 			
 			</c:forEach>
 		</ul>
 	</div>
-
 
 
 	<!-- 댓글 작성 부분 -->
@@ -127,7 +135,7 @@
 const loginMemberNo = "${loginMember.memberNo}";
 
 // 현재 게시글 번호
-const boardNo = ${board.qnaNo};
+const qnaNo = ${board.qnaNo};
 
 // 수정 전 댓글 요소를 저장할 변수 (댓글 수정 시 사용)
 let beforeReplyRow;
@@ -205,37 +213,41 @@ function selectReplyList(){
 	            
 	            var li = $("<li>").addClass("shadow p-3 mb-5 bg-white rounded reply-row");
 	         
+	            // 댓글 작성일
+	            var rDateArea = $("<div>").addClass("rDate-area")
+	            var rDate = $("<p>").addClass("rDate").text("작성일 : " + item.qnaReplyCreateDt);
+				rDateArea.append(rDate);
 	            // 작성자, 작성일, 수정일 영역 
 	            var replyArea = $("<div>").addClass("reply-area");
-	            var replyWriterArea = $("<div>").addClass("reply-writer-area");
+				// 작성자	            
 	            var rWriter = $("<p>").addClass("rWriter").text(item.memberNick);
-	            replyArea.append(replyWriterArea).append(rWriter)
-	            
 	            // 댓글 내용
-	            var replyContentArea = $("<div>").addClass("reply-content-area");
 	            var rContent = $("<p>").addClass("rContent").html(item.qnaReplyContent);
-	            replyContentArea.append(rContent)
+
+				replyArea.append(rDateArea).append(rWriter).append(rContent);	            
 	            
-	            var moreArea = $("<div>").addClass("more-area");
+	            var moreReplyArea = $("<div>").addClass("more-reply-area");
 	            var details = $("<details>");
-	            var summary = $("<summary>");
+	            var summary = $("<summary>").text("더보기");
 	            var ul = $("<ul>").addClass("update-delete-area");
 	            var update= $("<li>").addClass("update");
 	            var X= $("<li>").addClass("X");
 	            
 	            // 현재 댓글의 작성자와 로그인한 멤버의 아이디가 같을 때 버튼 추가
-	            if(item.memberNo == loginMemberNo){
+	           // if(item.memberNo == loginMemberNo){
 	               
 	            	var showUpdate = $("<a>").addClass("showUpdate").text("수정").attr("onclick","showUpdateReply("+item.qnaReplyNo+", this)");
 	               var deleteReply = $("<a>").addClass("deleteReply").text("삭제").attr("onclick", "deleteReply("+item.qnaReplyNo+")");
 	               // ** 추가되는 댓글에 onclick 이벤트를 부여하여 버튼 클릭 시 수정, 삭제를 수행할 수 있는 함수를 이벤트 핸들러로 추가함. 
 
-	               moreArea.append(details).append(summary).append(ul).append(update).append(X).append(showUpdate).append(deleteReply);
-	            }
+	               
+	               details.append(summary).append(ul).append(update).append(showUpdate).append(X).append(deleteReply);
+	               moreReplyArea.append(details);
+	           // }
 	            
 	            
 	            // 댓글 요소 하나로 합치기
-	            li.append(replyArea).append(replyContentArea).append(moreArea);
+	            li.append(replyArea).append(moreReplyArea);
 	            
 	            
 	            // 합쳐진 댓글을 화면에 배치
@@ -281,7 +293,7 @@ function showUpdateReply(qnaReplyNo, el){
 	   
 	   
 	   // 작성되어있던 내용(수정 전 댓글 내용) 
-	   var beforeContent = $(el).parent().prev().html();
+	   var beforeContent = $(el).parent().parent().parent().parent().prev().html();
 	   
 	   
 	   
@@ -299,9 +311,9 @@ function showUpdateReply(qnaReplyNo, el){
 	   
 	   
 	   // 기존 댓글 영역을 삭제하고 textarea를 추가 
-	   $(el).parent().prev().remove();
-	   var textarea = $("<textarea>").addClass("replyUpdateContent").attr("rows", "3").val(beforeContent);
-	   $(el).parent().before(textarea);
+	   $(el).parent().parent().parent().parent().prev().remove();
+	   var textarea = $("<textarea>").addClass("replyUpdateContent").attr("rows", "3").css("width","70%").val(beforeContent);
+	   $(el).parent().parent().parent().parent().before(textarea);
 	   
 	   
 	   // 수정 버튼
@@ -358,7 +370,7 @@ function updateReply(qnaReplyNo, el){
 
 //-----------------------------------------------------------------------------------------
 //댓글 삭제
-function deleteReply(replyNo){
+function deleteReply(qnaNo){
 
 	   if(confirm("정말로 삭제하시겠습니까?")){
 		      var url = "${contextPath}/reply/deleteReply";
@@ -381,6 +393,5 @@ function deleteReply(replyNo){
 	
 	
 }
-
 
 </script>

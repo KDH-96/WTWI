@@ -123,11 +123,14 @@
             }
         }
 
+		li{
+            list-style: none;
+		}
+
         summary li {
             width: 100%;
             height: 100%;
             float: left;
-            list-style: none;
         }
 
         summary li a {
@@ -137,6 +140,7 @@
 
         ul li a:hover {
             color: orange;
+            cursor:pointer;
             text-decoration: none;
         }
 
@@ -344,7 +348,7 @@
 					
 
         <div class=text-left>
-            <a href="${contextPath}/qnaboard/list" class="btn btn-primary">목록으로</a>
+            <a href="${contextPath}/qnaboard/list?cp=${param.cp}${searchStr}" class="btn btn-primary">목록으로</a>
         </div>
 
 
