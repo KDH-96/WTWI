@@ -245,20 +245,12 @@ opacity
 									<c:if test="${qnaStatus == 'Y'}">공개</c:if>
 									<c:if test="${qnaStatus == 'S'}">비공개</c:if>
 									</td>
+
 								</tr>
 								
-							<%-- 	[${loginMember.memberNo}]
-								${qnaBoard.memberNo} --%>
-								<%--
-								<c:set var="memberNo" value="${qnaBoard.memberNo}"/>
-								<c:set var="loginMemberNo" value="${loginMember.memberNo}"/>
-								<c:set var="memberGrade" value="${qnaBoard.memberGrade}"/>
-			 ${memberNo}
-			${loginMemberNo}
-			${memberGrade}
-			${qnaStatus} --%>
 							</c:forEach>
 						</c:otherwise>
+						
 					</c:choose>
 
 
@@ -280,10 +272,8 @@ opacity
 
 		<c:set var="pageURL" value="list" />
 
-		<c:set var="prev"
-			value="${pageURL}?cp=${pagination.prevPage}${searchStr}" />
-		<c:set var="next"
-			value="${pageURL}?cp=${pagination.nextPage}${searchStr}" />
+		<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage}${searchStr}" />
+		<c:set var="next" value="${pageURL}?cp=${pagination.nextPage}${searchStr}" />
 
 
 		<div class="my-5">

@@ -19,9 +19,11 @@ import com.wtwi.fin.member.controller.MemberController;
 import com.wtwi.fin.member.model.vo.Member;
 import com.wtwi.fin.qnaboard.model.service.QnaBoardService;
 import com.wtwi.fin.qnaboard.model.service.QnaBoardServiceImpl;
+import com.wtwi.fin.qnaboard.model.service.QnaReplyService;
 import com.wtwi.fin.qnaboard.model.vo.Pagination;
 import com.wtwi.fin.qnaboard.model.vo.QnaBoard;
 import com.wtwi.fin.qnaboard.model.vo.QnaCategory;
+import com.wtwi.fin.qnaboard.model.vo.QnaReply;
 import com.wtwi.fin.qnaboard.model.vo.Search;
 
 @Controller
@@ -31,6 +33,9 @@ public class QnaBoardController {
 
 	@Autowired
 	private QnaBoardService service;
+	
+	@Autowired
+	private QnaReplyService replyService;
 	
 	@RequestMapping(value="list",method=RequestMethod.GET)
 	private String selectQnaBoard(@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
@@ -68,9 +73,13 @@ public class QnaBoardController {
 		
 		QnaBoard board = service.selectqnaBoard(qnaNo);
 		System.out.println(board);
+		
 		if(board!=null) {
+			List<QnaReply> rList = replyService.selectList(qnaNo);
+			
 			model.addAttribute("board", board);
-			System.out.println(board);
+			model.addAttribute("rList", rList);
+			
 			return "qnaboard/qnaBoardView";
 		}else {
 			MemberController.swalSetMessage(ra, "error", "존재하지 않는 게시글입니다", null);

@@ -6,11 +6,18 @@
 	
 	<result property="qnaReplyContent" column="QNA_REPLY_CONTENT"/>
 	<result property="qnaReplyCreateDt" column="QNA_REPLY_CREATE_DT"/>
-	<result property="qnaReplyStatus" column="QNA_REPLY_CONTENT"/>
+	<result property="qnaReplyStatus" column="QNA_REPLY_STATUS"/>
 	<result property="qnaNo" column="QNA_NO"/>
 	<result property="memberNo" column="MEMBER_NO"/>
 	<result property="memberNick" column="MEMBER_NICK"/>
 	</resultMap>
 	
-	
+	<select id="selectList" parameterType="_int" resultMap="reply_rm">
+		SELECT QNA_REPLY_NO, QNA_REPLY_CONTENT, QNA_REPLY_CREATE_DT, QNA_REPLY_STATUS, QNA_NO, MEMBER_NO, MEMBER_NICK
+		FROM QNA_REPLY
+		JOIN MEMBER USING (MEMBER_NO)
+		WHERE QNA_REPLY_STATUS = 'Y'
+		AND QNA_NO = #{qnaNo}
+		ORDER BY QNA_REPLY_NO DESC
+	</select>
 </mapper>
