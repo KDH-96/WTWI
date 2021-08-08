@@ -178,6 +178,8 @@ function selectReplyList(){
 			
 				// 2) 오늘 작성한 댓글 여부
 				if(freeReplyCreateDate==today){ // 오늘 작성
+					if(hour<10) hour = "0"+hour;
+					if(minute<10) minute = "0"+minute;
 					strDate = "<div class=\"row-6 mt-1 free-reply-date\">"+hour+":"+minute+"</div>";
 					
 				} else {
