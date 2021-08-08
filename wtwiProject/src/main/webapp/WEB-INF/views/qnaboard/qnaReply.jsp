@@ -37,6 +37,13 @@
             color : white;
             border-radius : 2.0rem;
         }
+        
+        .update-alarm{
+            display: inline-block;
+        	background-color : green;
+            color : white;
+            border-radius : 1.0rem;
+        }
 
         .rContent{
             height: 100%;
@@ -84,6 +91,9 @@
 			                        <p class="rDate">
 			                           	작성일 : <fmt:formatDate value="${reply.qnaReplyCreateDt}" pattern="yyyy년 MM월 dd일" />
 									</p>
+									<c:if test="${reply.qnaReplyStatus == 'M'}">
+									<p class="update-alarm">수정댓글</p>
+									</c:if>
                         			</div>
 	                               
 	                                <p class="rWriter">${reply.memberNick}</p>
@@ -227,8 +237,14 @@ function selectReplyList(){
 	            // 댓글 작성일
 	            var rDateArea = $("<div>").addClass("rDate-area")
 	            var rDate = $("<p>").addClass("rDate").text("작성일 : " + item.qnaReplyCreateDt);
+	            var updateAlarm = $("<p>").addClass("update-alarm").text("수정댓글");
+	            if(item.qnaReplyStatus == 'M'){
+				rDateArea.append(rDate).append(updateAlarm);
+	            }else if(item.qnaReplyStatus == 'Y'){
 				rDateArea.append(rDate);
-	            // 작성자, 작성일, 수정일 영역 
+	            }
+				
+				
 	            var replyArea = $("<div>").addClass("reply-area");
 				// 작성자	            
 	            var rWriter = $("<p>").addClass("rWriter").text(item.memberNick);
@@ -257,8 +273,11 @@ function selectReplyList(){
 	               details.append(summary).append(ul);
 	               moreReplyArea.append(details);
 	           // }
-	            
+	            if(item.memberNo == loginMemberNo){
 				replyArea.append(rDateArea).append(rWriter).append(rContent).append(moreReplyArea);	            
+	            }else{
+				replyArea.append(rDateArea).append(rWriter).append(rContent);	            
+	            }
 	            
 	            // 댓글 요소 하나로 합치기
 	            

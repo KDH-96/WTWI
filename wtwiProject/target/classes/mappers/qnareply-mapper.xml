@@ -17,7 +17,7 @@
 		SELECT QNA_REPLY_NO, QNA_REPLY_CONTENT, QNA_REPLY_CREATE_DT, QNA_REPLY_STATUS, QNA_NO, MEMBER_NO, MEMBER_NICK
 		FROM QNA_REPLY
 		JOIN MEMBER USING (MEMBER_NO)
-		WHERE QNA_REPLY_STATUS = 'Y'
+		WHERE QNA_REPLY_STATUS IN('Y','M')
 		AND QNA_NO = #{qnaNo}
 		ORDER BY QNA_REPLY_NO DESC
 	</select>
@@ -31,7 +31,8 @@
 	<!-- 댓글 수정  -->	
 	<update id="updateReply" parameterType="QnaReply">
 		UPDATE QNA_REPLY SET
-		QNA_REPLY_CONTENT = #{qnaReplyContent}
+		QNA_REPLY_CONTENT = #{qnaReplyContent},
+		QNA_REPLY_STATUS= 'M'
 		WHERE QNA_REPLY_NO = #{qnaReplyNo}
 	</update>
 	
