@@ -12,6 +12,7 @@
 	<result property="memberNick" column="MEMBER_NICK"/>
 	</resultMap>
 	
+	<!-- 댓글 목록 조회  -->
 	<select id="selectList" parameterType="_int" resultMap="reply_rm">
 		SELECT QNA_REPLY_NO, QNA_REPLY_CONTENT, QNA_REPLY_CREATE_DT, QNA_REPLY_STATUS, QNA_NO, MEMBER_NO, MEMBER_NICK
 		FROM QNA_REPLY
@@ -20,4 +21,25 @@
 		AND QNA_NO = #{qnaNo}
 		ORDER BY QNA_REPLY_NO DESC
 	</select>
+
+	<!-- 댓글 삽입  -->
+	<insert id="insertReply" parameterType="QnaReply">
+		INSERT INTO QNA_REPLY
+		VALUES(SEQ_Q_RNO.NEXTVAL, #{qnaReplyContent}, DEFAULT, 'Y', #{qnaNo}, #{memberNo})
+	</insert>
+
+	<!-- 댓글 수정  -->	
+	<update id="updateReply" parameterType="QnaReply">
+		UPDATE QNA_REPLY SET
+		QNA_REPLY_CONTENT = #{qnaReplyContent}
+		WHERE QNA_REPLY_NO = #{qnaReplyNo}
+	</update>
+	
+	<!-- 댓글 삭제  -->
+	<update id="deleteReply" parameterType="_int">
+		UPDATE QNA_REPLY SET
+		QNA_REPLY_STATUS = 'N'
+		WHERE QNA_REPLY_NO = #{qnaReplyNo}
+	</update>
+	
 </mapper>
