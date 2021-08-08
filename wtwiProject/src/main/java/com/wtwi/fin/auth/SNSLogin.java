@@ -48,15 +48,11 @@ public class SNSLogin {
 
 	public Member getUserProfile(String code) throws Exception {
 	
-		System.out.println("code : "+code + "sns : " + this.sns.toString());
 		OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
-		System.out.println("accessToken" + accessToken.toString());
 		OAuthRequest request = new OAuthRequest(Verb.GET, this.sns.getProfileUrl());
-		System.out.println("request : " + request.toString());
 		oauthService.signRequest(accessToken, request);
 
 		Response response = oauthService.execute(request);
-		System.out.println("response : " + response.toString());
 		return parseJson(response.getBody());
 
 	}
@@ -79,15 +75,8 @@ public class SNSLogin {
 			member.setMemberPw("socialLogin");
 			member.setMemberEmail(resNode.get("email").asText());
 			member.setMemberGrade("N");
-		} else if (this.sns.isKakao()) {
-			JsonNode resNode = rootNode.get("response");
-			JsonNode properties = rootNode.path("properties");
-			member.setMemberNick(properties.get("nickname").asText("여행자"));
-			member.setMemberPw("socialLogin");
-			JsonNode kakaoAccount = rootNode.path("kakao_account");
-			member.setMemberEmail(kakaoAccount.get("email").asText());
-			member.setMemberGrade("K");
-		}
+		} 
+		
 
 		return member;
 	}
@@ -95,7 +84,7 @@ public class SNSLogin {
 	
 	// 카카오
 	// 1) code를 이용해 accessToken GET
-	/*public Member getKakaoProfile(String code) throws Exception {
+	public Member getKakaoProfile(String code) throws Exception {
 
 		String accessToken = "";
 		RestTemplate rt = new RestTemplate();
@@ -151,6 +140,6 @@ public class SNSLogin {
 		member.setMemberGrade("K");
 		
 		return member;
-	}*/
+	}
 
 }

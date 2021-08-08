@@ -67,7 +67,7 @@
 
     <main class="myPage-main">
         <h2>비밀번호 변경</h2>
-        <form action="changePwdAction" class="myPage-pwUpdate__form" method="POST">
+        <form action="changePwdAction" class="myPage-pwUpdate__form" method="POST" onsubmit="return pwdValidate();">
             <div class="row mb-3 form-row">
                 <div class="col-md-3">
                     <label for="name">현재 비밀번호</label>

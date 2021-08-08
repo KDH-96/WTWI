@@ -74,27 +74,25 @@ public class MemberController {
 		Member member = null;
 		Member snsMember = null;
 		
-	/*if(StringUtils.equals("kakao", snsService)) {
+		if(StringUtils.equals("kakao", snsService)) {
 			SNSLogin snsLogin = new SNSLogin();
 			snsMember = snsLogin.getKakaoProfile(code);		
 			member = service.getSnsEmail(snsMember);
 
 			
-		}else {*/
+		}else {
 			
 			if(StringUtils.equals("naver", snsService)) {
 				sns = naverSns;
 			}else if(StringUtils.equals("google", snsService)) {
 				sns = googleSns;
-			}else if(StringUtils.equals("kakao", snsService)) {
-				sns = kakaoSns;
 			}
 			
 			SNSLogin snsLogin = new SNSLogin(sns);
 			snsMember = snsLogin.getUserProfile(code);
 			
 			member = service.getSnsEmail(snsMember);
-		/*}*/
+		}
 		
 		if(member == null) { 
 			member = service.snsSignup(snsMember);
@@ -176,13 +174,13 @@ public class MemberController {
 	@RequestMapping(value = "loginAction", method = RequestMethod.POST)
 	public String login(Member member, HttpSession session, RedirectAttributes ra, Model model,
 			HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(value = "save", required = false) String save) {
+			@RequestParam(value="save", required = false) String save) {
 
 		PrivateKey key = (PrivateKey) session.getAttribute("RSAprivateKey");
 
 		if (key == null) {
 			swalSetMessage(ra, "error", "로그인 실패", "문제가 지속될 경우, 대표번호로 문의바랍니다.");
-			return "redirect:/main";
+			return "redirect:/member/login";
 		}
 
 		session.removeAttribute("RSAprivateKey");
@@ -196,9 +194,9 @@ public class MemberController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			swalSetMessage(ra, "error", "로그인 실패", "문제가 지속될 경우, 대표번호로 문의바랍니다.");
-			return "redirect:/main";
+			return "redirect:/member/login";
 		}
-
+		System.out.println(save);
 		// 로그인 로직 실행
 		Member loginMember = service.login(member);
 
@@ -219,6 +217,7 @@ public class MemberController {
 
 		} else {
 			swalSetMessage(ra, "error", "로그인 실패", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			return "redirect:/member/login";
 		}
 
 		return "redirect:/main";
