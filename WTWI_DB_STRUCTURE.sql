@@ -931,7 +931,7 @@ CREATE OR REPLACE VIEW FREE_LIST AS
 
 
 
---문의 게시판 댓글 조회용 샘플 데이터
+--문의 게시판 댓글 조회용 샘플 데이터[도헌] -- 추가 08/08
     INSERT INTO QNA_REPLY
     VALUES(SEQ_Q_RNO.NEXTVAL, '댓글 테스트1', DEFAULT, 'Y', (SELECT MAX(QNA_NO) FROM QNA_LIST WHERE QNA_STATUS IN('Y','S')),1 );
     INSERT INTO QNA_REPLY
