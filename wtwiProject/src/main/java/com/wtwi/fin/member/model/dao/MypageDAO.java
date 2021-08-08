@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.wtwi.fin.freeboard.model.vo.Board;
+import com.wtwi.fin.freeboard.model.vo.Reply;
 import com.wtwi.fin.member.model.vo.Chat;
 import com.wtwi.fin.member.model.vo.Member;
 import com.wtwi.fin.member.model.vo.Pagination;
@@ -232,4 +233,54 @@ public class MypageDAO {
 		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
 		return sqlSession.selectList("myPageMapper.selectSearchReportBoardList", search, rowBounds);
 	}
+
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	/** 댓글내역 수 조회
+	 * @param member
+	 * @return
+	 */
+	public Pagination getReplyListCount(Member member) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("myPageMapper.getReplyListCount", member);
+	}
+
+	/** 댓글내역 게시글 목록 조회
+	 * @param pagination
+	 * @return
+	 */
+	public List<Reply> selectReplyBoardList(Pagination pagination) {
+		
+		int offset = (pagination.getCurrentPage() - 1) * pagination.getLimit(); 
+
+		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
+		
+
+		return sqlSession.selectList("myPageMapper.selectReplyBoardList", pagination.getMemberNo(), rowBounds);
+	}
+
+	/** 댓글내역 수 조회(검색)
+	 * @param search
+	 * @return
+	 */
+	public Pagination getSearchReplyListCount(Search search) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("myPageMapper.getSearchReplyListCount", search);
+	}
+
+	/** 댓글내역 게시글 목록 조회(검색)
+	 * @param search
+	 * @param pagination
+	 * @return
+	 */
+	public List<Reply> selectSearchReplyBoardList(Search search, Pagination pagination) {
+		int offset = (pagination.getCurrentPage() - 1) * pagination.getLimit(); 
+
+		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
+		return sqlSession.selectList("myPageMapper.selectSearchReplyBoardList", search, rowBounds);
+	}
+
 }

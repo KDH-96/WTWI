@@ -60,9 +60,24 @@
 		<result property="reportCreateDt" column="REPORT_CREATE_DT" />
 		<result property="reportStatus" column="REPORT_STATUS" />
 		<result property="reportType" column="REPORT_TYPE" />
+		<result property="reportTypeNo" column="REPORT_TYPE_NO" />
 		<result property="memberNo" column="MEMBER_NO" />
 		<result property="reportCategoryNo" column="REPORT_CATEGORY_NO" />
 		<result property="reportCategoryNm" column="REPORT_CATEGORY_NM" />
+	</resultMap>
+	
+	<!-- 댓글 -->
+	<resultMap type="FreeReply" id="reply_rm">
+		<id property="freeReplyNo" column="FREE_REPLY_NO"/>
+		
+		<result property="freeReplyContent" column="FREE_REPLY_CONTENT"/>
+		<result property="freeReplyCreateDate" column="FREE_REPLY_CREATE_DT"/>
+		<result property="freeReplyStatus" column="FREE_REPLY_STATUS"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberNick" column="MEMBER_NICK"/>
+		<result property="freeNo" column="FREE_NO"/>
+		<result property="parentReplyNo" column="PARENT_REPLY_NO"/>
+		<result property="parentReplyNick" column="PARENT_REPLY_NICK"/>
 	</resultMap>
 
 
@@ -292,18 +307,22 @@
 	<!-- 신고내역 게시글 수 조회 -->
 	<select id="getReportListCount" parameterType="Member"
 		resultMap="pg_rm">
-		 SELECT COUNT(*) CNT FROM REPORT
+		 SELECT COUNT(*) CNT FROM REPORT A
         JOIN REPORT_CATEGORY USING(REPORT_CATEGORY_NO)
-        WHERE MEMBER_NO = #{memberNo}
+        JOIN FREE_BOARD B ON A.REPORT_TYPE_NO = B.FREE_NO
+        WHERE A.MEMBER_NO = #{memberNo}
         AND REPORT_STATUS = 'Y'
+        AND FREE_STATUS = 'Y'
 	</select>
 	<!-- 신고내역 게시글 수 조회(검색) -->
 	<select id="getSearchReportListCount" parameterType="MyPageSearch"
 		resultMap="pg_rm">
-		 SELECT COUNT(*) CNT FROM REPORT
+		 SELECT COUNT(*) CNT FROM REPORT A
         JOIN REPORT_CATEGORY USING(REPORT_CATEGORY_NO)
-        WHERE MEMBER_NO = #{memberNo}
+        JOIN FREE_BOARD B ON A.REPORT_TYPE_NO = B.FREE_NO
+        WHERE A.MEMBER_NO = #{memberNo}
         AND REPORT_STATUS = 'Y'
+        AND FREE_STATUS = 'Y'
 		<if test="sv != ''">
 			AND
 			<bind name="val" value="'%' + sv + '%'" />
@@ -326,19 +345,23 @@
 	<!-- 신고내역 게시글 목록 조회 -->
 	<select id="selectReportBoardList" parameterType="Member"
 		resultMap="report_rm">
-		SELECT *FROM REPORT
+		 SELECT * FROM REPORT A
         JOIN REPORT_CATEGORY USING(REPORT_CATEGORY_NO)
-        WHERE MEMBER_NO = #{memberNo}
+        JOIN FREE_BOARD B ON A.REPORT_TYPE_NO = B.FREE_NO
+        WHERE A.MEMBER_NO = #{memberNo}
         AND REPORT_STATUS = 'Y'
+        AND FREE_STATUS = 'Y'
         ORDER BY REPORT_NO DESC
 	</select>
 	<!-- 신고내역 게시글 목록 조회(검색) -->
 	<select id="selectSearchReportBoardList"
 		parameterType="MyPageSearch" resultMap="report_rm">
-		SELECT * FROM REPORT
+		 SELECT * FROM REPORT A
         JOIN REPORT_CATEGORY USING(REPORT_CATEGORY_NO)
-        WHERE MEMBER_NO = #{memberNo}
+        JOIN FREE_BOARD B ON A.REPORT_TYPE_NO = B.FREE_NO
+        WHERE A.MEMBER_NO = #{memberNo}
         AND REPORT_STATUS = 'Y'
+        AND FREE_STATUS = 'Y'
 		<if test="sv != ''">
 			AND
 			<bind name="val" value="'%' + sv + '%'" />
@@ -357,6 +380,58 @@
 
 		</if>
 		ORDER BY REPORT_NO DESC
+	</select>
+	
+	
+	
+	<!-- 댓글내역 -->
+	<!-- 댓글내역 게시글 수 조회 -->
+	<select id="getReplyListCount" parameterType="Member"
+		resultMap="pg_rm">
+		SELECT COUNT(*) CNT FROM FREE_REPLY A 
+        JOIN FREE_BOARD USING(FREE_NO)
+		WHERE A.MEMBER_NO = #{memberNo}
+		AND FREE_REPLY_STATUS = 'Y'
+		AND FREE_STATUS = 'Y'
+	</select>
+	<!-- 댓글내역 게시글 수 조회(검색) -->
+	<select id="getSearchReplyListCount" parameterType="MyPageSearch"
+		resultMap="pg_rm">
+		SELECT COUNT(*) CNT FROM FREE_REPLY A 
+        JOIN FREE_BOARD USING(FREE_NO)
+		WHERE A.MEMBER_NO = #{memberNo}
+		AND FREE_REPLY_STATUS = 'Y'
+		AND FREE_STATUS = 'Y'
+		<if test="sv != ''">
+			AND
+			<bind name="val" value="'%' + sv + '%'" />
+				FREE_REPLY_CONTENT LIKE #{val}
+		</if>
+	</select>
+
+	<!-- 댓글내역 게시글 목록 조회 -->
+	<select id="selectReplyBoardList" parameterType="Member"
+		resultMap="reply_rm">
+		SELECT * FROM FREE_REPLY A 
+        JOIN FREE_BOARD USING(FREE_NO)
+		WHERE A.MEMBER_NO = #{memberNo}
+		AND FREE_REPLY_STATUS = 'Y'
+		AND FREE_STATUS = 'Y'
+	</select>
+	<!-- 댓글내역 게시글 목록 조회(검색) -->
+	<select id="selectSearchReplyBoardList"
+		parameterType="MyPageSearch" resultMap="reply_rm">
+		SELECT * FROM FREE_REPLY A 
+        JOIN FREE_BOARD USING(FREE_NO)
+		WHERE A.MEMBER_NO = #{memberNo}
+		AND FREE_REPLY_STATUS = 'Y'
+		AND FREE_STATUS = 'Y'
+		<if test="sv != ''">
+			AND
+			<bind name="val" value="'%' + sv + '%'" />
+				FREE_REPLY_CONTENT LIKE #{val}
+
+		</if>
 	</select>
 	
 </mapper>

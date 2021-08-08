@@ -95,7 +95,7 @@ public class SNSLogin {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", "authorization_code");
 		params.add("client_id", "b87de33b6c8fe6b2977868b55731dae3");
-		params.add("redirect_uri", "http://localhost:8080/fin/member/auth/kakao/callback");
+		params.add("redirect_uri", "http://localhost:8080/wtwi/member/auth/kakao/callback");
 		params.add("code", code);
 		params.add("client_secret", "flqtQy9HB3KdhcMBhnlDllJetmlSg4kf");
 

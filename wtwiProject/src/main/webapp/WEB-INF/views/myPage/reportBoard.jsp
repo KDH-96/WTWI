@@ -100,7 +100,7 @@ a:hover {
 		<div>
 			<table class="table">
 				<colgroup>
-					<col width="5%"/>
+					<col width="10%"/>
                     <col width="13%"/>
                     <col width="30%"/>
                     <col width="30%"/>
@@ -108,7 +108,7 @@ a:hover {
 				</colgroup>
 				<thead>
 					<tr>
-						<th scope="col">이동</th>
+						<th scope="col">게시글로 이동</th>
 	                    <th scope="col">유형</th>
 	                    <th scope="col">신고제목</th>
 	                    <th scope="col">신고내용</th>
@@ -132,7 +132,7 @@ a:hover {
 								<tr>
 									<!-- 글번호 -->
 									<th scope="row">
-										<a href="freeboard/${board.reportTypeNo}?cp=1"><i class="far fa-bell"></i></a>
+										<a href="${contextPath}/freeboard/${board.reportTypeNo}?cp=1"><i class="far fa-bell"></i></a>
 									</th>
 
 									<%-- 유형(게시글/댓글) --%>

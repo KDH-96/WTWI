@@ -84,6 +84,9 @@
                     <input type="password" class="placeholder form-control" id="newPwd1" name="newPwd1" 
                     placeholder="영어 대소문자, 숫자, 특수문자(선택) 조합 8자 이상" required>
                 </div>
+                <div class="col-md-6 offset-md-3">
+					<span id="checkPwd1">&nbsp;</span>
+				</div>
             </div>
             <div class="row mb-3 form-row">
                 <div class="col-md-3">
@@ -93,6 +96,9 @@
                     <input type="password" class="form-control" id="newPwd2" name="newPwd2" 
                     placeholder="영어 대소문자, 숫자, 특수문자(선택) 조합 8자 이상" required>
                 </div>
+                <div class="col-md-6 offset-md-3">
+					<span id="checkPwd2">&nbsp;</span>
+				</div>
             </div>
             <div class="update-btnArea">
                 <button class="btn btn-primary btn-md " type="submit">비밀번호 수정</button>
@@ -123,6 +129,26 @@
 		 
 		 
 	 }
+	
+	 $("#newPwd1, #newPwd2").on("input", function() {
+		    const pwd1 = $("#newPwd1").val();
+		    const pwd2 = $("#newPwd2").val();
+		    
+		    if(pwd1.trim() == "" && pwd2.trim() == "") {
+		        $("#checkPwd1").html("&nbsp;");
+		        $("#checkPwd2").html("&nbsp;");
+		        checkObj.pwd2 = false;
+		    } else if(pwd1 == pwd2){
+		    
+		         $("#checkPwd2").text("비밀번호 일치").css("color", "green");
+		        checkObj.pwd2 = true;
+		    } else{
+		         $("#checkPwd2").text("비밀번호 불일치").css("color", "red");
+		         checkObj.pwd2 = false;
+		    }
+
+
+		})
 	</script>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.wtwi.fin.member.model.service;
 import java.util.List;
 
 import com.wtwi.fin.freeboard.model.vo.Board;
+import com.wtwi.fin.freeboard.model.vo.Reply;
 import com.wtwi.fin.member.model.vo.Pagination;
 import com.wtwi.fin.member.model.vo.Report;
 import com.wtwi.fin.member.model.vo.Search;
@@ -123,5 +124,33 @@ public interface MypageService {
 	 * @return
 	 */
 	List<Report> selectSearchReportBoardList(Search search, Pagination pagination);
+
+	/** 댓글 내역 페이징 처리
+	 * @param member
+	 * @param pg
+	 * @return
+	 */
+	Pagination getReplyPagination(Member member, Pagination pg);
+
+	/** 댓글 내역 전체 목록 
+	 * @param pagination
+	 * @param order
+	 * @return
+	 */
+	List<Reply> selectReplyBoardList(Pagination pagination, String order);
+
+	/** 댓글 내역 페이징처리(검색)
+	 * @param search
+	 * @param pg
+	 * @return
+	 */
+	Pagination getReplyPagination(Search search, Pagination pg);
+
+	/** 댓글 내역 전체 목록(검색)
+	 * @param search
+	 * @param pagination
+	 * @return
+	 */
+	List<Reply> selectSearchReplyBoardList(Search search, Pagination pagination);
 
 }

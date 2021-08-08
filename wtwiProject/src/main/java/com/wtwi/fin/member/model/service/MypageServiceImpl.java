@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wtwi.fin.freeboard.model.vo.Board;
+import com.wtwi.fin.freeboard.model.vo.Reply;
 import com.wtwi.fin.member.model.vo.Pagination;
 import com.wtwi.fin.member.model.vo.Report;
 import com.wtwi.fin.member.model.vo.Search;
@@ -34,7 +35,7 @@ public class MypageServiceImpl implements MypageService {
 	// 내가 쓴 글(자유게시판) 게시글 목록 조회
 	@Override
 	public List<Board> selectFreeBoardList(Pagination pagination, String order) {
-		
+
 		return dao.selectFreeBoardList(pagination, order);
 	}
 
@@ -90,12 +91,11 @@ public class MypageServiceImpl implements MypageService {
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	// 1:1 문의내역 전체 게시글 수 
+	// 1:1 문의내역 전체 게시글 수
 	@Override
 	public Pagination getChatPagination(Member member, Pagination pg) {
-;
+		;
 		Pagination selectPg = dao.getChatListCount(member);
-
 
 		return new Pagination(pg.getCurrentPage(), selectPg.getListCount());
 	}
@@ -122,42 +122,72 @@ public class MypageServiceImpl implements MypageService {
 
 		return dao.selectChatBoardList(search, pagination);
 	}
-	
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////
-	
-	
-	// 신고내역 전체 게시글 수 
+
+	// 신고내역 전체 게시글 수
 	@Override
 	public Pagination getReportPagination(Member member, Pagination pg) {
 		;
 		Pagination selectPg = dao.getReportListCount(member);
-		
-		
+
 		return new Pagination(pg.getCurrentPage(), selectPg.getListCount());
 	}
-	
+
 	// 신고내역 게시글 목록 조회
 	@Override
 	public List<Report> selectReportBoardList(Pagination pagination, String order) {
-		
+
 		return dao.selectReportBoardList(pagination);
 	}
-	
+
 	// 신고내역 전체 게시글 수 (검색)
 	@Override
 	public Pagination getReportPagination(Search search, Pagination pg) {
-		
+
 		Pagination selectPg = dao.getSearchReportListCount(search);
-		
+
 		return new Pagination(pg.getCurrentPage(), selectPg.getListCount());
 	}
-	
+
 	// 신고내역 게시글 목록 조회(검색)
 	@Override
 	public List<Report> selectSearchReportBoardList(Search search, Pagination pagination) {
-		
+
 		return dao.selectSearchReportBoardList(search, pagination);
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	// 댓글 내역 전체 게시글 수 
+	@Override
+	public Pagination getReplyPagination(Member member, Pagination pg) {
+		;
+		Pagination selectPg = dao.getReplyListCount(member);
+
+		return new Pagination(pg.getCurrentPage(), selectPg.getListCount());
+	}
+
+	// 댓글 내역목록 조회
+	@Override
+	public List<Reply> selectReplyBoardList(Pagination pagination, String order) {
+
+		return dao.selectReplyBoardList(pagination);
+	}
+
+	// 댓글 내역 전체 게시글 수 (검색)
+	@Override
+	public Pagination getReplyPagination(Search search, Pagination pg) {
+
+		Pagination selectPg = dao.getSearchReplyListCount(search);
+
+		return new Pagination(pg.getCurrentPage(), selectPg.getListCount());
+	}
+
+	// 댓글 내역 게시글 목록 조회(검색)
+	@Override
+	public List<Reply> selectSearchReplyBoardList(Search search, Pagination pagination) {
+
+		return dao.selectSearchReplyBoardList(search, pagination);
+	}
 }
