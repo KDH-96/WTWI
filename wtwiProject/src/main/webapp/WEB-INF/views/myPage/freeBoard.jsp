@@ -91,8 +91,12 @@ a:hover {
 
 	<%-- 검색 상태 유지를 위한 쿼리스트링용 변수 선언 --%>
 	<c:if test="${!empty param.sv }">
-		<c:set var="searchValue" value="&sv=${param.sv} "/>
+		<c:set var="searchValue" value="&sv=${param.sv}"/>
 		<c:set var="searchStr" value="&sc=${param.sc}&sk=${param.sk}${searchValue }"  />
+	</c:if>
+	
+	<c:if test="${!empty param.order }">
+		<c:set var="order" value="&order=${param.order}"/>
 	</c:if>
 
 	<main class="myPage-main">
@@ -118,8 +122,26 @@ a:hover {
 						<th scope="col">게시판 유형</th>
 						<th scope="col">게시글제목</th>
 						<th scope="col">작성일자</th>
-						<th scope="col">좋아요 수</th>
-						<th scope="col">조회수</th>
+						<th scope="col">
+							<c:choose>
+								<c:when test="${param.order!='like'}">
+									<a href="post?order=like${searchStr}">좋아요 수</a>								
+								</c:when>
+								<c:otherwise>
+									<a href="post">좋아요 수</a>																
+								</c:otherwise>
+							</c:choose>
+						</th>
+						<th scope="col">
+							<c:choose>
+								<c:when test="${param.order!='read'}">
+									<a href="post?order=read${searchStr}">조회수</a>							
+								</c:when>
+								<c:otherwise>
+									<a href="post">조회수</a>>																
+								</c:otherwise>
+							</c:choose>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -191,9 +213,9 @@ a:hover {
 			<c:set var="pageURL" value="post"></c:set>
 	
 
-			<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage }${searchStr}"></c:set>
+			<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage }${searchStr}${order}"></c:set>
 			<!-- 다음페이지 시작주소 -->
-			<c:set var="next" value="${pageURL}?cp=${pagination.nextPage }${searchStr}"></c:set>
+			<c:set var="next" value="${pageURL}?cp=${pagination.nextPage }${searchStr}${order}"></c:set>
 
 			<div class="my-5">
 				<ul class="myPage-pagination">
@@ -221,7 +243,7 @@ a:hover {
 								<li><a class="focus-page">${p }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageURL}?cp=${p}${searchStr}"">${p}</a></li>
+								<li><a href="${pageURL}?cp=${p}${searchStr}${order}">${p}</a></li>
 							</c:otherwise>
 						</c:choose>
 
@@ -234,7 +256,7 @@ a:hover {
 
 					<!-- 현재 페이지가 마지막 페이지 미만인 경우 -->
 					<c:if test="${pagination.currentPage < pagination.maxPage }">
-						<li><a href="${pageURL}?cp=${pagination.currentPage+1}${searchStr}""><i
+						<li><a href="${pageURL}?cp=${pagination.currentPage+1}${searchStr}${order}""><i
 								class="fas fa-caret-right"></i></a></li>
 					</c:if>
 

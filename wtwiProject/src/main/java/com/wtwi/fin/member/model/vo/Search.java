@@ -6,8 +6,26 @@ public class Search {
 	private String sk; 
 	private String sv; 
 	private int memberNo;
+	private String order;
 	
 	public Search() {}
+	
+	
+	
+	
+	public String getOrder() {
+		return order;
+	}
+
+
+
+
+	public void setOrder(String order) {
+		this.order = order;
+	}
+
+
+
 
 	public String getSk() {
 		return sk;
@@ -43,7 +61,7 @@ public class Search {
 
 	@Override
 	public String toString() {
-		return "Search [sc=" + sc + ", sk=" + sk + ", sv=" + sv + ", memberNo=" + memberNo + "]";
+		return "Search [sc=" + sc + ", sk=" + sk + ", sv=" + sv + ", memberNo=" + memberNo + ", order=" + order + "]";
 	}
 
 	
