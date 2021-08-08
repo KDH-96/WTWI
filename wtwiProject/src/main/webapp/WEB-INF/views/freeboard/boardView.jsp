@@ -81,7 +81,7 @@
                     <a class="mr-2 btn btn-sm" id="replyBtn">
                     	<i class="bi bi-chat"></i>
                     </a>
-                    <span>${board.replyCount}</span>
+                    <span id="replyCount">${board.replyCount}</span>
                 </div>
             </div>
 		<jsp:include page="../freeboard/reply.jsp" />
@@ -176,6 +176,7 @@ $("#likeBtn").on("click", function(){
 	}
 });
 
+// 좋아요 수 갱신
 function likeCount(){
 	
 	$.ajax({

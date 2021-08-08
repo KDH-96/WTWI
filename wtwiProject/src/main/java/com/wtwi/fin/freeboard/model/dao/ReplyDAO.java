@@ -32,6 +32,22 @@ public class ReplyDAO {
 	public int insertReply(Reply reply) {
 		return sqlSession.insert("freereplyMapper.insertReply", reply);
 	}
+
+	/** 댓글 수정(19)
+	 * @param reply
+	 * @return result
+	 */
+	public int updateReply(Reply reply) {
+		return sqlSession.update("freereplyMapper.updateReply", reply);
+	}
+
+	/** 댓글 삭제(20)
+	 * @param freeReplyNo
+	 * @return result
+	 */
+	public int deleteReply(int freeReplyNo) {
+		return sqlSession.update("freereplyMapper.deleteReply", freeReplyNo);
+	}
 	
 	
 

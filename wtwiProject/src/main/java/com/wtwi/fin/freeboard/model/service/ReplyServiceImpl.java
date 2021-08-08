@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wtwi.fin.freeboard.model.dao.ReplyDAO;
 import com.wtwi.fin.freeboard.model.vo.Reply;
@@ -24,6 +25,7 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	// 댓글 삽입(18)
+	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int insertReply(Reply reply) {
 		
@@ -35,5 +37,28 @@ public class ReplyServiceImpl implements ReplyService {
 		
 		return dao.insertReply(reply);
 	}
+
+	// 댓글 수정(19)
+	@Transactional(rollbackFor=Exception.class)
+	@Override
+	public int updateReply(Reply reply) {
+		
+		// XSS 방지
+		reply.setFreeReplyContent(BoardServiceImpl.replaceParameter(reply.getFreeReplyContent()));
+		
+		// 개행문자
+		reply.setFreeReplyContent(reply.getFreeReplyContent().replaceAll("(\r\n|\r|\n|\n\r)", "<br>"));
+		
+		return dao.updateReply(reply);
+	}
+
+	// 댓글 삭제(20)
+	@Transactional(rollbackFor=Exception.class)
+	@Override
+	public int deleteReply(int freeReplyNo) {
+		return dao.deleteReply(freeReplyNo);
+	}
+	
+	
 
 }

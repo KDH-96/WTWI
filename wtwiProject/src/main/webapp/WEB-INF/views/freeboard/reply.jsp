@@ -67,7 +67,7 @@
 						<c:choose>
 							<c:when test="${r.memberNo == loginMember.memberNo}">
 								<button class="dropdown-item" type="button" id="updateReplyBtn" onclick="updateReplyForm(${r.freeReplyNo}, this)" >수정</button>
-								<button class="dropdown-item" type="button" id="deleteReplyBtn" onclick="deleteReply(${r.freeReplyNo})" >삭제</button>
+								<button class="dropdown-item" type="button" id="deleteReplyBtn" onclick="deleteReplyAlert(${r.freeReplyNo})" >삭제</button>
 							</c:when>
 							<c:otherwise>
 								<button class="dropdown-item" type="button">신고</button>
@@ -117,8 +117,9 @@ function addReply(){
 					   "freeReplyContent": freeReplyContent},
 				
 				success: function(result){
-					$("#freeReplyContent").val();
+					$("#freeReplyContent").val("");
 					selectReplyList();
+					replyCount();
 				},
 				error: function(e){
 					console.log(e);
@@ -192,7 +193,7 @@ function selectReplyList(){
 				// 4) 로그인한 회원이 작성한 댓글 여부
 				if(item.memberNo==memberNo){ // 로그인한 회원이 작성
 					strSelf = "<button class=\"dropdown-item\" type=\"button\" id=\"updateReply\" onclick=\"updateReplyForm("+item.freeReplyNo+", this)\" >수정</button>"
-							+ "<button class=\"dropdown-item\" type=\"button\" id=\"deleteReply\" onclick=\"deleteReply("+item.freeReplyNo+")\" >삭제</button>";
+							+ "<button class=\"dropdown-item\" type=\"button\" id=\"deleteReply\" onclick=\"deleteReplyAlert("+item.freeReplyNo+")\" >삭제</button>";
 					
 				} else { // 다른 회원이 작성
 					strSelf = "<button class=\"dropdown-item\" type=\"button\">신고</button>"
@@ -258,18 +259,84 @@ function updateReplyCancel(el){
 // 댓글 수정
 function updateReply(freeReplyNo, el){
 	
-	const replyContent = $(el).parent().prev().val();
+	const freeReplyContent = $(el).parent().prev().val();
 
 	$.ajax({
-		
+		url: "${contextPath}/freereply/updateReply",
+		type: "POST",
+		data: {"freeReplyNo": freeReplyNo,
+			   "freeReplyContent": freeReplyContent},
+			   
+		success: function(result){
+			
+			if(result>0){
+				swal({
+					icon: "success",
+					title: "댓글이 수정되었습니다."
+				});
+				selectReplyList();
+			}
+		},
+		error: function(e){
+			console.log(e);
+		}
 	});
-	
-	
 }
 
+// 댓글 삭제 알림창
+function deleteReplyAlert(freeReplyNo){
+	
+	swal({
+		icon: "warning",
+		title: "댓글을 삭제하시겠습니까?",
+		buttons: ["취소", "삭제"],
+		dangerMode: true,
+	}).then((willDelete) => {
+		if (willDelete) {
+			deleteReply(freeReplyNo);
+		} 
+	});
+}
 
+// 댓글 삭제
+function deleteReply(freeReplyNo){
+	
+	$.ajax({
+		url: "${contextPath}/freereply/deleteRpely",
+		data: {"freeReplyNo": freeReplyNo},
+		type: "POST",
+		
+		success: function(result){
+			
+			if(result>0){
+				selectReplyList();
+				replyCount();
+				swal({
+					icon: "success",
+					title: "댓글이 삭제되었습니다."
+				});
+			}
+		},
+		error: function(e){
+			console.log(e);
+		}
+	});
+}
 
-
-
-
+// 댓글 수 갱신
+function replyCount(){
+	
+	$.ajax({
+		url: "replyCount",
+		data: {"freeNo": freeNo},
+		type: "POST",
+		
+		success: function(replyCount){
+			$("#replyCount").text(replyCount);
+		},
+		error: function(e){
+			console.log(e);
+		}
+	});
+}
 </script>

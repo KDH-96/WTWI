@@ -284,4 +284,10 @@ public class BoardController {
 		return service.selectBoard(freeNo).getLikeCount();
 	}
 	
+	// 자유게시판 댓글 작성, 삭제 처리 후 댓글 개수 카운트(21)
+	@ResponseBody
+	@RequestMapping(value="replyCount", method=RequestMethod.POST)
+	public int replyCount(@RequestParam("freeNo") int freeNo) {
+		return service.selectBoard(freeNo).getReplyCount();
+	}
 }
