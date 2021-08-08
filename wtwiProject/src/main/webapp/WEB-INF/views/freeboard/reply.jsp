@@ -49,7 +49,7 @@
 			            		<div class="row-6 mt-1 free-reply-date"><fmt:formatDate value="${r.freeReplyCreateDate}" pattern="HH:mm"/></div>
 			            	</c:when>
 			            	<c:otherwise>
-			            		<div class="row-6 mt-1 free-reply-date">${r.freeReplyCreateDate}</div>
+			            		<div class="row-6 mt-1 free-reply-date">${replyCreateDate}</div>
 			            	</c:otherwise>
 			            </c:choose>
 			        </div>
@@ -73,6 +73,7 @@
 								<button class="dropdown-item" type="button">신고</button>
 							</c:otherwise>
 						</c:choose>
+						<button class="dropdown-item" type="button" id="reReplyBtn" onclick="reReply(${r.freeReplyNo}, this)" >답글</button>
 					</div>
 		        </div>
 			</div>
@@ -161,7 +162,8 @@ function selectReplyList(){
 				var rYear = date2.getFullYear();
 				var rMonth = date2.getMonth()+1;
 				var rDate = date2.getDate();
-				let freeReplyCreateDate = rYear+"-"+rMonth+"-"+rDate;
+
+				var freeReplyCreateDate = rYear+"-"+rMonth+"-"+rDate;
 				
 				var hour = date2.getHours();
 				var minute = date2.getMinutes();
@@ -179,6 +181,10 @@ function selectReplyList(){
 					strDate = "<div class=\"row-6 mt-1 free-reply-date\">"+hour+":"+minute+"</div>";
 					
 				} else {
+					if(rMonth<10) rMonth = "0"+rMonth;
+					if(rDate<10) rDate = "0"+rDate;
+					freeReplyCreateDate = rYear+"-"+rMonth+"-"+rDate;
+					
 					strDate = "<div class=\"row-6 mt-1 free-reply-date\">"+freeReplyCreateDate+"</div>";
 				}
 	
@@ -198,6 +204,8 @@ function selectReplyList(){
 				} else { // 다른 회원이 작성
 					strSelf = "<button class=\"dropdown-item\" type=\"button\">신고</button>"
 				}
+				
+				strSelf += "<button class=\"dropdown-item\" type=\"button\" id=\"reReplyBtn\" onclick=\"reReply(${r.freeReplyNo}, this)\" >답글</button>";
 	
 				// merge..
 				str += "<div class=\"row free-reply-row mb-2 p-3\">"+strRep+"<div class=\"row-6\">"+item.memberNick+"</div>"+strDate
