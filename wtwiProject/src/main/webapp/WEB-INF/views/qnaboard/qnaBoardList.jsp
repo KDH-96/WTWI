@@ -245,9 +245,7 @@ opacity
 									<c:if test="${qnaStatus == 'Y'}">공개</c:if>
 									<c:if test="${qnaStatus == 'S'}">비공개</c:if>
 									</td>
-
 								</tr>
-								
 							</c:forEach>
 						</c:otherwise>
 						

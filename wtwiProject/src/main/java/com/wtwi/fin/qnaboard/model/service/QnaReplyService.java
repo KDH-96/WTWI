@@ -12,4 +12,23 @@ public interface QnaReplyService {
 	 */
 	List<QnaReply> selectList(int qnaNo);
 
+	/** 댓글 삽입
+	 * @param reply
+	 * @return result
+	 */
+	int insertReply(QnaReply reply);
+
+	/** 댓글 수정
+	 * @param reply
+	 * @return result
+	 */
+	int updateReply(QnaReply reply);
+
+	/** 댓글 삭제
+	 * @param replyNo
+	 * @return result
+	 */
+	int deleteReply(int qnaReplyNo);
+
+
 }

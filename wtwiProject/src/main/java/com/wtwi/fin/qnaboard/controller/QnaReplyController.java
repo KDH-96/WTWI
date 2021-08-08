@@ -33,5 +33,21 @@ public class QnaReplyController {
 		
 		return gson.toJson(rList);
 	}
+	// 댓글 삽입
+	@RequestMapping(value="insertReply",method=RequestMethod.POST)
+	public int insertReply(QnaReply reply) {
+		return service.insertReply(reply);
+	}
 
+	// 댓글 수정
+	@RequestMapping(value="updateReply", method=RequestMethod.POST)
+	public int updateReply(QnaReply reply) {
+		return service.updateReply(reply);
+	}
+	
+	// 댓글 삭제
+	@RequestMapping(value="deleteReply", method=RequestMethod.GET)
+	public int deleteReply(int qnaReplyNo) {
+		return service.deleteReply(qnaReplyNo);
+	}
 }

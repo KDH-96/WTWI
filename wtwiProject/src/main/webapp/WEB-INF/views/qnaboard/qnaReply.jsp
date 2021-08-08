@@ -79,28 +79,32 @@
 			<c:forEach items="${rList}" var="reply">
 				
 				<li class="shadow p-3 mb-5 bg-white rounded reply-row">
-
-                        <div class="reply-area">
-                        			<div class="rDate-area">
-		                           	<p class="rDate">
-		                           	작성일 : <fmt:formatDate value="${reply.qnaReplyCreateDt}" pattern="yyyy년 MM월 dd일" />
+                       		<div class="reply-area">
+	                        		<div class="rDate-area">
+			                        <p class="rDate">
+			                           	작성일 : <fmt:formatDate value="${reply.qnaReplyCreateDt}" pattern="yyyy년 MM월 dd일" />
 									</p>
                         			</div>
 	                               
 	                                <p class="rWriter">${reply.memberNick}</p>
 		                            <p class="rContent">${reply.qnaReplyContent}</p>
 	
-		                        <div class="more-reply-area">
+									<c:if test="${reply.memberNo == loginMember.memberNo}">
+		                        	<div class="more-reply-area">
 		                                <details>
 		                                    <summary>더보기</summary>
 		                                    <ul class="update-delete-area">
-		                                        <li class="update"><a class="showUpdate" href="#" onclick="showUpdateReply(${reply.qnaReplyNo}, this)">수정</a></li>
-		                                        <li class="X"><a class="deleteReply" href="#" onclick="deleteReply(${reply.qnaReplyNo})">삭제</a></li>
+		                                        <li class="update">
+		                                        	<a class="showUpdate" href="#" onclick="showUpdateReply(${reply.qnaReplyNo}, this)">수정</a>
+		                                        </li>
+		                                        <li class="X">
+		                                        	<a class="deleteReply" href="#" onclick="deleteReply(${reply.qnaReplyNo})">삭제</a>
+		                                        </li>
 		                                    </ul>
 		                             	</details>
-		                        </div>
-						</div>
-
+		                        	</div>
+		                        	</c:if>
+							</div>
                     </li>
 			
 			</c:forEach>
@@ -113,7 +117,7 @@
 		<table align="center">
 			<tr>
 				<td id="replyContentArea">
-				<textArea rows="3" id="replyContent" style="width:700px; resize: none;"></textArea>
+				<textArea rows="3" id="qnaReplyContent" style="width:700px; resize: none;"></textArea>
 				</td>
 				<td id="replyBtnArea">
 					<button class="btn btn-primary" id="addReply" onclick="addReply();">
@@ -146,15 +150,22 @@ let beforeReplyRow;
 function addReply()	{
 	
 	// 작성된 댓글 내용 얻어오기
-	const replyContent = $("#replyContent").val();
+	const qnaReplyContent = $("#qnaReplyContent").val();
 	
 	// 로그인이 되어있지 않은 경우
 	if(loginMemberNo == ""){
-		swal("로그인 후 이용해 주세요.")
+		swal({
+			icon: "warning",
+			title: "댓글을 작성할 수 없습니다.",
+			text: "로그인 후 이용해 주십시오"
+		});
 	}else{
 		
-		if(replyContent.trim() == ""){ // 작성된 댓글이 없을 경우
-			swal("댓글 작성 후 클릭해주세요.");
+		if(qnaReplyContent.trim() == ""){ // 작성된 댓글이 없을 경우
+			swal({
+				icon: "warning",
+				title: "댓글을 입력해주세요."
+			});
 		}else{
 			// 로그인 O, 댓글 작성 O
 
@@ -168,7 +179,7 @@ function addReply()	{
 				success : function(result){
 					if(result >0){ // 댓글 삽입 성공
 						swal({"icon" : "success" , "title" : "댓글 등록 성공"});
-						$("#replyContent").val(""); // 댓글 작성 내용 삭제
+						$("#qnaReplyContent").val(""); // 댓글 작성 내용 삭제
 
 						selectReplyList(); // 비동기로 댓글 목록 갱신
 					}
@@ -224,7 +235,6 @@ function selectReplyList(){
 	            // 댓글 내용
 	            var rContent = $("<p>").addClass("rContent").html(item.qnaReplyContent);
 
-				replyArea.append(rDateArea).append(rWriter).append(rContent);	            
 	            
 	            var moreReplyArea = $("<div>").addClass("more-reply-area");
 	            var details = $("<details>");
@@ -239,15 +249,20 @@ function selectReplyList(){
 	            	var showUpdate = $("<a>").addClass("showUpdate").text("수정").attr("onclick","showUpdateReply("+item.qnaReplyNo+", this)");
 	               var deleteReply = $("<a>").addClass("deleteReply").text("삭제").attr("onclick", "deleteReply("+item.qnaReplyNo+")");
 	               // ** 추가되는 댓글에 onclick 이벤트를 부여하여 버튼 클릭 시 수정, 삭제를 수행할 수 있는 함수를 이벤트 핸들러로 추가함. 
-
+					
+	               update.append(showUpdate);
+	               X.append(deleteReply);
+	               ul.append(update).append(X);
 	               
-	               details.append(summary).append(ul).append(update).append(showUpdate).append(X).append(deleteReply);
+	               details.append(summary).append(ul);
 	               moreReplyArea.append(details);
 	           // }
 	            
+				replyArea.append(rDateArea).append(rWriter).append(rContent).append(moreReplyArea);	            
 	            
 	            // 댓글 요소 하나로 합치기
-	            li.append(replyArea).append(moreReplyArea);
+	            
+	            li.append(replyArea);
 	            
 	            
 	            // 합쳐진 댓글을 화면에 배치
@@ -286,8 +301,8 @@ function showUpdateReply(qnaReplyNo, el){
 	   }
 	      
 	   
-	   // 댓글 수정화면 출력 전 요소를 저장해둠.
-	   beforeReplyRow = $(el).parent().parent().html();
+	   // 댓글 수정화면 출력 전 요소를 저장해둠. --> <li>
+	   beforeReplyRow = $(el).parent().parent().parent().parent().parent().parent().html();
 	
 	   
 	   
@@ -312,17 +327,17 @@ function showUpdateReply(qnaReplyNo, el){
 	   
 	   // 기존 댓글 영역을 삭제하고 textarea를 추가 
 	   $(el).parent().parent().parent().parent().prev().remove();
-	   var textarea = $("<textarea>").addClass("replyUpdateContent").attr("rows", "3").css("width","70%").val(beforeContent);
+	   var textarea = $("<textarea>").addClass("replyUpdateContent").attr("rows", "2").css("width","75%","border","none").val(beforeContent);
 	   $(el).parent().parent().parent().parent().before(textarea);
 	   
 	   
 	   // 수정 버튼
-	   var updateReply = $("<a>").addClass("updateReply").text("댓글 수정").attr("onclick", "updateReply(" + qnaReplyNo + ", this)");
+	   var updateReply = $("<button>").addClass("btn btn-outline-secondary ml-1").text("수정").attr("onclick", "updateReply(" + qnaReplyNo + ", this)");
 	   
 	   // 취소 버튼
-	   var cancelBtn = $("<a>").addClass("cancelBtn").text("취소").attr("onclick", "updateCancel(this)");
+	   var cancelBtn = $("<button>").addClass("btn btn-outline-secondary ml-1 mt-2").text("취소").attr("onclick", "updateCancel(this)");
 	   
-	   var replyBtnArea1 = $(el).parent().parent().parent().parent().parent();
+	   var replyBtnArea1 = $(el).parent().parent().parent().parent();
 	   
 	   $(replyBtnArea1).empty(); 
 	   $(replyBtnArea1).append(updateReply); 
@@ -335,7 +350,7 @@ function showUpdateReply(qnaReplyNo, el){
 //-----------------------------------------------------------------------------------------
 //댓글 수정 취소 시 원래대로 돌아가기
 function updateCancel(el){
-	$(el).parent().parent().parent().parent().children().children().children().children().html(beforeReplyRow);
+	$(el).parent().parent().html(beforeReplyRow);
 }
 
 
@@ -344,10 +359,10 @@ function updateCancel(el){
 function updateReply(qnaReplyNo, el){
 	
 	// 수정된 댓글 내용
-	const replyContent = $(el).parent().prev().val();
+	const qnaReplyContent = $(el).parent().prev().val();
 	
 	$.ajax({
-		url : "${contextPath}/reply/updateReply",
+		url : "${contextPath}/qnaReply/updateReply",
 		type : "POST",
 		data : {"qnaReplyNo" : qnaReplyNo,
 				"qnaReplyContent" : qnaReplyContent},
@@ -370,10 +385,10 @@ function updateReply(qnaReplyNo, el){
 
 //-----------------------------------------------------------------------------------------
 //댓글 삭제
-function deleteReply(qnaNo){
+function deleteReply(qnaReplyNo){
 
 	   if(confirm("정말로 삭제하시겠습니까?")){
-		      var url = "${contextPath}/reply/deleteReply";
+		      var url = "${contextPath}/qnaReply/deleteReply";
 		      
 		      $.ajax({
 		         url : url,
