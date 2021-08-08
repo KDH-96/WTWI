@@ -829,21 +829,7 @@ COMMIT;
 -- By 지원.
 -- 마이페이지 자유게시판 목록 조회를 위한 VIEW + 컬럼추가(MEMBER_NO)
 -- 아래 구문 실행해주시면 됩니다.
-CREATE OR REPLACE VIEW FREE_LIST AS
-    SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, MEMBER_NICK, FREE_CREATE_DT, FREE_READ_COUNT,
-               NVL(REPLY_COUNT, 0) REPLY_COUNT, NVL(LIKE_COUNT, 0) LIKE_COUNT, MEMBER_NO,
-               FREE_STATUS,
-               FREE_CONTENT, FREE_CATEGORY_NO
-    FROM FREE_BOARD
-    JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
-    JOIN MEMBER USING(MEMBER_NO)
-    LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
-                    FROM FREE_REPLY
-                    GROUP BY FREE_NO) USING(FREE_NO)
-    LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
-                    FROM FREE_LIKE
-                    GROUP BY FREE_NO) USING(FREE_NO)
-;
+--
 
 -----------------------------------------------------------------------------------------------08/05 추가
 
@@ -859,23 +845,7 @@ CREATE OR REPLACE VIEW QNA_LIST AS
 
 -- 세은
 -- 자유게시판 상세 조회 VIEW 컬럼 추가(MEMBER_NO)
-CREATE OR REPLACE VIEW FREE_DETAIL AS
-    SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, 
-               MEMBER_NICK, FREE_READ_COUNT, FREE_CREATE_DT, FREE_MODIFY_DT,
-               FREE_CONTENT,
-               NVL(LIKE_COUNT, 0) LIKE_COUNT, NVL(REPLY_COUNT, 0) REPLY_COUNT, 
-               FREE_STATUS,
-               MEMBER_NO
-    FROM FREE_BOARD
-    JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
-    JOIN MEMBER USING(MEMBER_NO)
-    LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
-                    FROM FREE_REPLY
-                    GROUP BY FREE_NO) USING(FREE_NO)
-    LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
-                    FROM FREE_LIKE
-                    GROUP BY FREE_NO) USING(FREE_NO)
-;
+--
 
 -- By 지원.
 -- 1:1 문의내역  조회(명소이름 조회)를 위한 VIEW
@@ -913,4 +883,48 @@ CREATE OR REPLACE VIEW FREE_REPLY_LIST AS
                     FROM FREE_REPLY
                     JOIN MEMBER USING(MEMBER_NO)
                     WHERE FREE_REPLY_NO IN(SELECT PARENT_REPLY_NO FROM FREE_REPLY)) USING(PARENT_REPLY_NO)
+;
+
+-----------------------------------------------------------------------------------------------08/08 추가
+
+-- 세은
+-- 댓글 개수 카운트 컬럼에 조건 추가했습니다. 아래 구문으로 다시 실행해주세요.
+
+-- 자유게시판 상세조회 VIEW(구문 수정)
+CREATE OR REPLACE VIEW FREE_DETAIL AS
+    SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, 
+               MEMBER_NICK, FREE_READ_COUNT, FREE_CREATE_DT, FREE_MODIFY_DT,
+               FREE_CONTENT,
+               NVL(LIKE_COUNT, 0) LIKE_COUNT, NVL(REPLY_COUNT, 0) REPLY_COUNT, 
+               FREE_STATUS,
+               MEMBER_NO
+    FROM FREE_BOARD
+    JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO)
+    LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
+                    FROM FREE_REPLY
+                    WHERE FREE_REPLY_STATUS<>'N'
+                    GROUP BY FREE_NO) USING(FREE_NO)
+    LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
+                    FROM FREE_LIKE
+                    GROUP BY FREE_NO) USING(FREE_NO)
+;
+
+-- 자유게시판 목록조회 VIEW (구문 수정)
+CREATE OR REPLACE VIEW FREE_LIST AS
+    SELECT FREE_NO, FREE_CATEGORY_NM, FREE_TITLE, MEMBER_NICK, FREE_CREATE_DT, FREE_READ_COUNT,
+               NVL(REPLY_COUNT, 0) REPLY_COUNT, NVL(LIKE_COUNT, 0) LIKE_COUNT, 
+               FREE_STATUS,
+               FREE_CONTENT, FREE_CATEGORY_NO,
+	       MEMBER_NO
+    FROM FREE_BOARD
+    JOIN FREE_CATEGORY USING(FREE_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO)
+    LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
+                    FROM FREE_REPLY
+                    WHERE FREE_REPLY_STATUS<>'N'
+                    GROUP BY FREE_NO) USING(FREE_NO)
+    LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
+                    FROM FREE_LIKE
+                    GROUP BY FREE_NO) USING(FREE_NO)
 ;
