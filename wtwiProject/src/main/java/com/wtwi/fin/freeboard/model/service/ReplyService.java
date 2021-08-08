@@ -33,4 +33,10 @@ public interface ReplyService {
 	 */
 	int deleteReply(int freeReplyNo);
 
+	/** 답글 삽입(22)
+	 * @param reply
+	 * @return result
+	 */
+	int insertReReply(Reply reply);
+
 }

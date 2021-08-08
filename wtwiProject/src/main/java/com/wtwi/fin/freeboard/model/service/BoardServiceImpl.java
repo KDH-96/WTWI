@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.bag.SynchronizedSortedBag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,7 +85,7 @@ public class BoardServiceImpl implements BoardService {
 	// 이미지 파일을 서버에 저장(7)
 	@Override
 	public String uploadFile(MultipartFile file, String webPath, String savePath) {
-		
+
 		// 파일명 변경
 		String fileName = rename(file.getOriginalFilename());
 		
