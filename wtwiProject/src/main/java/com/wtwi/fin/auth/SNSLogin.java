@@ -26,7 +26,6 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.wtwi.fin.member.model.vo.Member;
 
 public class SNSLogin {
-
 	private OAuth20Service oauthService;
 	private SNSValue sns;
 
@@ -48,13 +47,16 @@ public class SNSLogin {
 	}
 
 	public Member getUserProfile(String code) throws Exception {
+	
+		System.out.println("code : "+code + "sns : " + this.sns.toString());
 		OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
-
+		System.out.println("accessToken" + accessToken.toString());
 		OAuthRequest request = new OAuthRequest(Verb.GET, this.sns.getProfileUrl());
+		System.out.println("request : " + request.toString());
 		oauthService.signRequest(accessToken, request);
 
 		Response response = oauthService.execute(request);
-
+		System.out.println("response : " + response.toString());
 		return parseJson(response.getBody());
 
 	}
@@ -77,6 +79,14 @@ public class SNSLogin {
 			member.setMemberPw("socialLogin");
 			member.setMemberEmail(resNode.get("email").asText());
 			member.setMemberGrade("N");
+		} else if (this.sns.isKakao()) {
+			JsonNode resNode = rootNode.get("response");
+			JsonNode properties = rootNode.path("properties");
+			member.setMemberNick(properties.get("nickname").asText("여행자"));
+			member.setMemberPw("socialLogin");
+			JsonNode kakaoAccount = rootNode.path("kakao_account");
+			member.setMemberEmail(kakaoAccount.get("email").asText());
+			member.setMemberGrade("K");
 		}
 
 		return member;
@@ -84,7 +94,8 @@ public class SNSLogin {
 	
 	
 	// 카카오
-	public Member getKakaoProfile(String code) throws Exception {
+	// 1) code를 이용해 accessToken GET
+	/*public Member getKakaoProfile(String code) throws Exception {
 
 		String accessToken = "";
 		RestTemplate rt = new RestTemplate();
@@ -108,7 +119,8 @@ public class SNSLogin {
 		accessToken = (String) responseBody.get("access_token");
 		return getKaKaoMember(accessToken);
 	}
-
+	
+	// 2) accessToken을 이용해 이용자 정보를 GET
 	private Member getKaKaoMember(String accessToken) throws Exception {
 		RestTemplate rt = new RestTemplate();
 
@@ -123,6 +135,7 @@ public class SNSLogin {
 		return parseKakaoJson(response.getBody());
 	}
 
+	// 3) 이용자 정보를 파싱하여 Member 객체 반환
 	private Member parseKakaoJson(String body) throws Exception {
 		Member member = new Member();
 
@@ -138,6 +151,6 @@ public class SNSLogin {
 		member.setMemberGrade("K");
 		
 		return member;
-	}
+	}*/
 
 }

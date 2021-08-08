@@ -42,6 +42,23 @@
 		<beans:constructor-arg ref="naverClientSecret"/>
 		<beans:constructor-arg ref="naverRedirectUrl"/>
 	</beans:bean>
+	
+	<!-- oauth2 login / kakao -->
+	<beans:bean id="kakaoClientID" class="java.lang.String">
+		<beans:constructor-arg value="b87de33b6c8fe6b2977868b55731dae3"/>
+	</beans:bean>
+	<beans:bean id="kakaoClientSecret" class="java.lang.String">
+		<beans:constructor-arg value="flqtQy9HB3KdhcMBhnlDllJetmlSg4kf"/>
+	</beans:bean>
+	<beans:bean id="kakaoRedirectUrl" class="java.lang.String">
+		<beans:constructor-arg value="http://localhost:8080/fin/member/auth/kakao/callback"/>
+	</beans:bean>
+	<beans:bean id="kakaoSns" class="com.wtwi.fin.auth.SNSValue">
+		<beans:constructor-arg value="kakao"/>
+		<beans:constructor-arg ref="kakaoClientID"/>
+		<beans:constructor-arg ref="kakaoClientSecret"/>
+		<beans:constructor-arg ref="kakaoRedirectUrl"/>
+	</beans:bean>
 
 	
 	<!-- oauth2 login / google -->
