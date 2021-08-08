@@ -58,7 +58,13 @@ public class ReplyServiceImpl implements ReplyService {
 	public int deleteReply(int freeReplyNo) {
 		return dao.deleteReply(freeReplyNo);
 	}
-	
+
+	// 답글 삽입(22)
+	@Transactional(rollbackFor=Exception.class)
+	@Override
+	public int insertReReply(Reply reply) {
+		return dao.insertReReply(reply);
+	}
 	
 
 }

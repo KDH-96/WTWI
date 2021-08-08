@@ -49,14 +49,16 @@
                 <span class="col-2"><i class="bi bi-person-circle"> </i> ${board.memberNick}</span>
                 <span class="col-2 divide"><i class="bi bi-eye"> </i> ${board.freeReadCount}</span>
                	<fmt:formatDate var="createDate" value="${board.freeCreateDate}" pattern="yyyy-MM-dd"/>
+               	<fmt:formatDate var="createDate2" value="${board.freeCreateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
                	<fmt:formatDate var="modifyDate" value="${board.freeModifyDate}" pattern="yyyy-MM-dd"/>
+               	<fmt:formatDate var="modifyDate2" value="${board.freeModifyDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 		        <fmt:formatDate var="today" value="<%= new java.util.Date() %>" pattern="yyyy-MM-dd"/>
                	<c:choose>
                		<c:when test="${createDate!=today}"><span class="col-2 divide">작성일  ${createDate}</span></c:when>
                		<c:otherwise><span class="col-2 divide">작성일  <fmt:formatDate value="${board.freeCreateDate}" pattern="HH:mm"/></span></c:otherwise>
                	</c:choose>
                 <c:choose>
-                	<c:when test="${createDate!=modifyDate}">
+                	<c:when test="${createDate2!=modifyDate2}">
 		               	<c:choose>
 		               		<c:when test="${modifyDate!=today}"><span class="col-2 divide">수정일  ${modifyDate}</span></c:when>
 		               		<c:otherwise><span class="col-2 divide">수정일  <fmt:formatDate value="${board.freeModifyDate}" pattern="HH:mm"/></span></c:otherwise>

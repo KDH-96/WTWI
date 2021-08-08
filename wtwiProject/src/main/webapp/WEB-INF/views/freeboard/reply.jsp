@@ -55,7 +55,15 @@
 			        </div>
 		        </c:if>
 		        <div class="col-9 p-0">
-		            <p>${r.freeReplyContent}</p>
+		        <c:choose>
+		        	<c:when test="${!empty r.parentReplyNick}">
+		        		<c:set var="receiver" value="${r.parentReplyNick}님, "/>
+			            <p>${receiver}${r.freeReplyContent}</p>
+		        	</c:when>
+		        	<c:otherwise>
+			            <p>${r.freeReplyContent}</p>
+		        	</c:otherwise>
+		        </c:choose>
 		        </div>
 		        <div class="free-menu col-1">
 	               	<c:if test="${!empty loginMember }">
@@ -73,7 +81,7 @@
 								<button class="dropdown-item" type="button">신고</button>
 							</c:otherwise>
 						</c:choose>
-						<button class="dropdown-item" type="button" id="reReplyBtn" onclick="reReply(${r.freeReplyNo}, this)" >답글</button>
+						<button class="dropdown-item" type="button" id="reReplyBtn" onclick="reReplyForm(${r.freeReplyNo}, this)" >답글</button>
 					</div>
 		        </div>
 			</div>
@@ -118,6 +126,10 @@ function addReply(){
 					   "freeReplyContent": freeReplyContent},
 				
 				success: function(result){
+					swal({
+						icon: "success",
+						title: "댓글이 작성되었습니다."
+					});
 					$("#freeReplyContent").val("");
 					selectReplyList();
 					replyCount();
@@ -151,6 +163,7 @@ function selectReplyList(){
 				var strDate;
 				var strLogin;
 				var strSelf;
+				var strReci="";
 				
 				var date1 = new Date();
 				var year = date1.getFullYear();
@@ -207,11 +220,16 @@ function selectReplyList(){
 					strSelf = "<button class=\"dropdown-item\" type=\"button\">신고</button>"
 				}
 				
-				strSelf += "<button class=\"dropdown-item\" type=\"button\" id=\"reReplyBtn\" onclick=\"reReply(${r.freeReplyNo}, this)\" >답글</button>";
+				// 5) 답댓글 여부
+				if(item.parentReplyNick!=null){
+					strReci = item.parentReplyNick+"님, ";
+				}
+				
+				strSelf += "<button class=\"dropdown-item\" type=\"button\" id=\"reReplyBtn\" onclick=\"reReplyForm("+item.freeReplyNo+", this)\" >답글</button>";
 	
 				// merge..
 				str += "<div class=\"row free-reply-row mb-2 p-3\">"+strRep+"<div class=\"row-6\">"+item.memberNick+"</div>"+strDate
-					 + "</div><div class=\"col-9 p-0\"><p>"+item.freeReplyContent+"</p></div><div class=\"free-menu col-1\">"+strLogin
+					 + "</div><div class=\"col-9 p-0\"><p>"+strReci+item.freeReplyContent+"</p></div><div class=\"free-menu col-1\">"+strLogin
 					 + "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu\">"+strSelf+"</div></div></div>";
 			
 				// 합친 요소들을 배치
@@ -280,11 +298,11 @@ function updateReply(freeReplyNo, el){
 		success: function(result){
 			
 			if(result>0){
+				selectReplyList();
 				swal({
 					icon: "success",
 					title: "댓글이 수정되었습니다."
 				});
-				selectReplyList();
 			}
 		},
 		error: function(e){
@@ -349,4 +367,61 @@ function replyCount(){
 		}
 	});
 }
+
+// 답글 작성폼
+function reReplyForm(freeReplyNo, el){
+	
+	// 열려있는 다른 작성 폼 닫기
+	if($(".reReplyContent").length>0){
+		$(".reReplyContent").eq(0).parent().remove();
+	}
+	
+	var textarea = $("<textarea>").addClass("reReplyContent col-9").attr("rows", "3").attr("style", "width:75%");
+	var reReply = $("<button>").addClass("btn btn-outline-secondary ml-1 row-6").text("등록").attr("onclick", "reReply("+freeReplyNo+", this)");
+	var reReplyCancel = $("<button>").addClass("btn btn-outline-secondary ml-1 mt-4 row-6").text("취소").attr("onclick", "reReplyCancel(this)");
+	var div = "<div class='row free-reReply-row p-3'><div class='col-2'><i class='bi bi-arrow-return-right'></i></div></div>";
+	var divBtn = "<div class='col-1'></div>";
+	
+	$(el).parent().parent().parent().after(div);
+	$(el).parent().parent().parent().next().append(textarea);
+	$(el).parent().parent().parent().next().append(divBtn);
+	$(el).parent().parent().parent().next().children().last().append(reReply);
+	$(el).parent().parent().parent().next().children().last().append(reReplyCancel);
+}
+
+// 답글 작성 취소시
+function reReplyCancel(el){
+	$(el).parent().parent().remove();
+}
+
+// 답글 작성
+function reReply(freeReplyNo, el){
+	
+	const parentReplyNo = freeReplyNo;
+	const freeReplyContent = $(el).parent().prev().val();
+	
+	$.ajax({
+		url: "${contextPath}/freereply/insertReReply",
+		data: {"parentReplyNo": parentReplyNo,
+			   "freeReplyContent": freeReplyContent,
+			   "freeNo": freeNo,
+			   "memberNo": memberNo},
+		type: "POST",
+		
+		success: function(result){
+			if(result>0){
+				selectReplyList();
+				replyCount();
+				swal({
+					icon: "success",
+					title: "답글이 작성되었습니다."
+				});
+			}
+		},
+		error: function(e){
+			console.log(e);
+		}
+	});
+}
+
 </script>

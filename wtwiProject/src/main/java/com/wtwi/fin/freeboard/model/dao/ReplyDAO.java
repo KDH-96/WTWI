@@ -48,7 +48,13 @@ public class ReplyDAO {
 	public int deleteReply(int freeReplyNo) {
 		return sqlSession.update("freereplyMapper.deleteReply", freeReplyNo);
 	}
-	
-	
+
+	/** 답글 삽입(22)
+	 * @param reply
+	 * @return result
+	 */
+	public int insertReReply(Reply reply) {
+		return sqlSession.insert("freereplyMapper.insertReReply", reply);
+	}
 
 }

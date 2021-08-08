@@ -52,9 +52,11 @@ public class ReplyController {
 		return service.deleteReply(freeReplyNo);
 	}
 	
-	
-	
-	
+	// 답글 삽입(22)
+	@RequestMapping(value="insertReReply", method=RequestMethod.POST)
+	public int insertReReply(Reply reply) {
+		return service.insertReReply(reply);
+	}
 	
 	
 }

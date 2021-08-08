@@ -97,5 +97,5 @@ public class Reply {
 				+ memberNo + ", parentReplyNo=" + parentReplyNo + ", memberNick=" + memberNick + ", parentReplyNick="
 				+ parentReplyNick + "]";
 	}
-	
+
 }
