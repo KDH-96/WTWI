@@ -29,4 +29,18 @@
 		(SEQ_FR_RNO.NEXTVAL, #{freeReplyContent}, DEFAULT, DEFAULT, #{freeNo}, #{memberNo}, NULL)
 	</insert>
 
+	<!-- 댓글 수정(19) -->
+	<update id="updateReply" parameterType="FreeReply">
+		UPDATE FREE_REPLY SET
+		FREE_REPLY_CONTENT = #{freeReplyContent}, FREE_REPLY_STATUS = 'M'
+		WHERE FREE_REPLY_NO = #{freeReplyNo}
+	</update>
+	
+	<!-- 댓글 삭제(20) -->
+	<update id="deleteReply" parameterType="_int">
+		UPDATE FREE_REPLY SET
+		FREE_REPLY_STATUS = 'N'
+		WHERE FREE_REPLY_NO = #{freeReplyNo}
+	</update>
+	
 </mapper>

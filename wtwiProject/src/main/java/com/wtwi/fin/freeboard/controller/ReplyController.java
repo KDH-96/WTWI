@@ -39,4 +39,22 @@ public class ReplyController {
 	public int insertReply(Reply reply) {
 		return service.insertReply(reply);
 	}
+	
+	// 댓글 수정(19)
+	@RequestMapping(value="updateReply", method=RequestMethod.POST)
+	public int updateReply(Reply reply) {
+		return service.updateReply(reply);
+	}
+	
+	// 댓글 삭제(20)
+	@RequestMapping(value="deleteRpely", method=RequestMethod.POST)
+	public int deleteReply(@RequestParam("freeReplyNo") int freeReplyNo) {
+		return service.deleteReply(freeReplyNo);
+	}
+	
+	
+	
+	
+	
+	
 }
