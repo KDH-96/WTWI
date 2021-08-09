@@ -19,7 +19,12 @@
             display: flex;
             align-items: center;
             height: 100vh;
+            background-image: url("https://source.unsplash.com/featured/?korea");
+            background-size: cover;
+
         }
+ 
+
         .myPage-main {
             width: 100%;
             display: flex;
@@ -27,6 +32,7 @@
             justify-content: center;
             align-items: center;
         }
+        
         .searchId-body {
             display: flex;
             justify-content: center;
@@ -91,6 +97,7 @@
 
     <main class="myPage-main">
         <div class="myPage-main__list">
+        	${reviewList }
             <h2>내 정보</h2>
             <c:if test="${loginMember.memberGrade == 'B'}">
 	            <div>

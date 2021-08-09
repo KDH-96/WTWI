@@ -79,7 +79,62 @@
 		<result property="parentReplyNo" column="PARENT_REPLY_NO"/>
 		<result property="parentReplyNick" column="PARENT_REPLY_NICK"/>
 	</resultMap>
+	
+	<!-- 명소후기 -->
+	<resultMap type="MyReview" id="review_rm">
+		<id property="reviewNo" column="REVIEW_NO"/>
+		
+		<result property="reviewPoint" column="REVIEW_POINT"/>
+		<result property="reviewContent" column="REVIEW_CONTENT"/>
+		<result property="reviewCreateDt" column="REVIEW_CREATE_DT"/>
+		<result property="reviewStatus" column="REVIEW_STATUS"/>
+		<result property="attractionNo" column="ATTRACTION_NO"/>
+		<result property="attractionNm" column="ATTRACTION_NM"/>
+		<result property="latitude" column="LATITUDE"/>
+		<result property="longitude" column="LONGITUDE"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		
+		<collection property="atList" column="REVIEW_NO"
+			javaType="java.util.ArrayList" ofType="ReviewImage" select="selectReviewImage"></collection>
+	</resultMap>
+	
+	<!-- 명소파일 -->
+	<resultMap type="ReviewImage" id="reviewImage_rm">
+		<id property="fileNo" column="FILE_NO" />
 
+		<result property="filePath" column="FILE_PATH" />
+		<result property="fileName" column="FILE_NM" />
+		<result property="reviewNo" column="REVIEW_NO" />
+	</resultMap>
+	
+	<!-- 메인 명소 후기 목록 -->
+	<select id="selectReviewList" parameterType="_int" resultMap="review_rm">
+
+		SELECT * FROM
+
+		(SELECT * FROM REVIEW 
+		JOIN ATTRACTION_INFO USING(ATTRACTION_NO)
+		LEFT JOIN RECOMMENDATION USING(REVIEW_NO)
+		
+		WHERE REVIEW_NO IN
+		
+		(SELECT MAX(REVIEW_NO) AS REVIEW_NO FROM REVIEW
+		WHERE MEMBER_NO != #{memberNo}
+		AND REVIEW_POINT >= 4
+		GROUP BY ATTRACTION_NO)
+		
+		AND REVIEW_STATUS = 'Y'
+		ORDER BY DBMS_RANDOM.VALUE)
+		
+		WHERE ROWNUM &lt;= 5
+
+	</select>
+	
+	<!-- 명소 후기 사진 목록-->
+	<select id="selectReviewImage" parameterType="_int" resultMap="reviewImage_rm">
+		SELECT * FROM REVIEW_IMAGE
+		WHERE REVIEW_NO = #{reviewNo}
+	</select>
 
 	<!-- 자유게시판 -->
 	<!-- 자유게시판 게시글 수 조회 -->
