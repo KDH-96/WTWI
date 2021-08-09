@@ -10,6 +10,7 @@ public class ChatMessage {
 	private String chatReadYn;
 	private int chatRoomNo;
 	private int memberNo;
+	private String memberNick;
 	
 	public ChatMessage() {
 	}
@@ -62,10 +63,19 @@ public class ChatMessage {
 		this.memberNo = memberNo;
 	}
 
+	public String getMemberNick() {
+		return memberNick;
+	}
+
+	public void setMemberNick(String memberNick) {
+		this.memberNick = memberNick;
+	}
+
 	@Override
 	public String toString() {
 		return "ChatMessage [chatNo=" + chatNo + ", chatContent=" + chatContent + ", chatCreateDate=" + chatCreateDate
-				+ ", chatReadYn=" + chatReadYn + ", chatRoomNo=" + chatRoomNo + ", memberNo=" + memberNo + "]";
+				+ ", chatReadYn=" + chatReadYn + ", chatRoomNo=" + chatRoomNo + ", memberNo=" + memberNo
+				+ ", memberNick=" + memberNick + "]";
 	}
 	
 }

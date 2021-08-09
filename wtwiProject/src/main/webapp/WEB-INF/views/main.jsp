@@ -362,7 +362,7 @@
                         	// 해당 명소에 대한 상세페이지 정보 조회
                     		//attraction/view/명소상세글 번호
                     		//console.log(selectedMarker);
-                        	
+                        	const memberNo = "${loginMember.memberNo}";
                     		$.ajax({
                     			url : "${contextPath}/attraction/view/" + selectedMarker,
                     			data : selectedMarker,
@@ -458,6 +458,18 @@
                     				document.getElementById("custom-overlay-title").innerText = attrView.attractionNm; 
                     				
                     				
+                    				// 채팅
+                    				$("#chat-btn").on("click", function(){
+                    					
+	                    				if(memberNo==""){
+	                    					swal({
+	                    						icon: "warning",
+	                    						title: "회원만 이용 가능합니다."
+	                    					})
+	                    				} else { 
+		                    				document.getElementById("chat-btn").href = "${contextPath}/chat/openChatRoom/"+attrView.attractionNo;
+	                    				}
+                    				});
                     				
                     			}, // ajax 통신 성공 시 실행되는 코드 종료지점
                     			
