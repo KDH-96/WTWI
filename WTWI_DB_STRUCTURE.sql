@@ -910,3 +910,15 @@ CREATE OR REPLACE VIEW FREE_LIST AS
     VALUES(SEQ_Q_RNO.NEXTVAL, '댓글 테스트2', DEFAULT, 'Y', (SELECT MAX(QNA_NO) FROM QNA_LIST WHERE QNA_STATUS IN('Y','S')),1 );
     
 COMMIT;
+
+
+------------------------------------------------------------------------------- 8/9 추가
+
+-- 설화
+-- Attraction 테이블 위도 / 경도 / 명소타입 컬럼 추가
+ALTER TABLE ATTRACTION_INFO ADD (LATITUDE NUMBER );
+ALTER TABLE ATTRACTION_INFO ADD (LONGITUDE NUMBER );
+ALTER TABLE ATTRACTION_INFO ADD (ATTRACTION_TYPE_NO NUMBER );
+
+COMMIT;
+
