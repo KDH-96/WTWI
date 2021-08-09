@@ -29,61 +29,16 @@
 	animation: slide_right 1s linear forwards;
 }
 
-@
-keyframes slide_right { 0% {
+@keyframes slide_right { 
+	0% {
 	transform: translateY(100px);
 	opacity: 0;
-}
+	}
 
-100
-
-
-
-
-%
-{
-transform
-
-
-
-
-:
-
-
-
-
-translateY
-
-
-(
-
-
-
-
-0px
-
-
-
-
-)
-
-
-;
-opacity
-
-
-
-
-:
-
-
-
-
-1
-
-
-;
-}
+	100% {
+		transform: translateY(0px);
+		opacity :1;
+	}
 }
 
 /* 게시글 목록 내부 td 태그 */
@@ -125,6 +80,10 @@ opacity
 /* 제목 a태그 색 변경 */
 #list-table td:nth-child(3)>a {
 	color: black;
+}
+
+.boardTitle a{
+	text-decoration: none;
 }
 
 .pagination {

@@ -76,12 +76,7 @@ public class QnaBoardServiceImpl implements QnaBoardService{
 		board.setQnaTitle(replaceParameter(board.getQnaTitle()));
 		board.setQnaContent(replaceParameter(board.getQnaContent()));
 		board.setQnaContent(board.getQnaContent().replaceAll("(\r\n|\r|\n|\n\r)", "<br>"));
-		/*if(board.getQnaStatus()==null) {
-			board.setQnaStatus("Y");
-		}*/
-		
-		System.out.println(board);
-		
+
 		int boardNo = dao.insertBoard(board);
 		
 		//System.out.println(board);
