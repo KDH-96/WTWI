@@ -367,12 +367,11 @@ opacity
 				// index : 현재 접근중인 요소의 인덱스
 				// item : 현재 접근중인 요소
 				// content            content
-				if ($(item).val() == searchKey) {
+				if ($(item).val() == "category") {
 					$(item).prop("selected", true);
 					
 						if($(item).val()=="category"){
 							$("#formCategory").attr("style","");
-							
 							$("#formCategory > option").each(function(index,item){
 								if($(item).val()==searchCategory){
 									$(item).prop("selected",true);
@@ -397,7 +396,26 @@ opacity
 				}
 			});
 			
+			$("#searchForm").on("submit", function(){
+				if($("#formValue").val().trim().length==0){
+					if($("#formKey").val()!="category"){
+						swal({
+							icon: "warning",
+							title: "검색어를 입력해주세요."
+						});
+						return false;
+					} else{
+						$("#formValue").attr("name", "");
+					}
+				}
+			})
+			
 		});
+		
+		
+		
+		
+		
 		
 		function checkValidate(e, qnaStatus, memberNo){
 			if(qnaStatus == 'S' ){
