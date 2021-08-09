@@ -32,7 +32,7 @@
         header {
             height: 150px;
             background-color: white;
-            animation: slide_right 1.2s linear forwards;
+            /* animation: slide_right 1.2s linear forwards; */
         } 
 
         #logo-area {
@@ -42,7 +42,7 @@
             box-sizing: border-box;
         }
 
-        @keyframes slide_right {
+/*         @keyframes slide_right {
             0% {
                 transform: translateY(100px);
                 opacity: 0;
@@ -52,7 +52,7 @@
                 transform: translateY(0px);
                 opacity: 1;
             }
-        }
+        } */
 
         /* 헤더 영역 끝 */
 
@@ -67,7 +67,7 @@
             height: 50px;
             background-color: white;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
-            animation: slide_right 1.2s linear forwards;
+            /* animation: slide_right 1.2s linear forwards; */
         }
 
         .nav li {
@@ -83,7 +83,7 @@
             animation: slide_right 0.5s linear forwards;
         }
 
-        @keyframes slide_right {
+        /* @keyframes slide_right {
             0% {
                 transform: translateY(100px);
                 opacity: 0;
@@ -93,7 +93,7 @@
                 transform: translateY(0px);
                 opacity: 1;
             }
-        }
+        } */
 
         @media screen and (max-width: 1000px) {
             .flex-nowrap{

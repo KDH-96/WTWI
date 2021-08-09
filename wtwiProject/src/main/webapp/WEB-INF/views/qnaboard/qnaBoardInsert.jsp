@@ -254,7 +254,6 @@
 					<button type="button" class="btn btn-primary mr-2" id="btn-cancel"
 						data-toggle="modal" data-target="#staticBackdrop">취소</button>
 					<button type="submit" class="btn btn-primary">등록</button>
-
 				</div>
 			</div>
 			

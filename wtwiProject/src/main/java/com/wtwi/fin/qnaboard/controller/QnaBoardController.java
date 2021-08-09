@@ -2,9 +2,12 @@ package com.wtwi.fin.qnaboard.controller;
 
 import java.util.List;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,6 +39,9 @@ public class QnaBoardController {
 	
 	@Autowired
 	private QnaReplyService replyService;
+	
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	@RequestMapping(value="list",method=RequestMethod.GET)
 	private String selectQnaBoard(@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
@@ -104,11 +110,12 @@ public class QnaBoardController {
 								String qnaStatus,
 								@ModelAttribute("loginMember") Member loginMember,
 								HttpServletRequest request,
-								RedirectAttributes ra) {
+								RedirectAttributes ra) throws Exception {
 		// 회원 정보 얻어오기
 		board.setMemberNo(loginMember.getMemberNo());
 		board.setQnaStatus(qnaStatus);
-
+		
+		
 		System.out.println("전 : " + board.getQnaStatus());
 		if(board.getQnaStatus()==null) {
 			board.setQnaStatus("Y");
@@ -119,8 +126,29 @@ public class QnaBoardController {
 		
 		String path = null ;
 			if(boardNo>0) {
+				String setfrom = loginMember.getMemberEmail(); // 보내는 서버 이메일
+				String tomail = "wtwimanager1@gmail.com"; // 받는 사람 이메일
+				String title = loginMember.getMemberNick()+"님께서 문의게시판에 게시글을 남기셨습니다."; // 제목
+
+				String content ="<a href='http://localhost:8080/wtwi/qnaboard/"+board.getQnaNo()+"'>게시글 상세보기</a>"; // 내용
+				try {
+					MimeMessage message = mailSender.createMimeMessage();
+					MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+
+					messageHelper.setFrom(setfrom); 	// 발신자--> 생략하면 정상작동을 안함
+					messageHelper.setTo(tomail); 		// 수신자 --> 이메일
+					messageHelper.setSubject(title); 	// 메일제목은 생략 가능
+					messageHelper.setText(content,true); // 메일 내용
+
+					mailSender.send(message);
+				} catch (Exception e) {
+					System.out.println(e);
+					e.printStackTrace();
+				}
+				
 				path = "redirect:" + boardNo;
 				MemberController.swalSetMessage(ra, "success", "게시글 삽입 성공!", null);
+				
 			}else {
 				path = "redirect:" + request.getHeader("referer");
 				MemberController.swalSetMessage(ra, "error", "게시글 삽입 실패", null);
