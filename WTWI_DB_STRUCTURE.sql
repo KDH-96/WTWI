@@ -912,7 +912,7 @@ CREATE OR REPLACE VIEW FREE_LIST AS
 COMMIT;
 
 
-------------------------------------------------------------------------------- 8/9 추가
+-----------------------------------------------------------------------------------------------08/09 추가
 
 -- 설화
 -- Attraction 테이블 위도 / 경도 / 명소타입 컬럼 추가
@@ -922,3 +922,10 @@ ALTER TABLE ATTRACTION_INFO ADD (ATTRACTION_TYPE_NO NUMBER );
 
 COMMIT;
 
+-- 세은
+-- 채팅 메세지 조회용 VIEW
+CREATE OR REPLACE VIEW CHAT_MESSAGES AS
+    SELECT MEMBER_NO, MEMBER_NICK, CHAT_CONTENT, CHAT_CREATE_DT, CHAT_READ_YN, CHAT_ROOM_NO, CHAT_NO
+    FROM CHAT_MESSAGE
+    JOIN MEMBER USING(MEMBER_NO)
+;
