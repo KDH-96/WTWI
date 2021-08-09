@@ -3,24 +3,60 @@
 <mapper namespace="chatMapper">
 	
 	<!-- 채팅 메세지 -->
-	<resultMap type="ChatMessage" id="msg_rm">
+	<resultMap type="ChatMessage" id="chatMessage_rm">
 		<id property="chatNo" column="CHAT_NO"/>
 		<result property="chatContent" column="CHAT_CONTENT"/>
 		<result property="chatCreateDate" column="CHAT_CREATE_DT"/>
 		<result property="chatReadYn" column="CHAT_READ_YN"/>
 		<result property="chatRoomNo" column="CHAT_ROOM_NO"/>
 		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberNick" column="MEMBER_NICK"/>
 	</resultMap>
 
 	<!-- 채팅방 -->
-	<resultMap type="ChatRoom" id="room_rm">
+	<resultMap type="ChatRoom" id="chatRoom_rm">
 		<id property="chatRoomNo" column="CHAT_ROOM_NO"/>
 		<result property="memberNo" column="MEMBER_NO"/>
 	</resultMap>
 	
 	
+	<!-- 명소 담당자 번호 얻어오기(23-1) -->
+	<select id="getManagerNo" parameterType="_int" resultType="_int">
+		SELECT MEMBER_NO FROM MANAGER
+		WHERE ATTRACTION_NO = #{attractionNo}
+	</select>
 	
+	<!-- 명소 담당자가 참가한 채팅방 중 회원이 참가한 곳이 있는지 검사(23-2) -->
+	<select id="chatRoomExist" parameterType="map" resultType="_int">
+		SELECT CHAT_ROOM_NO
+		FROM (SELECT *
+		      FROM CHAT_ROOM
+		      WHERE CHAT_ROOM_NO = (SELECT CHAT_ROOM_NO FROM CHAT_ROOM WHERE MEMBER_NO = #{managerNo}))
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
 	
+	<!-- 다음 채팅방 번호 얻어오기(23-3) -->
+	<select id="nextChatRoomNo" resultType="_int">
+		SELECT SEQ_CR_NO.NEXTVAL FROM DUAL
+	</select>
+
+	<!-- 채팅방 만들기 혹은 회원/담당자 INSERT(23-4, 23-5) -->
+	<insert id="openChatRoom" parameterType="ChatRoom">
+		INSERT INTO CHAT_ROOM VALUES
+		(#{chatRoomNo}, #{memberNo})
+	</insert>
 	
+	<!-- 채팅 메세지 조회(24) -->
+	<select id="selectCmList" parameterType="_int" resultMap="chatMessage_rm">
+		SELECT * FROM CHAT_MESSAGES
+		WHERE CHAT_ROOM_NO = #{chatRoomNo}
+		ORDER BY CHAT_NO
+	</select>
+
+	<!-- 채팅 메세지 DB에 삽입(25) -->
+	<insert id="insertChatMessage" parameterType="ChatMessage">
+		INSERT INTO CHAT_MESSAGE VALUES
+		(SEQ_CM_NO.NEXTVAL, #{chatContent}, DEFAULT, DEFAULT, #{chatRoomNo}, #{memberNo})
+	</insert>
 	
 </mapper>
