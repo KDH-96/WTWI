@@ -211,6 +211,69 @@ public class AttractionController {
 		}
 
 	}
+	
+	
+	/***
+	 * 명소 목록 조회(준석)
+	 ***************************************************************************************************/
+	@RequestMapping(value = "list", method = RequestMethod.POST)
+	@ResponseBody
+	public String attractionList(@RequestParam("code") String code) {
+
+		//System.out.println("컨트롤러 첫줄에서 keyword가 있는지 확인 : " + keyword);
+		System.out.println("넘어온 지역코드 : " + code);
+		Gson gson = new Gson();
+		
+		/* 준석
+		http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList
+		?serviceKey=JJM5cLUSlymmHuS%2FvQxZDLCIejOz9ypIpBRrNY1RdktshpYCM1Fx2KvlmUG8qzp%2B2msPzwhNKLhOtP3NiHt13g%3D%3D
+		&numOfRows=30
+		&MobileApp=AppTest
+		&MobileOS=ETC
+		&arrange=B
+		&contentTypeId=12
+		&areaCode=1
+		&listYN=Y
+		*/
+		
+		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList";
+		String serviceKey = "?serviceKey=JJM5cLUSlymmHuS%2FvQxZDLCIejOz9ypIpBRrNY1RdktshpYCM1Fx2KvlmUG8qzp%2B2msPzwhNKLhOtP3NiHt13g%3D%3D";
+		int numOfRows = 30;
+		String MobileApp = "AppTest";
+		String MobileOS = "ETC";
+		String arrange = "B"; // 조회수 순으로 조회
+		int contentTypeId = 12; // 12 대신 변수를 넣어서 가변적으로 사용할 예정
+		int areaCode = Integer.parseInt(code); // 1 대신 변수를 넣어서 가변적으로 사용할 예정
+		String listYN = "Y";
+		String type = "json";
+
+		int attractionNo = 0;
+		
+		
+		switch(areaCode) {
+			case 28: areaCode = 2; break; //
+			case 11: areaCode = 1; break; //
+			case 41: areaCode = 1; break; //
+			case 36: areaCode = 8; break; //
+			case 30: areaCode = 3; break; // 
+			case 29: areaCode = 5; break; // 
+			case 46: areaCode = 5; break; // 
+			case 31: areaCode = 7; break; // 
+			case 27: areaCode = 4; break; // 
+			case 26: areaCode = 6; break; // 
+		}
+
+		String jsonFile = url + serviceKey + "&numOfRows=" + numOfRows + "&MobileApp=" + MobileApp
+				+ "&MobileOS=" + MobileOS + "&arrange=" + arrange + "&contentTypeId=" + contentTypeId + "&contentTypeId=" + contentTypeId
+				+ "&areaCode=" + areaCode + "&listYN=" + listYN +"&_type=" + type;
+		
+		System.out.println(jsonFile);
+		
+		return jsonFile;
+
+	}
+	
+	
 
 	/***
 	 * 드롭 박스 이용
