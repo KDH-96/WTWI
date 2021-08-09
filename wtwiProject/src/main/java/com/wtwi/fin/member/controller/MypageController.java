@@ -18,6 +18,7 @@ import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Reply;
 import com.wtwi.fin.member.model.vo.Pagination;
 import com.wtwi.fin.member.model.vo.Report;
+import com.wtwi.fin.member.model.vo.Review;
 import com.wtwi.fin.member.model.vo.Search;
 import com.wtwi.fin.qnaboard.model.vo.QnaBoard;
 import com.wtwi.fin.member.model.service.MypageService;
@@ -26,14 +27,18 @@ import com.wtwi.fin.member.model.vo.Member;
 
 @Controller
 @RequestMapping(value = "/myPage/*", method = RequestMethod.GET)
-@SessionAttributes({ "loginMember", "freeBoardList" })
+@SessionAttributes({ "loginMember" })
 public class MypageController {
 
 	@Autowired
 	private MypageService service;
 
 	@RequestMapping(value = "main", method = RequestMethod.GET)
-	public String main() {
+	public String main(@ModelAttribute("loginMember") Member loginMember, Model model) {
+		
+		List<Review> reviewList = service.selectReviewList(loginMember.getMemberNo());
+		System.out.println(reviewList);
+		model.addAttribute("reviewList", reviewList);
 
 		return "myPage/main";
 

@@ -11,6 +11,7 @@ import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Reply;
 import com.wtwi.fin.member.model.vo.Pagination;
 import com.wtwi.fin.member.model.vo.Report;
+import com.wtwi.fin.member.model.vo.Review;
 import com.wtwi.fin.member.model.vo.Search;
 import com.wtwi.fin.qnaboard.model.vo.QnaBoard;
 import com.wtwi.fin.member.model.dao.MypageDAO;
@@ -19,9 +20,18 @@ import com.wtwi.fin.member.model.vo.Member;
 
 @Service
 public class MypageServiceImpl implements MypageService {
+	
+	
 
 	@Autowired
 	private MypageDAO dao;
+	
+	// 메인 명소추천 목록
+	@Override
+	public List<Review> selectReviewList(int memberNo) {
+		// TODO Auto-generated method stub
+		return dao.selectReviewList(memberNo);
+	}
 
 	// 내가 쓴 글(자유게시판) 전체 게시글 수
 	@Override
@@ -190,4 +200,8 @@ public class MypageServiceImpl implements MypageService {
 
 		return dao.selectSearchReplyBoardList(search, pagination);
 	}
+
+	
+	
+	
 }

@@ -138,6 +138,12 @@
 			AND MEMBER_ID = #{memberId}
 		</if>
   	</select>
+  	
+  	<!--  스프링 시큐리티 인증 -->
+  	<select id="getUserById" parameterType="string" resultMap="member_rm">
+  		SELECT * FROM MEMBER 
+  		WHERE MEMBER_ID = #{memberId}
+  	</select>
 
   	
 </mapper>

@@ -216,7 +216,7 @@
 				</c:when>
 				<c:otherwise>
 					<div class="col-4 d-flex justify-content-end align-items-center">
-						<a class="btn btn-dark mr-3" href="${contextPath}/member/myPage">${loginMember.memberNick }</a>
+						<a class="btn btn-dark mr-3" href="${contextPath}/myPage/main">${loginMember.memberNick }</a>
 						<a class="btn btn-dark mr-3" href="${contextPath}/member/logout">로그아웃</a>
 					</div>
 				</c:otherwise>

@@ -337,5 +337,11 @@ public class MemberController {
 		} 
 		return memberId;
 	}
+	
+	
+	
+
+		
+	
 
 }

@@ -16,6 +16,7 @@ import com.wtwi.fin.member.model.vo.Chat;
 import com.wtwi.fin.member.model.vo.Member;
 import com.wtwi.fin.member.model.vo.Pagination;
 import com.wtwi.fin.member.model.vo.Report;
+import com.wtwi.fin.member.model.vo.Review;
 import com.wtwi.fin.member.model.vo.Search;
 import com.wtwi.fin.qnaboard.model.vo.QnaBoard;
 
@@ -24,6 +25,15 @@ public class MypageDAO {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+	
+	/** 메인 명소추천 목록
+	 * @return
+	 */
+	public List<Review> selectReviewList(int memberNo) {
+		System.out.println(memberNo);
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("myPageMapper.selectReviewList", memberNo);
+	}
 
 	/** 내가 쓴 글(자유게시판) 수 조회
 	 * @param member
@@ -282,5 +292,7 @@ public class MypageDAO {
 		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
 		return sqlSession.selectList("myPageMapper.selectSearchReplyBoardList", search, rowBounds);
 	}
+
+	
 
 }

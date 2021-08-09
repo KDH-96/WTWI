@@ -18,21 +18,21 @@
 		<typeAlias type="com.wtwi.fin.chat.model.vo.ChatMessage" alias="ChatMessage" />
     	<typeAlias type="com.wtwi.fin.chat.model.vo.ChatRoom" alias="ChatRoom" />
 
-
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaBoard" alias="QnaBoard" />
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaCategory" alias="QnaCategory" />
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.Pagination" alias="QnaPagination" />
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.Search" alias="QnaSearch" />
 		<typeAlias type="com.wtwi.fin.qnaboard.model.vo.QnaReply" alias="QnaReply" />
-
-
 		
 		<typeAlias type="com.wtwi.fin.member.model.vo.Member" alias="Member" /> 
 		<typeAlias type="com.wtwi.fin.member.model.vo.Pagination" alias="MyPagePagination" />
 		<typeAlias type="com.wtwi.fin.member.model.vo.Search" alias="MyPageSearch" />
+		<typeAlias type="com.wtwi.fin.member.model.vo.Review" alias="MyReview" />
 		<typeAlias type="com.wtwi.fin.member.model.vo.Chat" alias="Chat" />
 		<typeAlias type="com.wtwi.fin.member.model.vo.Report" alias="Report" />
-    
+    	
+    	
+		<typeAlias type="com.wtwi.fin.attraction.model.vo.ReviewImage" alias="ReviewImage" />
     
     
 
@@ -46,7 +46,6 @@
 
 		<mapper resource="/mappers/qnaboard-mapper.xml" />
 		<mapper resource="/mappers/qnareply-mapper.xml" />
-    
     
 
 		<mapper resource="/mappers/member-mapper.xml"/>
