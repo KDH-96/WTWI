@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="attractionMapper">
+	<!-- mapper 태그 namespace 속성  
+		 mapper 파일들을 구분하기 위한 별칭
+	-->
+	
+	<!-- resultMap : 조회된 Result Set의 컬럼명과  VO 필드명이 일치하지 않을 때 
+					 컬럼과 필드를 매핑시키는 역할을 하는 태그 
+		 type : 매핑시킬 VO 풀네임(패키지+클래스명) 또는 등록된 별칭(mybatis-config.xml에 작성되어 있음)을 작성하는 부분
+		 id : resultMap을 구분하는 문자열
+	 -->
+	<resultMap type="Attraction" id="attraction_rm">
+	
+		<!-- 기본키(PK)에 해당하는 컬럼, 필드 매핑 -->
+		<id property="attractionNo" column="ATTRACTION_NO"/>
+		 
+		<!-- 기본키 외 컬럼, 필드 매핑 -->
+		<result property="attractionNm" column="ATTRACTION_NM"/>
+		<result property="latitude" column="LATITUDE"/>
+		<result property="longitude" column="LONGITUDE"/>
+		<result property="attractionTypeNo" column="ATTRACTION_TYPE_NO"/>
+	 
+	</resultMap>
+	
+	<!-- 명소 데이터 list  DB에 저장 -->
+  <insert id="insertAttrList" parameterType="list" >
+		 		<foreach collection="list" item="attr" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
+		 					INTO ATTRACTION_INFO
+		 							VALUES (#{attr.attractionNo}, #{attr.attractionNm}, #{attr.latitude}, #{attr.longitude}, #{attr.attractionTypeNo})
+		 		</foreach>
+ </insert>
+
+	
+  	
+</mapper>

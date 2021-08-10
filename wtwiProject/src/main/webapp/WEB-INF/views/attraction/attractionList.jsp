@@ -115,6 +115,7 @@
 							 	<option value="8">세종</option>
 						 </select>
 						 <button id="find-btn" class="btn btn-dark">조회</button>
+						 
          
          </div>
          <div class="list-wrapper">
@@ -131,7 +132,7 @@
 							<c:otherwise>
 							
 								<c:forEach items="${attrList}" var="attraction">
-         					<div class="card">
+         					<div class="card" id="${attraction.attractionNo}">
          						<img class="card-img-top" src ="${attraction.attractionPhoto}">
 		         				<div class="card-body">
 		         						<p class="card-text">${attraction.attractionNm}</p>
@@ -153,44 +154,53 @@
          <!-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 -->
 			<div id="area-abajo">
         <%-- 페이지네이션 --%>
-        <c:set var="pageURL" value="list"/>
-				<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage}${searchString}"/>
-				<c:set var="next" value="${pageURL}?cp=${pagination.nextPage}${searchString}"/>
-        <div class="row d-flex justify-content-center">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                	<%-- 현재 페이지가 5 페이지 이하일 시 --%>
-                	<c:if test="${pagination.currentPage <= pagination.pageSize}">
-                		<li class="page-item disabled">
-                			<a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-                		</li>
-                	</c:if>
-                	<%-- 현재 페이지가 5 페이지 초과일 시 --%>
-                	<c:if test="${pagination.currentPage > pagination.pageSize}">
-                		<li class="page-item">
-                			<a class="page-link" href="${prev}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-                		</li>
-                	</c:if>
-                	<%-- 페이지 --%>
-					<c:forEach var="p" begin="${pagination.startPage}" end="${pagination.endPage}">
-						<c:choose>
-							<c:when test="${p==pagination.currentPage}">
-								<li class="page-item active"><a class="page-link">${p}</a></li>
-							</c:when>
-							<c:otherwise>
-								<li class="page-item"><a class="page-link" href="${pageURL}?cp=${p}${searchString}">${p}</a></li>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-					<%-- 현재 페이지가 마지막 페이지 목록이 아닌 경우 --%>
-					<c:if test="${pagination.endPage < pagination.maxPage}">
-						<li class="page-item">
-							<a class="page-link" href="${next}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-						</li> 
-					</c:if>
-                </ul>
-            </nav>
-        </div>
+	 			<c:set var="pageURL" value="list"  />
+				
+				<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage}${keyword}" />
+				<c:set var="next" value="${pageURL}?cp=${pagination.nextPage}${keyword}" />
+				
+				
+				<div class="my-5">
+					<ul class="pagination">
+					
+						<%-- 현재 페이지가 10페이지 초과인 경우 --%>
+						<c:if test="${pagination.currentPage > pagination.pageSize }">
+							<li><a class="page-link" href="${prev}">&lt;&lt;</a></li>
+						</c:if>
+						
+						<%-- 현재 페이지가 2페이지 초과인 경우 --%>
+						<c:if test="${pagination.currentPage > 2 }">
+							<li><a class="page-link" href="${pageURL}?cp=${pagination.currentPage - 1}${searchStr}">&lt;</a></li>
+						</c:if>
+						
+						
+					
+						<%-- 페이지 목록 --%>
+						<c:forEach var="p" begin="${pagination.startPage}" end="${pagination.endPage}">
+							
+								<c:choose>
+									<c:when test="${p == pagination.currentPage }">
+										<li class="page-item active"><a class="page-link">${p}</a></li>
+									</c:when>
+									
+									<c:otherwise>
+										<li><a class="page-link" href="${pageURL}?cp=${p}${searchStr}">${p}</a></li>
+									</c:otherwise>
+								</c:choose>						
+						</c:forEach>
+						
+						<%-- 현재 페이지가 마지막 페이지 미만인 경우 --%>
+						<c:if test="${pagination.currentPage < pagination.maxPage }">
+							<li><a class="page-link" href="${pageURL}?cp=${pagination.currentPage + 1}${searchStr}">&gt;</a></li>
+						</c:if>
+						
+						<%-- 현재 페이지가 마지막 페이지가 아닌 경우 --%>
+						<c:if test="${pagination.currentPage - pagination.maxPage + pagination.pageSize < 0}">
+							<li><a class="page-link" href="${next}">&gt;&gt;</a></li>
+						</c:if>
+	
+					</ul>
+				</div>
          <!----------------------------------------------------------------------------------------------  Pagination end -->
 
          <!-- 검색창 -->
@@ -264,6 +274,15 @@
 				}
 			});
 		});
+		
+		
+		$(".page-item active").on("click",function(){
+				console.log(${p});	
+		
+		
+		
+		});
+		
 
 		
 		
@@ -276,7 +295,7 @@
 		}); */
 
 		$(document).on("click", ".card",function(){
-			//console.log($(this).attr('id'));
+			console.log($(this).attr('id'));
 			
 			const contentid = $(this).attr('id');
 			location.href = "view/" + contentid;

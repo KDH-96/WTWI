@@ -5,15 +5,13 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Base64.Encoder;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,17 +22,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.scribejava.core.java8.Base64;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.wtwi.fin.attraction.model.service.AttractionService;
 import com.wtwi.fin.attraction.model.vo.Attraction;
 import com.wtwi.fin.attraction.model.vo.Pagination;
 
 @Controller
 @RequestMapping("/attraction/*")
 public class AttractionController {
+	
+	@Autowired
+	private AttractionService service;
 
 	String attractionAddr = null; // addr1
 	String addr2 = null;
@@ -57,7 +58,7 @@ public class AttractionController {
 	int sigunguCode = 0;
 	String attractionPhone = null; // tel
 	String attractionNm = null; // title
-	int zipCode = 0;
+	String zipCode = null;
 	int eventStartDate = 0;
 	int eventEndDate = 0;
 	int attractionNo = 0;
@@ -66,12 +67,13 @@ public class AttractionController {
 	 * 명소 목록 조회
 	 ***************************************************************************************************/
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public String attractionList(String keyword, Model model, Pagination pg) {
+	public String attractionList(String keyword, Model model, Pagination pg, @RequestParam(value="cp" , required=false , defaultValue="1" ) int cp) {
 
 		System.out.println("컨트롤러 첫줄에서 keyword가 있는지 확인 : " + keyword);
 
 		Gson gson = new Gson();
 
+		// 검색어가 없는 경우 -> 위치기반으로 내 주의 반경 radius미터의 명소 조회
 		if (keyword == null) { // 검색 하지 않았을 때
 			/*
 			 * http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList
@@ -79,7 +81,9 @@ public class AttractionController {
 			 * 2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D
 			 * &MobileOS=ETC &MobileApp=AppTest &arrange=E &mapX=126.981611 &mapY=37.568477
 			 * &radius=1000 &listYN=Y
+			 * 
 			 */
+			
 			String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList";
 			String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
 			String MobileOS = "ETC";
@@ -92,8 +96,12 @@ public class AttractionController {
 
 			int attractionNo = 0;
 
-			String req = url + "?ServiceKey=" + serviceKey + "&MobileOS=" + MobileOS + "&MobileApp=" + MobileApp
-					+ "&arrange=" + arrange + "&mapX=" + longitude + "&mapY=" + latitude + "&radius=" + radius
+			String req = url + "?ServiceKey=" + serviceKey 
+					/*+ "&numOfRows=2000"*/ 
+					+ "&numOfRows=12" 
+					+ "&pageNo=" + cp
+					+ "&MobileOS=" + MobileOS + "&MobileApp=" + MobileApp
+					+ "&arrange=" + arrange + "&contentTypeId=12&14" + "&mapX=" + longitude + "&mapY=" + latitude + "&radius=" + radius
 					+ "&listYN=Y" + "&_type=" + type;
 
 			// 만들어진 req를 가지고 api에서 결과 가져오기
@@ -105,7 +113,7 @@ public class AttractionController {
 			JsonObject items = gson.fromJson(body.get("items").toString(), JsonObject.class);
 			JsonArray item = items.get("item").getAsJsonArray();
 			int totalCount = Integer.parseInt(body.get("totalCount").toString().replaceAll("\"", ""));
-
+			
 			System.out.println("결과 : " + result);
 			System.out.println("몸 : " + body);
 			System.out.println("총 개수 : " + totalCount);
@@ -135,6 +143,11 @@ public class AttractionController {
 				// System.out.println("attrList" + attrList);
 				attrList.add(attr);
 			}
+			
+			pg = new Pagination(cp,totalCount);
+
+			model.addAttribute("pagination", pg);
+			model.addAttribute("radius" , radius);
 			model.addAttribute("attrList", attrList);
 
 			return "attraction/attractionList";
@@ -142,7 +155,6 @@ public class AttractionController {
 		} else { // 검색 했을 때
 
 			int attractionNo = 0;
-			int cp = 1;
 			/*
 			 * http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword
 			 * ?serviceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%
@@ -151,13 +163,12 @@ public class AttractionController {
 			 * &keyword=%EA%B0%95%EC%9B%90
 			 */
 			System.out.println(keyword);
-
-			// 한글 인코딩
-//         try {
-//			keyword = new String(keyword.getBytes("keyword"),"utf-8");
-//		} catch (UnsupportedEncodingException e1) {
-//			e1.printStackTrace();
-//		}
+			
+			try {
+				keyword = URLEncoder.encode(keyword, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 
 			String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword";
 			String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
@@ -167,7 +178,7 @@ public class AttractionController {
 			// &keyword=keyword
 			String type = "json";
 
-			String req = url + "?ServiceKey=" + serviceKey + "&MobileApp=" + MobileApp + "&MobileOS=" + MobileOS
+			String req = url + "?ServiceKey=" + serviceKey + "&numOfRows=12" + "&MobileApp=" + MobileApp + "&MobileOS=" + MobileOS
 					+ "&listYN=Y" + "&arrange=" + arrange + "&keyword=" + keyword + "&_type=" + type;
 
 			// 만들어진 req를 가지고 api에서 결과 가져오기
@@ -178,6 +189,7 @@ public class AttractionController {
 			JsonObject body = gson.fromJson(response.get("body").toString(), JsonObject.class);
 			JsonObject items = gson.fromJson(body.get("items").toString(), JsonObject.class);
 			JsonArray item = items.get("item").getAsJsonArray();
+			int totalCount = Integer.parseInt(body.get("totalCount").toString().replaceAll("\"", ""));
 
 			List<Attraction> attrList = new ArrayList<Attraction>();
 
@@ -204,6 +216,10 @@ public class AttractionController {
 				// System.out.println("attrList" + attrList);
 				attrList.add(attr);
 			}
+
+			pg = new Pagination(cp,totalCount);
+			model.addAttribute("pagination", pg);
+
 			model.addAttribute("attrList", attrList);
 
 			return "attraction/attractionList";
@@ -276,47 +292,49 @@ public class AttractionController {
 	
 
 	/***
-	 * 드롭 박스 이용
+	 * 드롭 다운 이용
 	 ***************************************************************************************************/
-	@RequestMapping("find/area")
-	@ResponseBody
-	public String attractionListView(String contentTypeS, int areaCode) {
+   @RequestMapping("find/area")
+   @ResponseBody
+   public String attractionListView(String contentTypeS, int areaCode) {
 
-		int contentType = Integer.parseInt(contentTypeS);
+      int contentType = Integer.parseInt(contentTypeS);
 
-		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList";
-		String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
-		String MobileApp = "WhereTheWeatherIs";
-		String type = "json";
-		String arrange = "B";
-		int numOfRows = 12;
-		// int pageNo = 1;
+      String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList";
+      String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+      String MobileApp = "WhereTheWeatherIs";
+      String type = "json";
+      String arrange = "B";
+      int numOfRows = 12;
+      // int pageNo = 1;
 
-		/*
-		 * http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode
-		 * ?serviceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%
-		 * 2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D
-		 * &numOfRows=12 &pageNo=1 &MobileOS=ETC &MobileApp=AppTest &areaCode=1
-		 * 
-		 */
+      /*
+       * http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode
+       * ?serviceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%
+       * 2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D
+       * &numOfRows=12 &pageNo=1 &MobileOS=ETC &MobileApp=AppTest &areaCode=1
+       */
 
-		String req = url + "?ServiceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&contentTypeId=" + contentType
-				+ "&areaCode=" + areaCode + "&listYN=Y&MobileOS=ETC" + "&MobileApp=" + MobileApp + "&arrange=" + arrange
-				+
-				// "&pageNo=" + pageNo +
-				"&_type=" + type;
+      String req = url + "?ServiceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&contentTypeId=" + contentType
+            + "&areaCode=" + areaCode + "&listYN=Y&MobileOS=ETC" + "&MobileApp=" + MobileApp + "&arrange=" + arrange
+            +
+            // "&pageNo=" + pageNo +
+            "&_type=" + type;
 
-		String result = makingResult(req);
+      String result = makingResult(req);
 
-		JsonObject convertedObj = new Gson().fromJson(result.toString(), JsonObject.class);
-		JsonObject response = new Gson().fromJson(convertedObj.get("response").toString(), JsonObject.class);
-		JsonObject body = new Gson().fromJson(response.get("body").toString(), JsonObject.class);
-		JsonObject items = new Gson().fromJson(body.get("items").toString(), JsonObject.class);
-		JsonArray item = items.get("item").getAsJsonArray();
+      JsonObject convertedObj = new Gson().fromJson(result.toString(), JsonObject.class);
+      JsonObject response = new Gson().fromJson(convertedObj.get("response").toString(), JsonObject.class);
+      JsonObject body = new Gson().fromJson(response.get("body").toString(), JsonObject.class);
+      JsonObject items = new Gson().fromJson(body.get("items").toString(), JsonObject.class);
+      System.out.println("items : " + items);
+      JsonArray item = items.get("item").getAsJsonArray();
 
-		System.out.println("몇개 : " + item.size());
+	  System.out.println("몇개 : " + item.size());
 
-		return result;
+
+		
+	  return result;
 	}
 
 	/**** 상세 조회 ***************************************************************************************************/
@@ -400,6 +418,8 @@ public class AttractionController {
 		 * defaultYN=Y
 		 * &firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=
 		 * Y
+		 * 
+
 		 */
 
 		String req = url + "?ServiceKey=" + serviceKey + "&MobileOS=" + MobileOS + "&MobileApp=" + MobileApp
@@ -456,9 +476,66 @@ public class AttractionController {
 	
 	
 	
+	
+	
+	/********************************************************************************************************************/
+	/**** DB 입력할 1회용 Controller  **************************************************************************************/
+	/********************************************************************************************************************/
+	// 상세조회코드 가져옴
+	@RequestMapping(value="insertToDB", method=RequestMethod.POST )
+	public void insertToDB(@RequestParam("testDB") String inputMsg) {
+		
+		System.out.println("inputMsg : " + inputMsg);
+
+		String req1 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?serviceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D&pageNo=1&numOfRows=5000&MobileApp=AppTest&MobileOS=ETC&arrange=B&contentTypeId=12"
+				+ "&areaCode=8&listYN=Y&_type=json";
+		
+		String result = makingResult(req1);
+		// 모든 관광지 정보가 result에 담김 -> 12는 지역별로 / 14는 전체 꺼내서 저장 (2021.08.09기준)
+
+		JsonObject convertedObj = new Gson().fromJson(result.toString(), JsonObject.class);
+		JsonObject response = new Gson().fromJson(convertedObj.get("response").toString(), JsonObject.class);
+		JsonObject body = new Gson().fromJson(response.get("body").toString(), JsonObject.class);
+		JsonObject items = new Gson().fromJson(body.get("items").toString(), JsonObject.class);
+		
+		JsonArray item = items.get("item").getAsJsonArray();
+		
+		int totalCount = Integer.parseInt(body.get("totalCount").toString().replaceAll("\"", ""));
+		//System.out.println("전체 개수 : " + totalCount);
+		int numOfRows = Integer.parseInt(body.get("numOfRows").toString().replaceAll("\"", ""));
+		//System.out.println("numOfRows : " + numOfRows);
+		
+
+		List<Attraction> attrList = new ArrayList<Attraction>();
+
+		Attraction attr = null;
+
+		for (int i = 0; i < item.size(); i++) { // {k:v,k:v..} 하나에 접근 (명소 하나 하나에 접근한다)
+
+			JsonObject jobj = (JsonObject) item.get(i);
+
+			attr = new Attraction();
+			Set<String> itemKeys = jobj.keySet();
+
+			for (String key : itemKeys) { // 모든 키에 접근을 해서
+
+				attr = makingAttr(key, jobj, attr);
+			}
+
+			attrList.add(attr);
+		}
+		int successNo = service.insertAttrList(attrList);
+		//System.out.println("successNo : " + successNo);
+	}
+	
+	
+	
+	
 
 	/********************************************************************************************************************/
 	/**** Controller에서 사용하는 메소드 **************************************************************************************/
+	/********************************************************************************************************************/
+	
 	// result만들기
 	public String makingResult(String req) {
 
@@ -506,7 +583,7 @@ public class AttractionController {
 	       case "sigungucode" : sigunguCode = Integer.parseInt(jobj.get(key).toString().replaceAll("\"", ""));break; 
 	       case "tel" : attractionPhone = jobj.get(key).toString().replaceAll("\"", "");break; 
 	       case "title" : attractionNm = jobj.get(key).toString().replaceAll("\"", "");break; 
-	       case "zipcode" : zipCode = Integer.parseInt(jobj.get(key).toString().replaceAll("\"", ""));break; 
+	       case "zipcode" : zipCode = jobj.get(key).toString().replaceAll("\"", "");break; 
 	       case "readcount" : readCount = Integer.parseInt(jobj.get(key).toString().replaceAll("\"", ""));break; 
 	       case "eventstartdate" : eventStartDate = Integer.parseInt(jobj.get(key).toString().replaceAll("\"", ""));break; 
 	       case "eventenddate" : eventEndDate = Integer.parseInt(jobj.get(key).toString().replaceAll("\"", ""));break; 
