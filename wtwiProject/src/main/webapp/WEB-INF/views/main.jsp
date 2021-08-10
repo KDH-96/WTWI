@@ -66,25 +66,45 @@
 		
 		
 		
-		<!-- =================================== 명소 구분 드롭다운 시작 =================================== -->
-        <div id="dropdown-wrap">
-            <div id="dropdown-type-wrap">
-                <button class="btn btn-outline-secondary dropdown-toggle mx-1" id="dropdown-type" type="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">구 분</button>
-                <div class="dropdown-menu" id="contentTypeS" name="contentTypeS">
-                    <a class="dropdown-item" href="#" id="12" name="attr-type">관광지</a>
-                    <a class="dropdown-item" href="#" id="14" name="attr-type">문화시설</a>
-                    <a class="dropdown-item" href="#" id="15" name="attr-type">축제/공연/행사</a>
-                    <a class="dropdown-item" href="#" id="25" name="attr-type">여행코스</a>
-                    <a class="dropdown-item" href="#" id="28" name="attr-type">레포츠</a>
-                    <a class="dropdown-item" href="#" id="32" name="attr-type">숙박</a>
-                    <a class="dropdown-item" href="#" id="38" name="attr-type">쇼핑</a>
-                    <a class="dropdown-item" href="#" id="39" name="attr-type">음식</a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- =================================== 명소 구분 드롭다운 종료 =================================== -->
+		<!-- =================================== 명소 구분/지역 드롭다운 시작 =================================== -->
+		<div id="dropdown-wrap">
+		<form>
+			<select id="contentTypeS" name="contentTypeS">
+				<option value="12" selected>관광지</option>
+				<option value="14">문화시설</option>
+				<option value="15">축제/공연/행사</option>
+				<option value="25">여행코스</option>
+				<option value="28">레포츠</option>
+				<option value="32">숙박</option>
+				<option value="38">쇼핑</option>
+				<option value="39">음식</option>
+			</select>
+			
+			<select style="display:hidden;" id="areaCode" name="areaCode">
+				<option value="11" selected>서울</option>
+				<option value="26">부산</option>
+				<option value="27">대구</option>
+				<option value="28">인천</option>
+				<option value="29">광주</option>
+				<option value="30">대전</option>
+				<option value="31">울산</option>
+				<option value="36">세종</option>
+				<option value="41">경기</option>
+				<option value="42">강원</option>
+				<option value="43">충북</option>
+				<option value="44">충남</option>
+				<option value="45">전북</option>
+				<option value="46">전남</option>
+				<option value="47">경북</option>
+				<option value="48">경남</option>
+				<option value="50">제주</option>
+			</select>
+			
+			<button id="find-btn" class="btn btn-dark">조회</button>
+			<button type="reset" id="reset-btn" class="btn btn-dark">지도 초기화</button>
+		</div>
+
+		<!-- =================================== 명소 구분/지역 드롭다운 종료 =================================== -->
 		
         <!-- =================================== 명소 상세정보 영역 시작 =================================== -->
 
@@ -93,8 +113,6 @@
         <!-- =================================== 명소 상세정보 영역 끝 =================================== -->
 	
     </div>
-	<jsp:include page="/WEB-INF/views/chat/chatAlert.jsp"></jsp:include>
-
     <script type="text/javascript"
         src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=eebe96b9065dd3994c199f0822ac2038"></script>
         
@@ -119,7 +137,8 @@
         });
 		
         // 폴리곤 클릭 시 지역코드를 controller로 넘겨주기 위해 전역변수로 선언
-        var code = 0;
+        var areaCode;
+        var attrType = "12"; // 디폴트
         var jsonFileForMarker = "";
         
         
@@ -130,6 +149,15 @@
         // 폴리곤배열 전역변수 테스트
         var polygons = [];
         
+        $("#reset-btn").on('click', function(){
+        	map.setLevel(13);
+        	map.panTo(new kakao.maps.LatLng(36.160865, 127.754386));
+        	
+        	// 마커 배열 초기화 및 각 마커 화면에서 제거
+	        markers.forEach(function (marker) { marker.setMap(null); });
+	        markers.length = 0 // 마커 배열 초기화
+        });
+        
         //행정구역 구분 폴리곤 geoJSON 파일 불러오는 코드
         $.getJSON("https://raw.githubusercontent.com/Jun-Seok-K/coja/master/korea_map_polygon.json", function (geojson) {
             var data = geojson.features;
@@ -138,17 +166,16 @@
             
             $.each(data, function (index, val) {
                 name = val.properties.CTP_KOR_NM;
-                code = val.properties.CTPRVN_CD;
+                areaCode = val.properties.CTPRVN_CD;
 
                 if (val.geometry.type == "MultiPolygon") {
-                    displayArea(name, code, val.geometry.coordinates, true);
+                    displayArea(name, areaCode, val.geometry.coordinates, true);
 
                 } else {
-                    displayArea(name, code, val.geometry.coordinates, false);
+                    displayArea(name, areaCode, val.geometry.coordinates, false);
                 }
             });
 
-            // console.log(coordinates.length); 전국 명소의 수
         })
 
         // 폴리곤 생성
@@ -196,6 +223,43 @@
                 fillOpacity: 0.7
             });
         }
+        
+		$("#find-btn").on('click', function(){
+			
+			attrType = document.getElementById("contentTypeS").value
+			areaCode = document.getElementById("areaCode").value
+			
+        	console.log("테스트 타입 : " + attrType);
+        	console.log("테스트 지역 : " + areaCode);
+        	
+        	$.ajax({
+              	url : "${contextPath}/attraction/list",
+        		data : {"areaCode" : areaCode,
+        				"attrType" : attrType}, // 클릭한 폴리곤의 지역 코드
+        		type : "POST",
+              	success : function(jsonFile){
+              		console.log("명소타입 : " + attrType);
+              		console.log("결과 areaCode : " + areaCode);
+              		
+              		jsonFileForMarker = jsonFile;
+              		console.log("통신 성공");
+              		
+              		// 지역별로 API요청주소가 담긴 jsonFileForMarker로 지역별 조회수 top 30 명소 추출
+    	          	markersOnMap(jsonFileForMarker);
+                          
+              	},
+              	
+              	error : function(){
+              		console.log("통신 실패");
+              	}
+              	
+              });
+			
+		});
+		
+        	
+        	
+        	
 
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
             mapOption = {
@@ -207,8 +271,8 @@
             customOverlay = new kakao.maps.CustomOverlay({}),
             infowindow = new kakao.maps.InfoWindow({ removable: true });
 
-        function displayArea(name, code, coordinates, multi) {
-
+        function displayArea(name, areaCode, coordinates, multi) {
+			
         	var polygon;
             
             if (multi) {
@@ -228,13 +292,18 @@
 	        	polygons[index].setMap(map);
 	        });
 	        
+	        
 	     	// 다각형에 마우스 클릭 이벤트 삽입 코드
             kakao.maps.event.addListener(polygon, 'click', function (mouseEvent) {
                   $.ajax({
                   	url : "${contextPath}/attraction/list",
-            		data : {"code" : code}, // 클릭한 지역 코드(시/도별... java와 매핑 필요함)
+            		data : {"areaCode" : areaCode,
+            				"attrType" : attrType}, // 클릭한 폴리곤의 지역 코드
             		type : "POST",
                   	success : function(jsonFile){
+                  		console.log("명소타입 : " + attrType);
+                  		
+                  		areaCode = areaCode;
                   		jsonFileForMarker = jsonFile;
                   		console.log("통신 성공");
                   		
@@ -286,15 +355,9 @@
            });
             
             
-        //============================================================================================================                		
-        
-		
    		}; // geoJSON파일에 의한 폴리곤 생성 반복문 종료 괄호
         
         
-    // ==========================================================================================================
-    
-
 	    var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
 	        center: new kakao.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표 
 	        level: 13 // 지도의 확대 레벨 
@@ -306,6 +369,10 @@
 	    	
 	    	 var position;
 	         var data;
+	         ////////////////////////////////////////////
+	         document.getElementById("contentTypeS").value = attrType;
+	         document.getElementById("areaCode").value = areaCode;
+	         ////////////////////////////////////////////
 	         
 	         // 마커 배열 초기화 및 각 마커 화면에서 제거
 	         markers.forEach(function (marker) { marker.setMap(null); });
