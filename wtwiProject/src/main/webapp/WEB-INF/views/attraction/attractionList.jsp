@@ -34,6 +34,7 @@
       /* content ) 게시글 목록 스타일 */
       #h-menu{
          clear :both;
+         margin-buttom : 10px;
       }
       .h-div{
          float:left;
@@ -62,7 +63,7 @@
       	display: inline-block;
       	float : left;
       	width: 286px;
-      	height : 190px;   
+      	height : 240px;   
       }
       
       .my-2{
@@ -75,9 +76,26 @@
       	width: 286px;
       	height : 190px;   
       }
-      #area-abajo{
-      	margin-top : 100px;
+      .card-img-top:hover{
+      	cursor : pointer;
       }
+      .card-body{
+      	width : 286px;
+      	height : 30px;
+      }
+      .card-text{
+      	text-align : center;
+      	margin : auto;
+      }
+      #area-abajo{
+      	float : left;
+      	margin-top : 30px;
+      	text-align : center;
+      }
+
+      .pagination {
+				justify-content: center;
+			}
       /* ------------------------------영역구분선------------------------------ */
    </style>
 </head>
@@ -90,7 +108,7 @@
    <div id="contentContainer">
    
       <div id="contentArea">
-	         <div id="h-menu">
+	        <div id="h-menu">
          
          		구분
 						 <select id="contentTypeS" name="contentTypeS">
@@ -148,9 +166,9 @@
          
          
       </div>
-         <!----------------------------------------------------------------------------------------------  content end -->
+         <!---------------------------------------------------------------------content end -->
 
-         <!----------------------------------------------------------------------------------------------  Pagination start -->
+         <!---------------------------------------------------------------------Pagination start -->
          <!-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 -->
 			<div id="area-abajo">
         <%-- 페이지네이션 --%>
@@ -209,7 +227,7 @@
                <div class="container2">
                   <div class="row">
                      <div class="col-sm">
-                        <input type="text" id="keyword" name="keyword" class="form-control" style="width: 100%; display: inline-block;" 
+                        <input type="text" id="keyword" name="keyword" class="form-control" style="width: 300px; display: inline-block;" 
                         placeholder="검색어를 입력해주세요">
                      </div>
                      <div class="col-sm">
