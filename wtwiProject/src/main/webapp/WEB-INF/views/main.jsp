@@ -68,7 +68,6 @@
 		
 		<!-- =================================== 명소 구분/지역 드롭다운 시작 =================================== -->
 		<div id="dropdown-wrap">
-		<form>
 			<select id="contentTypeS" name="contentTypeS">
 				<option value="12" selected>관광지</option>
 				<option value="14">문화시설</option>
@@ -100,8 +99,7 @@
 				<option value="50">제주</option>
 			</select>
 			
-			<button id="find-btn" class="btn btn-dark">조회</button>
-			<button type="reset" id="reset-btn" class="btn btn-dark">지도 초기화</button>
+			<button id="find-attr-btn" class="btn btn-dark">조회</button>
 		</div>
 
 		<!-- =================================== 명소 구분/지역 드롭다운 종료 =================================== -->
@@ -149,15 +147,6 @@
         // 폴리곤배열 전역변수 테스트
         var polygons = [];
         
-        $("#reset-btn").on('click', function(){
-        	map.setLevel(13);
-        	map.panTo(new kakao.maps.LatLng(36.160865, 127.754386));
-        	
-        	// 마커 배열 초기화 및 각 마커 화면에서 제거
-	        markers.forEach(function (marker) { marker.setMap(null); });
-	        markers.length = 0 // 마커 배열 초기화
-        });
-        
         //행정구역 구분 폴리곤 geoJSON 파일 불러오는 코드
         $.getJSON("https://raw.githubusercontent.com/Jun-Seok-K/coja/master/korea_map_polygon.json", function (geojson) {
             var data = geojson.features;
@@ -176,7 +165,7 @@
                 }
             });
 
-        })
+        });
 
         // 폴리곤 생성
         function makePolygon(coordinates) {
@@ -195,7 +184,7 @@
                 fillColor: '#fff',
                 fillOpacity: 0.7
             });
-        }
+        };
 
         // 멀티폴리곤 생성
         function makeMultiPolygon(coordinates) {
@@ -222,25 +211,26 @@
                 fillColor: '#fff',
                 fillOpacity: 0.7
             });
-        }
+        };
         
-		$("#find-btn").on('click', function(){
-			
+        
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+            mapOption = {
+                center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+                level: 13 // 지도의 확대 레벨
+         };
+        
+        
+        $("#find-attr-btn").on('click', function(){
 			attrType = document.getElementById("contentTypeS").value
 			areaCode = document.getElementById("areaCode").value
 			
-        	console.log("테스트 타입 : " + attrType);
-        	console.log("테스트 지역 : " + areaCode);
-        	
         	$.ajax({
               	url : "${contextPath}/attraction/list",
         		data : {"areaCode" : areaCode,
         				"attrType" : attrType}, // 클릭한 폴리곤의 지역 코드
         		type : "POST",
               	success : function(jsonFile){
-              		console.log("명소타입 : " + attrType);
-              		console.log("결과 areaCode : " + areaCode);
-              		
               		jsonFileForMarker = jsonFile;
               		console.log("통신 성공");
               		
@@ -256,16 +246,7 @@
               });
 			
 		});
-		
-        	
-        	
-        	
-
-        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-            mapOption = {
-                center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-                level: 13 // 지도의 확대 레벨
-            };
+        
 
         var map = new kakao.maps.Map(mapContainer, mapOption),
             customOverlay = new kakao.maps.CustomOverlay({}),
@@ -452,7 +433,6 @@
 	                	// 해당 명소에 대한 상세페이지 정보 조회
 	            		//attraction/view/명소상세글 번호
 	            		//console.log(selectedMarker);
-	                	const memberNo = "${loginMember.memberNo}";
 
 	            		$.ajax({
 	            			url : "${contextPath}/attraction/view/" + selectedMarker,
