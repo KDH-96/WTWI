@@ -136,7 +136,7 @@ a:hover {
 
 									<!-- 내용 -->
 									<td class="boardTitle">
-									<a href="${contextPath}/?cp=${pagination.currentPage}">${board.chatContent}</a>
+									<a href="${contextPath}/chat/room/${board.chatRoomNo}">${board.chatContent}</a>
 									</td>
 									<%-- 작성일자 --%>
 									<td><fmt:formatDate var="createDate"
