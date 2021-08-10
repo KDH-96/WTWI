@@ -174,7 +174,7 @@ public class AttractionController {
 			String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
 			String MobileApp = "WhereTheWeatherIs";
 			String MobileOS = "ETC";
-			String arrange = "A";
+			String arrange = "O";
 			// &keyword=keyword
 			String type = "json";
 
@@ -230,64 +230,72 @@ public class AttractionController {
 	
 	
 	/***
-	 * 명소 목록 조회(준석)
-	 ***************************************************************************************************/
-	@RequestMapping(value = "list", method = RequestMethod.POST)
-	@ResponseBody
-	public String attractionList(@RequestParam("code") String code) {
+	    * 명소 목록 조회(준석)
+	    ***************************************************************************************************/
+	   @RequestMapping(value = "list", method = RequestMethod.POST)
+	   @ResponseBody
+	   public String attractionList(@RequestParam("areaCode") String paramAreaCode , @RequestParam("attrType") String paramAttrType) {
 
-		//System.out.println("컨트롤러 첫줄에서 keyword가 있는지 확인 : " + keyword);
-		System.out.println("넘어온 지역코드 : " + code);
-		Gson gson = new Gson();
-		
-		/* 준석
-		http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList
-		?serviceKey=JJM5cLUSlymmHuS%2FvQxZDLCIejOz9ypIpBRrNY1RdktshpYCM1Fx2KvlmUG8qzp%2B2msPzwhNKLhOtP3NiHt13g%3D%3D
-		&numOfRows=30
-		&MobileApp=AppTest
-		&MobileOS=ETC
-		&arrange=B
-		&contentTypeId=12
-		&areaCode=1
-		&listYN=Y
-		*/
-		
-		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList";
-		String serviceKey = "?serviceKey=JJM5cLUSlymmHuS%2FvQxZDLCIejOz9ypIpBRrNY1RdktshpYCM1Fx2KvlmUG8qzp%2B2msPzwhNKLhOtP3NiHt13g%3D%3D";
-		int numOfRows = 30;
-		String MobileApp = "AppTest";
-		String MobileOS = "ETC";
-		String arrange = "B"; // 조회수 순으로 조회
-		int contentTypeId = 12; // 12 대신 변수를 넣어서 가변적으로 사용할 예정
-		int areaCode = Integer.parseInt(code); // 1 대신 변수를 넣어서 가변적으로 사용할 예정
-		String listYN = "Y";
-		String type = "json";
+	      //System.out.println("컨트롤러 첫줄에서 keyword가 있는지 확인 : " + keyword);
+	      System.out.println("넘어온 지역코드 : " + paramAttrType);
+	      Gson gson = new Gson();
+	      
+	      /* 준석
+	      http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList
+	      ?serviceKey=JJM5cLUSlymmHuS%2FvQxZDLCIejOz9ypIpBRrNY1RdktshpYCM1Fx2KvlmUG8qzp%2B2msPzwhNKLhOtP3NiHt13g%3D%3D
+	      &numOfRows=30
+	      &MobileApp=AppTest
+	      &MobileOS=ETC
+	      &arrange=B
+	      &contentTypeId=12
+	      &areaCode=1
+	      &listYN=Y
+	      */
+	      
+	      System.out.println("선택한 타입 :  " + paramAttrType);
+	      
+	      String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList";
+	      String serviceKey = "?serviceKey=JJM5cLUSlymmHuS%2FvQxZDLCIejOz9ypIpBRrNY1RdktshpYCM1Fx2KvlmUG8qzp%2B2msPzwhNKLhOtP3NiHt13g%3D%3D";
+	      int numOfRows = 30;
+	      String MobileApp = "AppTest";
+	      String MobileOS = "ETC";
+	      String arrange = "B"; // 조회수 순으로 조회
+	      int contentTypeId = Integer.parseInt(paramAttrType);
+	      int areaCode = Integer.parseInt(paramAreaCode);
+	      String listYN = "Y";
+	      String type = "json";
 
-		int attractionNo = 0;
-		
-		
-		switch(areaCode) {
-			case 28: areaCode = 2; break; //
-			case 11: areaCode = 1; break; //
-			case 41: areaCode = 1; break; //
-			case 36: areaCode = 8; break; //
-			case 30: areaCode = 3; break; // 
-			case 29: areaCode = 5; break; // 
-			case 46: areaCode = 5; break; // 
-			case 31: areaCode = 7; break; // 
-			case 27: areaCode = 4; break; // 
-			case 26: areaCode = 6; break; // 
-		}
+	      int attractionNo = 0;
+	      
+	      switch(areaCode) {
+	         case 11: areaCode = 1; break; // 서울
+	         case 26: areaCode = 6; break; // 부산
+	         case 27: areaCode = 4; break; // 대구
+	         case 28: areaCode = 2; break; // 인천
+	         case 29: areaCode = 5; break; // 광주
+	         case 30: areaCode = 3; break; // 대전
+	         case 31: areaCode = 7; break; // 울산
+	         case 36: areaCode = 8; break; // 세종
+	         case 41: areaCode = 31; break; // 경기
+	         case 42: areaCode = 32; break; // 강원
+	         case 43: areaCode = 33; break; // 충북
+	         case 44: areaCode = 34; break; // 충남
+	         case 45: areaCode = 37; break; // 전북
+	         case 46: areaCode = 38; break; // 전남
+	         case 47: areaCode = 35; break; // 경북
+	         case 48: areaCode = 36; break; // 경남
+	         case 50: areaCode = 39; break; // 제주
+	      }
 
-		String jsonFile = url + serviceKey + "&numOfRows=" + numOfRows + "&MobileApp=" + MobileApp
-				+ "&MobileOS=" + MobileOS + "&arrange=" + arrange + "&contentTypeId=" + contentTypeId + "&contentTypeId=" + contentTypeId
-				+ "&areaCode=" + areaCode + "&listYN=" + listYN +"&_type=" + type;
-		
-		System.out.println(jsonFile);
-		
-		return jsonFile;
+	      String jsonFile = url + serviceKey + "&numOfRows=" + numOfRows + "&MobileApp=" + MobileApp
+	            + "&MobileOS=" + MobileOS + "&arrange=" + arrange + "&contentTypeId=" + contentTypeId + "&contentTypeId=" + contentTypeId
+	            + "&areaCode=" + areaCode + "&listYN=" + listYN +"&_type=" + type;
+	      
+	      System.out.println(jsonFile);
+	      
+	      return jsonFile;
 
-	}
+	   }
 	
 	
 
@@ -304,7 +312,7 @@ public class AttractionController {
       String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
       String MobileApp = "WhereTheWeatherIs";
       String type = "json";
-      String arrange = "B";
+      String arrange = "P";
       int numOfRows = 12;
       // int pageNo = 1;
 
