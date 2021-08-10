@@ -70,8 +70,20 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	// 채팅 메세지 조회 (24)
+	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public List<ChatMessage> selectCmList(int chatRoomNo) {
+	public List<ChatMessage> selectCmList(int chatRoomNo, int memberNo) {
+		
+		// 24-1) 채팅 메세지 조회해오기
+		List<ChatMessage> cmList = dao.selectCmList(chatRoomNo);
+		
+		// 24-2) 조회한 채팅 메세지 중 다른 회원이 보낸 메세지를 상태=읽음 으로 변경
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("chatRoomNo", chatRoomNo);
+		map.put("memberNo", memberNo);
+		
+		dao.changeStatus(map);
+		
 		return dao.selectCmList(chatRoomNo);
 	}
 
@@ -85,11 +97,12 @@ public class ChatServiceImpl implements ChatService {
 		
 		return dao.insertChatMessage(cm);
 	}
-
 	
-	
-	
-	
+	// 새로운 채팅 메세지가 있는지 조회(26)
+	@Override
+	public int newChatExist(int memberNo) {
+		return dao.newChatExist(memberNo);
+	}
 	
 	
 

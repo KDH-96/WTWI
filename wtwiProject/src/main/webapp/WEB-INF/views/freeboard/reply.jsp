@@ -36,7 +36,7 @@
 			            	</c:when>
 			            	<c:otherwise>
 			            		<div class="row-6 mt-1 free-reply-date">
-			            			${r.freeReplyCreateDate}
+			            			${replyCreateDate}
 			            			<c:if test="${r.freeReplyStatus=='M'}"> 수정됨</c:if>
 			            		</div>
 			            	</c:otherwise>
