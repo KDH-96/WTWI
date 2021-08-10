@@ -3,6 +3,7 @@ package com.wtwi.fin.chat.websocket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +35,15 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		// 채팅을 이용하는 사람의 정보를 Set에 저장
 		sessions.add(session);
 		
-		System.out.println(session.getId()+" 연결");
-		System.out.println(((Member)session.getAttributes().get("loginMember")).getMemberNick()+" 참가");
+		//System.out.println(session.getId()+" 연결");
+		//System.out.println(((Member)session.getAttributes().get("loginMember")).getMemberNick()+" 참가");
 	}
 	
 	// 클라이언트로부터 텍스트를 받았을 때 실행
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		
-		System.out.println("전달받은 내용 : "+message.getPayload());
+		//System.out.println("전달받은 내용 : "+message.getPayload());
 		
 		// JSON 문자열을 -> JsonObject로 변환 (값을 꺼내어 쓸 수 있게함)
 		JsonObject convertedObj = new Gson().fromJson(message.getPayload(), JsonObject.class);
@@ -53,8 +54,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		memberNick = memberNick.substring(1, memberNick.length()-1);
 		chatContent = chatContent.substring(1, chatContent.length()-1);
 		
-		System.out.println("입력한 사람 : "+memberNick);
-		System.out.println("채팅 내용 : "+chatContent);
+		//System.out.println("입력한 사람 : "+memberNick);
+		//System.out.println("채팅 내용 : "+chatContent);
 		
 		// 채팅방 번호
 		int chatRoomNo = Integer.parseInt(convertedObj.get("chatRoomNo").toString().replaceAll("\"", ""));
@@ -68,12 +69,23 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		cm.setChatRoomNo(chatRoomNo); // 채팅방 번호
 		cm.setChatContent(chatContent);	  // 채팅 메세지
 		
+		// 해당 채팅방에 참가한 다른 회원이 현재 세션에 있는지 검사하기
+		// 다른 회원의 회원 번호 가져오기(25-0)
+		int chatMemberNo = service.selectChatMemberNo(chatRoomNo, memberNo);
+		
+		boolean flag = false;
+		
+		for(WebSocketSession s : sessions) {
+			int no = ((Member)s.getAttributes().get("loginMember")).getMemberNo();
+			if(chatMemberNo==no) flag = true;
+		}
+		
 		// 채팅 메세지 DB에 삽입(25)
-		int result = service.insertChatMessage(cm);
+		int result = service.insertChatMessage(cm, flag);
 		
 		if(result>0) {
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd HH:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			convertedObj.addProperty("chatCreateDate", sdf.format(new Date()));
 			
 			for(WebSocketSession s : sessions) {

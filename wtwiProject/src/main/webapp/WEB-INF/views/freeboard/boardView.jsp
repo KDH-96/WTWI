@@ -110,7 +110,7 @@
 
 <script>
 const freeNo = ${board.freeNo};
-const memberNo = "${loginMember.memberNo}";
+//const memberNo = "${loginMember.memberNo}";
 
 likeCheck();
 

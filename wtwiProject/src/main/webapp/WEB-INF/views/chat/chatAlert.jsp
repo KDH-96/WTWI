@@ -2,23 +2,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <style>
-.new-chat-area{
-    position: fixed;
-    right: 31px;
-    bottom: 77px;
-	z-index: 3;
-}
 .chat-icon-area{
 	position: fixed;
     right: 15px;
     bottom: 15px;
-    z-index: 1;
+    z-index: 5;
+}
+.new-chat-area{
+    position: fixed;
+    right: 32px;
+    bottom: 77px;
+	z-index: 7;
 }
 .chat-alert-area{
     position: fixed;
     right: 26px;
     bottom: 74px;
-    z-index: 2;
+    z-index: 6;
 }
 .bi-chat-square-dots{
 	font-size: 48px;
@@ -27,8 +27,6 @@
 	font-size: 18px;
 	color: rgba(218, 44, 61, 1.0);
 }
-
-
 </style>
 <c:if test="${!empty loginMember}">
 <div class="chat-alert btn" onclick="location.href='${contextPath}/myPage/chat';">
@@ -43,7 +41,14 @@
 </div>
 </c:if>
 <script>
-const memberNo = "${loginMember.memberNo}";
+
+//var undefined;
+
+//if(typeof memberNo === undefined){
+	const memberNo = "${loginMember.memberNo}";
+//}
+
+
 $(document).ready(function(){
 	
 	if(memberNo!=""){
@@ -68,6 +73,5 @@ $(document).ready(function(){
 			}
 		});
 	}
-	
 });
 </script>

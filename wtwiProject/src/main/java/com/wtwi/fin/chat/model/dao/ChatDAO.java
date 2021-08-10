@@ -63,7 +63,23 @@ public class ChatDAO {
 		sqlSession.update("chatMapper.changeStatus", map);
 	}
 	
-	/** 채팅 메세지 DB에 삽입(25)
+	/** 다른 회원의 회원 번호 가져오기(25-0)
+	 * @param map
+	 * @return chatMemberNo
+	 */
+	public int selectChatMemberNo(Map<String, Integer> map) {
+		return sqlSession.selectOne("chatMapper.selectChatMemberNo", map);
+	}
+	
+	/** 채팅 메세지 DB에 삽입(25-1)
+	 * @param cm
+	 * @return result
+	 */
+	public int insertChatMessageJoined(ChatMessage cm) {
+		return sqlSession.insert("chatMapper.insertChatMessageJoined", cm);
+	}
+	
+	/** 채팅 메세지 DB에 삽입(25-2)
 	 * @param cm
 	 * @return result
 	 */
@@ -78,6 +94,7 @@ public class ChatDAO {
 	public int newChatExist(int memberNo) {
 		return sqlSession.selectOne("chatMapper.newChatExist", memberNo);
 	}
+
 
 
 	
