@@ -34,7 +34,6 @@
     	<i class="bi bi-chat-square-dots"></i>
     </div>
     <div class="chat-alert-area">
-    	<i class="bi bi-circle-fill"></i>
     </div>
     <div class="new-chat-area">
     </div>
@@ -61,8 +60,11 @@ $(document).ready(function(){
 			
 			success: function(result){
 				if(result>0){
-					var i = "<i style=\"font-size:12px; font-weight: 600; color: white;\">"+result+"</i>"; 
-					$(".new-chat-area").append(i);
+					var i1 = "<i class=\"bi bi-circle-fill\">";
+					$(".chat-alert-area").append(i1);
+					
+					var i2 = "<i style=\"font-size:12px; font-weight: 600; color: white;\">"+result+"</i>"; 
+					$(".new-chat-area").append(i2);
 					
 				} else {
 					$(".chat-alert-area").html("");
