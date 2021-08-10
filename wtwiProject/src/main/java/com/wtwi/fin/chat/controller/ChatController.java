@@ -63,9 +63,13 @@ public class ChatController {
 		chatRoom.setChatRoomNo(chatRoomNo);
 		chatRoom.setMemberNo(loginMember.getMemberNo());
 		
+		// 명소 이름 조회(24-0)
+		String attractionName = service.getAttractionName(chatRoomNo);
+		
 		// 채팅 메세지 조회 (24)
 		List<ChatMessage> cmList = service.selectCmList(chatRoom.getChatRoomNo(), loginMember.getMemberNo());
 		
+		model.addAttribute("attractionName", attractionName);
 		model.addAttribute("cmList", cmList);
 		model.addAttribute("chatRoomNo", chatRoomNo);
 		

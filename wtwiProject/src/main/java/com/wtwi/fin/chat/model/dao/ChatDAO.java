@@ -47,6 +47,21 @@ public class ChatDAO {
 	public int openChatRoom(ChatRoom chatRoom) {
 		return sqlSession.insert("chatMapper.openChatRoom", chatRoom);
 	}
+	
+	/** 담당자 메세지 INSERT(23-6)
+	 * @param cm
+	 */
+	public void insertFirstMessage(ChatMessage cm) {
+		sqlSession.insert("chatMapper.insertFirstMessage", cm);
+	}
+
+	/** 명소 이름 조회(24-0)
+	 * @param chatRoomNo
+	 * @return attractionName
+	 */
+	public String getAttractionName(int chatRoomNo) {
+		return sqlSession.selectOne("chatMapper.getAttractionName", chatRoomNo);
+	}
 
 	/** 채팅 메세지 조회 (24-1)
 	 * @param chatRoom
