@@ -129,7 +129,16 @@
          			<div id="cute-area-div"><br><br>★여행정보★</div>
          			<div id="attrNm-div"><h2>${attr.attractionNm}</h2></div>
          			<div id="attrVirtual-content">
-         					<div id="attr-photo-div"><img src=${attr.attractionPhoto}></div>
+         					<div id="attr-photo-div">
+         							<c:choose>
+		         							<c:when test = "${!attr.attractionPhoto==''}">
+		         									<img src= "${attr.attractionPhoto}">
+		         							</c:when>
+		         							<c:otherwise>
+		         									<img src="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg">
+		         							</c:otherwise>
+         							</c:choose>
+         					</div>
          					<div id="attr-weatherAddr-div">
          							<div id="attr-weather-div">날씨</div>
          							<div id="attr-addr-div">${attr.attractionAddr}</div>
@@ -166,62 +175,7 @@
 
 	
 	<script>
-		$("#search-btn").on("click", function(){
-			const contentTypeS = $("#contentTypeS").val();
-			const areaCode = $("#areaCode").val();
-			$.ajax({
-				url : "search/area",
-				data : {"contentTypeS" : contentTypeS , 
-								"areaCode" : areaCode , 
-								},
-				dataType : "json",
-				success : function(result){
-					console.log(result);
-					$(".list-wrapper").empty();
-					
-					for(let i=0 ; i<result.response.body.items.item.length ; i++){
-						
-						const contentid = result.response.body.items.item[i].contentid;
-						const div1 = $("<div>").attr('class','card').css('width' , '18rem').attr('name', contentid);
-						const src = result.response.body.items.item[i].firstimage;
-						//const a = $("<a>").attr('href','result.response.body.items.item[i].contentid');
 
-						//console.log("src : " + src);
-						
-						/* if(src == "undefined"){
-							src = "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg";
-						} */
-						// if( $(this).prev().attr("src") != undefined ){  <- 다른데서 찾은 코드인데...
-						const img = $("<img>").attr('src',src).attr('class','card-img-top');
-						const div2 = $("<div>").attr('class' , 'card-body' );
-						const p = $("<p>").attr('class','card-text').text(result.response.body.items.item[i].title);
-						div2.append(p);
-						div1.append(img);
-						div1.append(div2);
-						
-						$(".list-wrapper").append(div1);
-					}
-				}
-			});
-		});
-
-		
-		
-		
-/* 		$(".card-text").on("click", function(event){
-			event.stopPropagation();
-			console.log("콘솔에 찍었다");
-			console.log($(this).attr("id"));
-			
-		}); */
-
-		$(document).on("click", ".card",function(){
-			//console.log($(this).attr('id'));
-			
-			const contentid = $(this).attr('name');
-			location.href = "view?contentid=" + contentid;
-			
-		});
 		
 		
 		

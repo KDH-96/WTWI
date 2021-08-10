@@ -24,7 +24,7 @@ public class Attraction {
 	private int sigunguCode;
 	private String attractionPhone; // tel
 	private String attractionNm; // title
-	private int zipCode;
+	private String zipCode;
 
 	// 행사
 	private int eventStartDate;
@@ -175,10 +175,10 @@ public class Attraction {
 	public void setAttractionNm(String attractionNm) {
 		this.attractionNm = attractionNm;
 	}
-	public int getZipCode() {
+	public String getZipCode() {
 		return zipCode;
 	}
-	public void setZipCode(int zipCode) {
+	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
 	public int getEventStartDate() {
