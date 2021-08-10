@@ -78,16 +78,12 @@ public class MemberController {
 			SNSLogin snsLogin = new SNSLogin();
 			snsMember = snsLogin.getKakaoProfile(code);		
 			member = service.getSnsEmail(snsMember);
-
-			
 		}else {
-			
 			if(StringUtils.equals("naver", snsService)) {
 				sns = naverSns;
 			}else if(StringUtils.equals("google", snsService)) {
 				sns = googleSns;
 			}
-			
 			SNSLogin snsLogin = new SNSLogin(sns);
 			snsMember = snsLogin.getUserProfile(code);
 			
