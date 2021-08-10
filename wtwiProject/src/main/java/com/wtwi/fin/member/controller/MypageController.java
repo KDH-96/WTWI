@@ -1,5 +1,9 @@
 package com.wtwi.fin.member.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.apache.commons.collections.bag.SynchronizedSortedBag;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -43,6 +48,36 @@ public class MypageController {
 		return "myPage/main";
 
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "info", method = RequestMethod.POST)
+	public String getInfo(@RequestParam("latitude") String latitude, @RequestParam("longitude") String longitude, String check) {
+		System.out.println("latitude : " + latitude);
+		System.out.println("longitude : " + longitude);
+		String result = "";
+		String apiId = "fab85c55ea80aa78f7d32ab07532fe33";   
+		URL url;
+		try {
+			BufferedReader bf;
+			if(check.equals("all")) {
+				url = new URL(" https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&exclude=current,hourly,minutely&units=metric&appid="+ apiId);				
+				bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+				result = bf.readLine();
+			} else {
+				url = new URL(" https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid="+ apiId);				
+				bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+				result = bf.readLine();
+			}
+			System.out.println(result);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+
+	}
+
+	
 
 	@RequestMapping(value = "post", method = RequestMethod.GET)
 	public String viewFreeBoard(@ModelAttribute("loginMember") Member loginMember, Member member,
