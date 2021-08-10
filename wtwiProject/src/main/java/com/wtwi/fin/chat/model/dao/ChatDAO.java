@@ -48,7 +48,7 @@ public class ChatDAO {
 		return sqlSession.insert("chatMapper.openChatRoom", chatRoom);
 	}
 
-	/** 채팅 메세지 조회 (24)
+	/** 채팅 메세지 조회 (24-1)
 	 * @param chatRoom
 	 * @return cmList
 	 */
@@ -56,6 +56,13 @@ public class ChatDAO {
 		return sqlSession.selectList("chatMapper.selectCmList", chatRoomNo);
 	}
 
+	/** 메세지 상태 변경(24-2)
+	 * @param map
+	 */
+	public void changeStatus(Map<String, Integer> map) {
+		sqlSession.update("chatMapper.changeStatus", map);
+	}
+	
 	/** 채팅 메세지 DB에 삽입(25)
 	 * @param cm
 	 * @return result
@@ -64,8 +71,14 @@ public class ChatDAO {
 		return sqlSession.insert("chatMapper.insertChatMessage", cm);
 	}
 
+	/** 새로운 채팅 메세지가 있는지 조회(26)
+	 * @param memberNo
+	 * @return result
+	 */
+	public int newChatExist(int memberNo) {
+		return sqlSession.selectOne("chatMapper.newChatExist", memberNo);
+	}
 
-	
-	
+
 	
 }

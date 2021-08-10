@@ -10,6 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -27,7 +30,7 @@ public class ChatController {
 	private ChatService service;
 	
 	// 채팅방 만들기 (23) 혹은 채팅방 열기
-	@RequestMapping(value="/chat/openChatRoom/{attractionNo}")
+	@RequestMapping("/chat/openChatRoom/{attractionNo}")
 	public String openChatRoom(@ModelAttribute("loginMember") Member loginMember,
 							   RedirectAttributes ra,
 							   HttpServletRequest request,
@@ -61,7 +64,7 @@ public class ChatController {
 		chatRoom.setMemberNo(loginMember.getMemberNo());
 		
 		// 채팅 메세지 조회 (24)
-		List<ChatMessage> cmList = service.selectCmList(chatRoom.getChatRoomNo());
+		List<ChatMessage> cmList = service.selectCmList(chatRoom.getChatRoomNo(), loginMember.getMemberNo());
 		
 		model.addAttribute("cmList", cmList);
 		model.addAttribute("chatRoomNo", chatRoomNo);
@@ -69,4 +72,10 @@ public class ChatController {
 		return "chat/chatRoom";
 	}
 
+	// 새로운 채팅 메세지가 있는지 조회(26)
+	@ResponseBody
+	@RequestMapping(value="/chat/newChatExist", method=RequestMethod.POST)
+	public int newChatExist(@RequestParam("memberNo") int memberNo) {
+		return service.newChatExist(memberNo);
+	}
 }

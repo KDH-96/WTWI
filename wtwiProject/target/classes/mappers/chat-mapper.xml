@@ -46,17 +46,35 @@
 		(#{chatRoomNo}, #{memberNo})
 	</insert>
 	
-	<!-- 채팅 메세지 조회(24) -->
+	<!-- 채팅 메세지 조회(24-1) -->
 	<select id="selectCmList" parameterType="_int" resultMap="chatMessage_rm">
 		SELECT * FROM CHAT_MESSAGES
 		WHERE CHAT_ROOM_NO = #{chatRoomNo}
 		ORDER BY CHAT_NO
 	</select>
+	
+	<!-- 메세지 상태 변경(24-2) -->
+	<update id="changeStatus" parameterType="map">
+		UPDATE CHAT_MESSAGE SET
+		CHAT_READ_YN = 'Y'
+		WHERE CHAT_ROOM_NO = #{chatRoomNo}
+		AND MEMBER_NO <![CDATA[ <> ]]> #{memberNo}
+	</update>
 
 	<!-- 채팅 메세지 DB에 삽입(25) -->
 	<insert id="insertChatMessage" parameterType="ChatMessage">
 		INSERT INTO CHAT_MESSAGE VALUES
 		(SEQ_CM_NO.NEXTVAL, #{chatContent}, DEFAULT, DEFAULT, #{chatRoomNo}, #{memberNo})
 	</insert>
+	
+	<!-- 새로운 채팅 메세지가 있는지 조회(26) -->
+	<select id="newChatExist" parameterType="_int" resultType="_int">
+		SELECT COUNT(*) FROM CHAT_MESSAGES
+		WHERE CHAT_ROOM_NO IN(SELECT DISTINCT CHAT_ROOM_NO 
+		                                      FROM CHAT_MESSAGES
+		                                      WHERE MEMBER_NO = #{memberNo})
+		AND CHAT_READ_YN = 'N'
+		AND MEMBER_NO <![CDATA[ <> ]]> #{memberNo}
+	</select>
 	
 </mapper>

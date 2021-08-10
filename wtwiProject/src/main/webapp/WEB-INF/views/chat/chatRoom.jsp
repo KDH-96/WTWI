@@ -79,8 +79,8 @@
         		<c:if test="${msg.memberNo == loginMember.memberNo }">
 		            <li class="myChat">
 		                <span class="chatDate">
-		                	<c:if test="${chatDate==today}">${chatedDate}</c:if>
-		                	<c:if test="${chatDate!=today}">${chatedTime}</c:if>
+		                	<c:if test="${chatedDate==today}">${chatedTime}</c:if>
+		                	<c:if test="${chatedDate!=today}">${chatedDate}</c:if>
 		                </span>
 		                <p class="chat">${msg.chatContent}</p>
 		            </li>
@@ -89,8 +89,8 @@
 		            <li class="managerChat">
 		                <p class="chat">${msg.chatContent}</p>
 		                <span class="chatDate">
-		                	<c:if test="${chatDate==today}">${chatedDate}</c:if>
-		                	<c:if test="${chatDate!=today}">${chatedTime}</c:if>
+		                	<c:if test="${chatedDate==today}">${chatedTime}</c:if>
+		                	<c:if test="${chatedDate!=today}">${chatedDate}</c:if>
 		                </span>
 		            </li>
         		</c:if>
@@ -147,7 +147,7 @@ $("#send").on("click", function(){
 chattingSock.onmessage = function(event){
 	
 	const obj = JSON.parse(event.data);
-	console.log(obj);
+	//console.log(obj);
 	
 	const li = $("<li>");
 	const p = $("<p class='chat'>");

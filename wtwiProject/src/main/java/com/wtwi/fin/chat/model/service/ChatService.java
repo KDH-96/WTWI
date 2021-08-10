@@ -15,14 +15,21 @@ public interface ChatService {
 
 	/** 채팅 메세지 조회 (24)
 	 * @param chatRoomNo
+	 * @param memberNo 
 	 * @return cmList
 	 */
-	List<ChatMessage> selectCmList(int chatRoomNo);
+	List<ChatMessage> selectCmList(int chatRoomNo, int memberNo);
 
 	/** 채팅 메세지 DB에 삽입 (25)
 	 * @param cm
 	 * @return result
 	 */
 	int insertChatMessage(ChatMessage cm);
+
+	/** 새로운 채팅 메세지가 있는지 조회 (26)
+	 * @param memberNo
+	 * @return result
+	 */
+	int newChatExist(int memberNo);
 
 }
