@@ -93,7 +93,7 @@
         <!-- =================================== 명소 상세정보 영역 끝 =================================== -->
 	
     </div>
-
+	<jsp:include page="/WEB-INF/views/chat/chatAlert.jsp"></jsp:include>
 
     <script type="text/javascript"
         src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=eebe96b9065dd3994c199f0822ac2038"></script>
