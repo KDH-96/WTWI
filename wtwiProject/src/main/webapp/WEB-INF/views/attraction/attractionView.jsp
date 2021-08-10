@@ -130,26 +130,35 @@
          			<div id="attrNm-div"><h2>${attr.attractionNm}</h2></div>
          			<div id="attrVirtual-content">
          					<div id="attr-photo-div">
-         							<c:choose>
-		         							<c:when test = "${!attr.attractionPhoto==''}">
-		         									<img src= "${attr.attractionPhoto}">
-		         							</c:when>
-		         							<c:otherwise>
-		         									<img src="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg">
-		         							</c:otherwise>
-         							</c:choose>
+                       <c:choose>
+                             <c:when test = "${!attr.attractionPhoto==''}">
+                                   <img src= "${attr.attractionPhoto}">
+                             </c:when>
+                             <c:otherwise>
+                                   <img src="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg">
+                             </c:otherwise>
+                       </c:choose>
+
          					</div>
          					<div id="attr-weatherAddr-div">
          							<div id="attr-weather-div">날씨</div>
          							<div id="attr-addr-div">${attr.attractionAddr}</div>
          					</div>
          			</div>
+         			
          			<div id="attrInfo-div">${attr.attractionInfo}</div>
+         			
          			<div id="attrReview-div">최신 리뷰 5개 들어갈 div</div>
+         			
          			<div id="attrMap-div">지도 들어갈 div</div>
-         			<div id="attrNavi-div">혹시모를 div</div>
-         			<div id="btn-div">              
-         					<button class="form-control btn btn-primary"
+         			
+         			<div id="attrNavi-div">
+         					<a href="https://map.kakao.com/link/to/${attr.attractionNm},${attr.latitude},${attr.longitude}">길 찾기</a>
+         			</div>
+         			
+         			<div id="btn-div">     
+         					<a href="list?cp=${param.cp}${keyword}" class="btn btn-primary float-right mr-2">목록으로</a>         
+         					<button class="form-control btn btn-primary" id="back-btn"
               		style="width:100px; display: inline-block; background-color: black; border: black;">뒤로가기</button>
               </div>
          		
@@ -176,7 +185,12 @@
 	
 	<script>
 
-		
+		$("#back-btn").on("click",function(){
+			
+			
+			
+			
+		})
 		
 		
 		</script>
