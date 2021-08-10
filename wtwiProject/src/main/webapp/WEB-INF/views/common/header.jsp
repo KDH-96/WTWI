@@ -246,7 +246,6 @@
 
 
 
-
 <c:if test="${ !empty title }">
 <script>
 	swal({
@@ -258,5 +257,6 @@
 </c:if>
 
 </body>
-
+<!-- 채팅 알람 -->
+<jsp:include page="/WEB-INF/views/chat/chatAlert.jsp"></jsp:include>
 </html>

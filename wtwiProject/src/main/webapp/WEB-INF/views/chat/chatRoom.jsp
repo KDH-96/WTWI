@@ -66,6 +66,11 @@
         .chatDate{
             font-size: 10px;
         }
+        .isNew > i{
+        	font-size: 8px;
+        	font-weight: 800;
+        	color: #da2c3d;
+        }
     </style>
 <jsp:include page="../common/header.jsp" />
 <div class="container">
@@ -92,6 +97,9 @@
 		                	<c:if test="${chatedDate==today}">${chatedTime}</c:if>
 		                	<c:if test="${chatedDate!=today}">${chatedDate}</c:if>
 		                </span>
+		                <span class="isNew">
+		                	<c:if test="${msg.chatReadYn=='N'}"><i>N</i></c:if>
+		                </span>
 		            </li>
         		</c:if>
         	</c:forEach>
@@ -116,7 +124,7 @@
 let chattingSock = new SockJS("<c:url value='/chat'/>");
 // -> 이 객체는 자바스크립트에서 동작
 
-const memberNo = "${loginMember.memberNo}";
+//const memberNo = "${loginMember.memberNo}";
 const memberId = "${loginMember.memberId}";
 const memberEmail = "${loginMember.memberEmail}";
 const memberNick = "${loginMember.memberNick}";
@@ -124,6 +132,8 @@ const chatRoomNo = "${chatRoomNo}";
 
 // 채팅 메세지 전송 버튼 클릭 시
 $("#send").on("click", function(){
+	
+	$(".isNew").children().remove();
 	
 	const chatContent = $("#inputChatting").val();
 	

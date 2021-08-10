@@ -60,8 +60,21 @@
 		WHERE CHAT_ROOM_NO = #{chatRoomNo}
 		AND MEMBER_NO <![CDATA[ <> ]]> #{memberNo}
 	</update>
+	
+	<!-- 다른 회원의 회원 번호 가져오기(25-0) -->
+	<select id="selectChatMemberNo" parameterType="map" resultType="_int">
+		SELECT MEMBER_NO FROM CHAT_ROOM
+		WHERE CHAT_ROOM_NO = #{chatRoomNo}
+		AND MEMBER_NO <![CDATA[ <> ]]> #{memberNo}
+	</select>
+	
+	<!-- 채팅 메세지 DB에 삽입(25-1) -->
+	<insert id="insertChatMessageJoined" parameterType="ChatMessage">
+		INSERT INTO CHAT_MESSAGE VALUES
+		(SEQ_CM_NO.NEXTVAL, #{chatContent}, DEFAULT, 'Y', #{chatRoomNo}, #{memberNo})
+	</insert>
 
-	<!-- 채팅 메세지 DB에 삽입(25) -->
+	<!-- 채팅 메세지 DB에 삽입(25-2) -->
 	<insert id="insertChatMessage" parameterType="ChatMessage">
 		INSERT INTO CHAT_MESSAGE VALUES
 		(SEQ_CM_NO.NEXTVAL, #{chatContent}, DEFAULT, DEFAULT, #{chatRoomNo}, #{memberNo})

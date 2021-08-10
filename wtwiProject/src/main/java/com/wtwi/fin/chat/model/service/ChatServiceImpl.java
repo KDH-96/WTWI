@@ -84,18 +84,40 @@ public class ChatServiceImpl implements ChatService {
 		
 		dao.changeStatus(map);
 		
-		return dao.selectCmList(chatRoomNo);
+		return cmList;
+	}
+
+	// 다른 회원의 회원 번호 가져오기(25-0)
+	@Override
+	public int selectChatMemberNo(int chatRoomNo, int memberNo) {
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("chatRoomNo", chatRoomNo);
+		map.put("memberNo", memberNo);
+		
+		return dao.selectChatMemberNo(map);
 	}
 
 	// 채팅 메세지 DB에 삽입(25)
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public int insertChatMessage(ChatMessage cm) {
+	public int insertChatMessage(ChatMessage cm, boolean flag) {
 		
 		// XSS 방지
 		cm.setChatContent(BoardServiceImpl.replaceParameter(cm.getChatContent()));
+
+		int result = 0;
 		
-		return dao.insertChatMessage(cm);
+		// 25-1) 상대방이 현재 채팅에 참가중
+		if(flag) {
+			result = dao.insertChatMessageJoined(cm);
+			
+		// 25-2) 상대방이 현재 채팅에 참가중이 아님
+		} else {
+			result = dao.insertChatMessage(cm);
+		}
+		
+		return result;
 	}
 	
 	// 새로운 채팅 메세지가 있는지 조회(26)
