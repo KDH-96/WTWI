@@ -13,6 +13,12 @@ public interface ChatService {
 	 */
 	int openChatRoom(int memberNo, int attractionNo);
 
+	/** 명소 이름 조회 (24-0)
+	 * @param chatRoomNo
+	 * @return attractionName
+	 */
+	String getAttractionName(int chatRoomNo);
+	
 	/** 채팅 메세지 조회 (24)
 	 * @param chatRoomNo
 	 * @param memberNo 
@@ -39,7 +45,6 @@ public interface ChatService {
 	 * @return result
 	 */
 	int newChatExist(int memberNo);
-
 
 
 }

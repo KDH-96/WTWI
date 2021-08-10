@@ -74,7 +74,7 @@
     </style>
 <jsp:include page="../common/header.jsp" />
 <div class="container">
-    <h3 class="my-4 font-weight-bold">명소 담당자에게 문의하기</h3>
+    <h3 class="my-4 font-weight-bold">${attractionName} 담당자에게 문의하기</h3>
     <div class="chat-area mt-2">
         <ul class="chat-view">
         	<c:forEach items="${cmList}" var="msg">

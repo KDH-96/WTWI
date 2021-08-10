@@ -61,12 +61,27 @@ public class ChatServiceImpl implements ChatService {
 						// 23-5) 채팅방에 담당자 INSERT
 						chatRoom.setMemberNo(managerNo);
 						result = dao.openChatRoom(chatRoom);
-						if(result==0) chatRoomNo = 0;
+						if(result==0) {
+							chatRoomNo = 0;
+							
+						} else {
+							// 23-6) 담당자 메세지 INSERT
+							ChatMessage cm = new ChatMessage();
+							cm.setChatRoomNo(chatRoomNo);
+							cm.setMemberNo(managerNo);
+							dao.insertFirstMessage(cm);
+						}
 					}
 				}
 			}
 		}
 		return chatRoomNo;
+	}
+	
+	// 명소 이름 조회 (24-0)
+	@Override
+	public String getAttractionName(int chatRoomNo) {
+		return dao.getAttractionName(chatRoomNo);
 	}
 
 	// 채팅 메세지 조회 (24)

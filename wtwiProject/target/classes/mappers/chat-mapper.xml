@@ -24,6 +24,11 @@
 	<select id="getManagerNo" parameterType="_int" resultType="_int">
 		SELECT MEMBER_NO FROM MANAGER
 		WHERE ATTRACTION_NO = #{attractionNo}
+		UNION ALL
+		SELECT 0 AS MEMBER_NO
+		FROM DUAL
+		WHERE NOT EXISTS(SELECT MEMBER_NO FROM MANAGER
+		                 WHERE ATTRACTION_NO = #{attractionNo})
 	</select>
 	
 	<!-- 명소 담당자가 참가한 채팅방 중 회원이 참가한 곳이 있는지 검사(23-2) -->
@@ -33,6 +38,14 @@
 		      FROM CHAT_ROOM
 		      WHERE CHAT_ROOM_NO = (SELECT CHAT_ROOM_NO FROM CHAT_ROOM WHERE MEMBER_NO = #{managerNo}))
 		WHERE MEMBER_NO = #{memberNo}
+		UNION ALL
+		SELECT 0 AS CHAT_ROOM_NO
+		FROM DUAL
+		WHERE NOT EXISTS(SELECT CHAT_ROOM_NO
+						 FROM (SELECT *
+						       FROM CHAT_ROOM
+						       WHERE CHAT_ROOM_NO = (SELECT CHAT_ROOM_NO FROM CHAT_ROOM WHERE MEMBER_NO = #{managerNo}))
+						 WHERE MEMBER_NO = #{memberNo})
 	</select>
 	
 	<!-- 다음 채팅방 번호 얻어오기(23-3) -->
@@ -45,6 +58,18 @@
 		INSERT INTO CHAT_ROOM VALUES
 		(#{chatRoomNo}, #{memberNo})
 	</insert>
+	
+	<!-- 담당자 메세지 INSERT(23-6) -->
+	<insert id="insertFirstMessage" parameterType="ChatMessage">
+		INSERT INTO CHAT_MESSAGE VALUES
+		(SEQ_CM_NO.NEXTVAL, '문의 사항을 남겨주세요.', DEFAULT, 'N', #{chatRoomNo}, #{memberNo})
+	</insert>
+	
+	<!-- 명소 이름 조회(24-0) -->
+	<select id="getAttractionName" parameterType="_int" resultType="string">
+		SELECT ATTRACTION_NM FROM CHAT_MANAGER_LIST
+		WHERE CHAT_ROOM_NO = #{chatRoomNo}
+	</select>
 	
 	<!-- 채팅 메세지 조회(24-1) -->
 	<select id="selectCmList" parameterType="_int" resultMap="chatMessage_rm">
