@@ -104,6 +104,7 @@
       }
       #attrNavi-div{
       	margin-top : 50px;
+      	text-align : center;
       }
       #attrReview-div{
       	margin-top : 50px;
@@ -113,6 +114,9 @@
       }
       #btn-div{
       	margin-top : 50px;
+      }
+      #navi-link-a{
+      	text : 15px;
       }
       /* ------------------------------영역구분선------------------------------ */
    </style>
@@ -150,10 +154,10 @@
          			
          			<div id="attrReview-div">최신 리뷰 5개 들어갈 div</div>
          			
-         			<div id="attrMap-div">지도 들어갈 div</div>
+         			<div id="attrMap-div">지도 들어갈 div</div>         			
          			
          			<div id="attrNavi-div">
-         					<a href="https://map.kakao.com/link/to/${attr.attractionNm},${attr.latitude},${attr.longitude}">길 찾기</a>
+         					<a id="navi-link-a" class="link-dark" href="https://map.kakao.com/link/to/${attr.attractionNm},${attr.latitude},${attr.longitude}">길찾기</a>
          			</div>
          			
          			<div id="btn-div">     
