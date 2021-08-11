@@ -15,6 +15,7 @@ public class SNSValue implements SnsUrls {
 	private String redirectUrl;
 	private DefaultApi20 api20Instance;
 	private String profileUrl;
+	private String logoutUrl;
 	
 	private boolean isNaver;
 	private boolean isGoogle;
@@ -35,9 +36,11 @@ public class SNSValue implements SnsUrls {
 		if(isNaver) {
 			this.api20Instance = NaverAPI20.instance();
 			this.profileUrl = NAVER_PROFILE_URL;
+			this.logoutUrl = NAVER_LOGOUT_URL;
 		} else if(isGoogle){
 			this.api20Instance = GoogleApi20.instance();
 			this.profileUrl = GOOGLE_PROFILE_URL;
+			this.logoutUrl = GOOGLE_LOGOUT_URL;
 		} else if(isFacebook){
 			this.api20Instance = FacebookAPI20.instance();
 			this.profileUrl = FACEBOOK_PROFILE_URL;
@@ -45,6 +48,16 @@ public class SNSValue implements SnsUrls {
 	}
 
 	
+	public String getLogoutUrl() {
+		return logoutUrl;
+	}
+
+
+	public void setLogoutUrl(String logoutUrl) {
+		this.logoutUrl = logoutUrl;
+	}
+
+
 	public boolean isFacebook() {
 		return isFacebook;
 	}

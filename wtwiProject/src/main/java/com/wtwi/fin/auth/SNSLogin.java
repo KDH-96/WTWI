@@ -1,10 +1,20 @@
 package com.wtwi.fin.auth;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.spi.FileSystemProvider;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpConnection;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -52,30 +62,80 @@ public class SNSLogin {
 		OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
 		OAuthRequest request = new OAuthRequest(Verb.GET, this.sns.getProfileUrl());
 		oauthService.signRequest(accessToken, request);
-
 		Response response = oauthService.execute(request);
-		return parseJson(response.getBody());
+		return parseJson(response.getBody(), accessToken);
 
 	}
+	public void naverLogout(Member loginMember) throws Exception {
+		String logoutUrl ="";
 
-	private Member parseJson(String body) throws Exception {
+		logoutUrl = this.sns.getLogoutUrl() + "&client_id="+sns.getClientId()+"&client_secret="+sns.getClientSecret()+"&access_token="+loginMember.getAccessToken();
+
+		OAuthRequest request = new OAuthRequest(Verb.GET, logoutUrl);
+		Response response = oauthService.execute(request);
+
+		
+	}
+	
+	public void googleLogout(Member loginMember) throws Exception {
+		
+		 HttpURLConnection connection = null;
+
+	    URL url = new URL("https://accounts.google.com/o/oauth2/revoke?token="+loginMember.getAccessToken());
+	    connection = (HttpURLConnection) url.openConnection();
+	    connection.setRequestMethod("POST"); 
+	    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+	    
+	    //Send request
+	    //위에서 세팅한 정보값을 바탕으로 요청
+	    DataOutputStream wr = new DataOutputStream (connection.getOutputStream());
+
+	    //요청 실행후 dataOutputStream을 close
+	    wr.close();
+
+	    if (connection != null) {
+	      connection.disconnect();
+	    }
+	}
+		  
+		
+	
+	public void kakaoLogout(Member loginMember) throws Exception {
+		
+		URL url = new URL("https://kapi.kakao.com/v1/user/unlink");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Authorization", "Bearer " + loginMember.getAccessToken());
+        // ↓↓↓↓↓이 친구 중요!!! 얘 없으면 로그아웃 안됌!!!!!
+        conn.getResponseMessage();
+        conn.disconnect();
+		
+	}
+
+
+	private Member parseJson(String body, OAuth2AccessToken accessToken) throws Exception {
 		Member member = new Member();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(body);
 		System.out.println(rootNode);
 		if (this.sns.isGoogle()) {
-			member.setMemberNick(rootNode.get("name").asText("여행자"));
-			member.setMemberPw("socialLogin");
-			member.setMemberEmail(rootNode.get("email").asText());
-			member.setMemberGrade("G");
+			if(rootNode.get("name") != null && rootNode.get("email") != null) {
+				member.setMemberNick(rootNode.get("name").asText("여행자"));
+				member.setMemberPw("socialLogin");
+				member.setMemberEmail(rootNode.get("email").asText());
+				member.setMemberGrade("G");				
+			}
 			
 		} else if (this.sns.isNaver()) {
 			JsonNode resNode = rootNode.get("response");
-			member.setMemberNick(resNode.get("nickname").asText("여행자"));
-			member.setMemberPw("socialLogin");
-			member.setMemberEmail(resNode.get("email").asText());
-			member.setMemberGrade("N");
+			if(resNode.get("nickname") != null && resNode.get("email") != null) {					
+				member.setMemberNick(resNode.get("nickname").asText("여행자"));
+				member.setMemberPw("socialLogin");
+				member.setMemberEmail(resNode.get("email").asText());
+				member.setMemberGrade("N");
+			}
+			
 		} else if (this.sns.isFacebook()) {
 			member.setMemberNick(rootNode.get("name").asText("여행자"));
 			member.setMemberPw("socialLogin");
@@ -83,6 +143,8 @@ public class SNSLogin {
 			member.setMemberEmail(id+"@facebook.com");
 			member.setMemberGrade("F");
 		} 
+
+		member.setAccessToken(accessToken.getAccessToken().toString());
 		return member;
 	}
 	
@@ -126,24 +188,30 @@ public class SNSLogin {
 
 		ResponseEntity<String> response = rt.exchange("https://kapi.kakao.com/v2/user/me", HttpMethod.POST,
 				kakaoProfileRequest, String.class);
-		return parseKakaoJson(response.getBody());
+		return parseKakaoJson(response.getBody(), accessToken);
 	}
 
 	// 3) 이용자 정보를 파싱하여 Member 객체 반환
-	private Member parseKakaoJson(String body) throws Exception {
+	private Member parseKakaoJson(String body, String accessToken) throws Exception {
 		Member member = new Member();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(body);
-
 		JsonNode properties = rootNode.path("properties");
-		member.setMemberNick(properties.get("nickname").asText("여행자"));
-		member.setMemberPw("socialLogin");
-		
 		JsonNode kakaoAccount = rootNode.path("kakao_account");
-		member.setMemberEmail(kakaoAccount.get("email").asText());
-		member.setMemberGrade("K");
-		
+		System.out.println(rootNode);
+		System.out.println(properties.get("nickname"));
+		System.out.println(kakaoAccount.get("email"));
+		if(properties.get("nickname") != null && kakaoAccount.get("email") != null) {	
+			member.setMemberNick(properties.get("nickname").asText("여행자"));
+			member.setMemberPw("socialLogin");
+			
+			member.setMemberEmail(kakaoAccount.get("email").asText());
+			member.setMemberGrade("K");
+		}
+		member.setAccessToken(accessToken);
+		System.out.println("카카오 로그인할 때 accessToken : " + accessToken);
+		System.out.println("카카오 로그인할 때 member : " + member);
 		return member;
 	}
 

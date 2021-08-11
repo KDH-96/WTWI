@@ -2,6 +2,8 @@ package com.wtwi.fin.member.model.vo;
 
 import java.sql.Date;
 
+import com.github.scribejava.core.model.OAuth2AccessToken;
+
 public class Member {
 	private int memberNo;			
 	private String memberId;		
@@ -13,6 +15,17 @@ public class Member {
 	private Date enrollDate;	    
 	private String memberStatus;	
 	private String memberGrade;
+	private String accessToken;
+	
+	
+
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
 	public int getMemberNo() {
 		return memberNo;
 	}
@@ -78,8 +91,8 @@ public class Member {
 		return "Member [memberNo=" + memberNo + ", memberId=" + memberId + ", memberPw=" + memberPw + ", memberNick="
 				+ memberNick + ", memberPhone=" + memberPhone + ", memberEmail=" + memberEmail + ", memberAddress="
 				+ memberAddress + ", enrollDate=" + enrollDate + ", memberStatus=" + memberStatus + ", memberGrade="
-				+ memberGrade + "]";
-	}		
+				+ memberGrade + ", accessToken=" + accessToken + "]";
+	}
 	
 	
 }
