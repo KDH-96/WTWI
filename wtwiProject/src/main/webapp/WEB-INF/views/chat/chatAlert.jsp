@@ -39,6 +39,7 @@
     </div>
 </div>
 </c:if>
+<!-- <audio id="chatAudio" src="/resources/audio/audio.mp3"></audio> -->
 <script>
 
 //var undefined;
@@ -47,8 +48,14 @@
 	const memberNo = "${loginMember.memberNo}";
 //}
 
+//var audio = new Audio("/resources/audio/audio.mp3");
 
 $(document).ready(function(){
+	
+	newChatExist();
+});
+
+function newChatExist(){
 	
 	if(memberNo!=""){
 		
@@ -60,14 +67,17 @@ $(document).ready(function(){
 			
 			success: function(result){
 				if(result>0){
+					$(".chat-alert-area").html("");
+					$(".new-chat-area").html("");
+					
 					var i1 = "<i class=\"bi bi-circle-fill\">";
 					$(".chat-alert-area").append(i1);
 					
 					var i2 = "<i style=\"font-size:12px; font-weight: 600; color: white;\">"+result+"</i>"; 
 					$(".new-chat-area").append(i2);
 					
-				} else {
-					$(".chat-alert-area").html("");
+					//document.getElementById("chatAudio").play();
+					//$("#chatAudio").play();
 				}
 			},
 			error: function(e){
@@ -75,5 +85,12 @@ $(document).ready(function(){
 			}
 		});
 	}
-});
+}
+
+const chatExist = setInterval(function(){
+	
+	newChatExist();
+	
+}, 3000);
+
 </script>

@@ -259,4 +259,5 @@
 </body>
 <!-- 채팅 알람 -->
 <jsp:include page="/WEB-INF/views/chat/chatAlert.jsp"></jsp:include>
+<!-- <audio id="chatAudio" src="/resources/audio/audio.mp3"></audio> -->
 </html>

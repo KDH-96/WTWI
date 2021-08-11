@@ -235,7 +235,10 @@ function selectReplyList(){
 				
 				// 5) 답댓글 여부
 				if(item.parentReplyNick!=null){
-					strReci = item.parentReplyNick+"님, ";
+					if(item.freeReplyContent.substring(0,item.parentReplyNick.length+2) != item.parentReplyNick+"님,"){
+						
+						strReci = item.parentReplyNick+"님, ";
+					}
 				}
 				
 				// 6) 수정 여부
@@ -266,6 +269,11 @@ function updateReplyForm(freeReplyNo, el){
 	// 이미 열려있는 수정 폼 닫기
 	if($(".updateReplyContent").length>0){
 		$(".updateReplyContent").eq(0).parent().html(beforeReplyRow);
+	}
+	
+	// 열려있는 다른 작성 폼 닫기
+	if($(".reReplyContent").length>0){
+		$(".reReplyContent").eq(0).parent().remove();
 	}
 	
 	// 수정폼 출력 전 요소 저장
@@ -392,6 +400,11 @@ function reReplyForm(freeReplyNo, el){
 	// 열려있는 다른 작성 폼 닫기
 	if($(".reReplyContent").length>0){
 		$(".reReplyContent").eq(0).parent().remove();
+	}
+	
+	// 이미 열려있는 수정 폼 닫기
+	if($(".updateReplyContent").length>0){
+		$(".updateReplyContent").eq(0).parent().html(beforeReplyRow);
 	}
 	
 	var textarea = $("<textarea>").addClass("reReplyContent col-9").attr("rows", "3").attr("style", "width:75%");
