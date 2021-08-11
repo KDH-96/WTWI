@@ -43,21 +43,21 @@
 		<beans:constructor-arg ref="naverRedirectUrl"/>
 	</beans:bean>
 	
-	<!-- oauth2 login / kakao -->
-	<beans:bean id="kakaoClientID" class="java.lang.String">
-		<beans:constructor-arg value="b87de33b6c8fe6b2977868b55731dae3"/>
+	<!-- oauth2 login / facebook -->
+	<beans:bean id="facebookClientID" class="java.lang.String">
+		<beans:constructor-arg value="943894909536929"/>
 	</beans:bean>
-	<beans:bean id="kakaoClientSecret" class="java.lang.String">
-		<beans:constructor-arg value="flqtQy9HB3KdhcMBhnlDllJetmlSg4kf"/>
+	<beans:bean id="facebookClientSecret" class="java.lang.String">
+		<beans:constructor-arg value="c1ba5ee77740d079a5759c2adfdb0bce"/>
 	</beans:bean>
-	<beans:bean id="kakaoRedirectUrl" class="java.lang.String">
-		<beans:constructor-arg value="http://localhost:8080/fin/member/auth/kakao/callback"/>
+	<beans:bean id="facebookRedirectUrl" class="java.lang.String">
+		<beans:constructor-arg value="http://localhost:8080/wtwi/member/auth/facebook/callback"/>
 	</beans:bean>
-	<beans:bean id="kakaoSns" class="com.wtwi.fin.auth.SNSValue">
-		<beans:constructor-arg value="kakao"/>
-		<beans:constructor-arg ref="kakaoClientID"/>
-		<beans:constructor-arg ref="kakaoClientSecret"/>
-		<beans:constructor-arg ref="kakaoRedirectUrl"/>
+	<beans:bean id="facebookSns" class="com.wtwi.fin.auth.SNSValue">
+		<beans:constructor-arg value="facebook"/>
+		<beans:constructor-arg ref="facebookClientID"/>
+		<beans:constructor-arg ref="facebookClientSecret"/>
+		<beans:constructor-arg ref="facebookRedirectUrl"/>
 	</beans:bean>
 
 	

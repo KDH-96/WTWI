@@ -42,8 +42,8 @@ public class MypageController {
 	public String main(@ModelAttribute("loginMember") Member loginMember, Model model) {
 		
 		List<Review> reviewList = service.selectReviewList(loginMember.getMemberNo());
-		System.out.println(reviewList);
 		model.addAttribute("reviewList", reviewList);
+		System.out.println(reviewList);
 
 		return "myPage/main";
 

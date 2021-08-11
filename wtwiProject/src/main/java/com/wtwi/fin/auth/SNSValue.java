@@ -18,7 +18,8 @@ public class SNSValue implements SnsUrls {
 	
 	private boolean isNaver;
 	private boolean isGoogle;
-	private boolean isKakao;
+	private boolean isFacebook;
+	
 	  
 	public SNSValue(String service, String clientId, String clientSecret, String redirectUrl) {
 		super();
@@ -29,7 +30,7 @@ public class SNSValue implements SnsUrls {
 		
 		this.isNaver = StringUtils.equalsIgnoreCase("naver", this.service);
 		this.isGoogle = StringUtils.equalsIgnoreCase("google", this.service);
-		this.isKakao = StringUtils.equalsIgnoreCase("kakao", this.service);
+		this.isFacebook = StringUtils.equalsIgnoreCase("facebook", this.service);
 		
 		if(isNaver) {
 			this.api20Instance = NaverAPI20.instance();
@@ -37,12 +38,23 @@ public class SNSValue implements SnsUrls {
 		} else if(isGoogle){
 			this.api20Instance = GoogleApi20.instance();
 			this.profileUrl = GOOGLE_PROFILE_URL;
-		} else if(isKakao) {
-			this.api20Instance = KaKaoAPI20.instance();
-			this.profileUrl = KAKAO_PROFILE_URL;			
-		}
+		} else if(isFacebook){
+			this.api20Instance = FacebookAPI20.instance();
+			this.profileUrl = FACEBOOK_PROFILE_URL;
+		} 
 	}
+
 	
+	public boolean isFacebook() {
+		return isFacebook;
+	}
+
+
+	public void setFacebook(boolean isFacebook) {
+		this.isFacebook = isFacebook;
+	}
+
+
 	public boolean isNaver() {
 		return isNaver;
 	}
@@ -59,13 +71,6 @@ public class SNSValue implements SnsUrls {
 		this.isGoogle = isGoogle;
 	}
 
-	public boolean isKakao() {
-		return isKakao;
-	}
-
-	public void setKakao(boolean isKakao) {
-		this.isKakao = isKakao;
-	}
 
 	public String getProfileUrl() {
 		return profileUrl;
@@ -115,13 +120,17 @@ public class SNSValue implements SnsUrls {
 		this.redirectUrl = redirectUrl;
 	}
 
+
 	@Override
 	public String toString() {
 		return "SNSValue [service=" + service + ", clientId=" + clientId + ", clientSecret=" + clientSecret
 				+ ", redirectUrl=" + redirectUrl + ", api20Instance=" + api20Instance + ", profileUrl=" + profileUrl
-				+ ", isNaver=" + isNaver + ", isGoogle=" + isGoogle + ", isKakao=" + isKakao + "]";
+				+ ", isNaver=" + isNaver + ", isGoogle=" + isGoogle + ", isFacebook=" + isFacebook + "]";
 	}
 
+
+
+	
 
 	
 
