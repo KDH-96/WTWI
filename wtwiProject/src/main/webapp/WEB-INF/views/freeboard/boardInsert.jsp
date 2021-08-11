@@ -95,6 +95,10 @@ $(document).ready(function() {
 				$(el).summernote('editor.insertImage', image, function($image){
 					var width = $image.prop('naturalWidth');
 					var height = $image.prop('naturalHeight');
+					if(width>1088){
+						width = 1088;
+						height = 'auto';
+					}
 					$image.css('width', width);
 					$image.css('height', height);
 				});
