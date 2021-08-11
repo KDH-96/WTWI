@@ -72,16 +72,19 @@ public class MemberController {
 	
 	@RequestMapping(value="auth/{snsService}/callback", method=RequestMethod.GET) 
 	public String snsLoginCallback(@PathVariable("snsService") String snsService, Model model, @RequestParam("code") String code/*access Token 발급을 위한 code가 들어옴*/, RedirectAttributes ra) throws Exception{
-		
+		System.out.println("code" + code);
 		SNSValue sns = null;
 		Member member = null;
 		Member snsMember = null;
 		
+		// 1) code를 이용해 accessToken 발급 -> 사용자 계정 정보 가져오기
+		// 1-1) 카카오
 		if(StringUtils.equals("kakao", snsService)) {
 			SNSLogin snsLogin = new SNSLogin();
 			snsMember = snsLogin.getKakaoProfile(code);		
-			member = service.getSnsEmail(snsMember);
+		// 1-1) 네이버, 구글, 페이스북	
 		}else {
+			
 			if(StringUtils.equals("naver", snsService)) {
 				sns = naverSns;
 			}else if(StringUtils.equals("google", snsService)) {
@@ -93,18 +96,31 @@ public class MemberController {
 			SNSLogin snsLogin = new SNSLogin(sns);
 			snsMember = snsLogin.getUserProfile(code);
 			
-			member = service.getSnsEmail(snsMember);
+			// 1-2) 필수 동의 항목(이메일, 별명)에 동의하지 않았을 때 메인으로 돌리고 강제 로그아웃
+			if(snsMember.getMemberEmail() == null) {
+				snsLogin.naverLogout(snsMember);
+				swalSetMessage(ra, "error", "로그인 실패", "필수 동의항목에 체크해주세요.");
+				return "redirect:/member/login";
+			}
 		}
 		
+		// 1-3) 필수 동의 항목(이메일, 별명)에 동의했을 때 해당 사용자 DB확인
+		member = service.getSnsEmail(snsMember);
+		
+		// 1-4) 회원이 아니라면 회원가입 실행
 		if(member == null) { 
 			member = service.snsSignup(snsMember);
 			if(member != null) {
+				member.setAccessToken(snsMember.getAccessToken());
 				swalSetMessage(ra, "success", "환영합니다 :)", null);
 				model.addAttribute("loginMember", member);
 			} else { 
 				swalSetMessage(ra, "error", "회원가입 실패", "문제가 지속될 경우, 대표전화로 문의해주세요.");	
 			}
+			
+		// 1-5) 회원이라면 로그인 실행
 		} else { 
+			member.setAccessToken(snsMember.getAccessToken());
 			model.addAttribute("loginMember", member);
 			swalSetMessage(ra, "success", "로그인 성공!", null);
 		}
@@ -230,7 +246,34 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
-	public String logout(SessionStatus status, @RequestHeader("referer") String referer) {
+	public String logout(SessionStatus status, @RequestHeader("referer") String referer, 
+						@ModelAttribute("loginMember") Member loginMember) {
+		
+		SNSValue sns = null;
+		try {
+			if(loginMember.getMemberGrade().equals("N")){
+				sns = naverSns;
+				SNSLogin snsLogin = new SNSLogin(sns);
+
+				snsLogin.naverLogout(loginMember);
+
+			} else if(loginMember.getMemberGrade().equals("K")){
+				SNSLogin snsLogin = new SNSLogin();
+
+				snsLogin.kakaoLogout(loginMember);
+
+	
+			} else if(loginMember.getMemberGrade().equals("G")){
+				sns = googleSns;
+				SNSLogin snsLogin = new SNSLogin(sns);
+
+				snsLogin.googleLogout(loginMember);
+			
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 
 		status.setComplete();
 

@@ -13,13 +13,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>내 정보</title>
+<title>마이페이지</title>
 <style>
 .myPage-body {
 	display: flex;
 	height: 100vh;
-	background-image: url("https://source.unsplash.com/featured/?korea");
-	background-size: contain;
+	background-image: url("https://source.unsplash.com/featured/?korea-palace");
+	background-size: 100% auto;
 	margin-bottom: 100px;
 }
 
