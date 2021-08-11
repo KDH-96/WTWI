@@ -120,6 +120,8 @@
 
 <script>
 
+//var audio = new Audio("/resources/audio/audio.mp3");
+
 // 로그인했을 경우 /chat 요청 주소를 통해 통신할 수 있는 WebSocket 객체 생성
 let chattingSock = new SockJS("<c:url value='/chat'/>");
 // -> 이 객체는 자바스크립트에서 동작
@@ -209,7 +211,11 @@ chattingSock.onmessage = function(event){
 	$(".chat-view").append(li);
 	
 	$(".chat-view").scrollTop($(".chat-view")[0].scrollHeight);
-	
+
+/* 	if(!$("#chatAudio").isPlaying){
+		
+		$("#chatAudio").play();
+	} */
 }
 </script>
 
