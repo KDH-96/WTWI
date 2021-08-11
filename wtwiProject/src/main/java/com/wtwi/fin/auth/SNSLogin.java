@@ -1,20 +1,9 @@
 package com.wtwi.fin.auth;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.spi.FileSystemProvider;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpConnection;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -39,18 +28,15 @@ public class SNSLogin {
 	private OAuth20Service oauthService;
 	private SNSValue sns;
 
-	public SNSLogin() {
-		// TODO Auto-generated constructor stub
-	}
+	public SNSLogin() {}
 
 	public SNSLogin(SNSValue sns) {
 
-			this.oauthService = new ServiceBuilder(sns.getClientId()).apiSecret(sns.getClientSecret())
-					.callback(sns.getRedirectUrl()).build(sns.getApi20Instance());
+		this.oauthService = new ServiceBuilder(sns.getClientId()).apiSecret(sns.getClientSecret())
+				.callback(sns.getRedirectUrl()).build(sns.getApi20Instance());
+		
+		this.sns = sns;
 			
-			this.sns = sns;
-			
-
 	}
 
 	public String getSNSAuthURL() {
@@ -66,59 +52,53 @@ public class SNSLogin {
 		return parseJson(response.getBody(), accessToken);
 
 	}
-	public void naverLogout(Member loginMember) throws Exception {
-		String logoutUrl ="";
-
-		logoutUrl = this.sns.getLogoutUrl() + "&client_id="+sns.getClientId()+"&client_secret="+sns.getClientSecret()+"&access_token="+loginMember.getAccessToken();
-
-		OAuthRequest request = new OAuthRequest(Verb.GET, logoutUrl);
-		Response response = oauthService.execute(request);
-
-		
-	}
 	
-	public void googleLogout(Member loginMember) throws Exception {
+	public void socialLogout(Member loginMember) throws Exception {
 		
-		 HttpURLConnection connection = null;
+		String sendUrl = "";
+		String prop1 = "";
+		String prop2 = "";
+		
+		switch(loginMember.getMemberGrade()) {
+		case "G" : sendUrl= "https://accounts.google.com/o/oauth2/revoke?token="+loginMember.getAccessToken(); 
+				   prop1 = "Content-Type";
+				   prop2 = "application/x-www-form-urlencoded"; break;
+		case "K" : sendUrl ="https://kapi.kakao.com/v1/user/unlink"; 
+				   prop1="Authorization";
+				   prop2="Bearer " + loginMember.getAccessToken(); break;
+		case "N" : sendUrl = this.sns.getLogoutUrl() + "&client_id="+sns.getClientId()+"&client_secret="+sns.getClientSecret()+"&access_token="+loginMember.getAccessToken();
+				   prop1="service_provider";
+				   prop2="NAVER"; break;
+		}
 
-	    URL url = new URL("https://accounts.google.com/o/oauth2/revoke?token="+loginMember.getAccessToken());
-	    connection = (HttpURLConnection) url.openConnection();
+	    URL url = new URL(sendUrl);
+	    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 	    connection.setRequestMethod("POST"); 
-	    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-	    
+	    connection.setRequestProperty(prop1, prop2);
+	    connection.setDoOutput(true);
+
 	    //Send request
 	    //위에서 세팅한 정보값을 바탕으로 요청
-	    DataOutputStream wr = new DataOutputStream (connection.getOutputStream());
-
+	    DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+	    wr.flush();
 	    //요청 실행후 dataOutputStream을 close
 	    wr.close();
+	    connection.getResponseCode();
 
 	    if (connection != null) {
 	      connection.disconnect();
 	    }
+
+
 	}
 		  
-		
-	
-	public void kakaoLogout(Member loginMember) throws Exception {
-		
-		URL url = new URL("https://kapi.kakao.com/v1/user/unlink");
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Authorization", "Bearer " + loginMember.getAccessToken());
-        // ↓↓↓↓↓이 친구 중요!!! 얘 없으면 로그아웃 안됌!!!!!
-        conn.getResponseMessage();
-        conn.disconnect();
-		
-	}
-
 
 	private Member parseJson(String body, OAuth2AccessToken accessToken) throws Exception {
 		Member member = new Member();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(body);
-		System.out.println(rootNode);
+		
 		if (this.sns.isGoogle()) {
 			if(rootNode.get("name") != null && rootNode.get("email") != null) {
 				member.setMemberNick(rootNode.get("name").asText("여행자"));
@@ -133,8 +113,9 @@ public class SNSLogin {
 				member.setMemberNick(resNode.get("nickname").asText("여행자"));
 				member.setMemberPw("socialLogin");
 				member.setMemberEmail(resNode.get("email").asText());
-				member.setMemberGrade("N");
 			}
+			// 네이버는 동의 체크 빠졌을 경우를 위해 memberGrade를 남겨준다.
+			member.setMemberGrade("N");
 			
 		} else if (this.sns.isFacebook()) {
 			member.setMemberNick(rootNode.get("name").asText("여행자"));
@@ -145,6 +126,7 @@ public class SNSLogin {
 		} 
 
 		member.setAccessToken(accessToken.getAccessToken().toString());
+
 		return member;
 	}
 	
@@ -199,9 +181,7 @@ public class SNSLogin {
 		JsonNode rootNode = mapper.readTree(body);
 		JsonNode properties = rootNode.path("properties");
 		JsonNode kakaoAccount = rootNode.path("kakao_account");
-		System.out.println(rootNode);
-		System.out.println(properties.get("nickname"));
-		System.out.println(kakaoAccount.get("email"));
+		
 		if(properties.get("nickname") != null && kakaoAccount.get("email") != null) {	
 			member.setMemberNick(properties.get("nickname").asText("여행자"));
 			member.setMemberPw("socialLogin");
@@ -210,8 +190,7 @@ public class SNSLogin {
 			member.setMemberGrade("K");
 		}
 		member.setAccessToken(accessToken);
-		System.out.println("카카오 로그인할 때 accessToken : " + accessToken);
-		System.out.println("카카오 로그인할 때 member : " + member);
+		
 		return member;
 	}
 

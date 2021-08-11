@@ -72,7 +72,7 @@ public class MemberController {
 	
 	@RequestMapping(value="auth/{snsService}/callback", method=RequestMethod.GET) 
 	public String snsLoginCallback(@PathVariable("snsService") String snsService, Model model, @RequestParam("code") String code/*access Token 발급을 위한 code가 들어옴*/, RedirectAttributes ra) throws Exception{
-		System.out.println("code" + code);
+		
 		SNSValue sns = null;
 		Member member = null;
 		Member snsMember = null;
@@ -98,7 +98,7 @@ public class MemberController {
 			
 			// 1-2) 필수 동의 항목(이메일, 별명)에 동의하지 않았을 때 메인으로 돌리고 강제 로그아웃
 			if(snsMember.getMemberEmail() == null) {
-				snsLogin.naverLogout(snsMember);
+				snsLogin.socialLogout(snsMember);
 				swalSetMessage(ra, "error", "로그인 실패", "필수 동의항목에 체크해주세요.");
 				return "redirect:/member/login";
 			}
@@ -252,29 +252,18 @@ public class MemberController {
 		SNSValue sns = null;
 		try {
 			if(loginMember.getMemberGrade().equals("N")){
+				// 네이버는 로그아웃 주소에 clientId, clientSecret이 들어가기 때문에 naver 정보를 넣어서 넘겨줌
 				sns = naverSns;
 				SNSLogin snsLogin = new SNSLogin(sns);
+				snsLogin.socialLogout(loginMember);
 
-				snsLogin.naverLogout(loginMember);
-
-			} else if(loginMember.getMemberGrade().equals("K")){
+			} else {
 				SNSLogin snsLogin = new SNSLogin();
-
-				snsLogin.kakaoLogout(loginMember);
-
-	
-			} else if(loginMember.getMemberGrade().equals("G")){
-				sns = googleSns;
-				SNSLogin snsLogin = new SNSLogin(sns);
-
-				snsLogin.googleLogout(loginMember);
-			
-			}
+				snsLogin.socialLogout(loginMember);
+			} 
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-
 		status.setComplete();
 
 		return "redirect:/main";
