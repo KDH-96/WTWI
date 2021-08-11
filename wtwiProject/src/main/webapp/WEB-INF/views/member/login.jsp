@@ -126,6 +126,7 @@
 			<a href="${naver_url}">네이버 로그인</a> 
 			<a href="${google_url}">구글 로그인</a>
 			<a href="${kakao_url}">카카오 로그인</a>
+			<a href="${facebook_url}">페이스북 로그인</a>
 
 		</div>
 

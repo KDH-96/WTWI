@@ -33,6 +33,8 @@
     	
     	
 		<typeAlias type="com.wtwi.fin.attraction.model.vo.ReviewImage" alias="ReviewImage" />
+		
+		<typeAlias type="com.wtwi.fin.attraction.model.vo.Attraction" alias="Attraction" />
     
     
 
@@ -51,7 +53,9 @@
 		<mapper resource="/mappers/member-mapper.xml"/>
 		<mapper resource="/mappers/myPage-mapper.xml"/>
     
-    	<mapper resource="/mappers/chat-mapper.xml" />
+   	<mapper resource="/mappers/chat-mapper.xml" />
+   	
+   	<mapper resource="/mappers/attraction-mapper.xml"/>
 
 	</mappers>
 

@@ -35,10 +35,11 @@ public class SNSLogin {
 
 	public SNSLogin(SNSValue sns) {
 
-		this.oauthService = new ServiceBuilder(sns.getClientId()).apiSecret(sns.getClientSecret())
-				.callback(sns.getRedirectUrl()).build(sns.getApi20Instance());
-
-		this.sns = sns;
+			this.oauthService = new ServiceBuilder(sns.getClientId()).apiSecret(sns.getClientSecret())
+					.callback(sns.getRedirectUrl()).build(sns.getApi20Instance());
+			
+			this.sns = sns;
+			
 
 	}
 
@@ -62,7 +63,7 @@ public class SNSLogin {
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(body);
-
+		System.out.println(rootNode);
 		if (this.sns.isGoogle()) {
 			member.setMemberNick(rootNode.get("name").asText("여행자"));
 			member.setMemberPw("socialLogin");
@@ -75,9 +76,13 @@ public class SNSLogin {
 			member.setMemberPw("socialLogin");
 			member.setMemberEmail(resNode.get("email").asText());
 			member.setMemberGrade("N");
+		} else if (this.sns.isFacebook()) {
+			member.setMemberNick(rootNode.get("name").asText("여행자"));
+			member.setMemberPw("socialLogin");
+			String id = rootNode.get("id").asText();
+			member.setMemberEmail(id+"@facebook.com");
+			member.setMemberGrade("F");
 		} 
-		
-
 		return member;
 	}
 	
@@ -97,7 +102,7 @@ public class SNSLogin {
 		params.add("client_id", "b87de33b6c8fe6b2977868b55731dae3");
 		params.add("redirect_uri", "http://localhost:8080/wtwi/member/auth/kakao/callback");
 		params.add("code", code);
-		params.add("client_secret", "flqtQy9HB3KdhcMBhnlDllJetmlSg4kf");
+		params.add("client_secret", "496Pgfenz4y5ff9FxZtM7o51KEcl4WF0");
 
 		HttpEntity<MultiValueMap<String, String>> kakaoRequest = new HttpEntity<>(params, headers);
 

@@ -54,12 +54,15 @@ public class MemberController {
 	@Autowired
 	@Qualifier("naverSns")
 	private SNSValue naverSns;
+	
 	@Autowired
 	@Qualifier("googleSns")
 	private SNSValue googleSns;
+	
 	@Autowired
-	@Qualifier("kakaoSns")
-	private SNSValue kakaoSns;
+	@Qualifier("facebookSns")
+	private SNSValue facebookSns;
+
 
 	@Inject
 	private GoogleConnectionFactory googleConnectionFactory;
@@ -83,7 +86,10 @@ public class MemberController {
 				sns = naverSns;
 			}else if(StringUtils.equals("google", snsService)) {
 				sns = googleSns;
+			} else if(StringUtils.equals("facebook", snsService)) {
+				sns = facebookSns;
 			}
+			
 			SNSLogin snsLogin = new SNSLogin(sns);
 			snsMember = snsLogin.getUserProfile(code);
 			
@@ -155,8 +161,11 @@ public class MemberController {
 		model.addAttribute("naver_url", naverLogin.getSNSAuthURL());
 		
 		// 2) Kakao는 RestTemplate을 이용한 방식 
-		SNSLogin kakaoLogin = new SNSLogin(kakaoSns);
-		model.addAttribute("kakao_url", kakaoLogin.getSNSAuthURL());
+		model.addAttribute("kakao_url", "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=b87de33b6c8fe6b2977868b55731dae3&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fwtwi%2Fmember%2Fauth%2Fkakao%2Fcallback");
+
+		// 2-1) Facebook
+		SNSLogin facebookLogin = new SNSLogin(facebookSns);
+		model.addAttribute("facebook_url", facebookLogin.getSNSAuthURL());
 
 		// 3) Google
 		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();

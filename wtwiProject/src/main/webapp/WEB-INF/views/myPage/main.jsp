@@ -19,7 +19,7 @@
 	display: flex;
 	height: 100vh;
 	background-image: url("https://source.unsplash.com/featured/?korea");
-	background-size: cover;
+	background-size: contain;
 	margin-bottom: 100px;
 }
 
@@ -189,7 +189,7 @@
 			</div>
 			<c:if test="${!empty reviewList}">
 				<div class="recommend-container">
-					<c:forEach items="${reviewList }" var="board" varStatus="b">
+					<c:forEach items="${reviewList }" var="board" varStatus="b" >
 						<div class="attraction">
 							<img class="attrImage" src="" alt="">
 							<div class="attraction_list">
