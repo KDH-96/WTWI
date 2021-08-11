@@ -717,7 +717,7 @@ COMMIT;
 --삭제
 
 ---------------------------------------------------------------------------------------------------------
--- By 지원.
+-- 지원
 -- MEMBER 테이블 MEMBER_NM 컬럼 삭제
 ALTER TABLE MEMBER DROP COLUMN MEMBER_NM;
 
@@ -736,7 +736,7 @@ COMMIT;
 --
 
 -----------------------------------------------------------------------------------------------08/03 추가
--- By 지원.
+-- 지원
 -- MEMBER 테이블 MEMBER_GRADE 컬럼 DEFAULT 값 변경(일반회원 = 'B')
 ALTER TABLE MEMBER MODIFY (MEMBER_GRADE DEFAULT 'B');
 
@@ -800,14 +800,14 @@ CREATE OR REPLACE VIEW QNA_LIST AS
 COMMIT;
 
 
--- By 지원.
+-- 지원
 -- 마이페이지 자유게시판 목록 조회를 위한 VIEW + 컬럼추가(MEMBER_NO)
 -- 아래 구문 실행해주시면 됩니다.
 --
 
 -----------------------------------------------------------------------------------------------08/05 추가
 
--- By 지원.
+-- 지원
 -- 마이페이지 문의게시판 목록 조회를 위한 VIEW + 컬럼추가(MEMBER_NO)
 -- 아래 구문 실행해주시면 됩니다.
 CREATE OR REPLACE VIEW QNA_LIST AS
@@ -821,7 +821,7 @@ CREATE OR REPLACE VIEW QNA_LIST AS
 -- 자유게시판 상세 조회 VIEW 컬럼 추가(MEMBER_NO)
 --
 
--- By 지원.
+-- 지원
 -- 1:1 문의내역  조회(명소이름 조회)를 위한 VIEW
 CREATE OR REPLACE VIEW CHAT_MANAGER_LIST AS
   SELECT CHAT_ROOM_NO, MEMBER_NO, ATTRACTION_NM
@@ -878,7 +878,8 @@ CREATE OR REPLACE VIEW FREE_DETAIL AS
     LEFT JOIN (SELECT FREE_NO, COUNT(*) REPLY_COUNT
                     FROM FREE_REPLY
                     WHERE FREE_REPLY_STATUS<>'N'
-                    GROUP BY FREE_NO) USING(FREE_NO)
+                    GROUP 
+	       FREE_NO) USING(FREE_NO)
     LEFT JOIN (SELECT FREE_NO, COUNT(*) LIKE_COUNT
                     FROM FREE_LIKE
                     GROUP BY FREE_NO) USING(FREE_NO)
@@ -929,3 +930,12 @@ CREATE OR REPLACE VIEW CHAT_MESSAGES AS
     FROM CHAT_MESSAGE
     JOIN MEMBER USING(MEMBER_NO)
 ;
+
+
+-----------------------------------------------------------------------------------------------08/11 추가
+
+-- 지원
+-- MEMBER 테이블 체크제약조건 변경 
+ALTER TABLE MEMBER DROP CONSTRAINT SYS_C008250;
+ALTER TABLE MEMBER ADD CONSTRAINT SYS_C008250 check ("MEMBER_GRADE" IN('B', 'A', 'M', 'G', 'N', 'K', 'F'));
+COMMENT ON COLUMN MEMBER.MEMBER_GRADE  IS '회원등급(일반B/관리자A/담딩자M/구글G/네이버N/카카오K/페이스북F)';
