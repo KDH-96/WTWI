@@ -155,6 +155,41 @@ public class QnaBoardServiceImpl implements QnaBoardService{
 		return dao.deleteBoard(qnaNo);
 	}
 
+	// 게시글 이전 이후 조회 (관리자)
+	@Override
+	public QnaBoard selectqnaPreBoard(int preNo) {
+		
+		QnaBoard qnaBoard = dao.selectPreBoard(preNo);
+		
+		// 게시글 조회수 증가 update
+//		if(qnaBoard != null) {
+//			dao.increaseReadCount(preNo);
+//			qnaBoard.setQnaReadCount(qnaBoard.getQnaReadCount()+1);
+//		}
+		return qnaBoard;
+		
+	}
+
+	// 게시글 이전 이후 조회 (회원)
+	@Override
+	public QnaBoard selectqnaPreBoard1(QnaBoard board1) {
+		QnaBoard qnaBoard = dao.selectPreBoard1(board1);
+		
+		// 게시글 조회수 증가 update
+//		if(qnaBoard != null) {
+//			dao.increaseReadCount(preNo);
+//			qnaBoard.setQnaReadCount(qnaBoard.getQnaReadCount()+1);
+//		}
+		return qnaBoard;
+	}
+
+	@Override
+	public QnaBoard selectqnaPreBoard2(int qnaNo) {
+		return dao.selectPreBoard2(qnaNo);
+	}
+	
+	
+
 
 
 	

@@ -2,11 +2,17 @@ package com.wtwi.fin.qnaboard.model.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.wtwi.fin.qnaboard.model.vo.Pagination;
 import com.wtwi.fin.qnaboard.model.vo.QnaBoard;
 import com.wtwi.fin.qnaboard.model.vo.QnaCategory;
 import com.wtwi.fin.qnaboard.model.vo.Search;
 
+/**
+ * @author richi
+ *
+ */
 public interface QnaBoardService {
 
 	/** 전체 게시글 수 + 게시판 이름 조회
@@ -75,6 +81,26 @@ public interface QnaBoardService {
 	 * @return result
 	 */
 	int deleteBoard(int qnaNo);
+
+	/** 게시글 이전 이후 조회(관리자)
+	 * @param preNo
+	 * @return
+	 */
+	QnaBoard selectqnaPreBoard(int preNo);
+
+	/** 게시글 이전 이후 조회(회원)
+	 * @param board1
+	 * @return 
+	 */
+	QnaBoard selectqnaPreBoard1(QnaBoard board1);
+
+	/** 게시글 이전 이후 조회(비회)
+	 * @param preNo
+	 * @return
+	 */
+	QnaBoard selectqnaPreBoard2(int qnaNo);
+
+
 
 
 }

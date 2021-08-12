@@ -19,6 +19,8 @@ public class QnaBoard {
 	private String memberNick;		// 회원명
 	private String memberGrade;		// 회원등급
 	
+	private int preNo; // 이전 글
+	private int nextNo; // 이전 글
 	
 	public QnaBoard() {}
 
@@ -153,14 +155,35 @@ public class QnaBoard {
 	}
 
 
+	public int getPreNo() {
+		return preNo;
+	}
+
+
+	public void setPreNo(int preNo) {
+		this.preNo = preNo;
+	}
+
+
+	public int getNextNo() {
+		return nextNo;
+	}
+
+
+	public void setNextNo(int nextNo) {
+		this.nextNo = nextNo;
+	}
+
+
 	@Override
 	public String toString() {
 		return "QnaBoard [qnaNo=" + qnaNo + ", qnaPno=" + qnaPno + ", qnaTitle=" + qnaTitle + ", qnaContent="
 				+ qnaContent + ", qnaReadCount=" + qnaReadCount + ", qnaCreateDt=" + qnaCreateDt + ", qnaModifyDt="
 				+ qnaModifyDt + ", qnaStatus=" + qnaStatus + ", qnaCategoryNo=" + qnaCategoryNo + ", memberNo="
 				+ memberNo + ", qnaCategoryNm=" + qnaCategoryNm + ", memberNick=" + memberNick + ", memberGrade="
-				+ memberGrade + "]";
+				+ memberGrade + ", preNo=" + preNo + ", nextNo=" + nextNo + "]";
 	}
+
 
 	
 }

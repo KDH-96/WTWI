@@ -178,7 +178,7 @@
         <header class="row flex-nowrap justify-content-between align-items-center">
             <div class="col-4 pt-1">
                 <div id="logo-area">
-                    <a href="#"><img src="img/파이널 로고22psd.jpg"></a>
+                    <a href="#"><img src="${contextPath}/resources/images/파이널 로고22psd.jpg"></a>
                 </div>
             </div>
 

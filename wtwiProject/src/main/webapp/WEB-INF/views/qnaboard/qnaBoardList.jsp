@@ -26,10 +26,10 @@
 
 <style>
 .container {
-	animation: slide_right 1s linear forwards;
+	animation: slide_bottom 1s linear forwards;
 }
 
-@keyframes slide_right { 
+@keyframes slide_bottom { 
 	0% {
 	transform: translateY(100px);
 	opacity: 0;
@@ -43,7 +43,7 @@
 
 /* 게시글 목록 내부 td 태그 */
 #list-table td {
-	padding: 0; /* td 태그 padding을 없앰 */
+	padding: 10; /* td 태그 padding을 없앰 */
 	vertical-align: middle; /* td태그 내부 세로 가운데 정렬*/
 	/* vertical-align : inline, inline-block 요소에만 적용 가능(td는 inline-block)*/
 }
@@ -51,6 +51,8 @@
 /* 컬럼명 가운데 정렬 */
 #list-table th {
 	text-align: center;
+	background-color: black;
+	color: white;
 }
 
 /* 게시글 제목을 제외한 나머지 가운데 정렬 */
@@ -80,12 +82,13 @@
 /* 제목 a태그 색 변경 */
 #list-table td:nth-child(3)>a {
 	color: black;
-}
-
-.boardTitle a{
 	text-decoration: none;
+	font-weight: bold;
 }
 
+#list-table td:nth-child(3)>a:hover {
+	color: orange;
+}
 .pagination {
 	justify-content: center;
 }
@@ -97,6 +100,28 @@
 #searchForm>* {
 	top: 0;
 }
+
+
+.new{
+	color: red;
+	padding-left:5px;
+	font-style:italic;
+	font-size: 7px;
+	line-height: 20px;
+}
+
+.blink {
+      -webkit-animation: blink 0.5s linear infinite;
+        }
+@keyframes blink {
+       /*0% 부터 100% 까지*/ 
+        0% { color: red;}
+        100% {color: #000; }
+        /*from부터 to 까지         
+        from {color:#00a0e9;}
+        to {color:#000;} 
+        */
+        }
 
 </style>
 
@@ -114,7 +139,7 @@
 			</div>
 		</div>
 		<div class="list-wrapper">
-			<table class="table table-hover table-striped my-5" id="list-table">
+			<table class="table table-borderless my-5" id="list-table">
 				<thead>
 					<tr>
 						<th scope="col" class="qb-no">글번호</th>
@@ -158,6 +183,8 @@
 							<c:forEach items="${boardList}" var="qnaBoard">
 								<c:set var="qnaPno" value="${qnaBoard.qnaPno}"/>
 								<c:set var="qnaNo" value="${qnaBoard.qnaNo}"/>
+								<fmt:formatDate var="createDate" value="${qnaBoard.qnaCreateDt}" pattern="yyyy-MM-dd" />
+								<fmt:formatDate var="today" value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" />
 								<tr>
 									<%-- 글 번호 --%>
 									<td>
@@ -175,8 +202,18 @@
 									<td class="boardTitle">
 									
 									<a id="boardTitle-check" href="${qnaBoard.qnaNo}?cp=${pagination.currentPage}${searchStr}" onclick="checkValidate(event, '${qnaBoard.qnaStatus}', ${qnaBoard.memberNo});">
-									<c:if test="${qnaPno > 0}"> &nbsp;&nbsp;&nbsp; -> [답글] ${qnaBoard.qnaTitle}</c:if>
-									<c:if test="${qnaPno == 0}">${qnaBoard.qnaTitle}</c:if>
+									<c:choose>
+										<c:when test="${qnaPno > 0 && createDate != today}">&nbsp;&nbsp;&nbsp; -> [답글] ${qnaBoard.qnaTitle}</c:when>
+										<c:when test="${qnaPno > 0 && createDate == today}">&nbsp;&nbsp;&nbsp; -> [답글] ${qnaBoard.qnaTitle}<span class="new blink">N</span></c:when>
+										<c:when test="${qnaPno == 0 && createDate != today}">${qnaBoard.qnaTitle}</c:when>
+										<c:when test="${qnaPno == 0 && createDate == today}">${qnaBoard.qnaTitle}<span class="new blink">N</span></c:when>
+									</c:choose>
+									
+									
+									<%-- <c:if test="${qnaPno > 0 && createDate != today}">&nbsp;&nbsp;&nbsp; -> [답글] ${qnaBoard.qnaTitle}</c:if>
+									<c:if test="${qnaPno > 0 && createDate == today}"> &nbsp;&nbsp;&nbsp; -> [답글] ${qnaBoard.qnaTitle} <span style="color: red;">N</span></c:if>
+									<c:if test="${qnaPno == 0 && createDate != today}">${qnaBoard.qnaTitle}</c:if>
+									<c:if test="${qnaPno == 0 && createDate == today}">${qnaBoard.qnaTitle}<span style="color: red;">N</span></c:if> --%>
 									</a>
 									
 									</td>
@@ -189,8 +226,9 @@
 
 									<%-- 작성일 --%>
 									<td>
-									<fmt:formatDate var="createDate" value="${qnaBoard.qnaCreateDt}" pattern="yyyy-MM-dd" />
-									<fmt:formatDate var="today" value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" />
+									
+									
+									
 										<c:choose>
 											<%-- 글 작성일이 오늘이 아닐 경우 --%>
 											<c:when test="${createDate != today}">${createDate}</c:when>
