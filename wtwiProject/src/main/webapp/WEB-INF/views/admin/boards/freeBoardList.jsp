@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
    
       <div id="contentArea">
 			<jsp:include page="boardSelect.jsp"></jsp:include>
@@ -20,24 +21,34 @@
               </tr>
             </thead>
             <tbody>
+            <c:forEach items="${boardList}" var="b">
               <tr>
-                <th scope="row">FREE_NO</th>
-                <td>FREE_CATEGORY_NM</td>
-                <td><a id="linkA" href="#">FREE_TITLE</a></td>
-                <td>MEMBER_NM</td>
-                <td>FREE_CREATE_DT</td>
-                <td>FREE_READ_COUNT</td>
+                <th scope="row">${b.freeNo}</th>
+                <td>${b.freeCategoryName}</td>
+                <td><a id="linkA" href="#">${b.freeTitle}</a></td>
+                <td>${b.memberNick}</td>
+                <td><fmt:formatDate value="${b.freeCreateDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                <td>${b.freeReadCount}</td>
                 <td>
-                  FREE_STATUS
-                  <select>
-                    <option>Y</option>
-                    <option>S</option>
-                    <option>N</option>
+                  <form action="changeFreeStatus" method="POST">
+                  <select name="freeStatus">
+                  	<c:choose>
+                  	  <c:when test="${b.freeStatus=='Y'}">
+	                    <option value="Y" selected>등록</option>
+	                    <option value="N">삭제</option>
+                  	  </c:when>
+                  	  <c:otherwise>
+	                    <option value="Y">등록</option>
+	                    <option value="N" selected>삭제</option>
+                  	  </c:otherwise>
+                  	</c:choose>
                   </select>
+                  <input type="hidden" name="freeNo" value="${b.freeNo}">
                   <button>변경</button>
+                  </form>
                 </td>
               </tr>
-
+			</c:forEach>
             </tbody>
           </table>
       </div>
@@ -45,23 +56,37 @@
 
          <!----------------------------------------------------------------------------------------------  Pagination start -->
          <!-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 -->
-
+		<c:set var="pageURL" value="list"/>
+		<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage}${searchString}"/>
+		<c:set var="next" value="${pageURL}?cp=${pagination.nextPage}${searchString}"/>
          <div class="my-2">
-          <nav aria-label="Page navigation example">
+          <nav aria-label="Page navigation">
             <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true" style="color:black">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#" style="color:black">1</a></li>
-              <li class="page-item"><a class="page-link" href="#" style="color:black">2</a></li>
-              <li class="page-item"><a class="page-link" href="#" style="color:black">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true" style="color:black">&raquo;</span>
-                </a>
-              </li>
+            	<c:if test="${pagination.currentPage <= pagination.pageSize}">
+            		<li class="page-item disabled">
+            			<a class="page-link" href="#" aria-label="Previous" ><span aria-hidden="true" style="color:black">&laquo;</span></a>
+            		</li>
+            	</c:if>
+               	<c:if test="${pagination.currentPage > pagination.pageSize}">
+               		<li class="page-item">
+               			<a class="page-link" href="${prev}" aria-label="Previous"><span aria-hidden="true" style="color:black">&laquo;</span></a>
+               		</li>
+               	</c:if>
+				<c:forEach var="p" begin="${pagination.startPage}" end="${pagination.endPage}">
+					<c:choose>
+						<c:when test="${p==pagination.currentPage}">
+							<li class="page-item active"><a class="page-link" style="color:black">${p}</a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item"><a class="page-link" style="color:black" href="${pageURL}?cp=${p}${searchString}">${p}</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+				<c:if test="${pagination.endPage < pagination.maxPage}">
+					<li class="page-item">
+						<a class="page-link" href="${next}" aria-label="Next"><span aria-hidden="true" style="color:black">&raquo;</span></a>
+					</li> 
+				</c:if>
             </ul>
           </nav>
          </div>
@@ -101,6 +126,5 @@
 
 
    <script>
-   
 
    </script>

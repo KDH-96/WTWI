@@ -7,7 +7,6 @@
          /* background-color: red; */
          margin: auto;
          width: 1200px;
-         height: 100vh;
       }
       /* content ) 게시글 목록 스타일 */
       #h-menu{

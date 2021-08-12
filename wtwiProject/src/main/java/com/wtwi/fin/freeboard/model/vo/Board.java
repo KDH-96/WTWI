@@ -21,6 +21,8 @@ public class Board {
 	
 	private List<Image> images; 	  // 첨부 이미지 목록
 	
+	private String freeStatus;
+	
 	public Board() {
 	}
 
@@ -128,13 +130,21 @@ public class Board {
 		this.images = images;
 	}
 
+	public String getFreeStatus() {
+		return freeStatus;
+	}
+
+	public void setFreeStatus(String freeStatus) {
+		this.freeStatus = freeStatus;
+	}
+
 	@Override
 	public String toString() {
 		return "Board [freeNo=" + freeNo + ", freeTitle=" + freeTitle + ", freeContent=" + freeContent
 				+ ", freeReadCount=" + freeReadCount + ", freeCreateDate=" + freeCreateDate + ", freeModifyDate="
 				+ freeModifyDate + ", memberNo=" + memberNo + ", freeCategoryNo=" + freeCategoryNo
 				+ ", freeCategoryName=" + freeCategoryName + ", memberNick=" + memberNick + ", replyCount=" + replyCount
-				+ ", likeCount=" + likeCount + ", images=" + images + "]";
+				+ ", likeCount=" + likeCount + ", images=" + images + ", freeStatus=" + freeStatus + "]";
 	}
 
 }
