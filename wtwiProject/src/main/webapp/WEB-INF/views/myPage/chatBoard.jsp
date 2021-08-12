@@ -108,7 +108,14 @@ a:hover {
 				<thead>
 					<tr>
 						<th scope="col"></th>
-						<th scope="col">담당자</th>
+						<c:choose>
+							<c:when test="${loginMember.memberGrade == 'M' }">
+								<th scope="col">문의자</th>	
+							</c:when>
+							<c:otherwise>
+								<th scope="col">담당자</th>								
+							</c:otherwise>
+						</c:choose>
 						<th scope="col">내용</th>
 						<th scope="col">일시</th>
 					</tr>
@@ -132,7 +139,14 @@ a:hover {
 									<th scope="row">0</th>
 
 									<%-- 담당자 --%>
-									<td>${board.attractionNm}</td>
+									<c:choose>
+										<c:when test="${loginMember.memberGrade == 'M' }">
+											<td>${board.memberNick}</td>
+										</c:when>
+										<c:otherwise>
+											<td>${board.attractionNm}</td>										
+										</c:otherwise>
+									</c:choose>
 
 									<!-- 내용 -->
 									<td class="boardTitle">

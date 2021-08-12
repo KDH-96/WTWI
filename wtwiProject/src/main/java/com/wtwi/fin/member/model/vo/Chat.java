@@ -9,7 +9,17 @@ public class Chat {
 	private String chatReadYn;
 	private int chatRoomNo;
 	private int memberNo;
+	private String memberNick;
 	private String attractionNm;
+	
+	
+	
+	public String getMemberNick() {
+		return memberNick;
+	}
+	public void setMemberNick(String memberNick) {
+		this.memberNick = memberNick;
+	}
 	public int getChatNo() {
 		return chatNo;
 	}
@@ -56,7 +66,7 @@ public class Chat {
 	public String toString() {
 		return "Chat [chatNo=" + chatNo + ", chatContent=" + chatContent + ", chatCreateDt=" + chatCreateDt
 				+ ", chatReadYn=" + chatReadYn + ", chatRoomNo=" + chatRoomNo + ", memberNo=" + memberNo
-				+ ", attractionNm=" + attractionNm + "]";
+				+ ", memberNick=" + memberNick + ", attractionNm=" + attractionNm + "]";
 	}
 	
 	

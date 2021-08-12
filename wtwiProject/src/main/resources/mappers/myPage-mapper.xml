@@ -48,6 +48,7 @@
 		<result property="chatReadYn" column="CHAT_READ_YN" />
 		<result property="chatRoomNo" column="CHAT_ROOM_NO" />
 		<result property="memberNo" column="MEMBER_NO" />
+		<result property="memberNick" column="MEMBER_NICK" />
 		<result property="attractionNm" column="ATTRACTION_NM" />
 	</resultMap>
 	
@@ -346,13 +347,14 @@
 		SELECT CHAT_NO, A.CHAT_ROOM_NO, CHAT_CONTENT,
 		CHAT_CREATE_DT, CHAT_READ_YN,
 		(SELECT ATTRACTION_NM FROM CHAT_MANAGER_LIST B WHERE B.CHAT_ROOM_NO =
-		A.CHAT_ROOM_NO) ATTRACTION_NM FROM
+		A.CHAT_ROOM_NO) ATTRACTION_NM, MEMBER_NICK FROM
 		(SELECT MAX(CHAT_NO) AS CHAT_NO, CHAT_ROOM_NO
 		FROM CHAT_MESSAGE
 		WHERE CHAT_ROOM_NO IN (SELECT DISTINCT CHAT_ROOM_NO FROM CHAT_ROOM
 		WHERE MEMBER_NO = #{memberNo})
 		GROUP BY CHAT_ROOM_NO) A
 		JOIN CHAT_MESSAGE USING(CHAT_NO)
+		JOIN MEMBER USING(MEMBER_NO)
 	</select>
 	
 	

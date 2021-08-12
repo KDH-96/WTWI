@@ -28,6 +28,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 		
 		 if(member != null){
 			 if(member.getMemberGrade().equals("A")) {
+				 request.getSession().setAttribute("dest", dest);
 				 return true;				 
 			 } else {				 
 				 response.sendRedirect("/wtwi/main");				 
@@ -36,7 +37,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 		 }
 	        
 	        else {
-	            request.getSession().setAttribute("dest", dest);
+	        	request.getSession().setAttribute("dest", dest);
 	            response.sendRedirect("/wtwi/member/login");
 	            return false;
 	        }
