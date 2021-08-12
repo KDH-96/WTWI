@@ -286,6 +286,8 @@
 
    
    <script>
+   
+   
 
       
       $(".page-item active").on("click",function(){

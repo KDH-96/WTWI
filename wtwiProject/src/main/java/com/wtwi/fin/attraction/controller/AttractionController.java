@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -124,10 +125,6 @@ public class AttractionController {
     		  JsonObject items = gson.fromJson(body.get("items").toString(), JsonObject.class);
     		  JsonArray item = items.get("item").getAsJsonArray();
     		  int totalCount = Integer.parseInt(body.get("totalCount").toString().replaceAll("\"", ""));
-    		  
-    		  System.out.println("결과 : " + result);
-    		  System.out.println("몸 : " + body);
-    		  System.out.println("총 개수 : " + totalCount);
     		  
     		  List<Attraction> attrList = new ArrayList<Attraction>();
     		  
@@ -423,84 +420,15 @@ public class AttractionController {
       
       model.addAttribute("attr" , attr);
 
-      //*********************************************상세조회한 명소 반경 5키로 미터의 다른 명소들 20개 -> 상세조회 지도에 뿌릴 것
-
-	  String url2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList";
-	  String serviceKey2 = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
-	  String MobileOS2 = "ETC";
-	  String MobileApp2 = "WhereTheWeatherIs";
-	  String arrange2 = "E"; // 가까운 거리부터 정렬
-	  double longitude = attr.getLatitude();
-	  double latitude = attr.getLongitude();
-	  int radius = 5000; // (거리반경, max 20000m)
-	  String type2 = "json";
+      //** 상세조회한 명소 반경 5키로 미터의 다른 명소들 10개 -> 상세조회 지도에 뿌릴 것 *******//
 	  
-	  String req2 = url2 + "?ServiceKey=" + serviceKey2 
-			  + "&numOfRows=20" 
-			  + "&MobileOS=" + MobileOS2 + "&MobileApp=" + MobileApp2
-			  + "&arrange=" + arrange2 
-			  + "&contentTypeId=12&14" 
-			  + "&mapX=" + longitude 
-			  + "&mapY=" + latitude 
-			  + "&radius=" + radius
-			  + "&listYN=Y" 
-			  + "&_type=" + type;
+	  JsonArray attrList12 = makingArray(12,attr);
+	  JsonArray attrList14 = makingArray(14,attr);
+	  JsonArray attrList39 = makingArray(39,attr);
 	  
-	  String result2 = makingResult(req2);
-	  
-	  JsonObject convertedObj2 = new Gson().fromJson(result2.toString(), JsonObject.class);
-	  JsonObject response2 = new Gson().fromJson(convertedObj2.get("response").toString(), JsonObject.class);
-	  JsonObject body2 = new Gson().fromJson(response2.get("body").toString(), JsonObject.class);
-	  JsonObject items2 = new Gson().fromJson(body2.get("items").toString(), JsonObject.class);
-	  JsonArray item2 = items2.get("item").getAsJsonArray();
-	  int totalCount2 = Integer.parseInt(body.get("totalCount").toString().replaceAll("\"", ""));
-	  
-	  System.out.println("결과 : " + result2);
-	  System.out.println("몸 : " + body2);
-	  System.out.println("총 개수 : " + totalCount2);
-	  
-	  List<Attraction> attrList = new ArrayList<Attraction>();
-	  
-	  Attraction attr2 = null;
-	  
-	  for (int i = 0; i < item2.size(); i++) { // {k:v,k:v..} 하나에 접근 (명소 하나 하나에 접근한다)
-		  
-		  JsonObject jobj2 = (JsonObject) item2.get(i);
-		  
-		  attr2 = new Attraction();
-		  Set<String> itemKeys2 = jobj2.keySet();
-
-		  for (String key : itemKeys2) { // 모든 키에 접근을 해서
-			  attr2 = makingAttr(key, jobj2, attr2);
-		  }
-		  attrList.add(attr2);
-	  }
-	  model.addAttribute("radius" , radius);
-/*	  
-      try {
-    	  // 여기부분 수정 필요(위치기반 연습한거에 선생님이 해준것 있음)
-		List attrList = new ObjectMapper().writeValueAsString(attrList);
-		model.addAttribute("attrList", attrList);
-
-      } catch (JsonProcessingException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-      }
-  */    
-	  Gson gson = new GsonBuilder().create();
-	  String json = gson.toJson(attrList);
-
-	  System.out.println(attrList);
-
-	  
-	  model.addAttribute("attrList", attrList);
-      
-      //*********************************************
-      
-      
-      
-      
-      
+	  model.addAttribute("attrList12" , attrList12);
+	  model.addAttribute("attrList14" , attrList14);
+	  model.addAttribute("attrList39" , attrList39);
       
       return "attraction/attractionView";
 
@@ -771,6 +699,44 @@ public class AttractionController {
 	   eventEndDate = 0;
 	   attractionNo = 0;
 	   
+   }
+   
+   // 상세조회 지도에 뿌려질 주변 명소 list 만들기
+   
+   public JsonArray makingArray(int contentTypeId , Attraction attr) {
+
+	  String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList";
+	  String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+	  String MobileOS = "ETC";
+	  String MobileApp = "WhereTheWeatherIs";
+	  String arrange = "E"; // 가까운 거리부터 정렬
+	  double longitude = attr.getLongitude();
+	  System.out.println(longitude);
+	  double latitude = attr.getLatitude();
+	  int radius = 5000; // (거리반경, max 20000m)
+	  String type = "json";
+	  
+	  String req = url + "?ServiceKey=" + serviceKey 
+			  + "&numOfRows=10" 
+			  + "&MobileOS=" + MobileOS + "&MobileApp=" + MobileApp
+			  + "&arrange=" + arrange 
+			  + "&contentTypeId=" + contentTypeId 
+			  + "&mapX=" + longitude 
+			  + "&mapY=" + latitude 
+			  + "&radius=" + radius
+			  + "&listYN=Y" 
+			  + "&_type=" + type;
+	  
+	  String result = makingResult(req);
+	  
+	  JsonObject convertedObj = new Gson().fromJson(result.toString(), JsonObject.class);
+	  JsonObject response = new Gson().fromJson(convertedObj.get("response").toString(), JsonObject.class);
+	  JsonObject body = new Gson().fromJson(response.get("body").toString(), JsonObject.class);
+	  JsonObject items = new Gson().fromJson(body.get("items").toString(), JsonObject.class);
+	  JsonArray item = items.get("item").getAsJsonArray();
+   
+   return item;
+   
    }
 
 }
