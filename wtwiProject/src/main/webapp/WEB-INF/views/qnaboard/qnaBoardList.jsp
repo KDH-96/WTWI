@@ -111,7 +111,7 @@
 }
 
 .blink {
-      -webkit-animation: blink 0.5s linear infinite;
+      -webkit-animation: blink 0.7s linear infinite;
         }
 @keyframes blink {
        /*0% 부터 100% 까지*/ 
