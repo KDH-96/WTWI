@@ -19,4 +19,22 @@ public class AttractionDAO {
 		return sqlSession.insert("attractionMapper.insertAttrList", attrList);
 	}
 
+
+	/** 명소별 평균점수 구하기(준석)
+	 * @param attractionNo
+	 * @return avgPoint
+	 */
+	public double getAvgPoint(int attractionNo) {
+		return sqlSession.selectOne("attractionMapper.getAvgPoint", attractionNo);
+	}
+
+
+	/** 명소별 총 리뷰 수 구하기(준석)
+	 * @param attractionNo
+	 * @return totalReviewCount
+	 */
+	public int getReviewCount(int attractionNo) {
+		return sqlSession.selectOne("attractionMapper.getReviewCount", attractionNo);
+	}
+
 }

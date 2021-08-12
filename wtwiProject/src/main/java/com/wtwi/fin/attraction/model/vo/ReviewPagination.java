@@ -14,12 +14,15 @@ public class ReviewPagination {
 
 	private int prevPage; // 이전 페이지 번호 목록 중 끝 번호
 	private int nextPage; // 다음 페이지 번호 목록 중 시작 번호
-
+	
+	private int attractionNo; // 명소 번호
+	
 	public ReviewPagination() {	}
 
-	public ReviewPagination(int currentPage, int listCount) {
+	public ReviewPagination(int currentPage, int listCount, int attractionNo) {
 		this.currentPage = currentPage;
 		this.listCount = listCount;
+		this.attractionNo = attractionNo;
 		makePagination();
 	}
 
@@ -29,6 +32,7 @@ public class ReviewPagination {
 
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
+		makePagination();
 	}
 
 	public int getListCount() {
@@ -37,6 +41,7 @@ public class ReviewPagination {
 
 	public void setListCount(int listCount) {
 		this.listCount = listCount;
+		makePagination();
 	}
 
 	public int getLimit() {
@@ -45,6 +50,7 @@ public class ReviewPagination {
 
 	public void setLimit(int limit) {
 		this.limit = limit;
+		makePagination();
 	}
 
 	public int getPageSize() {
@@ -53,6 +59,7 @@ public class ReviewPagination {
 
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
+		makePagination();
 	}
 
 	public int getMaxPage() {
@@ -93,6 +100,15 @@ public class ReviewPagination {
 
 	public void setNextPage(int nextPage) {
 		this.nextPage = nextPage;
+	}
+	
+
+	public int getAttractionNo() {
+		return attractionNo;
+	}
+
+	public void setAttractionNo(int attractionNo) {
+		this.attractionNo = attractionNo;
 	}
 
 	// 페이징 처리에 필요한 값을 계산하는 메소드

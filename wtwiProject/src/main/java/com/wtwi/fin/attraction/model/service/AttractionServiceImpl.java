@@ -20,6 +20,19 @@ public class AttractionServiceImpl implements AttractionService {
 	public int insertAttrList(List<Attraction> attrList) {
 		return dao.insertAttrList(attrList);
 	}
+
+	
+	// 명소별 평균점수 구하기(준석)
+	@Override
+	public double getAvgPoint(int attractionNo) {
+		return dao.getAvgPoint(attractionNo);
+	}
+
+	// 명소별 총 리뷰 수 구하기(준석)
+	@Override
+	public int getReviewCount(int attractionNo) {
+		return dao.getReviewCount(attractionNo);
+	}
 	
 	
 }

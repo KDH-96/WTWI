@@ -32,17 +32,6 @@
 
 /* 검색조건 드롭다운 끝 */
 
-/* 커스텀 오버레이 시작 */
-
-.customoverlay {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
-.customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
-.customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #d95050;background: black url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
-.customoverlay .title {display:block;text-align:center;background:#fff;margin-right:35px;padding:10px 15px;font-size:14px;font-weight:bold;}
-.customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
-
-/* 커스텀 오버레이 끝 */
-
-
 </style>
 </head>
 
@@ -124,11 +113,13 @@
         // 지도 로딩 시 후기작성 폼 고정영역 숨기기
         $("#write-review-wrapper").hide();
         
+        // 지도 로딩 시 리뷰영역 폼 고정영역 숨기기
+        $("#select-review-wrapper").hide();
         
         // 선택된 마커(명소)의 contentId를 담을 변수(ajax 요청을 위해...)
         let selectedMarker = "";
         
-
+        
         // 지도의 확대레벨이 13을 초과하지 못하도록 막는 함수(레벨 14부터는 화면 깨짐)
         $(function () {
             map.setMaxLevel(13);
@@ -220,6 +211,7 @@
                 level: 13 // 지도의 확대 레벨
          };
         
+     	
         
         $("#find-attr-btn").on('click', function(){
 			attrType = document.getElementById("contentTypeS").value
@@ -251,7 +243,7 @@
         var map = new kakao.maps.Map(mapContainer, mapOption),
             customOverlay = new kakao.maps.CustomOverlay({}),
             infowindow = new kakao.maps.InfoWindow({ removable: true });
-
+        
         function displayArea(name, areaCode, coordinates, multi) {
 			
         	var polygon;
@@ -322,19 +314,27 @@
 
                 // 지도 확대
                 if (map.getLevel() > 11) { // 11레벨 초과 시 11레벨로 확대
-                    map.setLevel(11);
+                    if(areaCode < 40) {
+	                	map.setLevel(9);
+                    	
+                    }else {
+	                	map.setLevel(11);
+                    }
 
                 } else { // 11레벨 이하일 경우 현재 레벨 유지
-                    map.setLevel(map.getLevel());
+                	if(areaCode < 40) {
+	                	map.setLevel(9);
+                    	
+                    }else {
+	                	map.setLevel(map.getLevel());
+                    }
                 }
 
                 // 클릭한 곳의 좌표료 줌 이동
                 var latLng = mouseEvent.latLng;
                 var moveLatLng = new kakao.maps.LatLng(latLng.getLat(), latLng.getLng());
                 map.panTo(moveLatLng);
-
            });
-            
             
    		}; // geoJSON파일에 의한 폴리곤 생성 반복문 종료 괄호
         
@@ -350,10 +350,9 @@
 	    	
 	    	 var position;
 	         var data;
-	         ////////////////////////////////////////////
+	         
 	         document.getElementById("contentTypeS").value = attrType;
 	         document.getElementById("areaCode").value = areaCode;
-	         ////////////////////////////////////////////
 	         
 	         // 마커 배열 초기화 및 각 마커 화면에서 제거
 	         markers.forEach(function (marker) { marker.setMap(null); });
@@ -386,25 +385,9 @@
 	                
 	                markers[index].setMap(map);
 	                
-	               // 커스텀 오버레이에 표시할 내용 시작
-	               var content = '<div class="customoverlay">' +
-	    			    '  <a href="#" target="_blank">' +
-	   			    '    <span id="custom-overlay-title" class="title"></span>' +
-	   			    '  </a>' +
-	   			    '</div>';
-	
-	
-	                // 커스텀 오버레이 생성
-	                var customOverlay = new kakao.maps.CustomOverlay({
-	                    position: position,
-	                    content: content,
-	                    yAnchor: 0.3
-	                });
-	
-	
 	                // 마커 클릭 시 커스텀 오버레이 표시 및 클릭한 좌표로 화면 이동
 	                kakao.maps.event.addListener(marker, 'click', function () {
-	   		
+	   					
 	                    if (clickedOverlay) {
 	                        clickedOverlay.setMap(null);
 	                    }
@@ -442,7 +425,24 @@
 	            			success : function(attrView){
 	            				
 	            				// ======================== 우측 고정 영역에 명소 정보 출력
-	   				
+	   							// 명소 평점을 출력하기 위한 구문
+	            				document.getElementById("attr-avgPoint").innerText = "";
+	            				let avgStar = parseInt(attrView.avgPoint);
+	            				
+	            				switch(avgStar){
+	    						case 1: star = "★☆☆☆☆"; break;
+	    						case 2: star = "★★☆☆☆"; break;
+	    						case 3: star = "★★★☆☆"; break;
+	    						case 4: star = "★★★★☆"; break;
+	    						case 5: star = "★★★★★"; break;
+	    						default: star = "☆☆☆☆☆"; break;
+	    						}
+	            				
+	            				document.getElementById("attr-avgPoint").innerText = star;
+	            				document.getElementById("attr-avgPoint-num").innerText = " 평균 " + attrView.avgPoint + "점";
+	            				document.getElementById("total-review-count").innerText = " / 리뷰 " + attrView.totalReviewCount + "건";
+	            				
+	            				
 	            				// 명소 이미지 출력을 위한 구문
 	            				document.getElementById("attr-image").src = attrView.attractionPhoto;
 	            				
@@ -450,7 +450,7 @@
 	            				document.getElementById("attr-phone").innerText = "";
 	            				
 				   				if(attrView.attractionPhone != null) {
-				   					document.getElementById("attr-phone").innerText = attrView.attractionPhone;
+				   					document.getElementById("attr-phone").innerText = "◎ " + attrView.attractionPhone;
 				   					
 				   				}else {
 				   					document.getElementById("attr-phone").innerText = "";
@@ -472,7 +472,7 @@
 	            						
 	            						// 명소 id(숫자)에 따라 명소의 구분 출력(드롭다운 버튼과 연동)
 	            						document.getElementById("attr-type").innerText = "";
-	            						document.getElementById("attr-type").innerText = attrIdArr[i].innerText;
+	            						document.getElementById("attr-type").innerText = "◎ " + attrIdArr[i].innerText;
 	            						
 	            						//console.log("일치");
 	            						break;
@@ -480,7 +480,7 @@
 	            				}
 	            				
 	            				// 명소 주소 출력을 위한 구문
-	            				document.getElementById("attr-addr").innerText = attrView.attractionAddr;
+	            				document.getElementById("attr-addr").innerText = "◎ " + attrView.attractionAddr;
 	            				
 	            				
 	            				// 명소 홈페이지 출력을 위한 가공 시작
@@ -505,24 +505,20 @@
 	            				}
 	            				
 	            				// 명소 홈페이지 주소 출력을 위한 구문
-	            				document.getElementById("attr-homepage").innerHTML = "<a href='" + homepage + "' target=_blank' > 홈페이지로 이동 </a>";
-	            				
+	            				document.getElementById("attr-homepage").innerHTML = "◎ " + "<a href='" + homepage + "' target=_blank' > 홈페이지로 이동 </a>";
 	            				
 	            				// 명소 정보 출력을 위한 구문
-	            				let summaryAttrInfo = attrView.attractionInfo.substring(0, attrView.attractionInfo.indexOf(".")+1);
-	            				
 	            				// 명소 정보 중 개행문자 처리하여 출력
-	            				document.getElementById("attr-info").innerText = summaryAttrInfo.replaceAll("\\n", "");
-	            				document.getElementById("attr-info").innerHTML = summaryAttrInfo.replaceAll("<br />", "<br>");
-	            				
+	            				replacedAttrInfo = attrView.attractionInfo.replaceAll("\\n", " ");
+	            				replacedAttrInfo = replacedAttrInfo.replaceAll("<br />", " ");
+	            				replacedAttrInfo = replacedAttrInfo.replaceAll("<br>", " ");
+	            				replacedAttrInfo = replacedAttrInfo.replaceAll("<br>", " ");
+	            				replacedAttrInfo = replacedAttrInfo.replaceAll("</b>", " ");
+	            				replacedAttrInfo = replacedAttrInfo.replaceAll("\\", " ");
+	            				document.getElementById("attr-info").innerText = replacedAttrInfo;
 	            				
 	            				// 명소 상세페이지로 이동
 	            				document.getElementById("to-attr-view").href = "${contextPath}/attraction/view/" + attrView.attractionNo;
-	            				
-	            				
-	            				// 커스텀 오버레이의 제목 클릭 시 명소 상세조회 페이지로 이동(작동안함...)
-	            				document.getElementById("custom-overlay-title").innerText = attrView.attractionNm; 
-	            				
 	            				
 	            				// 채팅버튼 클릭 시 채팅 기능 작동
                                 $("#chat-btn").on("click", function(){
@@ -551,28 +547,18 @@
 	
 	                // 커스텀 오버레이 및 후기작성 폼 지도영역 클릭하여 닫는 메소드
 	                kakao.maps.event.addListener(map, 'click', function () {
-	                    customOverlay.setMap(null);
 	                    $("#attraction-info").fadeOut(100);
 	
 	                    $("#write-review-wrapper").fadeOut(100);
+	                    
+	                    $("#select-review-wrapper").fadeOut(100);
 	                });
 	                
 	            }); // 마커 생성 for문 종료
 	            
-	                // 후기작성 버튼 클릭 시 후기작성 폼 등장하는 메소드
-	                $("#review-btn").on("click", function () {
-	                    $("#write-review-wrapper").fadeToggle(100);
-	                });
-	
-	                // 취소버튼 클릭 시 후기작성 폼을 닫는 메소드
-	                $("#cancel-btn").on("click", function () {
-	                    $("#write-review-wrapper").fadeOut(100);
-	                });
-	        		
 	        });
 	        		
 		};// 명소 정보가 담긴 JSON파일의 getJSON의 닫는 괄호
-		
 		
     </script>
     

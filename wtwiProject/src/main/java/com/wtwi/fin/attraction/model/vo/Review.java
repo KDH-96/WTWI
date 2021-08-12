@@ -11,12 +11,13 @@ public class Review {
 	private Date reviewCreateDt;
 	private int AttractionNo;
 	private int memberNo;
+	private String memberNick;
 	private List<ReviewImage> atList;
 	
 	public Review() { }
 
 	public Review(int reviewNo, double reviewPoint, String reviewContent, Date reviewCreateDt, int attractionNo,
-			int memberNo, List<ReviewImage> atList) {
+			int memberNo, String memberNick, List<ReviewImage> atList) {
 		super();
 		this.reviewNo = reviewNo;
 		this.reviewPoint = reviewPoint;
@@ -24,6 +25,7 @@ public class Review {
 		this.reviewCreateDt = reviewCreateDt;
 		AttractionNo = attractionNo;
 		this.memberNo = memberNo;
+		this.memberNick = memberNick;
 		this.atList = atList;
 	}
 
@@ -74,6 +76,15 @@ public class Review {
 	public void setMemberNo(int memberNo) {
 		this.memberNo = memberNo;
 	}
+	
+
+	public String getMemberNick() {
+		return memberNick;
+	}
+
+	public void setMemberNick(String memberNick) {
+		this.memberNick = memberNick;
+	}
 
 	public List<ReviewImage> getAtList() {
 		return atList;
@@ -87,8 +98,7 @@ public class Review {
 	public String toString() {
 		return "Review [reviewNo=" + reviewNo + ", reviewPoint=" + reviewPoint + ", reviewContent=" + reviewContent
 				+ ", reviewCreateDt=" + reviewCreateDt + ", AttractionNo=" + AttractionNo + ", memberNo=" + memberNo
-				+ ", atList=" + atList + "]";
+				+ ", memberNick=" + memberNick + ", atList=" + atList + "]";
 	}
-	
-	
+
 }
