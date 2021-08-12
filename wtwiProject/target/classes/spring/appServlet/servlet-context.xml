@@ -107,5 +107,26 @@
 	</websocket:handlers>
 	
 	<task:annotation-driven/>
+	<interceptors> 
+	  <interceptor> 
+	   <!-- 적용 url -->
+	   <mapping path="/myPage/**" /> 
+	   <mapping path="/member/logout" /> 
+	   <!-- 예외처리 
+	   <exclude-mapping path="/main"/>  -->
+	   <!-- 적용 interceptor -->   
+	   <beans:bean id="loginInterceptor" class="com.wtwi.fin.common.interceptor.LoginInterceptor" />  
+	
+	  </interceptor> 
+	  <interceptor> 
+	   <!-- 적용 url -->
+	   <mapping path="/admin/**" /> 
+	   <!-- 예외처리 
+	   <exclude-mapping path="/main"/>  -->
+	   <!-- 적용 interceptor -->   
+	   <beans:bean id="AuthInterceptor" class="com.wtwi.fin.common.interceptor.AuthInterceptor" />  
+	
+	  </interceptor> 
+	</interceptors>
 	
 </beans:beans>
