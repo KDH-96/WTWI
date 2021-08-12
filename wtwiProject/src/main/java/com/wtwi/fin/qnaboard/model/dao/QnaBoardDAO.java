@@ -118,6 +118,35 @@ public class QnaBoardDAO {
 	public int deleteBoard(int qnaNo) {
 		return sqlSession.update("qnaboardMapper.deleteBoard", qnaNo);
 	}
+	
+	
+	/** 게시글 이전 이후(관리자)
+	 * @param preNo
+	 * @return
+	 */
+	public QnaBoard selectPreBoard(int preNo) {
+	   return sqlSession.selectOne("qnaboardMapper.selectPreBoard", preNo);
+	}
+
+	
+	
+	/** 게시글 이전 이후(회원)
+	 * @param board1
+	 * @return
+	 */
+	public QnaBoard selectPreBoard1(QnaBoard board1) {
+	   return sqlSession.selectOne("qnaboardMapper.selectPreBoard1", board1);
+	}
+
+	
+	
+	/** 게시글 이전 이후(비회원)
+	 * @param qnaNo
+	 * @return
+	 */
+	public QnaBoard selectPreBoard2(int qnaNo) {
+	   return sqlSession.selectOne("qnaboardMapper.selectPreBoard2", qnaNo);
+	}
 
 
 }
