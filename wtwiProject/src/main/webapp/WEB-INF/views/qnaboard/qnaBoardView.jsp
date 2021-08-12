@@ -208,8 +208,12 @@
             </div>
 
             <div class="listBtnArea">
-                <button class="btn btn-primary btn-sm ml-1" id="previous" onclick="">이전</button>
-                <button class="btn btn-primary btn-sm ml-1" id="next" onclick="">다음</button>
+            	<c:if test="${board.nextNo != 0}">
+                <a class="btn btn-primary float-right" id="nextBtn" href="${board.nextNo}?cp=${pagination.currentPage}${searchStr}">다음글</a>
+            	</c:if>
+            	<c:if test="${board.preNo != 0}">
+                <a class="btn btn-primary float-right mr-2" id="preBtn" href="${board.preNo}?cp=${pagination.currentPage}${searchStr}">이전글</a>
+            	</c:if>
             </div>
 
 

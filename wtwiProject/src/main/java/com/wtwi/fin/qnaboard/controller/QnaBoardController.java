@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -74,10 +75,28 @@ public class QnaBoardController {
 	// 게시글 상세 조회
 	@RequestMapping(value="/{qnaNo}", method = RequestMethod.GET)
 	private String qnaBoardView(@PathVariable("qnaNo") int qnaNo,
+								HttpSession session,
 								@RequestParam(value="cp", required=false, defaultValue = "1") int cp,
-								Model model, RedirectAttributes ra) {
+								Model model, RedirectAttributes ra, QnaBoard board1) {
+		Member loginMember = (Member)session.getAttribute("loginMember");
 		
 		QnaBoard board = service.selectqnaBoard(qnaNo);
+		
+		if(loginMember != null) {
+			if(loginMember.getMemberGrade().equals("A")) {
+				board1 = service.selectqnaPreBoard(qnaNo);
+			}else{
+				
+				board1.setMemberNo(loginMember.getMemberNo());
+				board1 = service.selectqnaPreBoard1(board1);
+			}
+		}else {
+			board1 = service.selectqnaPreBoard2(qnaNo);
+		}
+		
+		board.setPreNo(board1.getPreNo());
+		board.setNextNo(board1.getNextNo());
+		
 		System.out.println(board);
 		
 		if(board!=null) {
@@ -128,9 +147,15 @@ public class QnaBoardController {
 			if(boardNo>0) {
 				String setfrom = loginMember.getMemberEmail(); // 보내는 서버 이메일
 				String tomail = "wtwimanager1@gmail.com"; // 받는 사람 이메일
-				String title = loginMember.getMemberNick()+"님께서 문의게시판에 게시글을 남기셨습니다."; // 제목
+				String title = "문의게시판에 게시글이 등록되었습니다."; // 제목
 
-				String content ="<a href='http://localhost:8080/wtwi/qnaboard/"+board.getQnaNo()+"'>게시글 상세보기</a>"; // 내용
+				String content ="<img src ='http://localhost:8080/wtwi/resources/images/파이널로고22psd.jpg'>"+
+								"<br>"+
+								loginMember.getMemberNick()+"님 께서 문의 게시판에 게시글을 남기셨습니다."+
+								"<br>"+
+								"확인하시고 답변 부탁 드립니다."+
+								"<br>"+
+								"<a href='http://localhost:8080/wtwi/qnaboard/"+board.getQnaNo()+"'>게시글 상세보기</a>"; // 내용
 				try {
 					MimeMessage message = mailSender.createMimeMessage();
 					MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
@@ -268,4 +293,28 @@ public class QnaBoardController {
 		}
 		return path;
 	}
+	
+	// 게시글 이전 다음상세 조회
+	/*
+	 * @RequestMapping(value="/detail", method = RequestMethod.GET) private String
+	 * qnaBoardPreView(@ModelAttribute("preNo") int preNo,
+	 * 
+	 * @RequestParam(value="cp", required=false, defaultValue = "1") int cp,
+	 * 
+	 * @ModelAttribute("loginMember") Member loginMember, Model model,
+	 * RedirectAttributes ra, HttpServletRequest request) {
+	 * 
+	 * QnaBoard board = null; System.out.println(board);
+	 * 
+	 * 
+	 * 
+	 * if(board!=null) { List<QnaReply> rList = replyService.selectList(preNo);
+	 * 
+	 * model.addAttribute("board", board); model.addAttribute("rList", rList);
+	 * 
+	 * return "qnaboard/qnaBoardView"; }else { MemberController.swalSetMessage(ra,
+	 * "error", "존재하지 않는 게시글입니다", null); return "redirect:list"; } }
+	 */
+	
+	
 }

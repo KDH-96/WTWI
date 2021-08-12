@@ -30,6 +30,10 @@
 		<result property="memberNo" column="MEMBER_NO" />
 		<result property="memberNick" column="MEMBER_NICK" />
 		<result property="memberGrade" column="MEMBER_GRADE" />
+		
+		<result property="preNo" column="PRE_NO" />
+		<result property="nextNo" column="NEXT_NO" />
+		
 
 	</resultMap>
 
@@ -124,13 +128,27 @@
 	</select>
 	
 	<select id="selectBoard" parameterType="_int" resultMap="qna_rm">
-		SELECT QNA_NO,QNA_CATEGORY_NO, QNA_CATEGORY_NM, QNA_TITLE, QNA_CONTENT,
+	 SELECT A.*
+    FROM
+    (SELECT QNA_NO, QNA_CATEGORY_NO, QNA_CATEGORY_NM, QNA_TITLE, QNA_CONTENT,
+     MEMBER_NO, MEMBER_NICK, MEMBER_GRADE, QNA_READ_COUNT, QNA_CREATE_DT, QNA_MODIFY_DT,QNA_STATUS,
+     LEAD(QNA_NO, 1) OVER (ORDER BY QNA_NO DESC) AS PRE_NO,
+     LAG(QNA_NO, 1) OVER (ORDER BY QNA_NO DESC) AS NEXT_NO
+    FROM QNA_BOARD
+    JOIN QNA_CATEGORY USING(QNA_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO)
+    WHERE QNA_STATUS IN ('Y','S')
+    
+    )A
+    WHERE A.QNA_NO = #{qnaNo}
+	
+<!-- 		SELECT QNA_NO,QNA_CATEGORY_NO, QNA_CATEGORY_NM, QNA_TITLE, QNA_CONTENT,
 		MEMBER_NO, MEMBER_NICK, MEMBER_GRADE, QNA_READ_COUNT, QNA_CREATE_DT, QNA_MODIFY_DT,QNA_STATUS
 		FROM QNA_BOARD
 		JOIN QNA_CATEGORY USING(QNA_CATEGORY_NO)
 		JOIN MEMBER USING(MEMBER_NO)
 		WHERE QNA_NO = #{qnaNo}
-		AND QNA_STATUS IN ('Y','S') 
+		AND QNA_STATUS IN ('Y','S')  -->
 	</select>
 	
 	<update id="increaseReadCount" parameterType="_int">
@@ -170,4 +188,55 @@
 		QNA_STATUS='N'
 		WHERE QNA_NO = #{qnaNo}
 	</update>
+	
+	<!-- 관리자의 경우  -->
+ 	<select id="selectPreBoard" parameterType="_int" resultMap="qna_rm">
+	 SELECT A.*
+    FROM
+    (SELECT QNA_NO, QNA_CATEGORY_NO, QNA_CATEGORY_NM, QNA_TITLE, QNA_CONTENT,
+     MEMBER_NO, MEMBER_NICK, MEMBER_GRADE, QNA_READ_COUNT, QNA_CREATE_DT, QNA_MODIFY_DT,QNA_STATUS,
+     LEAD(QNA_NO, 1) OVER (ORDER BY QNA_NO DESC) AS PRE_NO,
+     LAG(QNA_NO, 1) OVER (ORDER BY QNA_NO DESC) AS NEXT_NO
+    FROM QNA_BOARD
+    JOIN QNA_CATEGORY USING(QNA_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO)
+	WHERE QNA_STATUS IN ('Y','S')
+    )A
+    WHERE A.QNA_NO = #{qnaNo}
+
+	</select>
+
+	<!-- 회원의 경우  -->
+ 	<select id="selectPreBoard1" parameterType="QnaBoard" resultMap="qna_rm">
+	 SELECT A.*
+    FROM
+    (SELECT QNA_NO, QNA_CATEGORY_NO, QNA_CATEGORY_NM, QNA_TITLE, QNA_CONTENT,
+     MEMBER_NO, MEMBER_NICK, MEMBER_GRADE, QNA_READ_COUNT, QNA_CREATE_DT, QNA_MODIFY_DT,QNA_STATUS,
+     LEAD(QNA_NO, 1) OVER (ORDER BY QNA_NO DESC) AS PRE_NO,
+     LAG(QNA_NO, 1) OVER (ORDER BY QNA_NO DESC) AS NEXT_NO
+    FROM QNA_BOARD
+    JOIN QNA_CATEGORY USING(QNA_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO)
+	WHERE QNA_STATUS = 'Y'
+	OR MEMBER_NO = #{memberNo}
+    )A
+    WHERE A.QNA_NO = #{qnaNo}
+	</select>
+	
+	<!-- 비회원인의 경우  -->
+ 	<select id="selectPreBoard2" parameterType="_int" resultMap="qna_rm">
+	 SELECT A.*
+    FROM
+    (SELECT QNA_NO, QNA_CATEGORY_NO, QNA_CATEGORY_NM, QNA_TITLE, QNA_CONTENT,
+     MEMBER_NO, MEMBER_NICK, MEMBER_GRADE, QNA_READ_COUNT, QNA_CREATE_DT, QNA_MODIFY_DT,QNA_STATUS,
+     LEAD(QNA_NO, 1) OVER (ORDER BY QNA_NO DESC) AS PRE_NO,
+     LAG(QNA_NO, 1) OVER (ORDER BY QNA_NO DESC) AS NEXT_NO
+    FROM QNA_BOARD
+    JOIN QNA_CATEGORY USING(QNA_CATEGORY_NO)
+    JOIN MEMBER USING(MEMBER_NO)
+	WHERE QNA_STATUS = 'Y'
+    )A
+    WHERE A.QNA_NO = #{qnaNo}
+
+	</select>
 </mapper>
