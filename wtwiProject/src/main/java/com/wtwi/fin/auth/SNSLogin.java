@@ -42,17 +42,9 @@ public class SNSLogin {
 	public String getSNSAuthURL() {
 		return this.oauthService.getAuthorizationUrl();
 	}
-
-	public Member getUserProfile(String code) throws Exception {
 	
-		OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
-		OAuthRequest request = new OAuthRequest(Verb.GET, this.sns.getProfileUrl());
-		oauthService.signRequest(accessToken, request);
-		Response response = oauthService.execute(request);
-		return parseJson(response.getBody(), accessToken);
-
-	}
 	
+	// 네이버, 구글, 카카오 로그아웃
 	public void socialLogout(Member loginMember) throws Exception {
 		
 		String sendUrl = "";
@@ -92,7 +84,20 @@ public class SNSLogin {
 
 	}
 		  
-
+	// 네이버, 구글, 페이스북 사용자 정보 가져오기
+	// 1) code를 이용해 accessToken GET -> accessToken을 이용해 이용자 정보를 GET 
+	public Member getUserProfile(String code) throws Exception {
+		
+		OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
+		OAuthRequest request = new OAuthRequest(Verb.GET, this.sns.getProfileUrl());
+		oauthService.signRequest(accessToken, request);
+		Response response = oauthService.execute(request);
+		
+		return parseJson(response.getBody(), accessToken);
+		
+	}
+	
+	// 2) 이용자 정보를 파싱하여 Member 객체 반환
 	private Member parseJson(String body, OAuth2AccessToken accessToken) throws Exception {
 		Member member = new Member();
 
@@ -131,7 +136,7 @@ public class SNSLogin {
 	}
 	
 	
-	// 카카오
+	// 카카오 사용자 정보 가져오기
 	// 1) code를 이용해 accessToken GET
 	public Member getKakaoProfile(String code) throws Exception {
 

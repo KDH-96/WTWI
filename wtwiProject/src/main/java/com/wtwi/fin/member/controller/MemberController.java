@@ -71,11 +71,13 @@ public class MemberController {
 	
 	
 	@RequestMapping(value="auth/{snsService}/callback", method=RequestMethod.GET) 
-	public String snsLoginCallback(@PathVariable("snsService") String snsService, Model model, @RequestParam("code") String code/*access Token 발급을 위한 code가 들어옴*/, RedirectAttributes ra) throws Exception{
+	public String snsLoginCallback(@PathVariable("snsService") String snsService, Model model, @RequestParam("code") String code/*access Token 발급을 위한 code가 들어옴*/, RedirectAttributes ra,
+								   HttpSession session) throws Exception{
 		
 		SNSValue sns = null;
 		Member member = null;
 		Member snsMember = null;
+		String redirect = "";
 		
 		// 1) code를 이용해 accessToken 발급 -> 사용자 계정 정보 가져오기
 		// 1-1) 카카오
@@ -102,6 +104,7 @@ public class MemberController {
 				swalSetMessage(ra, "error", "로그인 실패", "필수 동의항목에 체크해주세요.");
 				return "redirect:/member/login";
 			}
+			
 		}
 		
 		// 1-3) 필수 동의 항목(이메일, 별명)에 동의했을 때 해당 사용자 DB확인
@@ -117,15 +120,19 @@ public class MemberController {
 			} else { 
 				swalSetMessage(ra, "error", "회원가입 실패", "문제가 지속될 경우, 대표전화로 문의해주세요.");	
 			}
+			redirect = "/main";
 			
 		// 1-5) 회원이라면 로그인 실행
 		} else { 
 			member.setAccessToken(snsMember.getAccessToken());
 			model.addAttribute("loginMember", member);
 			swalSetMessage(ra, "success", "로그인 성공!", null);
+			// 1-6) 권한 처리 확인 후 이전페이지로 이동
+			String dest = (String)session.getAttribute("dest");
+			redirect = (dest == null) ? "/main" : dest;
 		}
 		
-		return "redirect:/main";
+		return "redirect:" + redirect;
 	}
 
 	@RequestMapping("signUp")
@@ -216,8 +223,7 @@ public class MemberController {
 			swalSetMessage(ra, "error", "로그인 실패", "문제가 지속될 경우, 대표번호로 문의바랍니다.");
 			return "redirect:/member/login";
 		}
-		System.out.println("save : "+save);
-		System.out.println("memberId : "+member.getMemberId());
+		
 		// 로그인 로직 실행
 		Member loginMember = service.login(member);
 
@@ -240,8 +246,11 @@ public class MemberController {
 			swalSetMessage(ra, "error", "로그인 실패", "아이디 또는 비밀번호가 일치하지 않습니다.");
 			return "redirect:/member/login";
 		}
-
-		return "redirect:/main";
+		String dest = (String)session.getAttribute("dest");
+		String redirect = (dest == null) ? "/main" : dest;
+		
+		
+		return "redirect:" + redirect;
 
 	}
 
