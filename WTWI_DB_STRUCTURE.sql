@@ -939,3 +939,12 @@ CREATE OR REPLACE VIEW CHAT_MESSAGES AS
 ALTER TABLE MEMBER DROP CONSTRAINT SYS_C008250;
 ALTER TABLE MEMBER ADD CONSTRAINT SYS_C008250 check ("MEMBER_GRADE" IN('B', 'A', 'M', 'G', 'N', 'K', 'F'));
 COMMENT ON COLUMN MEMBER.MEMBER_GRADE  IS '회원등급(일반B/관리자A/담딩자M/구글G/네이버N/카카오K/페이스북F)';
+
+
+
+-----------------------------------------------------------------------------------------------08/12 추가
+
+-- 설화
+-- ATTRACTION 테이블 컬럼 데이터 크기 변경
+alter table ATTRACTION_INFO
+modify ATTRACTION_NM varchar2(300);
