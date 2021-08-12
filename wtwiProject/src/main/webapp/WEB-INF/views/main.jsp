@@ -427,7 +427,12 @@
 	            				// ======================== 우측 고정 영역에 명소 정보 출력
 	   							// 명소 평점을 출력하기 위한 구문
 	            				document.getElementById("attr-avgPoint").innerText = "";
-	            				let avgStar = parseInt(attrView.avgPoint);
+	            				
+	            				// 평점 소수점 둘째 자리가지 표현
+	            				let roundAvgPoint = Math.round(attrView.avgPoint * 100) / 100;
+	            				
+	            				// 소수점에서 반올림하여 정수로 별점 결정(ex: 4.5 = 별점 5개)
+		          				let avgStar = Math.round(roundAvgPoint);
 	            				
 	            				switch(avgStar){
 	    						case 1: star = "★☆☆☆☆"; break;
@@ -439,12 +444,21 @@
 	    						}
 	            				
 	            				document.getElementById("attr-avgPoint").innerText = star;
-	            				document.getElementById("attr-avgPoint-num").innerText = " 평균 " + attrView.avgPoint + "점";
+	            				document.getElementById("attr-avgPoint-num").innerText = " 평균 " + roundAvgPoint + "점";
 	            				document.getElementById("total-review-count").innerText = " / 리뷰 " + attrView.totalReviewCount + "건";
 	            				
 	            				
 	            				// 명소 이미지 출력을 위한 구문
 	            				document.getElementById("attr-image").src = attrView.attractionPhoto;
+	            				
+	            				// 명소 이름 출력을 위한 구문
+	   							document.getElementById("attr-title").innerText = attrView.attractionNm;
+	            				
+	            				// 명소 이름 클릭 시 상세조회 페이지로 이동하는 구문
+	            				document.getElementById("attr-title").href = "${contextPath}/attraction/view/" + attrView.attractionNo;
+	            				
+	            				// 명소 번호 안보이게 요소에 삽입(reviewInsert.jap 에서 사용하기 위해...)
+	            				document.getElementById("attr-no").value = attrView.attractionNo;
 	            				
 	            				// 명소 연락처 출력을 위한 구문
 	            				document.getElementById("attr-phone").innerText = "";
@@ -455,13 +469,6 @@
 				   				}else {
 				   					document.getElementById("attr-phone").innerText = "";
 				   				}                    				
-	            				
-	            				// 명소 이름 출력을 위한 구문
-	   							document.getElementById("attr-title").innerText = attrView.attractionNm;
-	            				
-	            				// 명소 이름 클릭 시 상세조회 페이지로 이동하는 구문
-	            				document.getElementById("attr-title").href = "${contextPath}/attraction/view/" + attrView.attractionNo;
-	            				
 	            				
 	            				// 드롭다운 버튼의 값들을 저장할 변수 선언 및 할당
 	            				let attrIdArr = document.getElementsByName("attr-type");
@@ -532,7 +539,6 @@
                                       document.getElementById("chat-btn").href = "${contextPath}/chat/openChatRoom/"+attrView.attractionNo;
                                    }
                                 });
-	            				
 	            				
 	            			}, // ajax 통신 성공 시 실행되는 코드 종료지점
 	            			

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wtwi.fin.attraction.model.dao.ReviewDAO;
 import com.wtwi.fin.attraction.model.vo.Review;
@@ -34,6 +35,35 @@ public class ReviewServiceImpl implements ReviewService{
 	@Override
 	public List<Review> selectBoardList(ReviewPagination reviewPagination) {
 		return dao.selectReviewList(reviewPagination);
+	}
+
+	
+	// 리뷰 삽입
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int insertReview(Review insertReview) {
+		
+		// XSS 방지 처리
+		insertReview.setReviewContent(replaceParameter(insertReview.getReviewContent()));
+		
+		// 개행문자 처리
+		insertReview.setReviewContent(  insertReview.getReviewContent().replaceAll("(\r\n|\r|\n|\n\r)", "<br>")  );
+		
+		return dao.insertReview(insertReview);
+	}
+	
+	
+	// 크로스 사이트 스크립트 방지 처리 메소드
+	public static String replaceParameter(String param) {
+		String result = param;
+		if (param != null) {
+				result = result.replaceAll("&", "&amp;");
+				result = result.replaceAll("<", "&lt;");
+				result = result.replaceAll(">", "&gt;");
+				result = result.replaceAll("\"", "&quot;");
+		}
+
+		return result;
 	}
 
 	

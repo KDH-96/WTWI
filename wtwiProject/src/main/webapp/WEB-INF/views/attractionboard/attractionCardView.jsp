@@ -50,7 +50,6 @@
   	text-overflow: ellipsis;
   	white-space: normal;
 }
-
 </style>
 </head>
 <body>
@@ -63,6 +62,7 @@
 			<img src="#" class="card-img-top" alt="..." id="attr-image">
 			<div class="card-body">
 				<h5><a id="attr-title" href=""></a></h5>
+				<span id="attr-no" style="display:none;"></span>
 					<div style="margin:auto; text-align:center;">
 						<span id="attr-avgPoint" style="color:orange; font-size:22px;"></span><br> <!-- 명소 별점 -->
 						<span id="attr-avgPoint-num"  style="font-size: 13px;"></span> <!-- 명소 평점 -->
@@ -106,6 +106,7 @@
 	<!-- =================================== 명소 상세정보 영역 끝 =================================== -->
 	
 	<script>
+		const loginMemberNo = "${loginMember.memberNo}"; // 로그인 맴버 번호 전역변수 선언
 		
 		var viewFlag = false; // 리뷰보기 버튼 화면동작 플래그
 	
@@ -149,11 +150,78 @@
 		
         // 취소버튼 클릭 시 후기작성 폼을 닫는 메소드
         $("#cancel-btn").on("click", function () {
-        	if(wirteFlag = 1) {
+        	if(wirteFlag = true) {
 	        	$("#write-review-wrapper").fadeOut(100);
-	        	writeFlag = 0;
+	        	writeFlag = false;
         	}
         });
+        
+        
+	
+		// 리뷰 작성
+		document.getElementById("review-write-btn").addEventListener("click", function(){
+			let attractionNo = document.getElementById("attr-no").value; // 클릭한 명소 번호 저장 변수
+			let reviewPoint = 0; // 별점 저장 변수
+			let reviewContent = ''; // 리뷰 내용 저장 변수
+			
+			let ratingList = document.getElementsByName("rating").length
+			
+			for(let i=0; i<ratingList; i++){
+				
+				if(document.getElementsByName("rating")[i].checked == true) {
+					
+					reviewPoint = document.getElementsByName("rating")[i].value;
+				}
+			}
+			
+			reviewContent = document.getElementById("text-area").value;
+			
+			$.ajax({
+				url : "${contextPath}/review/insert",
+				type : "POST",
+				data : {"reviewPoint" : reviewPoint,
+						"reviewContent" : reviewContent,
+						"attractionNo" : attractionNo,
+						"memberNo" : loginMemberNo},
+						
+				success : function(result){
+					console.log("통신 성공"); // 리뷰 삽입 성공
+					if(result == 1) {
+						$("#write-review-wrapper").fadeOut(100);
+			        	writeFlag = false;
+			        	
+						// 리뷰 작성 성공 시 별점 모두 투명한 별로 변경			        	
+			        	for(let i=0; i<ratingList; i++){
+							if(document.getElementsByName("rating")[i].checked == true) {
+								document.getElementsByName("rating")[i].checked = false;
+								
+							}
+						}
+						
+						// 리뷰 작성 성공 시 리뷰 내용란 공백으로 변경
+			        	document.getElementById("text-area").value = "";
+						
+						// 스왈 알림(리뷰작성 성공)
+			        	swal({"icon" : "success",
+			        		  "title" : "리뷰를 작성하였습니다."});
+						
+					} else {
+						swal({"icon" : "error",
+			        		  "title" : "리뷰작성 중 문제가 발생하였습니다.",
+			        		  "text" : "문제가 지속될 경우 관리자에게 문의바랍니다."});
+					}
+					
+				},
+				
+				error : function(){
+					console.log("통신 실패");
+					
+				}
+				
+			});
+			
+		});	
+        
 	</script>
 	
 </body>
