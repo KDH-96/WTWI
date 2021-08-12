@@ -31,8 +31,10 @@
 		<typeAlias type="com.wtwi.fin.member.model.vo.Chat" alias="Chat" />
 		<typeAlias type="com.wtwi.fin.member.model.vo.Report" alias="Report" />
     	
+		<typeAlias type="com.wtwi.fin.attraction.model.vo.Review" alias="Review" />
+		<typeAlias type="com.wtwi.fin.attraction.model.vo.ReviewPagination" alias="ReviewPagination" />
+    	<typeAlias type="com.wtwi.fin.attraction.model.vo.ReviewImage" alias="ReviewImage" />
     	
-		<typeAlias type="com.wtwi.fin.attraction.model.vo.ReviewImage" alias="ReviewImage" />
 		
 		<typeAlias type="com.wtwi.fin.attraction.model.vo.Attraction" alias="Attraction" />
     
@@ -52,6 +54,8 @@
 
 		<mapper resource="/mappers/member-mapper.xml"/>
 		<mapper resource="/mappers/myPage-mapper.xml"/>
+		
+		<mapper resource="/mappers/review-mapper.xml"/>
     
    	<mapper resource="/mappers/chat-mapper.xml" />
    	

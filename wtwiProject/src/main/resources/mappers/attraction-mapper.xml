@@ -30,7 +30,25 @@
 		 							VALUES (#{attr.attractionNo}, #{attr.attractionNm}, #{attr.latitude}, #{attr.longitude}, #{attr.attractionTypeNo})
 		 		</foreach>
  </insert>
-
+ 
+ 
+ <!-- 명소별 평균점수 구하기(준석) -->
+ <select id="getAvgPoint" parameterType="_int" resultType="_double">
+ 	SELECT NVL(AVG_POINT, 0)AVG_POINT
+		FROM(SELECT AVG(REVIEW_POINT) AVG_POINT FROM REVIEW
+     	WHERE ATTRACTION_NO = #{attractionNo}
+     	GROUP BY ATTRACTION_NO
+     
+     UNION ALL
+     
+     	SELECT NULL AVG_POINT
+     	FROM DUAL)
+     	WHERE AVG_POINT IS NOT NULL OR ROWNUM = 1
+ </select>
+ 
+ <select id="getReviewCount" parameterType="_int" resultType="_int">
+	SELECT COUNT(*) FROM REVIEW_LIST WHERE ATTRACTION_NO = #{attractionNo}
+ </select>
 	
   	
 </mapper>

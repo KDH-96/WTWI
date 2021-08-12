@@ -1,14 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Review</title>
 
 <style>
-/* 리뷰 리스트 조회 시작 */
 #select-review-wrapper {
+	background-color: whitesmoke;
 	right: 290px;
 	position: absolute;
 	z-index: 2;
@@ -16,127 +18,99 @@
 	border-radius: 5px;
 	opacity: 90%;
 	width: 400px;
+	height: 70vh;
+	overflow:scroll;
+	padding: 20px;
 }
 
-/* 별점 영역 시작 */
-#star {
-	margin-left: 25px;
+#reviewContent *{
+	font-size: 12px;
 }
-
-.star-rating {
-	display: flex;
-	flex-direction: row-reverse;
-	font-size: 15px;
-	line-height: 2.5rem;
-	justify-content: space-around;
-	padding: 0 0.2em;
-	text-align: center;
-	width: 5em;
-}
-
-.star-rating input {
-	display: none;
-}
-
-.star-rating label {
-	-webkit-text-fill-color: transparent;
-	/* Will override color (regardless of order) */
-	-webkit-text-stroke-width: 2.3px;
-	-webkit-text-stroke-color: darkg;
-	cursor: pointer;
-}
-
-.star-rating :checked ~label {
-	-webkit-text-fill-color: gold;
-}
-
-.star-rating label:hover, .star-rating label:hover ~label {
-	-webkit-text-fill-color: #fff58c;
-}
-
-input[name="reting"] {
-	margin: 0;
-}
-
-/* 별점 영역 끝 */
-
-/* 리뷰 리스트 조회 끝 */
 </style>
 
-
 </head>
-<!-- 
 <body>
 	<div id="select-review-wrapper">
-		<div class="card">
-			<div>
-				<span style="line-height: 50px; font-size: 20px; margin-left: 15px;">리뷰
-					리스트 조회</span>
-			</div>
-			<ul>
-				별점 영역 시작
-				<div class="star-rating space-x-4 mx-auto">
-					<input type="radio" id="5-stars" name="rating" value="5"
-						v-model="ratings" /> <label for="5-stars" class="star pr-4">★</label>
-					<input type="radio" id="4-stars" name="rating" value="4"
-						v-model="ratings" /> <label for="4-stars" class="star">★</label>
-					<input type="radio" id="3-stars" name="rating" value="3"
-						v-model="ratings" /> <label for="3-stars" class="star">★</label>
-					<input type="radio" id="2-stars" name="rating" value="2"
-						v-model="ratings" /> <label for="2-stars" class="star">★</label>
-					<input type="radio" id="1-star" name="rating" value="1"
-						v-model="ratings" /> <label for="1-star" class="star" id="star">★</label>
-				</div>
-				별점 영역 끝
-				<li class="reply-row">
-					<div>
-						<p class="rWriter">닉네임 자리</p>
-						<p class="rDate">작성일자리 :</p>
-					</div>
-					<div>사진 첨부 영역</div>
-					<p class="rContent">댓글 내용 자리</p>
-				</li>
-			</ul>
-		</div>
+		<div id="reviewContent"></div>	
+	
+		<hr>
+		
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+	
+				<li class="disabled"><a><<</a></li>
+				
+				<li class="disabled"><a><</a></li>
+				
+				<li class="disabled active"><a>1</a></li>
+				
+				<li class="goPage" data-page="2"><a>2</a></li>
+				
+				<li class="goPage" data-page="3"><a>3</a></li>
+				
+				<li class="disabled"><a>></a></li>
+				
+				<li class="goLastPage"><a>>></a></li>
+				
+			</ul> 
+		</nav>
 	</div>
- -->
 	<script>
-	/* 
-	function selectReviewList(){
+	// 리뷰목록 조회하는 메소드
+	function selectReviewList() {
 		
 		$.ajax({
-			url : "${contextPath}/review/list",
-			data : selectedMarker,
-			type : "POST",
-			dataType : "JSON",
-			success : function(rList){
-				console.log(rList);
+			url : "${contextPath}/review/" + selectedMarker + "/list",
+			data : {
+				"selectedMarker" : selectedMarker
+			},
+			type : "GET" ,
+			success : function(pgReviewList) {
+				console.log("통신 성공!");
+								
+				reviewPagination = pgReviewList[0]; // 배열[0]에 들어있는 pagination관련 정보 변수저장
+				reviewList = pgReviewList[1]; // 배열[1]에 들어있는 리뷰 정보 변수저장
 				
+				$("#reviewContent").empty(); // 리뷰 삽입될 객체 비우기
 				
+				if(reviewList.length == 0) { // 선택한 명소에 리뷰가 없을 경우
+					$("#reviewContent").append("<td colspan=20 style='padding:30px;'> 리뷰가 없습니다. </td>");
+					
+				}else{
+						
+					for(let i=0; i<reviewList.length; i++) {
+						
+						let star;
+						
+						$("#reviewContent").append("<hr style='margin:0;'>");
+						
+						switch(reviewList[i].reviewPoint){
+						case 1: star = "★☆☆☆☆"; break;
+						case 2: star = "★★☆☆☆"; break;
+						case 3: star = "★★★☆☆"; break;
+						case 4: star = "★★★★☆"; break;
+						case 5: star = "★★★★★"; break;
+						}
+						
+						$("#reviewContent").append("<hr style='margin:0;'>");
+						$("#reviewContent").append("<span style='padding:0px; color:orange;'>" + star + " " + "</span>");
+						$("#reviewContent").append("<span style='padding:0px;'>" + reviewList[i].memberNick + " " + "</span>");
+						$("#reviewContent").append("<span style='padding:0px;'>" + reviewList[i].reviewCreateDt + "</span>");
+						$("#reviewContent").append("<div style='width:50px; height:50px; background-color:gray;'></div>");
+						$("#reviewContent").append("<span style='padding:0px;'>" + reviewList[i].reviewContent + "</span>");
+					}
+					
+				}
 				
 			},
-			error : function(){
-				console.log("리뷰 목록 조회 실패");	
-				
+			error : function() {
+				console.log("리뷰 목록 조회 실패");
+
 			}
-			
+
 		})
-		
-		
-		
-		
-	 */	
-		
-		
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
 	</script>
 
 </body>
