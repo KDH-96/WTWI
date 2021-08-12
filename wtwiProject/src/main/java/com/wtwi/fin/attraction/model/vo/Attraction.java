@@ -214,8 +214,8 @@ public class Attraction {
 
 
 
-	@Override
-	public String toString() {
+	
+	public String toString2() {
 		return "Attraction [attractionAddr=" + attractionAddr + ", addr2=" + addr2 + ", areacode=" + areacode
 				+ ", booktour=" + booktour + ", cat1=" + cat1 + ", cat2=" + cat2 + ", cat3=" + cat3 + ", attractionNo="
 				+ attractionNo + ", attractionTypeNo=" + attractionTypeNo + ", createdTime=" + createdTime
@@ -232,8 +232,8 @@ public class Attraction {
 
 
 
-
-	public String toString2() {
+	@Override
+	public String toString() {
 		
 		JsonObject jsonObj = new JsonObject();
 		jsonObj.addProperty("attractionAddr", attractionAddr);

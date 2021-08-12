@@ -28,6 +28,18 @@
 	
 	
     <style>
+    		/*글꼴추가 0812*/
+	    	@font-face {
+	         font-family: 'NEXON Lv1 Gothic OTF';
+	         src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+	         font-weight: normal;
+	         font-style: normal;
+	      }
+	      body * {
+	         font-family: 'NEXON Lv1 Gothic OTF';
+	      }
+	      /*글꼴 끝*/
+	      
         /* 헤더 영역 시작 */
         header {
             height: 150px;
