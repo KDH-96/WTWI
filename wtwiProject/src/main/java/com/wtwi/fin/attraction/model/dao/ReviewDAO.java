@@ -41,5 +41,14 @@ public class ReviewDAO {
 		return sqlSession.selectList("reviewMapper.selectReviewList", reviewPagination.getAttractionNo(), rowBounds);
 	}
 
+
+	/** 리뷰 삽입
+	 * @param insertReview
+	 * @return result
+	 */
+	public int insertReview(Review insertReview) {
+		return sqlSession.insert("reviewMapper.insertReview", insertReview);
+	}
+
 	
 }

@@ -9,7 +9,7 @@ public class Review {
 	private double reviewPoint;
 	private String reviewContent;
 	private Date reviewCreateDt;
-	private int AttractionNo;
+	private int attractionNo;
 	private int memberNo;
 	private String memberNick;
 	private List<ReviewImage> atList;
@@ -23,7 +23,7 @@ public class Review {
 		this.reviewPoint = reviewPoint;
 		this.reviewContent = reviewContent;
 		this.reviewCreateDt = reviewCreateDt;
-		AttractionNo = attractionNo;
+		this.attractionNo = attractionNo;
 		this.memberNo = memberNo;
 		this.memberNick = memberNick;
 		this.atList = atList;
@@ -62,11 +62,11 @@ public class Review {
 	}
 
 	public int getAttractionNo() {
-		return AttractionNo;
+		return attractionNo;
 	}
 
 	public void setAttractionNo(int attractionNo) {
-		AttractionNo = attractionNo;
+		this.attractionNo = attractionNo;
 	}
 
 	public int getMemberNo() {
@@ -76,7 +76,6 @@ public class Review {
 	public void setMemberNo(int memberNo) {
 		this.memberNo = memberNo;
 	}
-	
 
 	public String getMemberNick() {
 		return memberNick;
@@ -97,7 +96,7 @@ public class Review {
 	@Override
 	public String toString() {
 		return "Review [reviewNo=" + reviewNo + ", reviewPoint=" + reviewPoint + ", reviewContent=" + reviewContent
-				+ ", reviewCreateDt=" + reviewCreateDt + ", AttractionNo=" + AttractionNo + ", memberNo=" + memberNo
+				+ ", reviewCreateDt=" + reviewCreateDt + ", attractionNo=" + attractionNo + ", memberNo=" + memberNo
 				+ ", memberNick=" + memberNick + ", atList=" + atList + "]";
 	}
 

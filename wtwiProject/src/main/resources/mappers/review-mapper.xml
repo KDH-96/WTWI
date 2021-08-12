@@ -9,7 +9,7 @@
 		<result property="reviewPoint" column="REVIEW_POINT"/>
 		<result property="reviewContent" column="REVIEW_CONTENT"/>
 		<result property="reviewCreateDt" column="REVIEW_CREATE_DT"/>
-		<result property="AttractionNo" column="ATTRACTION_NO"/>
+		<result property="attractionNo" column="ATTRACTION_NO"/>
 		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="memberNick" column="MEMBER_NICK"/>
 		<!-- 리뷰 이미지 첨부 -->
@@ -43,5 +43,9 @@
 	</select>
 	
 	
-	
+	<!-- 리뷰 삽입 -->
+	<insert id="insertReview" parameterType="Review">
+		INSERT INTO REVIEW VALUES
+		(SEQ_RNO.NEXTVAL, #{reviewPoint}, #{reviewContent}, DEFAULT, DEFAULT, #{attractionNo}, #{memberNo})
+	</insert>
 </mapper>
