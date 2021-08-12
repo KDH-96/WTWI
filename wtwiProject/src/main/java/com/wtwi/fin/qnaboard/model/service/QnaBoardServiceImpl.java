@@ -155,6 +155,7 @@ public class QnaBoardServiceImpl implements QnaBoardService{
 		return dao.deleteBoard(qnaNo);
 	}
 
+	
 	// 게시글 이전 이후 조회 (관리자)
 	@Override
 	public QnaBoard selectqnaPreBoard(int preNo) {
@@ -170,6 +171,7 @@ public class QnaBoardServiceImpl implements QnaBoardService{
 		
 	}
 
+	
 	// 게시글 이전 이후 조회 (회원)
 	@Override
 	public QnaBoard selectqnaPreBoard1(QnaBoard board1) {
@@ -183,6 +185,8 @@ public class QnaBoardServiceImpl implements QnaBoardService{
 		return qnaBoard;
 	}
 
+	
+	// 게시글 이전 이후 조회(비회원)
 	@Override
 	public QnaBoard selectqnaPreBoard2(int qnaNo) {
 		return dao.selectPreBoard2(qnaNo);

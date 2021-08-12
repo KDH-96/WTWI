@@ -189,6 +189,7 @@
 		WHERE QNA_NO = #{qnaNo}
 	</update>
 	
+	
 	<!-- 관리자의 경우  -->
  	<select id="selectPreBoard" parameterType="_int" resultMap="qna_rm">
 	 SELECT A.*
@@ -206,6 +207,7 @@
 
 	</select>
 
+
 	<!-- 회원의 경우  -->
  	<select id="selectPreBoard1" parameterType="QnaBoard" resultMap="qna_rm">
 	 SELECT A.*
@@ -222,6 +224,7 @@
     )A
     WHERE A.QNA_NO = #{qnaNo}
 	</select>
+	
 	
 	<!-- 비회원인의 경우  -->
  	<select id="selectPreBoard2" parameterType="_int" resultMap="qna_rm">

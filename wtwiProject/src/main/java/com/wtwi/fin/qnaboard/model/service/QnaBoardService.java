@@ -82,18 +82,21 @@ public interface QnaBoardService {
 	 */
 	int deleteBoard(int qnaNo);
 
+	
 	/** 게시글 이전 이후 조회(관리자)
 	 * @param preNo
 	 * @return
 	 */
 	QnaBoard selectqnaPreBoard(int preNo);
 
+	
 	/** 게시글 이전 이후 조회(회원)
 	 * @param board1
 	 * @return 
 	 */
 	QnaBoard selectqnaPreBoard1(QnaBoard board1);
 
+	
 	/** 게시글 이전 이후 조회(비회)
 	 * @param preNo
 	 * @return
