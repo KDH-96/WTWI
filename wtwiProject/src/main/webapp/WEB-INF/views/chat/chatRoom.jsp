@@ -110,7 +110,7 @@
         </div>
     </div>
     <div class="mt-3">
-        <button class="btn btn-outline-secondary" onclick="">돌아가기</button>
+        <button class="btn btn-outline-secondary" onclick="location.href='${contextPath}/myPage/chat';">돌아가기</button>
     </div>
 </div>
 <!-- footer include -->
