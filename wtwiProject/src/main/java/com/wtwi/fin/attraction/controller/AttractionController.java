@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -65,80 +67,24 @@ public class AttractionController {
    int attractionNo = 0;
 
    /***
-    * 명소 목록 조회
+    * 명소 목록 조회 
+    * 1) 위치기반
+    * 2) 드롭다운
+    * 3) 검색어
     ***************************************************************************************************/
    @RequestMapping(value = "list", method = RequestMethod.GET)
    public String attractionList(Search search, Model model, Pagination pg, @RequestParam(value="cp" , required=false , defaultValue="1" ) int cp) {
-
+/*
       System.out.println("컨트롤러 첫줄에서 keyword가 있는지 확인 : " + search.getKeyword());
       System.out.println("컨트롤러 첫줄에서 contentType가 있는지 확인 : " + search.getContentType());
       System.out.println("컨트롤러 첫줄에서 areaCode가 있는지 확인 : " + search.getAreaCode());
-      
-
+*/
       Gson gson = new Gson();
 
       // 검색어가 없는 경우 -> 위치기반으로 내 주의 반경 radius미터의 명소 조회
-      if (search.getKeyword() == null) { // 검색 하지 않았을 때
+      if (search.getKeyword() == null) {
     	  
-    	  if(search.getAreaCode() != null) { // 드롭다운을 썼을 때
-    		   
-		      int contentType = Integer.parseInt(search.getContentType());
-		      int areaCode = Integer.parseInt(search.getAreaCode());
-
-		      String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList";
-		      String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
-		      String MobileApp = "WhereTheWeatherIs";
-		      String type = "json";
-		      String arrange = "P";
-		      int numOfRows = 12;
-		      // int pageNo = 1;
-
-		      /*
-		       * http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode
-		       * ?serviceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%
-		       * 2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D
-		       * &numOfRows=12 &pageNo=1 &MobileOS=ETC &MobileApp=AppTest &areaCode=1
-		       */
-
-		      String req = url + "?ServiceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&pageNo=" + cp + "&contentTypeId=" + contentType
-		            + "&areaCode=" + areaCode + "&listYN=Y&MobileOS=ETC" + "&MobileApp=" + MobileApp + "&arrange=" + arrange
-		            +
-		            // "&pageNo=" + pageNo +
-		            "&_type=" + type;
-
-		      String result = makingResult(req);
-
-		      JsonObject convertedObj = gson.fromJson(result.toString(), JsonObject.class);
-		      JsonObject response = gson.fromJson(convertedObj.get("response").toString(), JsonObject.class);
-		      JsonObject body = gson.fromJson(response.get("body").toString(), JsonObject.class);
-		      JsonObject items = gson.fromJson(body.get("items").toString(), JsonObject.class);
-		      JsonArray item = items.get("item").getAsJsonArray();
-		      int totalCount = Integer.parseInt(body.get("totalCount").toString().replaceAll("\"", ""));
-
-		      List<Attraction> attrList = new ArrayList<Attraction>();
-
-		      Attraction attr = null;
-
-		      for (int i = 0; i < item.size(); i++) { // {k:v,k:v..} 하나에 접근 (명소 하나 하나에 접근한다)
-
-		         JsonObject jobj = (JsonObject) item.get(i);
-
-		         attr = new Attraction();
-		         Set<String> itemKeys = jobj.keySet();
-		      
-		         for (String key : itemKeys) { // 모든 키에 접근을 해서
-
-		            attr = makingAttr(key, jobj, attr);
-		         }
-		         attrList.add(attr);
-		      }
-
-		      pg = new Pagination(cp,totalCount);
-		      model.addAttribute("pagination", pg);
-		      model.addAttribute("attrList", attrList);
-		      return "attraction/attractionList";
-    	  }
-    	  else { // 위치기반
+    	  if(search.getAreaCode() == null) { // 1) 기본 : 위치기반
     		  /*
     		   * http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList
     		   * ?serviceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%
@@ -162,8 +108,13 @@ public class AttractionController {
     				  + "&numOfRows=12" 
     				  + "&pageNo=" + cp
     				  + "&MobileOS=" + MobileOS + "&MobileApp=" + MobileApp
-    				  + "&arrange=" + arrange + "&contentTypeId=12&14" + "&mapX=" + longitude + "&mapY=" + latitude + "&radius=" + radius
-    				  + "&listYN=Y" + "&_type=" + type;
+    				  + "&arrange=" + arrange 
+    				  + "&contentTypeId=12&14" 
+    				  + "&mapX=" + longitude 
+    				  + "&mapY=" + latitude 
+    				  + "&radius=" + radius
+    				  + "&listYN=Y" 
+    				  + "&_type=" + type;
     		  
     		  String result = makingResult(req);
     		  
@@ -200,9 +151,73 @@ public class AttractionController {
     		  model.addAttribute("attrList", attrList);
     		  
     		  return "attraction/attractionList";
+    		   
+    	  }
+    	  else { // 2) 드롭다운
+		      int contentType = Integer.parseInt(search.getContentType());
+		      int areaCode = Integer.parseInt(search.getAreaCode());
+
+		      String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList";
+		      String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+		      String MobileApp = "WhereTheWeatherIs";
+		      String type = "json";
+		      String arrange = "P";
+		      int numOfRows = 12;
+		      // int pageNo = 1;
+
+		      /*
+		       * http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode
+		       * ?serviceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%
+		       * 2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D
+		       * &numOfRows=12 &pageNo=1 &MobileOS=ETC &MobileApp=AppTest &areaCode=1
+		       */
+
+		      String req = url 
+		    		  + "?ServiceKey=" + serviceKey 
+		    		  + "&numOfRows=" + numOfRows 
+		    		  + "&pageNo=" + cp 
+		    		  + "&contentTypeId=" + contentType
+		    		  + "&areaCode=" + areaCode 
+		    		  + "&listYN=Y&MobileOS=ETC" 
+		    		  + "&MobileApp=" + MobileApp 
+		    		  + "&arrange=" + arrange
+		    		  // + "&pageNo=" + pageNo
+		    		  + "&_type=" + type;
+
+		      String result = makingResult(req);
+
+		      JsonObject convertedObj = gson.fromJson(result.toString(), JsonObject.class);
+		      JsonObject response = gson.fromJson(convertedObj.get("response").toString(), JsonObject.class);
+		      JsonObject body = gson.fromJson(response.get("body").toString(), JsonObject.class);
+		      JsonObject items = gson.fromJson(body.get("items").toString(), JsonObject.class);
+		      JsonArray item = items.get("item").getAsJsonArray();
+		      int totalCount = Integer.parseInt(body.get("totalCount").toString().replaceAll("\"", ""));
+
+		      List<Attraction> attrList = new ArrayList<Attraction>();
+
+		      Attraction attr = null;
+
+		      for (int i = 0; i < item.size(); i++) { // {k:v,k:v..} 하나에 접근 (명소 하나 하나에 접근한다)
+
+		         JsonObject jobj = (JsonObject) item.get(i);
+
+		         attr = new Attraction();
+		         Set<String> itemKeys = jobj.keySet();
+		         init();
+		         for (String key : itemKeys) { // 모든 키에 접근을 해서
+
+		            attr = makingAttr(key, jobj, attr);
+		         }
+		         attrList.add(attr);
+		      }
+
+		      pg = new Pagination(cp,totalCount);
+		      model.addAttribute("pagination", pg);
+		      model.addAttribute("attrList", attrList);
+		      return "attraction/attractionList";
     	  }
 
-      } else { // 검색 했을 때
+      } else { // 3) 검색
 
          int attractionNo = 0;
          /*
@@ -212,7 +227,6 @@ public class AttractionController {
           * &MobileApp=AppTest &MobileOS=ETC &listYN=Y &arrange=A
           * &keyword=%EA%B0%95%EC%9B%90
           */
-         System.out.println(search.getKeyword());
          
          String keyword = null;
          
@@ -234,7 +248,6 @@ public class AttractionController {
 				  + "&pageNo=" + cp + "&MobileApp=" + MobileApp + "&MobileOS=" + MobileOS
                + "&listYN=Y" + "&arrange=" + arrange + "&keyword=" + keyword + "&_type=" + type;
 
-         // 만들어진 req를 가지고 api에서 결과 가져오기
          String result = makingResult(req);
 
          JsonObject convertedObj = gson.fromJson(result.toString(), JsonObject.class);
@@ -248,33 +261,22 @@ public class AttractionController {
 
          Attraction attr = null;
 
-//         for (JsonElement obj : item) { // {k:v,k:v..} 하나에 접근 (명소 하나 하나에 접근한다)
          for (int i = 0; i < item.size(); i++) { // {k:v,k:v..} 하나에 접근 (명소 하나 하나에 접근한다)
-            // item에는 {k:v,k:v..}{k:v,k:v..}{k:v,k:v..}{k:v,k:v..}.. 이렇게 담겨 있고
-            // {k:v,k:v..} 이거는 하나의 JsonElement
 
             JsonObject jobj = (JsonObject) item.get(i);
-            // JsonElement 타입을 JsonObject 타입의 jobj에 담음.
-            // jobj에 담긴 것 : {k:v,k:v..} 즉, 명소 한 개의 형태.
 
             attr = new Attraction();
             Set<String> itemKeys = jobj.keySet();
-            // 명소 1개에 있는 모든 key들을 itemKeys에 저장
-            for (String key : itemKeys) { // 모든 키에 접근을 해서
 
-               // key에따라 형변환하여 알맞은 변수에 대입
+            for (String key : itemKeys) {
                attr = makingAttr(key, jobj, attr);
             }
-            // 여기까지 하면 attr 객체 하나 완성 == 명소 하나 완성
-            // System.out.println("attrList" + attrList);
             attrList.add(attr);
          }
 
          pg = new Pagination(cp,totalCount);
          model.addAttribute("pagination", pg);
-
          model.addAttribute("attrList", attrList);
-
          return "attraction/attractionList";
 
       }
@@ -349,84 +351,7 @@ public class AttractionController {
          return jsonFile;
 
       }
-   
-   
 
-   /***
-    * 드롭 다운 이용
-    ***************************************************************************************************/
-   @RequestMapping("find/area")
-   public String attractionListView(Model model, Pagination pg, String contentTypeS, String areaCodes, @RequestParam(value="cp" , required=false , defaultValue="1" ) int cp) {
-
-	   Gson gson = new Gson();
-	   
-      int contentType = Integer.parseInt(contentTypeS);
-      int areaCode = Integer.parseInt(areaCodes);
-
-      String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList";
-      String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
-      String MobileApp = "WhereTheWeatherIs";
-      String type = "json";
-      String arrange = "P";
-      int numOfRows = 12;
-      // int pageNo = 1;
-
-      /*
-       * http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode
-       * ?serviceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%
-       * 2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D
-       * &numOfRows=12 &pageNo=1 &MobileOS=ETC &MobileApp=AppTest &areaCode=1
-       */
-
-      String req = url + "?ServiceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&contentTypeId=" + contentType
-            + "&areaCode=" + areaCode + "&listYN=Y&MobileOS=ETC" + "&MobileApp=" + MobileApp + "&arrange=" + arrange
-            +
-            // "&pageNo=" + pageNo +
-            "&_type=" + type;
-
-      String result = makingResult(req);
-
-      JsonObject convertedObj = gson.fromJson(result.toString(), JsonObject.class);
-      JsonObject response = gson.fromJson(convertedObj.get("response").toString(), JsonObject.class);
-      JsonObject body = gson.fromJson(response.get("body").toString(), JsonObject.class);
-      JsonObject items = gson.fromJson(body.get("items").toString(), JsonObject.class);
-      JsonArray item = items.get("item").getAsJsonArray();
-      int totalCount = Integer.parseInt(body.get("totalCount").toString().replaceAll("\"", ""));
-
-      List<Attraction> attrList = new ArrayList<Attraction>();
-
-      Attraction attr = null;
-
-//      for (JsonElement obj : item) { // {k:v,k:v..} 하나에 접근 (명소 하나 하나에 접근한다)
-      for (int i = 0; i < item.size(); i++) { // {k:v,k:v..} 하나에 접근 (명소 하나 하나에 접근한다)
-         // item에는 {k:v,k:v..}{k:v,k:v..}{k:v,k:v..}{k:v,k:v..}.. 이렇게 담겨 있고
-         // {k:v,k:v..} 이거는 하나의 JsonElement
-
-         JsonObject jobj = (JsonObject) item.get(i);
-         // JsonElement 타입을 JsonObject 타입의 jobj에 담음.
-         // jobj에 담긴 것 : {k:v,k:v..} 즉, 명소 한 개의 형태.
-
-         attr = new Attraction();
-         Set<String> itemKeys = jobj.keySet();
-         // 명소 1개에 있는 모든 key들을 itemKeys에 저장
-         for (String key : itemKeys) { // 모든 키에 접근을 해서
-
-            // key에따라 형변환하여 알맞은 변수에 대입
-            attr = makingAttr(key, jobj, attr);
-         }
-         // 여기까지 하면 attr 객체 하나 완성 == 명소 하나 완성
-         // System.out.println("attrList" + attrList);
-         attrList.add(attr);
-      }
-
-      pg = new Pagination(cp,totalCount);
-      model.addAttribute("pagination", pg);
-
-      model.addAttribute("attrList", attrList);
-
-      return "attraction/attractionList";
-
-   }
 
    /**** 상세 조회 ***************************************************************************************************/
    @RequestMapping(value = "view/{contentid}", method = RequestMethod.GET)
@@ -478,6 +403,7 @@ public class AttractionController {
 
       Set<String> itemKeys = item.keySet(); // 키들을 set에 담기
 
+      
       for (String key : itemKeys) {
 
          System.out.println(key + " : " + item.get(key)); // k : v 형태로 출력
@@ -485,17 +411,107 @@ public class AttractionController {
          // key에따라 형변환하여 알맞은 변수에 대입
          attr = makingAttr(key, item, attr);
       }
+      
+      try {
+		String attraction = new ObjectMapper().writeValueAsString(attr);
+		model.addAttribute("attraction", attraction);
 
-      model.addAttribute("attr", attr);
+      } catch (JsonProcessingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+      }
+      
+      model.addAttribute("attr" , attr);
+
+      //*********************************************상세조회한 명소 반경 5키로 미터의 다른 명소들 20개 -> 상세조회 지도에 뿌릴 것
+
+	  String url2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList";
+	  String serviceKey2 = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+	  String MobileOS2 = "ETC";
+	  String MobileApp2 = "WhereTheWeatherIs";
+	  String arrange2 = "E"; // 가까운 거리부터 정렬
+	  double longitude = attr.getLatitude();
+	  double latitude = attr.getLongitude();
+	  int radius = 5000; // (거리반경, max 20000m)
+	  String type2 = "json";
+	  
+	  String req2 = url2 + "?ServiceKey=" + serviceKey2 
+			  + "&numOfRows=20" 
+			  + "&MobileOS=" + MobileOS2 + "&MobileApp=" + MobileApp2
+			  + "&arrange=" + arrange2 
+			  + "&contentTypeId=12&14" 
+			  + "&mapX=" + longitude 
+			  + "&mapY=" + latitude 
+			  + "&radius=" + radius
+			  + "&listYN=Y" 
+			  + "&_type=" + type;
+	  
+	  String result2 = makingResult(req2);
+	  
+	  JsonObject convertedObj2 = new Gson().fromJson(result2.toString(), JsonObject.class);
+	  JsonObject response2 = new Gson().fromJson(convertedObj2.get("response").toString(), JsonObject.class);
+	  JsonObject body2 = new Gson().fromJson(response2.get("body").toString(), JsonObject.class);
+	  JsonObject items2 = new Gson().fromJson(body2.get("items").toString(), JsonObject.class);
+	  JsonArray item2 = items2.get("item").getAsJsonArray();
+	  int totalCount2 = Integer.parseInt(body.get("totalCount").toString().replaceAll("\"", ""));
+	  
+	  System.out.println("결과 : " + result2);
+	  System.out.println("몸 : " + body2);
+	  System.out.println("총 개수 : " + totalCount2);
+	  
+	  List<Attraction> attrList = new ArrayList<Attraction>();
+	  
+	  Attraction attr2 = null;
+	  
+	  for (int i = 0; i < item2.size(); i++) { // {k:v,k:v..} 하나에 접근 (명소 하나 하나에 접근한다)
+		  
+		  JsonObject jobj2 = (JsonObject) item2.get(i);
+		  
+		  attr2 = new Attraction();
+		  Set<String> itemKeys2 = jobj2.keySet();
+
+		  for (String key : itemKeys2) { // 모든 키에 접근을 해서
+			  attr2 = makingAttr(key, jobj2, attr2);
+		  }
+		  attrList.add(attr2);
+	  }
+	  model.addAttribute("radius" , radius);
+/*	  
+      try {
+    	  // 여기부분 수정 필요(위치기반 연습한거에 선생님이 해준것 있음)
+		List attrList = new ObjectMapper().writeValueAsString(attrList);
+		model.addAttribute("attrList", attrList);
+
+      } catch (JsonProcessingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+      }
+  */    
+	  Gson gson = new GsonBuilder().create();
+	  String json = gson.toJson(attrList);
+
+	  System.out.println(attrList);
+
+	  
+	  model.addAttribute("attrList", attrList);
+      
+      //*********************************************
+      
+      
+      
+      
+      
+      
       return "attraction/attractionView";
 
    }
 
    /**** 상세 조회 : 메인(준석) *********************************************************************************************/
-   @RequestMapping(value = "view/{contentid}", method = RequestMethod.POST)
+   @RequestMapping(value = "view/{selectedMarker}", method = RequestMethod.POST)
    @ResponseBody
-   public String attractionSelectView(@PathVariable("contentid") int attractionNo, @ModelAttribute Attraction attr) {
-
+   public String attractionSelectView(@PathVariable("selectedMarker") int attractionNo, @ModelAttribute Attraction attr) {
+      
+      
       String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon";
       String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
       String MobileOS = "ETC";
@@ -539,7 +555,17 @@ public class AttractionController {
 
       // 받아오지 못하는 경우가 있기 때문에 필드 기본값을 지정
       // attraction의 PK인 attractionNo은 파라미터로 받아옴
-
+      
+      // 명소별 평균점수
+      double avgPoint = service.getAvgPoint(attractionNo);
+      attr.setAvgPoint(avgPoint);
+      
+      // 명소별 총 리뷰 수
+      int totalReviewCount = service.getReviewCount(attractionNo);
+      attr.setTotalReviewCount(totalReviewCount);
+      
+      
+      // 명소별 평균점수도 담기!!!!!!!!!!!
       Set<String> itemKeys = item.keySet(); // 키들을 set에 담기
 
       for (String key : itemKeys) {
@@ -547,7 +573,7 @@ public class AttractionController {
          attr = makingAttr(key, item, attr);
 
       }
-
+      
       ObjectMapper mapper = new ObjectMapper();
       String jsonString = null;
       try {
@@ -556,6 +582,8 @@ public class AttractionController {
       } catch (Exception e) {
          e.printStackTrace();
       }
+      
+      
 
       System.out.println(jsonString);
 
@@ -607,12 +635,14 @@ public class AttractionController {
 
          attr = new Attraction();
          Set<String> itemKeys = jobj.keySet();
-
+         //init();
+         attractionPhoto = null;
+         
          for (String key : itemKeys) { // 모든 키에 접근을 해서
 
             attr = makingAttr(key, jobj, attr);
          }
-
+         
          attrList.add(attr);
       }
       int successNo = service.insertAttrList(attrList);
@@ -652,6 +682,8 @@ public class AttractionController {
    // attraction 객체 만들기
    public Attraction makingAttr(String key, JsonObject jobj, Attraction attr) {
 
+	  
+	   
          switch(key) { 
           case "addr1" : attractionAddr =jobj.get(key).toString().replaceAll("\"", ""); break; 
           case "addr2" : addr2 = jobj.get(key).toString().replaceAll("\"", ""); break; 
@@ -709,6 +741,36 @@ public class AttractionController {
 
       return attr;
 
+   }
+   
+   public void init() {
+	   
+	   attractionAddr = null; // addr1
+	   addr2 = null;
+	   areacode = 0;
+	   booktour = 0;
+	   cat1 = null;
+	   cat2 = null;
+	   cat3 = null;
+	   attractionTypeNo = 0; // contenttypeid
+	   createdTime = 0;
+	   attractionPhoto = null; // firstimage
+	   attractionPhoto2 = null; // firstimage2
+	   attractionHomePage = null; // homepage
+	   latitude = 0; // mapx
+	   longitude = 0; // mapy
+	   mLevel = 0;
+	   modifiedTime = 0;
+	   attractionInfo = null; // overview
+	   readCount = 0;
+	   sigunguCode = 0;
+	   attractionPhone = null; // tel
+	   attractionNm = null; // title
+	   zipCode = null;
+	   eventStartDate = 0;
+	   eventEndDate = 0;
+	   attractionNo = 0;
+	   
    }
 
 }

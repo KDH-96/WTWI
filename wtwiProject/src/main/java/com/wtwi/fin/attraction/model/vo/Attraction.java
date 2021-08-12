@@ -1,5 +1,8 @@
 package com.wtwi.fin.attraction.model.vo;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 public class Attraction {
 	
 	private String attractionAddr; // addr1
@@ -25,14 +28,15 @@ public class Attraction {
 	private String attractionPhone; // tel
 	private String attractionNm; // title
 	private String zipCode;
-
 	// 행사
 	private int eventStartDate;
 	private int eventEndDate;
 	
-	
-	
-	
+	// 평점용 필드(준석)
+	private double avgPoint;
+	// 리뷰수 필드(준석)
+	private int totalReviewCount;
+
 	
 	public Attraction() {
 		// TODO Auto-generated constructor stub
@@ -193,7 +197,18 @@ public class Attraction {
 	public void setEventEndDate(int eventEndDate) {
 		this.eventEndDate = eventEndDate;
 	}
-
+	public double getAvgPoint() {
+		return avgPoint;
+	}
+	public void setAvgPoint(double avgPoint) {
+		this.avgPoint = avgPoint;
+	}
+	public int getTotalReviewCount() {
+		return totalReviewCount;
+	}
+	public void setTotalReviewCount(int totalReviewCount) {
+		this.totalReviewCount = totalReviewCount;
+	}
 
 
 
@@ -205,16 +220,52 @@ public class Attraction {
 				+ ", booktour=" + booktour + ", cat1=" + cat1 + ", cat2=" + cat2 + ", cat3=" + cat3 + ", attractionNo="
 				+ attractionNo + ", attractionTypeNo=" + attractionTypeNo + ", createdTime=" + createdTime
 				+ ", attractionPhoto=" + attractionPhoto + ", attractionPhoto2=" + attractionPhoto2
-				+ ", attractionHomePage=" + attractionHomePage + ", latitude=" + latitude + ", longitude=" + longitude
+				+ ", attractionHomePage=" + attractionHomePage + ", longitude=" + longitude + ", latitude=" + latitude
 				+ ", mLevel=" + mLevel + ", modifiedTime=" + modifiedTime + ", attractionInfo=" + attractionInfo
 				+ ", readCount=" + readCount + ", sigunguCode=" + sigunguCode + ", attractionPhone=" + attractionPhone
 				+ ", attractionNm=" + attractionNm + ", zipCode=" + zipCode + ", eventStartDate=" + eventStartDate
-				+ ", eventEndDate=" + eventEndDate + "]";
-	} 
-	
-	
-	
+				+ ", eventEndDate=" + eventEndDate + ", avgPoint=" + avgPoint + ", totalReviewCount=" + totalReviewCount
+				+ "]";
+	}
 
+
+
+
+
+
+	public String toString2() {
+		
+		JsonObject jsonObj = new JsonObject();
+		jsonObj.addProperty("attractionAddr", attractionAddr);
+		jsonObj.addProperty("addr2", addr2);
+		jsonObj.addProperty("areacode", areacode);
+		jsonObj.addProperty("booktour", booktour);
+		jsonObj.addProperty("cat1", cat1);
+		jsonObj.addProperty("cat2", cat2);
+		jsonObj.addProperty("cat3", cat3);
+		jsonObj.addProperty("attractionNo", attractionNo);
+		jsonObj.addProperty("attractionTypeNo", attractionTypeNo);
+		jsonObj.addProperty("createdTime", createdTime);
+		jsonObj.addProperty("attractionPhoto", attractionPhoto);
+		jsonObj.addProperty("attractionPhoto2", attractionPhoto2);
+		jsonObj.addProperty("attractionHomePage", attractionHomePage);
+		jsonObj.addProperty("latitude", latitude);
+		jsonObj.addProperty("longitude", longitude);
+		jsonObj.addProperty("mLevel", mLevel);
+		jsonObj.addProperty("modifiedTime", modifiedTime);
+		jsonObj.addProperty("attractionInfo", attractionInfo);
+		jsonObj.addProperty("readCount", readCount);
+		jsonObj.addProperty("sigunguCode", sigunguCode);
+		jsonObj.addProperty("attractionPhone", attractionPhone);
+		jsonObj.addProperty("attractionNm", attractionNm);
+		jsonObj.addProperty("zipCode", zipCode);
+		jsonObj.addProperty("eventStartDate", eventStartDate);
+		jsonObj.addProperty("eventEndDate", eventEndDate);
+		
+		return new Gson().toJson(jsonObj);
+	
+	
+	}
 	
 
 

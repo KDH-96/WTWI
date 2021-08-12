@@ -28,65 +28,67 @@
          height: 100vh;
       }
       #searchArea{
-         width : 20%;
-         float : left;
+      	width : 20%;
+      	float : left;
       }
       #contentArea{
-         width : 80%;
-         float : right;
+      	width : 80%;
+      	float : right;
       }
       .col-sm{
-         text-align : left;
+      	text-align : left;
       }
       #dropdown-div{
-         margin-top : 100px;
+      	margin-top : 100px;
       }
-         select{
-            width: 150px;
-         }
-         option{
-            text-align : center;
-         }
-         .list-wrapper{
-            margin-top : 30px;
-         }
-         
-         
-         /* 미리보기 관련 */
-         #cardArea-div{
-            margin-top : 30px;
-            margin-buttom : 30px;
-         }
-         .card{
-         display: inline-block;
-         float : left;
-         width: 240px;
-         height : 220px;   
+			select{
+				width: 150px;
+			}
+			option{
+				text-align : center;
+			}
+			.list-wrapper{
+				margin-top : 30px;
+			}
+			
+			
+			/* 미리보기 관련 */
+			#cardArea-div{
+				margin-top : 30px;
+				margin-buttom : 30px;
+			}
+			.card{
+      	display: inline-block;
+      	float : left;
+      	width: 240px;
+      	height : 220px;   
       }
       .my-2{
-         display: inline-block;
+      	display: inline-block;
       }
       .list-class{
-         display: inline-block;
+      	display: inline-block;
       }
       .card-img-top{
-         width: 240px;
-         height : 170px;   
+      	width: 240px;
+      	height : 170px;   
       }
       .card-img-top:hover{
-         cursor : pointer;
+      	cursor : pointer;
       }
       .card-body{
-         width : 240px;
-         height : 30px;
+      	width : 240px;
+      	height : 30px;
       }
       .card-text{
-         text-align : center;
-         margin : auto;
-      }         
+      	text-align : center;
+      	margin : auto;
+      }			
       /* 페이지네이션 */
       #pagination-div{
-         display : inline-block;
+      	display : inline-block;
+      	margin-top : 20px;
+      	margin-left : 300px;
 
       }
       /* ------------------------------영역구분선------------------------------ */
@@ -100,52 +102,52 @@
       <!-- ===============================영역구분선=============================== -->
    <div id="contentContainer">
    
-         <!-- 검색 / 드롭다운 div -->
-         <div id="searchArea">
-                     <form action="list" method="GET">
-                          <div class="input-group mb-3" id="dropdown-div">
-                                <label class="input-group-text" for="inputGroupSelect01">지역</label>
-                                <select id="areaCode" name="areaCode" class="form-select" id="inputGroupSelect01">
-                                        <option value="1">서울</option>
-                                        <option value="2">인천</option>
-                                        <option value="3">대전</option>
-                                        <option value="4">대구</option>
-                                        <option value="5">광주</option>
-                                        <option value="6">부산</option>
-                                        <option value="7">울산</option>
-                                        <option value="8">세종</option>
-                                        <option value="31">경기</option>
-                                        <option value="32">강원</option>
-                                        <option value="33">충북</option>
-                                        <option value="34">충남</option>
-                                        <option value="35">전북</option>
-                                        <option value="36">전남</option>
-                                        <option value="37">경북</option>
-                                        <option value="38">경남</option>
-                                        <option value="39">제주</option>
-                                </select>
-                           </div>
-                           
-                           <div class="input-group mb-3">
-                                <label class="input-group-text" for="inputGroupSelect01">종류</label>
-                                <select id="contentType" name="contentType" class="form-select" id="inputGroupSelect01">
-                                        <option value="12">관광지</option>
-                                        <option value="14">문화시설</option>
-                                        <option value="15">축제/공연/행사</option>
-                                        <option value="25">여행코스</option>
-                                        <option value="28">레포츠</option>
-                                        <option value="32">숙박</option>
-                                        <option value="38">쇼핑</option>
-                                        <option value="39">음식</option>
-                                </select>
-                           </div>
-                         <button id="find-btn" class="btn btn-dark" style="width:100px; display: inline-block; background-color: black; border: black;">조회</button>
-                   </form>
-                   <br>
-                   
-                   <hr>
-                   
-                   <div class="my-2">
+   		<!-- 검색 / 드롭다운 div -->
+			<div id="searchArea">
+							<form action="list" method="GET">
+								  <div class="input-group mb-3" id="dropdown-div">
+										  <label class="input-group-text" for="inputGroupSelect01">지역</label>
+										  <select id="areaCode" name="areaCode" class="form-select" id="inputGroupSelect01">
+												 	<option value="1">서울</option>
+												 	<option value="2">인천</option>
+												 	<option value="3">대전</option>
+												 	<option value="4">대구</option>
+												 	<option value="5">광주</option>
+												 	<option value="6">부산</option>
+												 	<option value="7">울산</option>
+												 	<option value="8">세종</option>
+												 	<option value="31">경기</option>
+												 	<option value="32">강원</option>
+												 	<option value="33">충북</option>
+												 	<option value="34">충남</option>
+												 	<option value="35">전북</option>
+												 	<option value="36">전남</option>
+												 	<option value="37">경북</option>
+												 	<option value="38">경남</option>
+												 	<option value="39">제주</option>
+										  </select>
+									</div>
+									
+									<div class="input-group mb-3">
+										  <label class="input-group-text" for="inputGroupSelect01">종류</label>
+										  <select id="contentType" name="contentType" class="form-select" id="inputGroupSelect01">
+												 	<option value="12">관광지</option>
+												 	<option value="14">문화시설</option>
+												 	<option value="15">축제/공연/행사</option>
+												 	<option value="25">여행코스</option>
+												 	<option value="28">레포츠</option>
+												 	<option value="32">숙박</option>
+												 	<option value="38">쇼핑</option>
+												 	<option value="39">음식</option>
+										  </select>
+									</div>
+								 <button id="find-btn" class="btn btn-dark" style="width:100px; display: inline-block; background-color: black; border: black;">조회</button>
+						 </form>
+						 <br>
+						 
+						 <hr>
+						 
+						 <div class="my-2">
              <form action="list" method="GET" class="text-center" id="searchForm">
                <div class="container2">
                   <div class="row">
@@ -164,101 +166,108 @@
                </div>
              </form>
              </div>
-         </div>
+			</div>
+			
+			<!-- 오른쪽 지도 또는 명소가 보여질 div -->
+			<div id="contentArea">
+					<div class="list-wrapper">
          
-         <!-- 오른쪽 지도 또는 명소가 보여질 div -->
-         <div id="contentArea">
-               <div class="list-wrapper">
-         
-                  <%-- 지도 넣으려던 자리 --%>
-                  <div id="map-div">
-                        <h3>(종로어딘가-고정) 근처의 인기 명소입니다</h3>
-                  </div>
-                  
-                  <div id="cardArea-div">
-                     <c:choose>
-                        <%-- 조회된 근처 관광지 목록이 없는 경우 --%>
-                           <c:when test="${empty attrList}">
-                              <tr>
-                                 <td colspan="6">게시글이 존재하지 않습니다.</td>
-                              </tr>                        
-                           </c:when>
-                           <%-- 조회된 게시글 목록이 있을 경우 --%>
-                           <c:otherwise>
-                              <c:forEach items="${attrList}" var="attraction">
-                              <div class="card" id="${attraction.attractionNo}">
-                                 <img class="card-img-top" src ="${attraction.attractionPhoto}">
-                                 <div class="card-body">
-                                       <p class="card-text">${attraction.attractionNm}</p>
-                                 </div>   
-                              </div>
-                           </c:forEach>
-                           
-                           </c:otherwise>
-                     
-                     </c:choose>
-                  </div>
-                  
-                  <%-- 검색/조회 상태 유지를 위한 쿼리스트링용 변수 --%>
-                  <%-- 검색했을 경우 --%>
+						<%-- 지도 넣으려던 자리 --%>
+						<div id="map-div">
+								<h3>(종로어딘가-고정) 근처의 인기 명소입니다</h3>
+						</div>
+						
+						<div id="cardArea-div">
+							<c:choose>
+		         			<%-- 조회된 근처 관광지 목록이 없는 경우 --%>
+									<c:when test="${empty attrList}">
+										<tr>
+											<td colspan="6">게시글이 존재하지 않습니다.</td>
+										</tr>								
+									</c:when>
+									<%-- 조회된 게시글 목록이 있을 경우 --%>
+									<c:otherwise>
+										<c:forEach items="${attrList}" var="attraction">
+		         					<div class="card" id="${attraction.attractionNo}">
+		         						<c:choose>
+                             <c:when test = "${!empty attraction.attractionPhoto}">
+                                   <img class="card-img-top" src= "${attraction.attractionPhoto}">
+                             </c:when>
+                             <c:otherwise>
+                                   <img class="card-img-top" src="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg">
+                             </c:otherwise>
+                       </c:choose>
+				         				<div class="card-body">
+				         						<p class="card-text">${attraction.attractionNm}</p>
+				         				</div>	
+		         					</div>
+		         				</c:forEach>
+									
+									</c:otherwise>
+							
+							</c:choose>
+						</div>
+						
+						<%-- 검색/조회 상태 유지를 위한 쿼리스트링용 변수 --%>
+						<%-- 검색했을 경우 --%>
             <c:if test="${!empty param.keyword}">
-               <c:set var="searchKeyword" value="&keyword=${param.keyword}"/>
+            	<c:set var="searchKeyword" value="&keyword=${param.keyword}"/>
             </c:if>
             <%-- 드롭다운으로 조회 했을 경우 --%>
             <c:if test="${!empty param.areaCode}">
-                  <c:set var="searchArea" value="&areaCode=${param.areaCode}" />
-                  <c:set var="searchContentType" value="&contentType=${param.contentType}" />
+            		<c:set var="searchArea" value="&areaCode=${param.areaCode}" />
+            		<c:set var="searchContentType" value="&contentType=${param.contentType}" />
             </c:if>
-                  
-                  
-              <%-- 페이지네이션 --%>
-                  <div id="pagination-div">
-              <%-- 페이지네이션 --%>
-              <c:set var="pageURL" value="list"/>
-                  <c:set var="prev" value="${pageURL}?cp=${pagination.prevPage}${searchArea}${searchContentType}${searchKeyword}"/>
-                  <c:set var="next" value="${pageURL}?cp=${pagination.nextPage}${searchArea}${searchContentType}${searchKeyword}"/>
-              <div class="row d-flex justify-content-center">
-                  <nav aria-label="Page navigation example">
-                      <ul class="pagination">
-                         <%-- 현재 페이지가 5 페이지 이하일 시 --%>
-                         <c:if test="${pagination.currentPage <= pagination.pageSize}">
-                            <li class="page-item disabled">
-                               <a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-                            </li>
-                         </c:if>
-                         <%-- 현재 페이지가 5 페이지 초과일 시 --%>
-                         <c:if test="${pagination.currentPage > pagination.pageSize}">
-                            <li class="page-item">
-                               <a class="page-link" href="${prev}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-                            </li>
-                         </c:if>
-                         <%-- 페이지 --%>
-                     <c:forEach var="p" begin="${pagination.startPage}" end="${pagination.endPage}">
-                        <c:choose>
-                           <c:when test="${p==pagination.currentPage}">
-                              <li class="page-item active"><a class="page-link">${p}</a></li>
-                           </c:when>
-                           <c:otherwise>
-                              <li class="page-item"><a class="page-link" href="${pageURL}?cp=${p}${searchArea}${searchContentType}${searchKeyword}">${p}</a></li>
-                           </c:otherwise>
-                        </c:choose>
-                     </c:forEach>
-                     <%-- 현재 페이지가 마지막 페이지 목록이 아닌 경우 --%>
-                     <c:if test="${pagination.endPage < pagination.maxPage}">
-                        <li class="page-item">
-                           <a class="page-link" href="${next}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-                        </li> 
-                     </c:if>
-                      </ul>
-                  </nav>
-              </div>
-              
+						
+						
+        		<%-- 페이지네이션 --%>
+						<div id="pagination-div">
+		        <%-- 페이지네이션 --%>
+		        <c:set var="pageURL" value="list"/>
+						<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage}${searchArea}${searchContentType}${searchKeyword}"/>
+						<c:set var="next" value="${pageURL}?cp=${pagination.nextPage}${searchArea}${searchContentType}${searchKeyword}"/>
+		        <div class="row d-flex justify-content-center">
+		            <nav aria-label="Page navigation example">
+		                <ul class="pagination">
+		                	<%-- 현재 페이지가 5 페이지 이하일 시 --%>
+		                	<c:if test="${pagination.currentPage <= pagination.pageSize}">
+		                		<li class="page-item disabled">
+		                			<a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+		                		</li>
+		                	</c:if>
+		                	<%-- 현재 페이지가 5 페이지 초과일 시 --%>
+		                	<c:if test="${pagination.currentPage > pagination.pageSize}">
+		                		<li class="page-item">
+		                			<a class="page-link" href="${prev}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+		                		</li>
+		                	</c:if>
+		                	<%-- 페이지 --%>
+							<c:forEach var="p" begin="${pagination.startPage}" end="${pagination.endPage}">
+								<c:choose>
+									<c:when test="${p==pagination.currentPage}">
+										<li class="page-item active"><a class="page-link">${p}</a></li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item"><a class="page-link" href="${pageURL}?cp=${p}${searchArea}${searchContentType}${searchKeyword}">${p}</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<%-- 현재 페이지가 마지막 페이지 목록이 아닌 경우 --%>
+							<c:if test="${pagination.endPage < pagination.maxPage}">
+								<li class="page-item">
+									<a class="page-link" href="${next}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+								</li> 
+							</c:if>
+		                </ul>
+		            </nav>
+		        </div>
+		        
         
+			</div>
          </div>
-         </div>
-         </div>
-         
-                  <!---------------------------------------------------------------------Pagination start -->
+			</div>
+			
+			         <!---------------------------------------------------------------------Pagination start -->
          <!-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 -->
 
 
@@ -297,60 +306,60 @@
       
    // 검색 내용 유지
       function keepSearch(){
-      
-          var searchAreaCode = "${param.areaCode}";
-          var searchContentType = "${param.contentType}";
-          var searchKeyword = "${param.keyword}";
-          
-         var searchKey = "${param.sk}";
-         var searchVal = "${param.sv}";
-         var searchCat = "${param.sc}";
-         
-         // 검색 조건(key)
-         $("select[name=areaCode] > option").each(function(index, item){
-            if($(item).val()==searchKey){
-               $(item).prop("selected", true)
-               
-               if($(item).val()=="category"){
-                  $("#formCategory").attr("style", "");
-                  $("#formCategory > option").each(function(intex, item){
-                     if($(item).val()==searchCat){
-                        $(item).prop("selected", true);
-                     }
-                  });
-               }
-            }
-         });
-         
-         // 검색 내용(value)
-         $("input[name=sv]").val(searchVal);
+	   
+    		var searchAreaCode = "${param.areaCode}";
+    		var searchContentType = "${param.contentType}";
+    		var searchKeyword = "${param.keyword}";
+    		
+      	var searchKey = "${param.sk}";
+      	var searchVal = "${param.sv}";
+      	var searchCat = "${param.sc}";
+      	
+      	// 검색 조건(key)
+      	$("select[name=areaCode] > option").each(function(index, item){
+      		if($(item).val()==searchKey){
+      		   $(item).prop("selected", true)
+      		   
+      			if($(item).val()=="category"){
+      				$("#formCategory").attr("style", "");
+      				$("#formCategory > option").each(function(intex, item){
+      					if($(item).val()==searchCat){
+      					   $(item).prop("selected", true);
+      					}
+      				});
+      			}
+      		}
+      	});
+      	
+      	// 검색 내용(value)
+      	$("input[name=sv]").val(searchVal);
       }
 
       $(document).ready(function(){
-         
-         // sk 카테고리 선택 시 카테고리 선택 메뉴 생성
-         $("#formKey").on("change", function(){
-            var element = $("#formKey option:selected").val();
-            if(element == "category"){
-               $("#formCategory").attr("style", "");
-            } else {
-               $("#formCategory").attr("style", "display:none;");
-            }
-         });
-         
-         $("#searchForm").on("submit", function(){
-            if($("#formValue").val().trim().length==0){
-               if($("#formKey").val()!="category"){
-                  swal({
-                     icon: "warning",
-                     title: "검색어를 입력해주세요."
-                  });
-                  return false;
-               } else{
-                  $("#formValue").attr("name", "");
-               }
-            }
-         })
+      	
+      	// sk 카테고리 선택 시 카테고리 선택 메뉴 생성
+      	$("#formKey").on("change", function(){
+      		var element = $("#formKey option:selected").val();
+      		if(element == "category"){
+      			$("#formCategory").attr("style", "");
+      		} else {
+      			$("#formCategory").attr("style", "display:none;");
+      		}
+      	});
+      	
+      	$("#searchForm").on("submit", function(){
+      		if($("#formValue").val().trim().length==0){
+      			if($("#formKey").val()!="category"){
+      				swal({
+      					icon: "warning",
+      					title: "검색어를 입력해주세요."
+      				});
+      				return false;
+      			} else{
+      				$("#formValue").attr("name", "");
+      			}
+      		}
+      	})
       });
       
 
