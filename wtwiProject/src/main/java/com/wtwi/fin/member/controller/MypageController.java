@@ -43,7 +43,6 @@ public class MypageController {
 		
 		List<Review> reviewList = service.selectReviewList(loginMember.getMemberNo());
 		model.addAttribute("reviewList", reviewList);
-		System.out.println(reviewList);
 
 		return "myPage/main";
 
@@ -52,8 +51,7 @@ public class MypageController {
 	@ResponseBody
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	public String getInfo(@RequestParam("latitude") String latitude, @RequestParam("longitude") String longitude, String check) {
-		System.out.println("latitude : " + latitude);
-		System.out.println("longitude : " + longitude);
+
 		String result = "";
 		String apiId = "fab85c55ea80aa78f7d32ab07532fe33";   
 		URL url;
@@ -68,7 +66,6 @@ public class MypageController {
 				bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
 				result = bf.readLine();
 			}
-			System.out.println(result);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -145,7 +142,7 @@ public class MypageController {
 								@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
 								Pagination pg/* 페이징 처리에 사용할 비어있는 객체 */, Search search/* 검색용 커맨드 객체 */,
 								@RequestParam(value = "order", required = false) String order) {
-		System.out.println("reveiw order : "+ order);
+
 		pg.setCurrentPage(cp);
 		member.setMemberNo(loginMember.getMemberNo());
 		search.setMemberNo(loginMember.getMemberNo());

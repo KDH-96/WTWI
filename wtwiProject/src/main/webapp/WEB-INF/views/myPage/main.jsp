@@ -24,11 +24,8 @@
 }
 
 .myPage-sideBar {
-	display: flex;
-	align-items: center;
-	height: 100%;
-}
-
+     margin-top: 300px;
+ }
 .myPage-main {
 	width: 100%;
 	margin-top: 40px;
@@ -131,6 +128,8 @@
 #map {
 	width: 50%;
 	height: 100%;
+	border-top-left-radius: 30px;
+	border-bottom-left-radius: 30px;
 }
 
 .my-container {
@@ -142,6 +141,7 @@
 	margin-bottom: 30px;
 	border-radius: 30px;
 	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	padding: 10px;
 }
 
 .climate-container {
@@ -172,6 +172,7 @@
 .hidden {
 	display: none;
 }
+
 </style>
 </head>
 
@@ -191,7 +192,7 @@
 				<div class="recommend-container">
 					<c:forEach items="${reviewList }" var="board" varStatus="b" >
 						<div class="attraction">
-							<img class="attrImage" src="" alt="">
+							<img class="attrImage" src="" alt="" onerror="this.src='/test/noImg.gif">
 							<div class="attraction_list">
 								<span class="attrNm">${board.attractionNm }</span>
 								<div class="attrStar">
