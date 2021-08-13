@@ -61,8 +61,8 @@
             <div class="board-menu">
                <form method="GET" action="${contextPath}/admin/boardList" id="boardSelect">
                   <select name="bo">
-                     <option value="freeboard">자유</option>
                      <option value="qnaboard">문의</option>
+                     <option value="freeboard">자유</option>
                      <option value="report">신고</option>
                      <option value="review">리뷰</option>
                   </select>

@@ -24,9 +24,9 @@ public class AdminFreeController {
 	@Autowired
 	private AdminFreeService service;
 	
-	// 관리자 페이지 자유게시판 목록 (27, )
+	// 관리자 페이지 자유게시판 목록 + 검색 (27, 29)
 	@RequestMapping(value="list", method = RequestMethod.GET)
-	public String freeboardList(@ModelAttribute("bo") String boardOption,
+	public String freeboardList(@RequestParam("bo") String boardOption,
 								@RequestParam(value="cp", required=false, defaultValue="1") int cp,
 								Model model,
 								Pagination pg,
@@ -43,9 +43,17 @@ public class AdminFreeController {
 			
 			// 게시글 목록 조회(27-2)
 			boardList = service.selectBoardListAll(pagination);
+			
+		// 검색 목록 조회
+		} else {
+			
+			// 검색 게시글 수 조회 + 페이지네이션 생성(29-1)
+			pagination = service.getPagination(search, pg);
+			
+			// 검색 게시글 목록 조회 (29-2)
+			boardList = service.selectSearchBoardListAll(search, pagination);
 		}
 		
-	
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pagination", pagination);
 		

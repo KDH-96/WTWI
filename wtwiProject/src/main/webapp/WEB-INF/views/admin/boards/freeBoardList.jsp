@@ -7,6 +7,17 @@
          
             <!-- 위 select-option에 따라서 보여지는 테이블이 다름 -->
 
+            <%-- 검색 상태 유지를 위한 쿼리스트링용 변수 --%>
+            <c:if test="${!empty param.sk}">
+            	<c:if test="${param.sk=='category' && !empty param.sc}">
+            		<c:set var="searchCategory" value="&sc=${param.sc}"/>
+            	</c:if>
+            	<c:if test="${!empty param.sv && param.sv!=''}">
+            		<c:set var="searchValue" value="&sv=${param.sv}"/>
+            	</c:if>
+            	<c:set var="searchString" value="&sk=${param.sk}${searchCategory}${searchValue}"/>
+            </c:if>
+
             <!-- 자유게시판 테이블 -->
           <table class="table">
             <thead class="thead-dark">
@@ -30,7 +41,7 @@
                 <td><fmt:formatDate value="${b.freeCreateDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <td>${b.freeReadCount}</td>
                 <td>
-                  <form action="changeFreeStatus" method="POST">
+                  <form action="changeFreeStatus" method="POST" id="changeFreeStatus">
                   <select name="freeStatus">
                   	<c:choose>
                   	  <c:when test="${b.freeStatus=='Y'}">
@@ -78,7 +89,7 @@
 							<li class="page-item active"><a class="page-link" style="color:black">${p}</a></li>
 						</c:when>
 						<c:otherwise>
-							<li class="page-item"><a class="page-link" style="color:black" href="${pageURL}?cp=${p}${searchString}">${p}</a></li>
+							<li class="page-item"><a class="page-link" style="color:black" href="${pageURL}?cp=${p}${searchString}&bo=freeboard">${p}</a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -94,26 +105,28 @@
          <!----------------------------------------------------------------------------------------------  Pagination end -->
 
          <!-- 검색창 -->
-         <div class="my-2">
-            <form action="#" method="GET" class="text-center" id="searchForm">
-               <div class="container2">
-                  <div class="row">
-                     <div class="col-sm" >
-
-                      <select name="sk" class="form-control" style="width: 200px; display: inline-block; ">
-                        <option value="nick">닉네임으로 검색</option>
-                        <option value="content">닉네임으로 검색</option>
-                        <option value="writer">아이디로 검색</option>
+         <div class="my-2 row d-flex justify-content-center">
+            <form action="list" method="GET" class="text-center" id="searchForm">
+               <div class="container2 p-0 m-0">
+                  <div class="input-group mb-3">
+                      <select name="sk" class="form-control col-4" id="formKey">
+                    	<option value="ticontent">제목+내용</option>
+                    	<option value="title">제목</option>
+                    	<option value="content">내용</option>
+                    	<option value="author">작성자</option>
+                    	<option value="category">카테고리</option>
                      </select>
-
-                     </div>
-                     <div class="col-sm">
-                        <input type="text" name="sv" class="form-control" style="width: 50%; display: inline-block;">
-                     </div>
-                     <div class="col-sm">
-                        <button class="form-control btn btn-primary"
-                        style="width:100px; display: inline-block; background-color: black; border: black;">검색</button>
-                     </div>
+                      <select name="sc" class="form-control col-2 ml-1" style="display: none; " id="formCategory">
+                   		<option value="1">잡담</option>
+                   		<option value="2">추천</option>
+                   		<option value="3">궁금</option>
+                   		<option value="4">같이</option>
+                   		<option value="5">기타</option>
+                     </select>
+                        <input type="text" name="sv" class="form-control col-6 ml-1" style="" id="formValue">
+                        <input type="hidden" name="bo" value="${param.bo}">
+                        <button class="form-control btn btn-primary ml-1"
+                        style="background-color: black; border: black;">검색</button>
                   </div>
                </div>
             </form>
@@ -126,5 +139,58 @@
 
 
    <script>
+   keepSearch();
 
+	// 검색 내용 유지
+	function keepSearch(){
+		var searchKey = "${param.sk}";
+		var searchVal = "${param.sv}";
+		var searchCat = "${param.sc}";
+		
+		// 검색 조건(key)
+		$("select[name=sk] > option").each(function(index, item){
+			if($(item).val()==searchKey){
+			   $(item).prop("selected", true)
+			   
+				if($(item).val()=="category"){
+					$("#formCategory").attr("style", "");
+					$("#formCategory > option").each(function(intex, item){
+						if($(item).val()==searchCat){
+						   $(item).prop("selected", true);
+						}
+					});
+				}
+			}
+		});
+		
+		// 검색 내용(value)
+		$("input[name=sv]").val(searchVal);
+	}
+	
+	$(document).ready(function(){
+		
+		// sk 카테고리 선택 시 카테고리 선택 메뉴 생성
+		$("#formKey").on("change", function(){
+			var element = $("#formKey option:selected").val();
+			if(element == "category"){
+				$("#formCategory").attr("style", "width:150px;");
+			} else {
+				$("#formCategory").attr("style", "display:none;");
+			}
+		});
+		
+		$("#searchForm").on("submit", function(){
+			if($("#formValue").val().trim().length==0){
+				if($("#formKey").val()!="category"){
+					swal({
+						icon: "warning",
+						title: "검색어를 입력해주세요."
+					});
+					return false;
+				} else{
+					$("#formValue").attr("name", "");
+				}
+			}
+		})
+	});
    </script>
