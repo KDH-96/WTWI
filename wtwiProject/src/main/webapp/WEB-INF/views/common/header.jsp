@@ -228,7 +228,14 @@
 				</c:when>
 				<c:otherwise>
 					<div class="col-4 d-flex justify-content-end align-items-center">
-						<a class="btn btn-dark mr-3" href="${contextPath}/myPage/main">${loginMember.memberNick }</a>
+						<c:choose>
+							<c:when test="${loginMember.memberGrade == 'A' }">
+								<a class="btn btn-dark mr-3" href="${contextPath}/admin/boards">${loginMember.memberNick }</a>														
+							</c:when>
+							<c:otherwise>
+								<a class="btn btn-dark mr-3" href="${contextPath}/myPage/main">${loginMember.memberNick }</a>							
+							</c:otherwise>
+						</c:choose>
 						<a class="btn btn-dark mr-3" href="${contextPath}/member/logout">로그아웃</a>
 					</div>
 				</c:otherwise>
