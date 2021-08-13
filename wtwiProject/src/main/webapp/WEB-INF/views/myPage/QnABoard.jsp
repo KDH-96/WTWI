@@ -70,6 +70,17 @@
         .focus-page {
         	font-weight: bold;
         }
+        
+        .table {
+			table-layout: fixed;
+		}
+		
+		.boardTitle {
+			virtical-align: middle;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 </style>
 </head>
 
@@ -98,7 +109,7 @@
                     <col width="10%"/>
                     <col width="55%"/>
                     <col width="13%"/>
-                    <col width="13"/>
+                    <col width="13%"/>
 				</colgroup>
 				<thead>
 					<tr>
