@@ -57,6 +57,11 @@ $(document).ready(function() {
 			['insert',['picture','link']],
 			['view', ['codeview']]
 		],
+		popover: {
+			  image: [
+			    ['remove', ['removeMedia']]
+			  ]
+			},
 		callbacks: {
 			// summernote가 지원하는 callbacks함수 중 
 			// onImageUpload : 이미지를 업로드했을 때 동작(이미지를 첨부할 때마다 files에 이미지가 들어오고 콜백 함수가 호출됨)
