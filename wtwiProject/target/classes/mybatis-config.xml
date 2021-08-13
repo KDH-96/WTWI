@@ -46,6 +46,7 @@
 	<mappers>
 		<mapper resource="/mappers/freeboard-mapper.xml" />
     	<mapper resource="/mappers/freereply-mapper.xml" />
+    	<mapper resource="/mappers/reportboard-mapper.xml" />
     
 
 		<mapper resource="/mappers/qnaboard-mapper.xml" />
