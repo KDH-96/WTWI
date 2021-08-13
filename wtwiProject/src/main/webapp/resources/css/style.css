@@ -16,3 +16,11 @@ a {
 	font-weight: 500;
 	color: rgb(80,80,80);
 }
+
+.pagination > li > a{
+	color: black;
+}
+.pagination>li.active>a {
+	background-color: orange !important;
+	border-color : orange !important;
+}
