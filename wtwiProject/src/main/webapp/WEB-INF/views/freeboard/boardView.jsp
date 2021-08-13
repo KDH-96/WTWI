@@ -86,6 +86,14 @@
                     <span id="replyCount">${board.replyCount}</span>
                 </div>
             </div>
+            
+            
+            <!-- 신고 기능 버튼입니다!!  -->
+            <!-- 게시글에 있는 신고버튼 -->
+            <a class="btn" href="${contextPath }/reportBoard/report?type=1&freeNo=${board.freeNo}">신고</a>
+            <!-- 댓글에 있는 신고버튼 -->
+            <a class="btn" href="${contextPath }/reportBoard/report?type=2&freeNo=${board.freeNo}">신고</a>
+            
 		<jsp:include page="../freeboard/reply.jsp" />
         </div>
 		<%-- 검색 상태 유지를 위한 쿼리스트링용 변수 --%>

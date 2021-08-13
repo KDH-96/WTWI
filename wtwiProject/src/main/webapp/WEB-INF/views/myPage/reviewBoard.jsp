@@ -70,6 +70,21 @@
         .focus-page {
         	font-weight: bold;
         }
+        .table {
+        	table-layout: fixed;	
+        }
+        
+       
+        .content {		
+        	virtical-align: middle;
+        	overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+        }
+        
+        .order-check {
+			color: #FCC77F;
+		}
 </style>
 </head>
 
@@ -95,10 +110,10 @@
 			<table class="table">
 				<colgroup>
 					<col width="5%"/>
-                    <col width="28%"/>
+                    <col width="20%"/>
                     <col width="35%"/>
                     <col width="13%"/>
-                    <col width="9%"/>
+                    <col width="17%"/>
                     <col width="10%"/>
 				</colgroup>
 				<thead>
@@ -106,8 +121,32 @@
 						<th scope="col">No</th>
 	                    <th scope="col">명소 이름</th>
 	                    <th scope="col">후기 내용</th>
-	                    <th scope="col">별점</th>
-	                    <th scope="col">추천수</th>
+	                    <th scope="col">
+							<c:choose>
+								<c:when test="${param.order!='point'}">
+									<a href="reviewBoard?order=point${searchStr}">별점 <i
+										class="fas fa-caret-down"></i></a>
+								</c:when>
+								<c:otherwise>
+									<a href="reviewBoard">별점 <i
+										class="fas fa-caret-down order-check"></i></a>
+								</c:otherwise>
+							</c:choose>
+						</th>
+	                    <th scope="col">
+							<c:choose>
+								<c:when test="${param.order!='like'}">
+									<a href="reviewBoard?order=like${searchStr}">추천수 
+										<i class="fas fa-caret-down"></i>
+									</a>
+								</c:when>
+								<c:otherwise>
+									<a href="reviewBoard">추천수 
+										<i class="fas fa-caret-down order-check"></i>
+									</a>
+								</c:otherwise>
+							</c:choose>
+						</th>
 	                    <th scope="col">작성일자</th>
 					</tr>
 				</thead>
@@ -124,26 +163,30 @@
 						<c:otherwise>
 						
 							<c:forEach items="${reviewBoardList }" var="board" varStatus="b">
-							
 								<tr>
-									<!-- 명소이름 -->
+									<!-- 글번호 -->
 									<th scope="row">
-										<a href="#"> ${board.reviewNo}</a>
+										<i class="fas fa-map-marker-alt"></i>
+									</th>
+									<!-- 명소이름 -->
+									<th scope="row" class="content"> 
+										<a href="#"> ${board.attractionNm}</a>
 									</th>
 									
 									<%-- 후기내용 --%>
-									<td>${board.qnaCategoryNm}</td>
+									<td class="content">${board.reviewContent}</td>
 									
 									<!-- 별점 -->
-									<td><!-- 아이콘 --></td>
+									<td><!-- 아이콘 -->${board.reviewPoint }</td>
 									
 									<!-- 추천수 -->
-									<td>${board.good }</td>
+									<td><i class="far fa-thumbs-up"></i> ${board.likeCount }
+									<i class="far fa-thumbs-down"></i> ${board.dislikeCount }</td>
 									
 									<%-- 작성일 --%>
 									<td>
 										
-										<fmt:formatDate var="createDate" value="${board.qnaCreateDt}"  pattern="yyyy-MM-dd"/>                          
+										<fmt:formatDate var="createDate" value="${board.reviewCreateDt}"  pattern="yyyy-MM-dd"/>                          
 										<fmt:formatDate var="today" value="<%= new java.util.Date() %>"  pattern="yyyy-MM-dd"/>                          
 										
 										<c:choose>
@@ -154,7 +197,7 @@
 											
 											<%-- 글 작성일이 오늘일 경우 --%>
 											<c:otherwise>
-												<fmt:formatDate value="${board.qnaCreateDt}"  pattern="HH:mm"/>                          
+												<fmt:formatDate value="${board.reviewCreateDt}"  pattern="HH:mm"/>                          
 											</c:otherwise>
 										</c:choose>
 										
@@ -178,7 +221,7 @@
 			<!---------------------- Pagination start---------------------->
 			<!-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 -->
 
-			<c:set var="pageURL" value="qnaBoard"></c:set>
+			<c:set var="pageURL" value="reviewBoard"></c:set>
 	
 
 			<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage }${searchStr}"></c:set>
@@ -237,16 +280,10 @@
 		</div>
 		<!-- 검색창 -->
 		<div class="my-5">
-			<form action="qnaBoard" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
-				<select class="form-control" id="formCategory" name="sc" >
-                  		<option value="0">전체</option>
-                  		<option value="1">명소 정보</option>
-                  		<option value="2">시스템</option>
-                  		<option value="3">기타</option>
-                  	</select>
+			<form action="reviewBoard" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
 				<select class="form-control" name="sk" >
-					<option value="title">글제목</option>
-					<option value="content">내용</option>
+					<option value="attrNm">명소이름</option>
+					<option value="content">후기내용</option>
 				</select>
 				<input type="text" id="sv" name="sv" class="form-control" style="width: 25%; display: inline-block;">
 				<button class="form-control btn btn-primary" style="width: 100px; display: inline-block;">검색</button>
@@ -257,19 +294,9 @@
 	<script>
 		// 검색 내용이 있을 경우 검색창에 해당 내용을 작성해두는 기능
 		(function(){
-			var searchCategory = "${param.sc}";
 			var searchKey = "${param.sk}"; 
 			var searchValue = "${param.sv}";
-			
-			// 검색창 select의 option을 반복 접근
-			$("select[name=sc] > option").each(function(index, item){
-				// index : 현재 접근중인 요소의 인덱스
-				// item : 현재 접근중인 요소
-							// content            content
-				if( $(item).val() == searchCategory  ){
-					$(item).prop("selected", true);
-				}
-			});		
+				
 			
 			$("select[name=sk] > option").each(function(index, item){
 				// index : 현재 접근중인 요소의 인덱스

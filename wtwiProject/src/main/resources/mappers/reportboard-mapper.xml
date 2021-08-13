@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="reportMapper">
+
+
+	<!-- 신고내역 -->
+	<resultMap type="Report" id="report_rm">
+		<id property="reportNo" column="REPORT_NO" />
+
+		<result property="reportTitle" column="REPORT_TITLE" />
+		<result property="reportContent" column="REPORT_CONTENT" />
+		<result property="reportCreateDt" column="REPORT_CREATE_DT" />
+		<result property="reportStatus" column="REPORT_STATUS" />
+		<result property="reportType" column="REPORT_TYPE" />
+		<result property="reportTypeNo" column="REPORT_TYPE_NO" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="reportCategoryNo" column="REPORT_CATEGORY_NO" />
+		<result property="reportCategoryNm" column="REPORT_CATEGORY_NM" />
+	</resultMap>
+	
+	<!-- 신고 -->
+	<insert id="insertReport" parameterType="Report">
+		INSERT INTO REPORT 
+		VALUES (SEQ_RPNO.NEXTVAL, #{reportTitle}, #{reportContent}, DEFAULT, DEFAULT, #{reportType}, #{reportTypeNo}, #{memberNo}, #{reportCategoryNo})
+	</insert>
+
+</mapper>

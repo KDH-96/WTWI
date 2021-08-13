@@ -158,6 +158,34 @@ public interface MypageService {
 	 */
 	List<Reply> selectSearchReplyBoardList(Search search, Pagination pagination);
 
+	/** 명소후기 페이징 처리
+	 * @param member
+	 * @param pg
+	 * @return
+	 */
+	Pagination getReviewPagination(Member member, Pagination pg);
+
+	/** 명소후기 전체 목록 
+	 * @param pagination
+	 * @param order
+	 * @return
+	 */
+	List<Review> selectReviewBoardList(Pagination pagination, String order);
+
+	/** 명소후기 페이징 처리(검색)
+	 * @param search
+	 * @param pg
+	 * @return
+	 */
+	Pagination getReviewPagination(Search search, Pagination pg);
+
+	/** 명소후기 전체 목록(검색)
+	 * @param search
+	 * @param pagination
+	 * @return
+	 */
+	List<Review> selectSearchReviewBoardList(Search search, Pagination pagination);
+
 	
 
 }

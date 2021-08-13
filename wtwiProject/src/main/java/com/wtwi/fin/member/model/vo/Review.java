@@ -16,8 +16,30 @@ public class Review {
 	private double latitude;
 	private double longitude;
 	private int memberNo;
+	private int likeCount;
+	private int dislikeCount;
+	private int imageCount;
 	private List<ReviewImage> atList;
 	
+	
+	public int getLikeCount() {
+		return likeCount;
+	}
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+	public int getDislikeCount() {
+		return dislikeCount;
+	}
+	public void setDislikeCount(int dislikeCount) {
+		this.dislikeCount = dislikeCount;
+	}
+	public int getImageCount() {
+		return imageCount;
+	}
+	public void setImageCount(int imageCount) {
+		this.imageCount = imageCount;
+	}
 	public int getReviewNo() {
 		return reviewNo;
 	}
@@ -89,8 +111,10 @@ public class Review {
 		return "Review [reviewNo=" + reviewNo + ", reviewPoint=" + reviewPoint + ", reviewContent=" + reviewContent
 				+ ", reviewCreateDt=" + reviewCreateDt + ", reviewStatus=" + reviewStatus + ", attractionNo="
 				+ attractionNo + ", attractionNm=" + attractionNm + ", latitude=" + latitude + ", longitude="
-				+ longitude + ", memberNo=" + memberNo + ", atList=" + atList + "]";
+				+ longitude + ", memberNo=" + memberNo + ", likeCount=" + likeCount + ", dislikeCount=" + dislikeCount
+				+ ", imageCount=" + imageCount + ", atList=" + atList + "]";
 	}
+	
 	
 	
 }
