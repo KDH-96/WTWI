@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
+import com.wtwi.fin.freeboard.model.vo.Reply;
 import com.wtwi.fin.freeboard.model.vo.Search;
 
 @Repository
@@ -61,6 +62,42 @@ public class AdminFreeDAO {
 		int offset = (pagination.getCurrentPage()-1)*pagination.getLimit();
 		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
 		return sqlSession.selectList("freeboardMapper.selectSearchBoardListAll", search, rowBounds);
+	}
+
+	/** 관리자 페이지 게시글 상세조회(30)
+	 * @param freeNo
+	 * @return board
+	 */
+	public Board selectFreeboard(int freeNo) {
+		return sqlSession.selectOne("freeboardMapper.selectFreeBoard", freeNo);
+	}
+	
+	/** 댓글 개수 조회(31-1)
+	 * @param freeNo
+	 * @return pagination
+	 */
+	public Pagination getReplyCount(int freeNo) {
+		return sqlSession.selectOne("freereplyMapper.getReplyCount", freeNo);
+	}
+
+	/** 댓글 목록 조회(31)
+	 * @param pagination 
+	 * @param freeNo
+	 * @return replyList
+	 */
+	public List<Reply> selectReplyListAll(Pagination pagination, int freeNo) {
+		
+		int offset = (pagination.getCurrentPage()-1)*pagination.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
+		return sqlSession.selectList("freereplyMapper.selectReplyListAll", freeNo, rowBounds);
+	}
+
+	/** 관리자 페이지 댓글 상태 변경(32)
+	 * @param reply
+	 * @return result
+	 */
+	public int changeFreeReplyStatus(Reply reply) {
+		return sqlSession.update("freereplyMapper.changeFreeReplyStatus", reply);
 	}
 
 }

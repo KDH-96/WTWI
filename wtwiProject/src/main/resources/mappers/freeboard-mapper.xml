@@ -312,9 +312,13 @@
 		ORDER BY FREE_NO DESC
 	</select>
 	
+	<!-- 관리자 페이지 게시글 상세조회(30) -->
+	<select id="selectFreeBoard" parameterType="_int" resultMap="free_rm">
+		SELECT * FROM FREE_DETAIL
+		WHERE FREE_NO = #{freeNo}
+	</select>
 	
-	
-	
+
 	
 	
 </mapper>
