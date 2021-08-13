@@ -200,6 +200,41 @@ public class MypageServiceImpl implements MypageService {
 
 		return dao.selectSearchReplyBoardList(search, pagination);
 	}
+	
+	
+	/////////////////////////////////////////////////////////////////////////////////////
+	
+	// 명소후기 전체 게시글 수 
+	@Override
+	public Pagination getReviewPagination(Member member, Pagination pg) {
+		;
+		Pagination selectPg = dao.getReviewListCount(member);
+		
+		return new Pagination(pg.getCurrentPage(), selectPg.getListCount());
+	}
+	
+	// 명소후기 목록 조회
+	@Override
+	public List<Review> selectReviewBoardList(Pagination pagination, String order) {
+		
+		return dao.selectReviewBoardList(pagination, order);
+	}
+	
+	// 명소후기 전체 게시글 수 (검색)
+	@Override
+	public Pagination getReviewPagination(Search search, Pagination pg) {
+		
+		Pagination selectPg = dao.getSearchReviewListCount(search);
+		
+		return new Pagination(pg.getCurrentPage(), selectPg.getListCount());
+	}
+	
+	// 명소후기 게시글 목록 조회(검색)
+	@Override
+	public List<Review> selectSearchReviewBoardList(Search search, Pagination pagination) {
+		
+		return dao.selectSearchReviewBoardList(search, pagination);
+	}
 
 	
 	

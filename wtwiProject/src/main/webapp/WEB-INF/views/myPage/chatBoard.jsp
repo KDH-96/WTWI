@@ -81,6 +81,18 @@ a:hover {
 .focus-page {
 	font-weight: bold;
 }
+
+.table {
+ 	table-layout: fixed;	
+}
+
+
+.content {		
+  	virtical-align: middle;
+  	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+     }
 </style>
 </head>
 
@@ -136,7 +148,7 @@ a:hover {
 
 								<tr>
 									<!-- 글번호 -->
-									<th scope="row">0</th>
+									<th scope="row"><i class="far fa-comment-dots"></i></th>
 
 									<%-- 담당자 --%>
 									<c:choose>
@@ -144,12 +156,12 @@ a:hover {
 											<td>${board.memberNick}</td>
 										</c:when>
 										<c:otherwise>
-											<td>${board.attractionNm}</td>										
+											<td class="content">${board.attractionNm}</td>										
 										</c:otherwise>
 									</c:choose>
 
 									<!-- 내용 -->
-									<td class="boardTitle">
+									<td class="content">
 									<a href="${contextPath}/chat/room/${board.chatRoomNo}">${board.chatContent}</a>
 									</td>
 									<%-- 작성일자 --%>

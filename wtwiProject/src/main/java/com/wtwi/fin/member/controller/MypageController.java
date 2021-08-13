@@ -145,28 +145,26 @@ public class MypageController {
 								@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
 								Pagination pg/* 페이징 처리에 사용할 비어있는 객체 */, Search search/* 검색용 커맨드 객체 */,
 								@RequestParam(value = "order", required = false) String order) {
-		
+		System.out.println("reveiw order : "+ order);
 		pg.setCurrentPage(cp);
 		member.setMemberNo(loginMember.getMemberNo());
 		search.setMemberNo(loginMember.getMemberNo());
 
 		Pagination pagination = null;
-		List<Reply> replyBoardList = null;
+		List<Review> reviewBoardList = null;
 
-		System.out.println("sv : "+ search.getSv());
 		if (search.getSv() == null) { // 검색 X 
-			pagination = service.getReplyPagination(member, pg);
+			pagination = service.getReviewPagination(member, pg);
 			pagination.setMemberNo(loginMember.getMemberNo());
 
-			replyBoardList = service.selectReplyBoardList(pagination, order);
+			reviewBoardList = service.selectReviewBoardList(pagination, order);
 		} else { // 검색 O 
-			System.out.println("sv : "+ search.getSv());
-			pagination = service.getReplyPagination(search, pg);
+			pagination = service.getReviewPagination(search, pg);
 			
-			replyBoardList = service.selectSearchReplyBoardList(search, pagination);
+			reviewBoardList = service.selectSearchReviewBoardList(search, pagination);
 		}
 
-		model.addAttribute("replyBoardList", replyBoardList);
+		model.addAttribute("reviewBoardList", reviewBoardList);
 		model.addAttribute("pagination", pagination);
 
 		return "myPage/reviewBoard";
@@ -186,14 +184,12 @@ public class MypageController {
 		Pagination pagination = null;
 		List<Reply> replyBoardList = null;
 
-		System.out.println("sv : "+ search.getSv());
 		if (search.getSv() == null) { // 검색 X 
 			pagination = service.getReplyPagination(member, pg);
 			pagination.setMemberNo(loginMember.getMemberNo());
 
 			replyBoardList = service.selectReplyBoardList(pagination, order);
 		} else { // 검색 O 
-			System.out.println("sv : "+ search.getSv());
 			pagination = service.getReplyPagination(search, pg);
 			
 			replyBoardList = service.selectSearchReplyBoardList(search, pagination);
@@ -230,7 +226,6 @@ public class MypageController {
 		} else { // 검색 O
 
 			pagination = service.getReportPagination(search, pg); 
-			
 			reportBoardList = service.selectSearchReportBoardList(search, pagination);
 		}
 

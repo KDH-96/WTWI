@@ -81,6 +81,17 @@ a:hover {
 .focus-page {
 	font-weight: bold;
 }
+
+.table {
+	table-layout: fixed;
+}
+
+.boardTitle, .content {
+	virtical-align: middle;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 </style>
 </head>
 
@@ -141,7 +152,7 @@ a:hover {
 									<!-- 해당 게시글 -->
 									<td class="boardTitle">${board.reportTitle }</td>
 									<%-- 신고 내용 --%>
-									<td>${board.reportContent}</td>
+									<td class="content">${board.reportContent}</td>
 									<%-- 작성일 --%>
 									<td><fmt:formatDate var="createDate"
 											value="${board.reportCreateDt}" pattern="yyyy-MM-dd" /> <fmt:formatDate

@@ -57,7 +57,6 @@ public class MypageDAO {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("memberNo", pagination.getMemberNo());
 		map.put("order", order);
-		System.out.println("order : "+order);
 		return sqlSession.selectList("myPageMapper.selectFreeBoardList", map, rowBounds);
 	}
 
@@ -291,6 +290,56 @@ public class MypageDAO {
 
 		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
 		return sqlSession.selectList("myPageMapper.selectSearchReplyBoardList", search, rowBounds);
+	}
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	/** 명소후기 수 조회
+	 * @param member
+	 * @return
+	 */
+	public Pagination getReviewListCount(Member member) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("myPageMapper.getReviewListCount", member);
+	}
+	
+	/** 명소후기 게시글 목록 조회
+	 * @param pagination
+	 * @return
+	 */
+	public List<Review> selectReviewBoardList(Pagination pagination, String order) {
+		
+		int offset = (pagination.getCurrentPage() - 1) * pagination.getLimit(); 
+		
+		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberNo", pagination.getMemberNo());
+		map.put("order", order);
+		
+		return sqlSession.selectList("myPageMapper.selectReviewBoardList", map, rowBounds);
+	}
+	
+	/** 명소후기 수 조회(검색)
+	 * @param search
+	 * @return
+	 */
+	public Pagination getSearchReviewListCount(Search search) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("myPageMapper.getSearchReviewListCount", search);
+	}
+	
+	/** 명소후기 게시글 목록 조회(검색)
+	 * @param search
+	 * @param pagination
+	 * @return
+	 */
+	public List<Review> selectSearchReviewBoardList(Search search, Pagination pagination) {
+		int offset = (pagination.getCurrentPage() - 1) * pagination.getLimit(); 
+		
+		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
+		return sqlSession.selectList("myPageMapper.selectSearchReviewBoardList", search, rowBounds);
 	}
 
 	
