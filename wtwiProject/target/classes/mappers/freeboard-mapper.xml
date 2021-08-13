@@ -249,4 +249,72 @@
 		WHERE FREE_NO = #{freeNo}
 	</update>
 	
+	<!-- 검색 게시글 수 조회(29-1) -->
+	<select id="getSearchListCountAll" parameterType="FreeSearch" resultMap="pg_rm">
+		SELECT COUNT(*) CNT FROM FREE_LIST 
+		WHERE
+		<choose>
+			<when test="sv!=null">
+				<bind name="val" value="'%'+sv+'%'"/>
+				<choose>
+					<when test="sk=='ticontent'">
+						(FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
+					</when>
+					<when test="sk=='title'">
+						FREE_TITLE LIKE #{val}
+					</when>
+					<when test="sk=='content'">
+						FREE_CONTENT LIKE #{val}
+					</when>
+					<when test="sk=='author'">
+						MEMBER_NICK LIKE #{val}
+					</when>
+					<when test="sk=='category'">
+						FREE_CATEGORY_NO = #{sc} AND (FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
+					</when>
+				</choose>
+			</when>
+			<otherwise>
+				FREE_CATEGORY_NO = #{sc}
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 검색 게시글 목록 조회 (29-2) -->
+	<select id="selectSearchBoardListAll" parameterType="FreeSearch" resultMap="free_rm">
+		SELECT * FROM FREE_LIST
+		WHERE
+		<choose>
+			<when test="sv!=null">
+				<bind name="val" value="'%'+sv+'%'"/>
+				<choose>
+					<when test="sk=='ticontent'">
+						(FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
+					</when>
+					<when test="sk=='title'">
+						FREE_TITLE LIKE #{val}
+					</when>
+					<when test="sk=='content'">
+						FREE_CONTENT LIKE #{val}
+					</when>
+					<when test="sk=='author'">
+						MEMBER_NICK LIKE #{val}
+					</when>
+					<when test="sk=='category'">
+						FREE_CATEGORY_NO = #{sc} AND (FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
+					</when>
+				</choose>
+			</when>
+			<otherwise>
+				FREE_CATEGORY_NO = #{sc}
+			</otherwise>
+		</choose>
+		ORDER BY FREE_NO DESC
+	</select>
+	
+	
+	
+	
+	
+	
 </mapper>

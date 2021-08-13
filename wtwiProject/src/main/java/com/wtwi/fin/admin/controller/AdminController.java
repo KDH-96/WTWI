@@ -17,12 +17,9 @@ public class AdminController {
 	
 	// select 값에 따라 해당 게시판 또는 그 리스트를 요청하는 주소를 대입 -> 각자 admin 컨트롤러에서 잡기~
 	@RequestMapping(value="/admin/boardList", method = RequestMethod.GET)
-	public String boardSelect(@RequestParam("bo") String boardOption,
-							  RedirectAttributes ra) {
+	public String boardSelect(@RequestParam("bo") String boardOption) {
 		
-		ra.addAttribute("bo", boardOption);
-		
-		return "redirect:/admin/"+boardOption+"/list";
+		return "redirect:/admin/"+boardOption+"/list?bo="+boardOption;
 	}
 
 }

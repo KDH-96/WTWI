@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.wtwi.fin.admin.model.dao.AdminFreeDAO;
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
+import com.wtwi.fin.freeboard.model.vo.Search;
 
 @Service
 public class AdminFreeServiceImpl implements AdminFreeService{
@@ -34,6 +35,19 @@ public class AdminFreeServiceImpl implements AdminFreeService{
 	@Override
 	public int changeFreeStatus(Board board) {
 		return dao.changeFreeStatus(board);
+	}
+
+	// 검색 게시글 수 조회 + 페이지네이션 생성(29-1)
+	@Override
+	public Pagination getPagination(Search search, Pagination pg) {
+		Pagination selectPg = dao.getSearchListCountAll(search);
+		return new Pagination(pg.getCurrentPage(), selectPg.getListCount());
+	}
+
+	// 검색 게시글 목록 조회 (29-2)
+	@Override
+	public List<Board> selectSearchBoardListAll(Search search, Pagination pagination) {
+		return dao.selectSearchBoardListAll(search, pagination);
 	}
 	
 	

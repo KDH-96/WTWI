@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
+import com.wtwi.fin.freeboard.model.vo.Search;
 
 @Repository
 public class AdminFreeDAO {
@@ -40,6 +41,26 @@ public class AdminFreeDAO {
 	 */
 	public int changeFreeStatus(Board board) {
 		return sqlSession.update("freeboardMapper.changeFreeStatus", board);
+	}
+
+	/** 검색게시글 수 조회(29-1)
+	 * @param search
+	 * @return pagination
+	 */
+	public Pagination getSearchListCountAll(Search search) {
+		return sqlSession.selectOne("freeboardMapper.getSearchListCountAll", search);
+	}
+
+	/** 검색 게시글 목록 조회 (29-2)
+	 * @param search
+	 * @param pagination
+	 * @return boardList
+	 */
+	public List<Board> selectSearchBoardListAll(Search search, Pagination pagination) {
+		
+		int offset = (pagination.getCurrentPage()-1)*pagination.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
+		return sqlSession.selectList("freeboardMapper.selectSearchBoardListAll", search, rowBounds);
 	}
 
 }

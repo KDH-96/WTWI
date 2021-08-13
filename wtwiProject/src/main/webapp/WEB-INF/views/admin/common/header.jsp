@@ -81,6 +81,10 @@
       .navi-ul{
          list-style-type: none;
       }
+      /*화면 떨림 현상 제거*/
+      body {
+		  overflow-x: hidden;
+		}
    </style>
 </head>
 
