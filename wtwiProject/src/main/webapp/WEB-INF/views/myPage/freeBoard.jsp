@@ -96,6 +96,32 @@ a:hover {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
+
+#searchForm {
+	display: flex;
+	justify-content: center;
+	width: 70%;	
+}
+#search-container {
+	display: flex;
+	justify-content: center;
+}
+.searchForm-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 70%;
+}
+.searchForm-container * {
+	margin-right: 3px;
+}
+
+.searchForm-container input {
+	width: 150%;
+}
+.searchForm-container button {
+	width: 50%;
+}
 </style>
 </head>
 
@@ -293,23 +319,24 @@ a:hover {
 			<!---------------------- Pagination end---------------------->
 		</div>
 		<!-- 검색창 -->
-		<div class="my-5">
+		<div class="my-5" id="search-container">
 			<form action="post" method="GET" class="text-center" id="searchForm"
 				onsubmit="return validate();">
-				<select class="form-control" id="formCategory" name="sc">
-					<option value="0">전체</option>
-					<option value="1">잡담</option>
-					<option value="2">추천</option>
-					<option value="3">궁금</option>
-					<option value="4">같이</option>
-					<option value="5">기타</option>
-				</select> <select class="form-control" name="sk">
-					<option value="title">글제목</option>
-					<option value="content">내용</option>
-				</select> <input type="text" id="sv" name="sv" class="form-control"
-					style="width: 25%; display: inline-block;">
-				<button class="form-control btn btn-primary"
-					style="width: 100px; display: inline-block;">검색</button>
+				<section class="searchForm-container">
+					<select id="formCategory" name="sc" class="custom-select" style="width: 35%;">
+						<option value="0">전체</option>
+						<option value="1">잡담</option>
+						<option value="2">추천</option>
+						<option value="3">궁금</option>
+						<option value="4">같이</option>
+						<option value="5">기타</option>
+					</select> 
+					<select name="sk" class="custom-select">
+						<option value="title">글제목</option>
+						<option value="content">내용</option>
+					</select> <input type="text" id="sv" name="sv" class="form-control">
+					<button class="btn btn-dark form-control">검색</button>				
+				</section>
 			</form>
 		</div>
 

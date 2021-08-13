@@ -30,7 +30,6 @@ public class MypageDAO {
 	 * @return
 	 */
 	public List<Review> selectReviewList(int memberNo) {
-		System.out.println(memberNo);
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("myPageMapper.selectReviewList", memberNo);
 	}

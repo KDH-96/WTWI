@@ -101,7 +101,7 @@
 				</div>
             </div>
             <div class="update-btnArea">
-                <button class="btn btn-primary btn-md " type="submit">비밀번호 수정</button>
+                <button class="btn btn-dark btn-md " type="submit">비밀번호 수정</button>
             </div>
         </form>
     </main>

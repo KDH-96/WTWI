@@ -161,7 +161,7 @@
 	    
 	                    <hr class="mb-4">
 	                    <div class="update-btnArea">
-	                        <button class="btn btn-primary btn-md " type="submit">내 정보 수정</button>
+	                        <button class="btn btn-dark btn-md " type="submit">내 정보 수정</button>
 	                    </div>
                 </form>
             

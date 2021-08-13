@@ -92,7 +92,34 @@ a:hover {
   	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-     }
+}
+#searchForm {
+	display: flex;
+	justify-content: center;
+	width: 50%;	
+}
+#search-container {
+	display: flex;
+	justify-content: center;
+}
+.searchForm-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 70%;
+}
+.searchForm-container * {
+	margin-right: 3px;
+}
+.searchForm-container select {
+	width: 40%;
+}
+.searchForm-container input {
+	width: 150%;
+}
+.searchForm-container button {
+	width: 50%;
+}
 </style>
 </head>
 
@@ -260,11 +287,15 @@ a:hover {
 			<!---------------------- Pagination end---------------------->
 		</div>
 		<!-- 검색창 -->
-		<div class="my-5">
+		<div class="my-5" id="search-container">
 			<form action="chat" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
-				<span>명소 이름</span>
-				<input type="text" id="sv" name="sv" class="form-control" style="width: 25%; display: inline-block;">
-				<button class="form-control btn btn-primary" style="width: 100px; display: inline-block;">검색</button>
+				<select id="formCategory" class="custom-select">
+						<option>담당자</option>
+				</select> 
+				<section class="searchForm-container">
+					<input type="text" id="sv" name="sv" class="form-control">
+					<button class="btn btn-dark form-control">검색</button>				
+				</section>
 			</form>
 		</div>
 
