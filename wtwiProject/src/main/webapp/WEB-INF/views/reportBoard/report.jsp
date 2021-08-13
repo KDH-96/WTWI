@@ -102,7 +102,11 @@
 				</div>
 				<div>
 					<input type="radio" name="reportCategoryNo" value="4" autocomplete="off"> 
-					<label for="7">성희롱/욕설/비방</label>
+					<label for="7">성희롱</label>
+				</div>
+				<div>
+					<input type="radio" name="reportCategoryNo" value="4" autocomplete="off"> 
+					<label for="7">욕설/비방</label>
 				</div>
 
 				<div class="form-group">

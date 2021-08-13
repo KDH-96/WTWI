@@ -304,7 +304,7 @@ a:hover {
 			
 			const sv = $("#sv").val().trim();
 			if(sv == ""){
-				swal("검색 실패", "검색 내용를 입력해주세요.", "error");
+				swal("검색 실패", "검색 내용을 입력해주세요.", "error");
 				return false;
 			}
 		}
