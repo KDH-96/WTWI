@@ -39,7 +39,7 @@
 								<button class="dropdown-item" type="button" onclick="deleteAlert();">삭제</button>
 							</c:when>
 							<c:otherwise>
-								<button class="dropdown-item" type="button">신고</button>
+								<button class="dropdown-item" type="button" onclick="location.href='${contextPath }/reportBoard/report?type=1&freeNo=${board.freeNo}';">신고</button>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -86,13 +86,6 @@
                     <span id="replyCount">${board.replyCount}</span>
                 </div>
             </div>
-            
-            
-            <!-- 신고 기능 버튼입니다!!  -->
-            <!-- 게시글에 있는 신고버튼 -->
-            <a class="btn" href="${contextPath }/reportBoard/report?type=1&freeNo=${board.freeNo}">신고</a>
-            <!-- 댓글에 있는 신고버튼 -->
-            <a class="btn" href="${contextPath }/reportBoard/report?type=2&freeNo=${board.freeNo}">신고</a>
             
 		<jsp:include page="../freeboard/reply.jsp" />
         </div>
