@@ -16,6 +16,11 @@
 		<result property="parentReplyNick" column="PARENT_REPLY_NICK"/>
 	</resultMap>
 	
+	<!-- 페이지네이션 -->
+	<resultMap type="FreePagination" id="pg_rm">
+		<result property="listCount" column="CNT"/>
+	</resultMap>
+	
 	<!-- 댓글 목록 조회(17) -->
 	<select id="selectReplyList" parameterType="_int" resultMap="reply_rm">
 		SELECT * FROM FREE_REPLY_LIST
@@ -51,4 +56,29 @@
 		INSERT INTO FREE_REPLY VALUES
 		(SEQ_FR_RNO.NEXTVAL, #{freeReplyContent}, DEFAULT, DEFAULT, #{freeNo}, #{memberNo}, #{parentReplyNo})
 	</insert>
+	
+	<!-- ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ 관리자 ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ -->
+	
+	<!-- 댓글 개수 조회(31-1) -->
+	<select id="getReplyCount" parameterType="_int" resultMap="pg_rm">
+		SELECT COUNT(*) CNT FROM FREE_REPLY_LIST
+		WHERE FREE_NO = #{freeNo}
+	</select>
+	
+	<!-- 댓글 목록 조회(32-2) -->
+	<select id="selectReplyListAll" parameterType="_int" resultMap="reply_rm">
+		SELECT * FROM FREE_REPLY_LIST
+		WHERE FREE_NO = #{freeNo}
+		START WITH PARENT_REPLY_NO IS NULL
+		CONNECT BY PRIOR FREE_REPLY_NO = PARENT_REPLY_NO
+		ORDER SIBLINGS BY FREE_REPLY_NO ASC
+	</select>
+	
+	<!-- 관리자 페이지 댓글 상태 변경(32) -->
+	<update id="changeFreeReplyStatus" parameterType="FreeReply">
+		UPDATE FREE_REPLY SET
+		FREE_REPLY_STATUS = #{freeReplyStatus}
+		WHERE FREE_REPLY_NO = #{freeReplyNo}
+	</update>
+	
 </mapper>
