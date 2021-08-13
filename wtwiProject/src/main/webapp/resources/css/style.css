@@ -8,3 +8,11 @@ a {
 .bi-heart-fill{
 	color: #da2c3d;
 }
+
+.err-div{
+	margin-top: 5rem;
+}
+.err-msg>h3, h2{
+	font-weight: 500;
+	color: rgb(80,80,80);
+}

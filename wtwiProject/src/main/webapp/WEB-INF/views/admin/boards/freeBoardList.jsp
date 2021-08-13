@@ -36,7 +36,7 @@
               <tr>
                 <th scope="row">${b.freeNo}</th>
                 <td>${b.freeCategoryName}</td>
-                <td><a id="linkA" href="${b.freeNo}?cp=${pagination.currentPage}${searchString}&bo=freeboard">${b.freeTitle}</a></td>
+                <td><a id="linkA" href="${b.freeNo}cp=${pagination.currentPage}${searchString}&bo=freeboard">${b.freeTitle}</a></td>
                 <td>${b.memberNick}</td>
                 <td><fmt:formatDate value="${b.freeCreateDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <td>${b.freeReadCount}</td>
