@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
- 
+  
 <style>
 	.pagination{
 		justify-content: center;
@@ -9,7 +9,10 @@
 </style>
 <jsp:include page="../common/header.jsp"></jsp:include>
 <div class="container">
-         <div class="h-div"><h2><span id="listTitle">게시글 조회</span></h2></div>
+         <div class="h-div">
+         	<h2><span id="listTitle">게시글 조회</span>
+         	<span><button class="float-right" onclick="fnRequest('updateForm');">수정</button></span></h2>
+         </div>
          <!-- 명소 상세 정보를 감싸는 div -->
          <div id="attractionArea">
             <table class="table">
@@ -196,12 +199,25 @@
             </ul>
           </nav>
          </div>
-         <a href="list?cp=${param.cp}${searchString}&bo=${param.bo}" type="button" class="btn btn-primary ml-1" style="background-color: black; border: black;">뒤로가기</a>
+         <c:if test="${!empty param.bo}">
+	         <a href="list?cp=${param.cp}${searchString}&bo=${param.bo}" type="button" class="btn btn-primary ml-1" style="background-color: black; border: black;">뒤로가기</a>
+         </c:if>
+         <c:if test="${empty param.bo}">
+	         <a href="list?bo=freeboard" type="button" class="btn btn-primary ml-1" style="background-color: black; border: black;">뒤로가기</a>
+         </c:if>
 </div>
-<!-- footer -->
+<!-- footer include -->
 
+
+<form action="#" method="POST" name="requestForm">
+	<input type="hidden" name="freeNo" value="${board.freeNo}">
+	<input type="hidden" name="cp" value="${param.cp}">
+</form>
 <script>
-
+function fnRequest(addr){
+	document.requestForm.action = addr;
+	document.requestForm.submit();
+}
 
 
 </script>

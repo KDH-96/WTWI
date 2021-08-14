@@ -4,7 +4,7 @@
    
       <div id="contentArea">
 			<jsp:include page="boardSelect.jsp"></jsp:include>
-         
+			
             <!-- 위 select-option에 따라서 보여지는 테이블이 다름 -->
 
             <%-- 검색 상태 유지를 위한 쿼리스트링용 변수 --%>
@@ -17,6 +17,10 @@
             	</c:if>
             	<c:set var="searchString" value="&sk=${param.sk}${searchCategory}${searchValue}"/>
             </c:if>
+
+	         <div class="row d-flex justify-content-end mr-2 mb-2">
+				 <a class="btn btn-primary" style="background-color: black; border: black; width: 100px" href="${contextPath}/admin/freeboard/insertForm">글작성</a>
+	         </div>
 
             <!-- 자유게시판 테이블 -->
           <table class="table">
@@ -65,7 +69,7 @@
           </table>
       </div>
          <!----------------------------------------------------------------------------------------------  content end -->
-
+ 
          <!----------------------------------------------------------------------------------------------  Pagination start -->
          <!-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 -->
 		<c:set var="pageURL" value="list"/>
