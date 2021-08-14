@@ -2,6 +2,8 @@ package com.wtwi.fin.admin.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,21 +12,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.wtwi.fin.admin.model.service.AdminFreeService;
+import com.wtwi.fin.freeboard.model.service.BoardService;
 import com.wtwi.fin.freeboard.model.vo.Board;
+import com.wtwi.fin.freeboard.model.vo.Category;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
 import com.wtwi.fin.freeboard.model.vo.Reply;
 import com.wtwi.fin.freeboard.model.vo.Search;
 import com.wtwi.fin.member.controller.MemberController;
+import com.wtwi.fin.member.model.vo.Member;
 
 @Controller
 @RequestMapping({"/admin/freeboard/*"})
+@SessionAttributes({"loginMember"})
 public class AdminFreeController {
 
 	@Autowired
 	private AdminFreeService service;
+	
+	@Autowired
+	private BoardService boardService;
 	
 	// 관리자 페이지 자유게시판 목록 + 검색 (27, 29)
 	@RequestMapping(value="list", method = RequestMethod.GET)
@@ -143,13 +153,89 @@ public class AdminFreeController {
 		return "redirect:/admin/freeboard/"+reply.getFreeNo()+"?bo="+boardOption;
 	}
 	
+	// 관리자 페이지 글 삽입화면 전환(33)
+	@RequestMapping(value="insertForm", method=RequestMethod.GET)
+	public String insertForm(Model model) {
+		
+		// 카테고리 목록 조회
+		List<Category> category = boardService.selectCategory();
+		model.addAttribute("category", category);
+		
+		return "admin/boards/freeBoardInsert";
+	}
 	
+	// 관리자 페이지 글 삽입(34)
+	@RequestMapping(value="insert", method=RequestMethod.POST)
+	public String insertBoard(@ModelAttribute Board board,
+							  @RequestParam("editordata") String freeContent,
+							  @RequestParam("imgs") List<String> imgs,
+							  @ModelAttribute("loginMember") Member loginMember,
+							  RedirectAttributes ra, 
+							  HttpServletRequest request) {
+		board.setMemberNo(loginMember.getMemberNo());
+		board.setFreeContent(freeContent);
+		
+		String webPath = "resources/images/freeboard/";
+		
+		// 글 삽입
+		int freeNo = boardService.insertBoard(board, imgs, webPath);
+		
+		String path;
+		if(freeNo>0) { // 삽입 성공
+			path = "redirect:"+freeNo;
+			MemberController.swalSetMessage(ra, "success", "게시글이 작성되었습니다.", null);
+		
+		} else { // 삽입 실패
+			path = "redirect:"+request.getHeader("referer");
+			MemberController.swalSetMessage(ra, "error", "게시글 작성에 실패하였습니다.", null);
+		}
+		return path;
+	}
 	
+	// 관리자페이지 글 수정화면 전환(35)
+	@RequestMapping(value="updateForm", method=RequestMethod.POST)
+	public String updateForm(@RequestParam("freeNo") int freeNo,
+							 Model model) {
+		
+		// 카테고리 목록 조회
+		List<Category> category = boardService.selectCategory();
+		
+		// 게시글 상세 조회
+		Board board = boardService.selectBoard(freeNo);
+
+		model.addAttribute("category", category);
+		model.addAttribute("board", board);
+		
+		return "admin/boards/freeBoardUpdate";
+	}
 	
-	
-	
-	
-	
+	// 관리자페이지 글 수정(36)
+	@RequestMapping(value="update", method=RequestMethod.POST)
+	public String updateBoard(@ModelAttribute Board board,
+							  @RequestParam("editordata") String freeContent,
+							  @RequestParam("imgs") List<String> imgs,
+							  @RequestParam("deleteImgs") List<String> deleteImgs,
+							  RedirectAttributes ra, 
+							  HttpServletRequest request) {
+		
+		board.setFreeContent(freeContent);
+		
+		String webPath = "resources/images/freeboard/";
+		
+		// 글 수정
+		int result = boardService.updateBoard(board, imgs, deleteImgs, webPath, request);
+		
+		String path;
+		if(result>0) { // 수정 성공
+			path = "redirect:"+board.getFreeNo();
+			MemberController.swalSetMessage(ra, "success", "게시글이 수정되었습니다.", null);
+			
+		} else { // 수정 실패
+			path = "redirect:"+request.getHeader("referer");
+			MemberController.swalSetMessage(ra, "error", "게시글 수정에 실패하였습니다.", null);
+		}
+		return path;
+	}
 	
 	
 	

@@ -19,6 +19,11 @@
 	<!-- sweetalert API 추가 -->
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	
+	<!-- summernote -->
+	<script src="${contextPath}/resources/js/summernote/summernote-lite.js"></script>
+	<script src="${contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
+	<link rel="stylesheet" href="${contextPath}/resources/css/summernote/summernote-lite.css">
+	
    <style>
       @font-face {
          font-family: 'NEXON Lv1 Gothic OTF';
