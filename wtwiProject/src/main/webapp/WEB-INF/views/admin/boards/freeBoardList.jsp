@@ -72,7 +72,7 @@
 		<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage}${searchString}&bo=freeboard"/>
 		<c:set var="next" value="${pageURL}?cp=${pagination.nextPage}${searchString}&bo=freeboard"/>
          <div class="my-2">
-          <nav aria-label="Page navigation">
+          <nav aria-label="Page navigation"> 
             <ul class="pagination">
             	<c:if test="${pagination.currentPage <= pagination.pageSize}">
             		<li class="page-item disabled">
