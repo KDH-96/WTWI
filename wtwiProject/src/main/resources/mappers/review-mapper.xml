@@ -40,7 +40,7 @@
 		WHERE REVIEW_STATUS = 'Y'
 		AND ATTRACTION_NO = #{attractionNo}
 		ORDER BY REVIEW_NO DESC
-	</select> 
+	</select>  
 	   
 	
 	
