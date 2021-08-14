@@ -41,7 +41,7 @@
 		AND ATTRACTION_NO = #{attractionNo}
 		ORDER BY REVIEW_NO DESC
 	</select>  
-	   
+	    
 	
 	 
 </mapper>
