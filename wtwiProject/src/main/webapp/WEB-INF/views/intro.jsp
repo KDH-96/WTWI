@@ -84,7 +84,7 @@
             margin-top: 30px;
             transition: all 1s ease 3s;
         }
-
+ 
         .content-hidden .fly-in-text li {
             opacity: 0;
         }
@@ -231,6 +231,80 @@
         });
     </script>
 
+
+    <script>
+    
+    	$(document).ready(function(){
+    		
+    		var confirm = window.confirm("사용자의 위치정보 수집에 동의합니까?(동의하셈)");
+				if(confirm == true){
+			        // 위치정보 획득
+			        
+			        function getGeoloaction() {
+			            if(window.navigator.geolocation) {
+			                // navigator.geolocation.getCurrentPosition(successCallback, [errorCallback, [options]])
+			                // : 현재 위치 정보 반환
+			                navigator.geolocation.getCurrentPosition(showPosition, handleError);
+			            } else {                
+			                $('#comment').html('Geolocation을 지원하지 않는 브라우저입니다.');
+			            }
+			        }
+			        
+			        // successCallback
+			        function showPosition(position) {
+			              console.log("동의한 시간 : " + new Date(position.timestamp));
+			            // coords.altitude : 고도
+			            // timestamp : 위치 정보를 가져온 시각
+			              
+					        $.ajax({
+				        		url : "${contextPath}/attraction/getLocation/",
+	            			data : {"latitude":position.coords.latitude, "longitude":position.coords.longitude},
+	            			type : "POST",
+				        	});
+			              
+			        }
+			        
+			        // errorCallback
+			        function handleError(error){
+			           // ★★★★ error.code
+			            // code 1 :사용자가 위치정보에 대한 접근을 막은 경우
+			            if(error.code === error.PERMISSION_DENIED) {
+			                alert('사용자가 위치정보에 대한 접근을 막은 경우');
+			            }
+			            // code 2 : 네트워크 또는 GPS에 연결할 수 없는 경우
+			            else if(error.code === error.POSITION_UNAVAILABLE) {
+			                alert('네트워크 또는 GPS에 연결할 수 없는 경우');
+			            }
+			            // code 3 : 사용자의 위치정보를 계산하는데 시간이 초과한 경우
+			            else if(error.code === error.TIMEOUT) {
+			                alert('사용자의 위치정보를 계산하는데 시간이 초과한 경우');
+			            }
+			            // code 4 : 그외 알수 없는 문제가 생긴 경우
+			            else if(error.code === error.UNKNOWN_ERROR) {
+			                alert('그 외 알수 없는 문제가 생긴 경우');
+			            }
+			        /*
+			           이미 위치 정보에 대해서 허용이 되어 있는 상태애세
+			           에러를 확인하기 위해 새로고침을 하면 계속 허용이 된 상태이기 때문에 에러를 확인할 수 없음
+			           그럴 때는 주소창 우측에 있는 GPS모양을 클릭, 관리 버튼 클릭, 허용되어있는 로컬을 삭제 하면 다시 허용하라고 뜸
+			        */
+			        }
+			        
+			        getGeoloaction();
+					  
+				}else {
+						console.log("동의를 안하면 곤란해");
+		        $.ajax({
+	        		url : "${contextPath}/attraction/getLocation/",
+          			data : {"latitude": 37.568477, "longitude":126.981611},
+          			type : "POST",
+	        	});
+				}
+    		
+    	})
+    
+    
+    </script>
 
 </body>
 
