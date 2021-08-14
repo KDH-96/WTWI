@@ -43,6 +43,7 @@
 	</select>
 	
 	
+	
 	<!-- 리뷰 삽입 -->
 	<insert id="insertReview" parameterType="Review">
 		INSERT INTO REVIEW VALUES
