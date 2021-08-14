@@ -36,7 +36,7 @@
               <tr>
                 <th scope="row">${b.freeNo}</th>
                 <td>${b.freeCategoryName}</td>
-                <td><a id="linkA" href="${b.freeNo}cp=${pagination.currentPage}${searchString}&bo=freeboard">${b.freeTitle}</a></td>
+                <td><a id="linkA" href="${b.freeNo}?cp=${pagination.currentPage}${searchString}&bo=freeboard">${b.freeTitle}</a></td>
                 <td>${b.memberNick}</td>
                 <td><fmt:formatDate value="${b.freeCreateDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <td>${b.freeReadCount}</td>
@@ -69,8 +69,8 @@
          <!----------------------------------------------------------------------------------------------  Pagination start -->
          <!-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 -->
 		<c:set var="pageURL" value="list"/>
-		<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage}${searchString}"/>
-		<c:set var="next" value="${pageURL}?cp=${pagination.nextPage}${searchString}"/>
+		<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage}${searchString}&bo=freeboard"/>
+		<c:set var="next" value="${pageURL}?cp=${pagination.nextPage}${searchString}&bo=freeboard"/>
          <div class="my-2">
           <nav aria-label="Page navigation">
             <ul class="pagination">
