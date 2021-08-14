@@ -27,41 +27,9 @@
          margin: auto;
          width: 1200px;
       }
-      /* content ) 게시글 목록 스타일 */
-      #h-menu{
-         clear :both;
-      }
-      .h-div{
-         float:left;
-         width : 21%;
-      }
-      .attraction-menu{
-         display: inline-block;
-         width : 50%;
-      }
       /* 게시글 목록의 높이가 최소 540px은 유지하도록 설정 */
       .list-wrapper {
          min-height: 50%;
-      }
-      /* pagination 가운데 정렬 */
-      .pagination {
-         justify-content: center;
-      }
-      #searchForm {
-         position: relative;
-      }
-      #searchForm>* {
-         top: 0;
-      }
-      .card{
-      	display: inline-block;
-      	float : left;
-      }
-      .my-2{
-      	display: inline-block;
-      }
-      .list-class{
-      	display: inline-block;
       }
       #cute-area-div{
       	margin-bottom : 5px;
@@ -106,14 +74,14 @@
       #attr-phone-div{
       	height : 25%;
       	margin-top: 10px;
-      	width : 49%;
+      	width : 25%;
       	float : left;
       	disply : inline-block;
       }
       #attr-homepage-div{
       	height : 25%;
       	margin-top: 10px;
-      	width : 49.6%;
+      	width : 73.5%;
       	float : left;
       	disply : inline-block;
       	margin-left : 10px;
@@ -187,8 +155,8 @@
          									</div>
          							</div>
          							<div id="attr-addr-div" style="background-color : #f7f7f7" >
-         									<div style="margin-left : 30px; padding : 8px"><h4 style="display : inline-block"><strong>주소</strong></h4> . . . . . . <a id="navi-link-a" class="link-dark" href="https://map.kakao.com/link/to/${attr.attractionNm},${attr.latitude},${attr.longitude}">카카오맵으로 길찾기</a>
-         									   <br>${attr.attractionAddr}
+         									<div style="margin-left : 30px; padding : 8px"><h4 style="display : inline-block"><strong>주소</strong></h4>
+         									   <br>${attr.attractionAddr} . . . . . . . . . . <a id="navi-link-a" class="link-dark" href="https://map.kakao.com/link/to/${attr.attractionNm},${attr.latitude},${attr.longitude}"><span><strong>카카오맵으로 길찾기</strong></span></a>
          									</div>
          							</div>
          							<div id="attr-phone-div" style="background-color : #f7f7f7">
