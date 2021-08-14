@@ -98,6 +98,12 @@
       	<jsp:include page="/WEB-INF/views/attractionboard/attractionCardView.jsp"></jsp:include>
 
         <!-- =================================== 명소 상세정보 영역 끝 =================================== -->
+        
+        <!-- =================================== 날씨 영역 시작 =================================== -->
+
+      	<jsp:include page="/WEB-INF/views/weather/weather.jsp"></jsp:include>
+
+        <!-- =================================== 날씨 영역 끝 =================================== -->
 	
     </div>
     <script type="text/javascript"
@@ -115,6 +121,9 @@
         
         // 지도 로딩 시 리뷰영역 폼 고정영역 숨기기
         $("#select-review-wrapper").hide();
+        
+        // 지도 로딩 시 날씨 영역 폼 고정영역 숨기기
+        $("#data-area").hide();
         
         // 선택된 마커(명소)의 contentId를 담을 변수(ajax 요청을 위해...)
         let selectedMarker = "";
@@ -387,7 +396,86 @@
 	                
 	                // 마커 클릭 시 커스텀 오버레이 표시 및 클릭한 좌표로 화면 이동
 	                kakao.maps.event.addListener(marker, 'click', function () {
-	   					
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+	                	// 날씨 영역 띄우기
+	                	/* 날씨  */
+const url = 'https://api.openweathermap.org/data/2.5/forecast';
+const lat2 = '?lat=' + lat; // 위도
+const lon = '&lon=' + lng; // 경도
+const appid = '&appid=' + '0a1fbf1d8c578d046a104c8faae7f7c4';
+const units = '&units='+'metric'
+
+$.getJSON(url+lat2+lon+appid+units,function(data){
+    
+	    var $ctime = data.list[0].dt_txt; // 날짜 및 시간
+	    var $minTemp = data.list[0].main.temp_min; // 최저온도
+	    var $maxTemp = data.list[0].main.temp_max; // 최고온도
+	    var $cTemp = data.list[0].main.temp; // 표준온도
+	    var $now = new Date($.now()); // 현재 시간
+	    var $cDate = $now.getFullYear() + '/' + ($now.getMonth()+1) +'/'+ $now.getDate()+ '/' + 
+	    $now.getHours() +':'+ $now.getMinutes(); // 연도, 달, 일,
+
+	    
+	    for(var i =0;i<37;i++){
+	        var $wtime = data.list[i].dt_txt; // 시간
+	        var $wtemp= data.list[i].main.temp; // 표준온도
+	        var $wfeels_like= data.list[i].main.feels_like; // 체감온도
+	        var $whumidity= data.list[i].main.humidity; // 습도
+	        var $maxTemp = data.list[i].main.temp_max; // 최고온도
+	        var $minTemp = data.list[i].main.temp_min; // 최저온도
+	        var $wicon = '<img src="http://openweathermap.org/img/wn/'+
+	            data.list[i].weather[0].icon +'.png" >' // 아이콘
+	        var $description = data.list[i].weather[0].description;
+
+	        var tableHtml = 
+	                        '<ul style="width:150px; list-style: none; padding-left:10px;" >'+
+	                        
+	                        '<div style="width:150px;  border-radius:1.0rem; background-color:navy; color:white;">'+
+	                         
+	                      	  '<li style="width:150px; padding-top:5px; font-weight:bold; ">' +
+	                                '<div style="text-align: center;">'+$wtime+'</div>'+
+	                            '</li>'+
+	                            
+	                            '<li">' +
+	                            '<div style="text-align: center; border-top:1px solid white; border-bottom:1px solid white; background-color:lightblue;">' + $wicon + '</div>'+
+	                            '</li>'+
+
+	                            '<li style="padding-top:10px; padding-bottom:10px; font-weight:bold;">' +
+	                                '<div style="text-align: center;">'+ $description + '</div>'+
+	                            '</li>'+
+	                            
+	                            '<li">'+
+	                            '<div>'+'온도 : ' + $wtemp + '</div>'+
+	                            '</li>'+
+	                            
+	                            '<li">'+
+	                                '<div>'+ '체감온도 : '+ $wfeels_like + '</div>'+
+	                            '</li>'+
+	                            
+	                            '<li style="padding-bottom:5px;">'+
+	                                '<div>'+ '습도 : '+ $whumidity + '</div>'+
+	                            '</li">'+
+	                            
+	                        '</div>'+
+	                        
+	                        '</ul>';
+	                            
+	                            $('.data-area').append(tableHtml);
+	                        }
+	    
+	});
+	                	
+	                    $("#data-area").fadeIn(100);
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 	                    if (clickedOverlay) {
 	                        clickedOverlay.setMap(null);
 	                    }
