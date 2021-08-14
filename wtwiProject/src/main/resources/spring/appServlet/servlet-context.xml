@@ -106,6 +106,9 @@
 		<websocket:sockjs />
 	</websocket:handlers>
 	
+	
+	
+	<!-- Interceptor(권한 처리) 적용 -->
 	<task:annotation-driven/>
 	<interceptors> 
 	  <interceptor> 
