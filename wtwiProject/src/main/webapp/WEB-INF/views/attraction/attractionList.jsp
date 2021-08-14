@@ -89,7 +89,22 @@
       	display : inline-block;
       	margin-top : 20px;
       	margin-left : 300px;
-
+      }
+      #page-link{
+      	background-color : black;
+      	border-color : black;
+      }
+      #page-link-1{
+      	color : black;
+      }
+      #page-link-2{
+      	color : black;
+      }
+      #page-link-3{
+      	color : black;
+      }
+      #page-link-4{
+      	color : black;
       }
       /* ------------------------------영역구분선------------------------------ */
    </style>
@@ -232,30 +247,30 @@
 		                	<%-- 현재 페이지가 5 페이지 이하일 시 --%>
 		                	<c:if test="${pagination.currentPage <= pagination.pageSize}">
 		                		<li class="page-item disabled">
-		                			<a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+		                			<a class="page-link" id="page-link-1" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
 		                		</li>
 		                	</c:if>
 		                	<%-- 현재 페이지가 5 페이지 초과일 시 --%>
 		                	<c:if test="${pagination.currentPage > pagination.pageSize}">
 		                		<li class="page-item">
-		                			<a class="page-link" href="${prev}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+		                			<a class="page-link" id="page-link-2" href="${prev}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
 		                		</li>
 		                	</c:if>
 		                	<%-- 페이지 --%>
 							<c:forEach var="p" begin="${pagination.startPage}" end="${pagination.endPage}">
 								<c:choose>
 									<c:when test="${p==pagination.currentPage}">
-										<li class="page-item active"><a class="page-link">${p}</a></li>
+										<li class="page-item active"><a id="page-link" class="page-link">${p}</a></li>
 									</c:when>
 									<c:otherwise>
-										<li class="page-item"><a class="page-link" href="${pageURL}?cp=${p}${searchArea}${searchContentType}${searchKeyword}">${p}</a></li>
+										<li class="page-item"><a class="page-link" id="page-link-3" href="${pageURL}?cp=${p}${searchArea}${searchContentType}${searchKeyword}">${p}</a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
 							<%-- 현재 페이지가 마지막 페이지 목록이 아닌 경우 --%>
 							<c:if test="${pagination.endPage < pagination.maxPage}">
 								<li class="page-item">
-									<a class="page-link" href="${next}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+									<a class="page-link" id="page-link-4" href="${next}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
 								</li> 
 							</c:if>
 		                </ul>

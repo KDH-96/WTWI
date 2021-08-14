@@ -136,7 +136,7 @@ public class AttractionController {
     			  
     			  attr = new Attraction();
     			  Set<String> itemKeys = jobj.keySet();
-
+    			  init();
     			  for (String key : itemKeys) { // 모든 키에 접근을 해서
     				  attr = makingAttr(key, jobj, attr);
     			  }
@@ -264,7 +264,7 @@ public class AttractionController {
 
             attr = new Attraction();
             Set<String> itemKeys = jobj.keySet();
-
+            init();
             for (String key : itemKeys) {
                attr = makingAttr(key, jobj, attr);
             }
@@ -420,7 +420,7 @@ public class AttractionController {
       
       model.addAttribute("attr" , attr);
 
-      //** 상세조회한 명소 반경 5키로 미터의 다른 명소들 10개 -> 상세조회 지도에 뿌릴 것 *******//
+      //** 상세조회한 명소 반경 5키로 미터의 다른 명소들 20개 -> 상세조회 지도에 뿌릴 것 *******//
 	  
 	  JsonArray attrList12 = makingArray(12,attr);
 	  JsonArray attrList14 = makingArray(14,attr);
@@ -530,16 +530,22 @@ public class AttractionController {
    /********************************************************************************************************************/
    // 상세조회코드 가져옴
    @RequestMapping(value="insertToDB", method=RequestMethod.POST )
-   public void insertToDB(@RequestParam("testDB") String inputMsg) {
+   public void insertToDB(@RequestParam("test") String inputMsg) {
       
-      System.out.println("inputMsg : " + inputMsg);
+      int inputNumber = Integer.parseInt(inputMsg);
+      System.out.println(inputNumber);
 
-      String req1 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?serviceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D&pageNo=1&numOfRows=5000&MobileApp=AppTest&MobileOS=ETC&arrange=B&contentTypeId=12"
-            + "&areaCode=8&listYN=Y&_type=json";
+      String req1 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList"
+      		+ "?serviceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D"
+      		+ "&pageNo=1&numOfRows=7000&MobileApp=AppTest&MobileOS=ETC&arrange=B"
+      		+ "&contentTypeId=" + inputNumber
+            + "&listYN=Y&_type=json";
       
       String result = makingResult(req1);
-      // 모든 관광지 정보가 result에 담김 -> 12는 지역별로 / 14는 전체 꺼내서 저장 (2021.08.09기준)
-
+      // 모든 관광지 정보가 result에 담김 
+      // -> 12는 지역별로 / 14는 전체 꺼내서 저장 (2021.08.09기준)
+      // 15,25,28,32,38,39 모두 db에 저장 (2021.08.12기준)
+      
       JsonObject convertedObj = new Gson().fromJson(result.toString(), JsonObject.class);
       JsonObject response = new Gson().fromJson(convertedObj.get("response").toString(), JsonObject.class);
       JsonObject body = new Gson().fromJson(response.get("body").toString(), JsonObject.class);
@@ -574,7 +580,8 @@ public class AttractionController {
          attrList.add(attr);
       }
       int successNo = service.insertAttrList(attrList);
-      //System.out.println("successNo : " + successNo);
+      System.out.println("successNo : " + successNo);
+      
    }
    
    
@@ -717,7 +724,7 @@ public class AttractionController {
 	  String type = "json";
 	  
 	  String req = url + "?ServiceKey=" + serviceKey 
-			  + "&numOfRows=10" 
+			  + "&numOfRows=20" 
 			  + "&MobileOS=" + MobileOS + "&MobileApp=" + MobileApp
 			  + "&arrange=" + arrange 
 			  + "&contentTypeId=" + contentTypeId 
