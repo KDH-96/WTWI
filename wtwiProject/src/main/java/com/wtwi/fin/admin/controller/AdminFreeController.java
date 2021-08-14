@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.wtwi.fin.admin.model.service.AdminFreeService;
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Pagination;
+import com.wtwi.fin.freeboard.model.vo.Reply;
 import com.wtwi.fin.freeboard.model.vo.Search;
 import com.wtwi.fin.member.controller.MemberController;
 
@@ -62,10 +64,13 @@ public class AdminFreeController {
 	
 	// 관리자 페이지 게시글 상태변경(28)
 	@RequestMapping(value="changeFreeStatus", method=RequestMethod.POST)
-	public String changeFreeStatus(Board board,
-								   RedirectAttributes ra) {
+	public String changeFreeStatus(@RequestParam("bo") String boardOption,
+								   Board board,
+								   RedirectAttributes ra,
+								   @RequestParam(value="view", required=false, defaultValue="") String view) {
 		
 		int result = service.changeFreeStatus(board);
+		
 		if(result>0) {
 			String status = null;
 			if(board.getFreeStatus().equals("Y")) status = "등록";
@@ -75,6 +80,78 @@ public class AdminFreeController {
 		} else {
 			MemberController.swalSetMessage(ra, "error", "게시글 상태 변경 실패", null);
 		}
-		return "redirect:/admin/freeboard/list";
+		
+		if(view.equals("")) {
+			return "redirect:/admin/freeboard/list?bo="+boardOption;
+			
+		} else {
+			return "redirect:/admin/freeboard/"+board.getFreeNo()+"?bo="+boardOption;
+		}
 	}
+	
+	// 관리자 페이지 게시글 상세조회(30, 31)
+	@RequestMapping(value="/{freeNo}", method = RequestMethod.GET)
+	public String freeboardView(@PathVariable("freeNo") int freeNo,
+								@RequestParam(value="cp", required=false, defaultValue="1") int cp,
+								Model model,
+								RedirectAttributes ra,
+								Pagination pg) {
+		pg.setCurrentPage(cp);
+		
+		Board board = service.selectFreeboard(freeNo);
+		
+		if(board!=null) {
+			model.addAttribute("board", board);
+			
+			// 댓글 개수 조회 + 페이지네이션 생성(31-1)
+			Pagination pagination = service.getReplyPagination(pg, freeNo);
+			
+			// 댓글 목록 조회(32-2)
+			List<Reply> replyList = service.selectReplyListAll(pagination, freeNo);
+			
+			model.addAttribute("pagination", pagination);
+			model.addAttribute("replyList", replyList);
+			
+			return "admin/boards/freeBoardView";
+			
+		} else {
+			MemberController.swalSetMessage(ra, "error", "존재하지 않는 게시글입니다.", null);
+			return "redirect:list";
+		}
+	}
+	
+	// 관리자 페이지 댓글 상태 변경(32)
+	@RequestMapping(value="changeFreeReplyStatus", method=RequestMethod.POST)
+	public String changeFreeReplyStatus(Reply reply,
+										@RequestParam(value="cp", required=false, defaultValue="1") int cp,
+										@RequestParam("bo") String boardOption,
+										RedirectAttributes ra) {
+		
+		int result = service.changeFreeReplyStatus(reply);
+		
+		if(result>0) {
+			String status = null;
+			if(reply.getFreeReplyStatus().equals("Y")) status = "등록";
+			else if(reply.getFreeReplyStatus().equals("N")) status = "삭제";
+			else status = "수정";
+			MemberController.swalSetMessage(ra, "success", "댓글이 \'"+status+"\'상태로 변경되었습니다.", null);
+			
+		} else {
+			MemberController.swalSetMessage(ra, "error", "댓글 상태 변경 실패", null);
+		}
+		
+		return "redirect:/admin/freeboard/"+reply.getFreeNo()+"?bo="+boardOption;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

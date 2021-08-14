@@ -24,7 +24,7 @@
 
 <body class="myPage-body">
 
-     <div class="myPage-sideBar col-sm-2 mt-5">
+     <div class="myPage-sideBar col-sm-2 ">
         <ul class="list-group">
             <li class="list-group-item list-group-item-action"><a href="${contextPath }/myPage/main">내 정보</a></li>
        		<c:if test="${loginMember.memberGrade != 'M'}">

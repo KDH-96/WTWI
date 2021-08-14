@@ -83,7 +83,44 @@ a:hover {
 }
 
 .order-check {
-	color: blue;
+	color: #FCC77F;
+}
+
+.table {
+	table-layout: fixed;
+}
+
+.boardTitle {
+	virtical-align: middle;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#searchForm {
+	display: flex;
+	justify-content: center;
+	width: 70%;	
+}
+#search-container {
+	display: flex;
+	justify-content: center;
+}
+.searchForm-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 70%;
+}
+.searchForm-container * {
+	margin-right: 3px;
+}
+
+.searchForm-container input {
+	width: 150%;
+}
+.searchForm-container button {
+	width: 50%;
 }
 </style>
 </head>
@@ -95,12 +132,13 @@ a:hover {
 
 	<%-- 검색 상태 유지를 위한 쿼리스트링용 변수 선언 --%>
 	<c:if test="${!empty param.sv }">
-		<c:set var="searchValue" value="&sv=${param.sv}"/>
-		<c:set var="searchStr" value="&sc=${param.sc}&sk=${param.sk}${searchValue }"  />
+		<c:set var="searchValue" value="&sv=${param.sv}" />
+		<c:set var="searchStr"
+			value="&sc=${param.sc}&sk=${param.sk}${searchValue }" />
 	</c:if>
-	
+
 	<c:if test="${!empty param.order }">
-		<c:set var="order" value="&order=${param.order}"/>
+		<c:set var="order" value="&order=${param.order}" />
 	</c:if>
 
 	<main class="myPage-main">
@@ -108,7 +146,8 @@ a:hover {
 		<div class="myPage-postBtnArea">
 			<a href="${contextPath }/myPage/post" class="btn btn-secondary">자유게시판</a>
 			<a href="${contextPath }/myPage/qnaBoard" class="btn btn-light">문의게시판</a>
-			<a href="${contextPath }/myPage/reviewBoard" class="btn btn-light">명소 후기</a>
+			<a href="${contextPath }/myPage/reviewBoard" class="btn btn-light">명소
+				후기</a>
 		</div>
 		<div>
 			<table class="table">
@@ -129,23 +168,24 @@ a:hover {
 						<th scope="col">
 							<c:choose>
 								<c:when test="${param.order!='like'}">
-									<a href="post?order=like${searchStr}">좋아요 수 <i class="fas fa-caret-down"></i></a>								
+									<a href="post?order=like${searchStr}">좋아요 수 <i
+										class="fas fa-caret-down"></i></a>
 								</c:when>
 								<c:otherwise>
-									<a href="post">좋아요 수 <i class="fas fa-caret-down order-check"></i></a>																
+									<a href="post">좋아요 수 <i
+										class="fas fa-caret-down order-check"></i></a>
 								</c:otherwise>
 							</c:choose>
 						</th>
-						<th scope="col">
-							<c:choose>
+						<th scope="col"><c:choose>
 								<c:when test="${param.order!='read'}">
-									<a href="post?order=read${searchStr}">조회수 <i class="fas fa-caret-down"></i></a>							
+									<a href="post?order=read${searchStr}">조회수 <i
+										class="fas fa-caret-down"></i></a>
 								</c:when>
 								<c:otherwise>
-									<a href="post">조회수 <i class="fas fa-caret-down order-check"></i></a>																
+									<a href="post">조회수 <i class="fas fa-caret-down order-check"></i></a>
 								</c:otherwise>
-							</c:choose>
-						</th>
+							</c:choose></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -170,12 +210,11 @@ a:hover {
 									<td>${board.freeCategoryName}</td>
 
 									<!-- 글 제목 -->
-									<td class="boardTitle">
-										<a href="${contextPath}/freeboard/${board.freeNo}?cp=${pagination.currentPage}">${board.freeTitle}</a>
+									<td class="boardTitle"><a
+										href="${contextPath}/freeboard/${board.freeNo}?cp=${pagination.currentPage}">${board.freeTitle}</a>
 										<c:if test="${board.replyCount!=0}">
 											<span>[${board.replyCount}]</span>
-										</c:if>
-									</td>
+										</c:if></td>
 									<%-- 작성일 --%>
 									<td><fmt:formatDate var="createDate"
 											value="${board.freeCreateDate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
@@ -216,11 +255,13 @@ a:hover {
 
 
 			<c:set var="pageURL" value="post"></c:set>
-	
 
-			<c:set var="prev" value="${pageURL}?cp=${pagination.prevPage }${searchStr}${order}"></c:set>
+
+			<c:set var="prev"
+				value="${pageURL}?cp=${pagination.prevPage }${searchStr}${order}"></c:set>
 			<!-- 다음페이지 시작주소 -->
-			<c:set var="next" value="${pageURL}?cp=${pagination.nextPage }${searchStr}${order}"></c:set>
+			<c:set var="next"
+				value="${pageURL}?cp=${pagination.nextPage }${searchStr}${order}"></c:set>
 
 			<div class="my-5">
 				<ul class="myPage-pagination">
@@ -261,7 +302,8 @@ a:hover {
 
 					<!-- 현재 페이지가 마지막 페이지 미만인 경우 -->
 					<c:if test="${pagination.currentPage < pagination.maxPage }">
-						<li><a href="${pageURL}?cp=${pagination.currentPage+1}${searchStr}${order}""><i
+						<li><a
+							href="${pageURL}?cp=${pagination.currentPage+1}${searchStr}${order}""><i
 								class="fas fa-caret-right"></i></a></li>
 					</c:if>
 
@@ -277,67 +319,67 @@ a:hover {
 			<!---------------------- Pagination end---------------------->
 		</div>
 		<!-- 검색창 -->
-		<div class="my-5">
-			<form action="post" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
-				<select class="form-control" id="formCategory" name="sc" >
-                  		<option value="0">전체</option>
-                  		<option value="1">잡담</option>
-                  		<option value="2">추천</option>
-                  		<option value="3">궁금</option>
-                  		<option value="4">같이</option>
-                  		<option value="5">기타</option>
-                  	</select>
-				<select class="form-control" name="sk" >
-					<option value="title">글제목</option>
-					<option value="content">내용</option>
-				</select>
-				<input type="text" id="sv" name="sv" class="form-control" style="width: 25%; display: inline-block;">
-				<button class="form-control btn btn-primary" style="width: 100px; display: inline-block;">검색</button>
+		<div class="my-5" id="search-container">
+			<form action="post" method="GET" class="text-center" id="searchForm"
+				onsubmit="return validate();">
+				<section class="searchForm-container">
+					<select id="formCategory" name="sc" class="custom-select" style="width: 35%;">
+						<option value="0">전체</option>
+						<option value="1">잡담</option>
+						<option value="2">추천</option>
+						<option value="3">궁금</option>
+						<option value="4">같이</option>
+						<option value="5">기타</option>
+					</select> 
+					<select name="sk" class="custom-select">
+						<option value="title">글제목</option>
+						<option value="content">내용</option>
+					</select> <input type="text" id="sv" name="sv" class="form-control">
+					<button class="btn btn-dark form-control">검색</button>				
+				</section>
 			</form>
 		</div>
 
 	</main>
 	<script>
 		// 검색 내용이 있을 경우 검색창에 해당 내용을 작성해두는 기능
-		(function(){
+		(function() {
 			var searchCategory = "${param.sc}";
-			var searchKey = "${param.sk}"; 
+			var searchKey = "${param.sk}";
 			var searchValue = "${param.sv}";
-			
+
 			// 검색창 select의 option을 반복 접근
-			$("select[name=sc] > option").each(function(index, item){
+			$("select[name=sc] > option").each(function(index, item) {
 				// index : 현재 접근중인 요소의 인덱스
 				// item : 현재 접근중인 요소
-							// content            content
-				if( $(item).val() == searchCategory  ){
+				// content            content
+				if ($(item).val() == searchCategory) {
 					$(item).prop("selected", true);
 				}
-			});		
-			
-			$("select[name=sk] > option").each(function(index, item){
+			});
+
+			$("select[name=sk] > option").each(function(index, item) {
 				// index : 현재 접근중인 요소의 인덱스
 				// item : 현재 접근중인 요소
-							// content            content
-				if( $(item).val() == searchKey  ){
+				// content            content
+				if ($(item).val() == searchKey) {
 					$(item).prop("selected", true);
 				}
-			});		
-			
+			});
+
 			// 검색어 입력창에 searcValue 값 출력
 			$("input[name=sv]").val(searchValue);
-			
-			
+
 		})();
-		
-		function validate(){
-			
+
+		function validate() {
+
 			const sv = $("#sv").val().trim();
-			if(sv == ""){
+			if (sv == "") {
 				swal("검색 실패", "검색 내용를 입력해주세요.", "error");
 				return false;
 			}
 		}
-			
 	</script>
 </body>
 </html>

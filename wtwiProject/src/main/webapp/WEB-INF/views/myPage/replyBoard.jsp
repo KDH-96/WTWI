@@ -81,6 +81,33 @@ a:hover {
 .focus-page {
 	font-weight: bold;
 }
+#searchForm {
+	display: flex;
+	justify-content: center;
+	width: 70%;	
+}
+#search-container {
+	display: flex;
+	justify-content: center;
+}
+.searchForm-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 70%;
+}
+.searchForm-container * {
+	margin-right: 3px;
+}
+.searchForm-container select {
+	width: 70%;
+}
+.searchForm-container input {
+	width: 100%;
+}
+.searchForm-container button {
+	width: 50%;
+}
 </style>
 </head>
 
@@ -232,13 +259,20 @@ a:hover {
 			</div>
 			<!---------------------- Pagination end---------------------->
 		</div>
-		<!-- 검색창 -->
-		<div class="my-5">
+		<!-- 검색창 -->		
+		<div class="my-5" id="search-container">
 			<form action="reply" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
-				<input type="text" id="sv" name="sv" class="form-control" style="width: 25%; display: inline-block;">
-				<button class="form-control btn btn-primary" style="width: 100px; display: inline-block;">검색</button>
+			
+				<section class="searchForm-container">
+					<select id="formCategory" class="custom-select">
+						<option>댓글 내용</option>
+					</select> 
+					<input type="text" id="sv" name="sv" class="form-control">
+					<button class="btn btn-dark form-control">검색</button>				
+				</section>
 			</form>
 		</div>
+		
 
 	</main>
 	<script>

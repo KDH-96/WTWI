@@ -43,7 +43,6 @@ public class MypageController {
 		
 		List<Review> reviewList = service.selectReviewList(loginMember.getMemberNo());
 		model.addAttribute("reviewList", reviewList);
-		System.out.println(reviewList);
 
 		return "myPage/main";
 
@@ -52,8 +51,7 @@ public class MypageController {
 	@ResponseBody
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	public String getInfo(@RequestParam("latitude") String latitude, @RequestParam("longitude") String longitude, String check) {
-		System.out.println("latitude : " + latitude);
-		System.out.println("longitude : " + longitude);
+
 		String result = "";
 		String apiId = "fab85c55ea80aa78f7d32ab07532fe33";   
 		URL url;
@@ -68,7 +66,6 @@ public class MypageController {
 				bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
 				result = bf.readLine();
 			}
-			System.out.println(result);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -145,28 +142,26 @@ public class MypageController {
 								@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
 								Pagination pg/* 페이징 처리에 사용할 비어있는 객체 */, Search search/* 검색용 커맨드 객체 */,
 								@RequestParam(value = "order", required = false) String order) {
-		
+
 		pg.setCurrentPage(cp);
 		member.setMemberNo(loginMember.getMemberNo());
 		search.setMemberNo(loginMember.getMemberNo());
 
 		Pagination pagination = null;
-		List<Reply> replyBoardList = null;
+		List<Review> reviewBoardList = null;
 
-		System.out.println("sv : "+ search.getSv());
 		if (search.getSv() == null) { // 검색 X 
-			pagination = service.getReplyPagination(member, pg);
+			pagination = service.getReviewPagination(member, pg);
 			pagination.setMemberNo(loginMember.getMemberNo());
 
-			replyBoardList = service.selectReplyBoardList(pagination, order);
+			reviewBoardList = service.selectReviewBoardList(pagination, order);
 		} else { // 검색 O 
-			System.out.println("sv : "+ search.getSv());
-			pagination = service.getReplyPagination(search, pg);
+			pagination = service.getReviewPagination(search, pg);
 			
-			replyBoardList = service.selectSearchReplyBoardList(search, pagination);
+			reviewBoardList = service.selectSearchReviewBoardList(search, pagination);
 		}
 
-		model.addAttribute("replyBoardList", replyBoardList);
+		model.addAttribute("reviewBoardList", reviewBoardList);
 		model.addAttribute("pagination", pagination);
 
 		return "myPage/reviewBoard";
@@ -186,14 +181,12 @@ public class MypageController {
 		Pagination pagination = null;
 		List<Reply> replyBoardList = null;
 
-		System.out.println("sv : "+ search.getSv());
 		if (search.getSv() == null) { // 검색 X 
 			pagination = service.getReplyPagination(member, pg);
 			pagination.setMemberNo(loginMember.getMemberNo());
 
 			replyBoardList = service.selectReplyBoardList(pagination, order);
 		} else { // 검색 O 
-			System.out.println("sv : "+ search.getSv());
 			pagination = service.getReplyPagination(search, pg);
 			
 			replyBoardList = service.selectSearchReplyBoardList(search, pagination);
@@ -230,7 +223,6 @@ public class MypageController {
 		} else { // 검색 O
 
 			pagination = service.getReportPagination(search, pg); 
-			
 			reportBoardList = service.selectSearchReportBoardList(search, pagination);
 		}
 

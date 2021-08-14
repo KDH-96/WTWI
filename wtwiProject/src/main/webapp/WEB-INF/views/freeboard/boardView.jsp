@@ -39,7 +39,7 @@
 								<button class="dropdown-item" type="button" onclick="deleteAlert();">삭제</button>
 							</c:when>
 							<c:otherwise>
-								<button class="dropdown-item" type="button">신고</button>
+								<button class="dropdown-item" type="button" onclick="location.href='${contextPath }/reportBoard/report?type=1&freeNo=${board.freeNo}';">신고</button>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -86,6 +86,7 @@
                     <span id="replyCount">${board.replyCount}</span>
                 </div>
             </div>
+            
 		<jsp:include page="../freeboard/reply.jsp" />
         </div>
 		<%-- 검색 상태 유지를 위한 쿼리스트링용 변수 --%>

@@ -81,6 +81,45 @@ a:hover {
 .focus-page {
 	font-weight: bold;
 }
+
+.table {
+ 	table-layout: fixed;	
+}
+
+
+.content {		
+  	virtical-align: middle;
+  	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+#searchForm {
+	display: flex;
+	justify-content: center;
+	width: 50%;	
+}
+#search-container {
+	display: flex;
+	justify-content: center;
+}
+.searchForm-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 70%;
+}
+.searchForm-container * {
+	margin-right: 3px;
+}
+.searchForm-container select {
+	width: 40%;
+}
+.searchForm-container input {
+	width: 150%;
+}
+.searchForm-container button {
+	width: 50%;
+}
 </style>
 </head>
 
@@ -136,7 +175,7 @@ a:hover {
 
 								<tr>
 									<!-- 글번호 -->
-									<th scope="row">0</th>
+									<th scope="row"><i class="far fa-comment-dots"></i></th>
 
 									<%-- 담당자 --%>
 									<c:choose>
@@ -144,12 +183,12 @@ a:hover {
 											<td>${board.memberNick}</td>
 										</c:when>
 										<c:otherwise>
-											<td>${board.attractionNm}</td>										
+											<td class="content">${board.attractionNm}</td>										
 										</c:otherwise>
 									</c:choose>
 
 									<!-- 내용 -->
-									<td class="boardTitle">
+									<td class="content">
 									<a href="${contextPath}/chat/room/${board.chatRoomNo}">${board.chatContent}</a>
 									</td>
 									<%-- 작성일자 --%>
@@ -248,11 +287,15 @@ a:hover {
 			<!---------------------- Pagination end---------------------->
 		</div>
 		<!-- 검색창 -->
-		<div class="my-5">
+		<div class="my-5" id="search-container">
 			<form action="chat" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
-				<span>명소 이름</span>
-				<input type="text" id="sv" name="sv" class="form-control" style="width: 25%; display: inline-block;">
-				<button class="form-control btn btn-primary" style="width: 100px; display: inline-block;">검색</button>
+				<select id="formCategory" class="custom-select">
+						<option>담당자</option>
+				</select> 
+				<section class="searchForm-container">
+					<input type="text" id="sv" name="sv" class="form-control">
+					<button class="btn btn-dark form-control">검색</button>				
+				</section>
 			</form>
 		</div>
 

@@ -10,11 +10,18 @@ public class Report {
 	private String reportStatus;
 	private int reportType;
 	private int reportTypeNo;
-	private int memberNo;
 	private int reportCategoryNo;
 	private String reportCategoryNm;
+	private int memberNo;
+	private String memberNick;
 	
 	
+	public String getMemberNick() {
+		return memberNick;
+	}
+	public void setMemberNick(String memberNick) {
+		this.memberNick = memberNick;
+	}
 	public String getReportCategoryNm() {
 		return reportCategoryNm;
 	}
@@ -79,9 +86,10 @@ public class Report {
 	public String toString() {
 		return "Report [reportNo=" + reportNo + ", reportTitle=" + reportTitle + ", reportContent=" + reportContent
 				+ ", reportCreateDt=" + reportCreateDt + ", reportStatus=" + reportStatus + ", reportType=" + reportType
-				+ ", reportTypeNo=" + reportTypeNo + ", memberNo=" + memberNo + ", reportCategoryNo=" + reportCategoryNo
-				+ ", reportCategoryNm=" + reportCategoryNm + "]";
+				+ ", reportTypeNo=" + reportTypeNo + ", reportCategoryNo=" + reportCategoryNo + ", reportCategoryNm="
+				+ reportCategoryNm + ", memberNo=" + memberNo + ", memberNick=" + memberNick + "]";
 	}
+
 	
 	
 	

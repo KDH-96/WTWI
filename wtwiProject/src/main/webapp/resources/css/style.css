@@ -8,3 +8,19 @@ a {
 .bi-heart-fill{
 	color: #da2c3d;
 }
+
+.err-div{
+	margin-top: 5rem;
+}
+.err-msg>h3, h2{
+	font-weight: 500;
+	color: rgb(80,80,80);
+}
+
+.pagination > li > a{
+	color: black;
+}
+.pagination>li.active>a {
+	background-color: orange !important;
+	border-color : orange !important;
+}

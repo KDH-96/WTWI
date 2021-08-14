@@ -19,6 +19,7 @@
 <script src="${contextPath}/resources/js/rsa/prng4.js"></script>
 <script src="${contextPath}/resources/js/rsa/rng.js"></script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <title>로그인</title>
 <style>
 .login-body {
@@ -29,7 +30,9 @@
 }
 
 .login-main {
-	width: 50%;
+	display: flex;
+	width: 70%;
+	height: 60vh;
 }
 
 .login-container {
@@ -37,10 +40,11 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	width: 50%;
 }
 
 .login-title {
-	margin-bottom: 20px;
+	margin-bottom: 50px;
 }
 
 .login-pageArea {
@@ -68,15 +72,57 @@
 	display: flex;
 	flex-direction: column;
 	margin-top: 20px;
+	width: 100%;
 }
 
-.login-btnArea {
-	width: 60%;
-}
 
 .login-btnArea button:first-child {
 	margin-bottom: 10px;
 }
+
+.socialLogin-area {
+	display: flex;
+	align-items: center;
+	margin-top: 60px;
+}
+
+.socialLogin-area a{
+	margin-right: 15px;
+}
+
+.img-container {
+	height: 100%;
+	width: 50%;
+}
+
+.loginImg-container {
+	height: 100%;
+	width: 100%;
+	background-image:url("https://source.unsplash.com/featured/?mountain-trip");
+	background-size: cover;
+	border-top-left-radius: 70px;
+	border-bottom-left-radius: 70px;	
+}
+
+.socialLogin-area img{
+	width: 40%;
+}
+
+.btn-social-login {
+  transition: all .2s;
+  outline: 0;
+  border: 1px solid transparent;
+  padding: .5rem !important;
+  border-radius: 50%;
+  color: #fff;
+}
+.btn-social-login:focus {
+  box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+}
+.text-dark { color: #343a40!important; }
+
+
+
 </style>
 </head>
 
@@ -85,6 +131,9 @@
 <body class="login-body">
 
 	<main class="login-main">
+		<div class="img-container">
+			<div class="loginImg-container"></div>
+		</div>
 
 		<div class="login-container">
 
@@ -117,16 +166,19 @@
 				
 				
 				<div class="login-btnArea">
-					<button type="submit" class="btn btn-primary">로그인</button>
-					<button type="button" class="btn btn-primary"
+					<button type="submit" class="btn btn-dark">로그인</button>
+					<button type="button" class="btn btn-dark"
 						onclick="location.href='${contextPath }/member/signUp'">회원가입</button>
 				</div>
 			</form>
+			
 			<%-- 소셜 로그인 버튼  --%>
-			<a href="${naver_url}">네이버 로그인</a> 
-			<a href="${google_url}">구글 로그인</a>
-			<a href="${kakao_url}">카카오 로그인</a>
-			<a href="${facebook_url}">페이스북 로그인</a>
+			<div class="socialLogin-area">		
+				<a href="${google_url}" class='btn-social-login' style='background:#D93025'><i class="xi-3x xi-google"></i></a>
+				<a href="${facebook_url}" class='btn-social-login' style='background:#4267B2'><i class="xi-3x xi-facebook"></i></a>
+				<a href="${naver_url}" class='btn-social-login' style='background:#1FC700'><i class="xi-3x xi-naver"></i></a>
+				<a href="${kakao_url}" class='btn-social-login' style='background:#FFEB00'><i class="xi-3x xi-kakaotalk text-dark"></i></a>
+			</div>
 
 		</div>
 

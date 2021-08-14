@@ -90,7 +90,7 @@
 								<button class="dropdown-item" type="button" id="deleteReplyBtn" onclick="deleteReplyAlert(${r.freeReplyNo})" >삭제</button>
 							</c:when>
 							<c:otherwise>
-								<button class="dropdown-item" type="button">신고</button>
+								<button class="dropdown-item" type="button" onclick="location.href='${contextPath }/reportBoard/report?type=2&freeNo=${board.freeNo}';">신고</button>
 							</c:otherwise>
 						</c:choose>
 						<button class="dropdown-item" type="button" id="reReplyBtn" onclick="reReplyForm(${r.freeReplyNo}, this)" >답글</button>

@@ -35,6 +35,7 @@
         .fb-titlehead{
         	text-align: center;
         }
+
     </style>
 </head>
 <body>

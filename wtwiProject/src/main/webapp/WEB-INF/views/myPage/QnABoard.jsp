@@ -70,6 +70,45 @@
         .focus-page {
         	font-weight: bold;
         }
+        
+        .table {
+			table-layout: fixed;
+		}
+		
+		.boardTitle {
+			virtical-align: middle;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		
+		#searchForm {
+			display: flex;
+			justify-content: center;
+			width: 70%;	
+		}
+		#search-container {
+			display: flex;
+			justify-content: center;
+		}
+		.searchForm-container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 70%;
+		}
+		.searchForm-container * {
+			margin-right: 3px;
+		}
+		.searchForm-container select {
+			width: 70%;
+		}
+		.searchForm-container input {
+			width: 150%;
+		}
+		.searchForm-container button {
+			width: 50%;
+		}
 </style>
 </head>
 
@@ -98,7 +137,7 @@
                     <col width="10%"/>
                     <col width="55%"/>
                     <col width="13%"/>
-                    <col width="13"/>
+                    <col width="13%"/>
 				</colgroup>
 				<thead>
 					<tr>
@@ -238,20 +277,21 @@
 			<!---------------------- Pagination end---------------------->
 		</div>
 		<!-- 검색창 -->
-		<div class="my-5">
+		<div class="my-5" id="search-container">
 			<form action="qnaBoard" method="GET" class="text-center" id="searchForm" onsubmit="return validate();">
-				<select class="form-control" id="formCategory" name="sc" >
-                  		<option value="0">전체</option>
+				<section class="searchForm-container">
+					<select id="formCategory" name="sc" class="custom-select">
+						<option value="0">전체</option>
                   		<option value="1">명소 정보</option>
                   		<option value="2">시스템</option>
                   		<option value="3">기타</option>
-                  	</select>
-				<select class="form-control" name="sk" >
-					<option value="title">글제목</option>
-					<option value="content">내용</option>
-				</select>
-				<input type="text" id="sv" name="sv" class="form-control" style="width: 25%; display: inline-block;">
-				<button class="form-control btn btn-primary" style="width: 100px; display: inline-block;">검색</button>
+					</select> 
+					<select name="sk" class="custom-select">
+						<option value="title">글제목</option>
+						<option value="content">내용</option>
+					</select> <input type="text" id="sv" name="sv" class="form-control">
+					<button class="btn btn-dark form-control">검색</button>				
+				</section>
 			</form>
 		</div>
 		
