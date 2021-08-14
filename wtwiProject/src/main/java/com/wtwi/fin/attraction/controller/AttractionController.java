@@ -66,6 +66,26 @@ public class AttractionController {
    int eventStartDate = 0;
    int eventEndDate = 0;
    int attractionNo = 0;
+   double userLatitude = 0;
+   double userLongitude = 0;
+   
+   
+   @RequestMapping(value="getLocation" , method=RequestMethod.POST)
+   public void getLocation(String latitude, String longitude) {
+	   
+	   if(latitude!=null) {
+		   userLatitude = Double.parseDouble(latitude);
+		   userLongitude = Double.parseDouble(longitude);
+	   }else {
+		   userLatitude = 37.568477;
+		   userLongitude = 126.981611;
+	   }
+	   
+	   System.out.println("기본 위/경도 : 37.568477 / 126.981611");
+	   System.out.println("유저의 위도 : " + userLatitude);
+	   System.out.println("유저의 경도 : " + userLongitude);
+	   
+   }
 
    /***
     * 명소 목록 조회 
@@ -93,13 +113,18 @@ public class AttractionController {
     		   * &MobileOS=ETC &MobileApp=AppTest &arrange=E &mapX=126.981611 &mapY=37.568477
     		   * &radius=1000 &listYN=Y
     		   */
+    		  
+    		  
+    		  System.out.println("안바뀌었으면 37.568477");
+    		  System.out.println(userLatitude);
+    		  
     		  String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList";
     		  String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
     		  String MobileOS = "ETC";
     		  String MobileApp = "WhereTheWeatherIs";
     		  String arrange = "E"; // 가까운 거리부터 정렬
-    		  double longitude = 126.981611;
-    		  double latitude = 37.568477;
+    		  //double longitude = 126.981611;
+    		  //double latitude = 37.568477;
     		  int radius = 5000; // (거리반경, max 20000m)
     		  String type = "json";
     		  
@@ -111,8 +136,8 @@ public class AttractionController {
     				  + "&MobileOS=" + MobileOS + "&MobileApp=" + MobileApp
     				  + "&arrange=" + arrange 
     				  + "&contentTypeId=12&14" 
-    				  + "&mapX=" + longitude 
-    				  + "&mapY=" + latitude 
+    				  + "&mapX=" + userLongitude
+    				  + "&mapY=" + userLatitude
     				  + "&radius=" + radius
     				  + "&listYN=Y" 
     				  + "&_type=" + type;
@@ -519,7 +544,7 @@ public class AttractionController {
 
    }
    
-   
+
    
    
    
