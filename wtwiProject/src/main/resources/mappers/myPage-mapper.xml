@@ -19,7 +19,7 @@
 		<result property="freeContent" column="FREE_CONTENT" />
 		<result property="likeCount" column="LIKE_COUNT" />
 		<result property="replyCount" column="REPLY_COUNT" />
-	</resultMap>
+	</resultMap> 
 
 	<!-- 문의게시판 -->
 	<resultMap type="QnaBoard" id="qna_rm">
