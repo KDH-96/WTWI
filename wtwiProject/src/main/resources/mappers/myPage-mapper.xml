@@ -20,7 +20,7 @@
 		<result property="likeCount" column="LIKE_COUNT" />
 		<result property="replyCount" column="REPLY_COUNT" />
 	</resultMap> 
-
+ 
 	<!-- 문의게시판 -->
 	<resultMap type="QnaBoard" id="qna_rm">
 		<id property="qnaNo" column="QNA_NO" />
