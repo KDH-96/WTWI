@@ -68,7 +68,7 @@ public class AttractionController {
    int attractionNo = 0;
    double userLatitude = 0;
    double userLongitude = 0;
-   
+    
    
    @RequestMapping(value="getLocation" , method=RequestMethod.POST)
    public void getLocation(String latitude, String longitude) {

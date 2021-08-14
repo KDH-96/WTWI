@@ -84,7 +84,7 @@
             margin-top: 30px;
             transition: all 1s ease 3s;
         }
-
+ 
         .content-hidden .fly-in-text li {
             opacity: 0;
         }
