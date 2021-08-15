@@ -49,12 +49,11 @@
 	<script>
 		// 리뷰목록 조회하는 메소드
 		function selectReviewList() {
-
+	 		
 			$.ajax({
-				url : "${contextPath}/review/" + selectedMarker
-						+ "/list",
+				url : "${contextPath}/review/" + selectedMarker + "/list",
 				data : {
-					"selectedMarker" : selectedMarker
+					"selectedMarker" : selectedMarker,
 				},
 				type : "GET",
 				success : function(pgReviewList) {
@@ -123,18 +122,9 @@
 	
 					}
 					
-					/* 
-					// 페이지네이션
-					console.log(reviewPagination);
-					/* 현재 페이지가 5페이지 이하일 시 */
+					// 페이지네이션 영역 초기화
+					$(".pagination").append("");
 					
-					/* 
-					if(reviewPagination.currentPage){
-						let page = document.createElement('li').className('page-item').createElement('a').className('page-link');
-						$(".pagination").append('page');
-												
-					}
-					*/
 					/* 현재 페이지가 5 페이지 이하일 시 */
 					if(reviewPagination.currentPage <= reviewPagination.pageSize){
 						let pageUnderFive = '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
@@ -142,22 +132,26 @@
 						
 					/* 현재 페이지가 5페이지 초과일 시 */
 					}else{
-						let pageOverFive = '<li class="page-item"><a class="page-link" href="' + reviewPagination.prevPage + '" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+						let pageOverFive = '<li class="page-item"><a class="page-link" href="review/' + selectedMarker + '/list?cp=' + reviewPagination.prevPage + '" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
 						$(".pagination").append(pageOverFive);
 					}
 					
 					/* 페이지 */
-					for(let i=reviewPagination.startPage; i<reviewPagination.endPage; i++){
+					for(let i=reviewPagination.startPage; i<reviewPagination.endPage+1; i++){
 						if(i== reviewPagination.currentPage) {
 							let page1 = '<li class="page-item active"><a class="page-link">' + i + '</a></li>'
 							$(".pagination").append(page1);
 						}else {
-							let page2 = '<li class="page-item"><a class="page-link" href="${pageURL}?cp=${p}${searchString}">' + i + '</a></li>'
+							let page2 = '<li class="page-item"><a class="page-link" href="review/' + selectedMarker + '/list?cp="' + i + '"">' + i + '</a></li>'
 							$(".pagination").append(page2);
 						}
 					}
 					
-					
+					/* 현재 페이지가 마지막 페이지 목록이 아닌 경우 */
+					if(reviewPagination.endPage < reviewPagination.maxPage){
+						let notEndPage = '<li class="page-item"><a class="page-link" href="review/' + selectedMarker + '/list?cp=' + reviewPagination.nextPage +  '" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+						$(".pagination").append(notEndPage);
+					}
 					
 				},
 				error : function() {
