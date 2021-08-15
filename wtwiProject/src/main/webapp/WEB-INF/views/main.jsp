@@ -11,16 +11,14 @@
 <style>
 /* 검색조건 드롭다운 시작 */
 #dropdown-wrap {
-	top: 30px;
-	left: 30px;
+	top: 13px;
+	left: 23px;
 	position: absolute;
-	z-index: 2;
 }
 
 #dropdown-type-wrap {
 	left: 0;
 	top: 0;
-	z-index: 2;
 	float: left;
 }
 
@@ -28,6 +26,18 @@
 	background-color: whitesmoke;
 	opacity: 90%;
 	width: 100px;
+}
+
+#search-wrapper {
+	opacity: 90%;
+	position: absolute;
+	margin: auto;
+	opacity: 90%;
+	width: 300px;
+	height: 50px;
+	display: inline-block;
+	top: 20px;
+	z-index: 2;
 }
 
 /* 검색조건 드롭다운 끝 */
@@ -56,39 +66,41 @@
 		
 		
 		<!-- =================================== 명소 구분/지역 드롭다운 시작 =================================== -->
-		<div id="dropdown-wrap">
-			<select id="contentTypeS" name="contentTypeS">
-				<option value="12" selected>관광지</option>
-				<option value="14">문화시설</option>
-				<option value="15">축제/공연/행사</option>
-				<option value="25">여행코스</option>
-				<option value="28">레포츠</option>
-				<option value="32">숙박</option>
-				<option value="38">쇼핑</option>
-				<option value="39">음식</option>
-			</select>
-			
-			<select style="display:hidden;" id="areaCode" name="areaCode">
-				<option value="11" selected>서울</option>
-				<option value="26">부산</option>
-				<option value="27">대구</option>
-				<option value="28">인천</option>
-				<option value="29">광주</option>
-				<option value="30">대전</option>
-				<option value="31">울산</option>
-				<option value="36">세종</option>
-				<option value="41">경기</option>
-				<option value="42">강원</option>
-				<option value="43">충북</option>
-				<option value="44">충남</option>
-				<option value="45">전북</option>
-				<option value="46">전남</option>
-				<option value="47">경북</option>
-				<option value="48">경남</option>
-				<option value="50">제주</option>
-			</select>
-			
-			<button id="find-attr-btn" class="btn btn-dark">조회</button>
+		<div class="card" id="search-wrapper">
+			<div id="dropdown-wrap">
+				<select id="contentTypeS" name="contentTypeS">
+					<option value="12" selected>관광지</option>
+					<option value="14">문화시설</option>
+					<option value="15">축제/공연/행사</option>
+					<option value="25">여행코스</option>
+					<option value="28">레포츠</option>
+					<option value="32">숙박</option>
+					<option value="38">쇼핑</option>
+					<option value="39">음식</option>
+				</select>
+				
+				<select style="display:hidden;" id="areaCode" name="areaCode">
+					<option value="11" selected>서울</option>
+					<option value="26">부산</option>
+					<option value="27">대구</option>
+					<option value="28">인천</option>
+					<option value="29">광주</option>
+					<option value="30">대전</option>
+					<option value="31">울산</option>
+					<option value="36">세종</option>
+					<option value="41">경기</option>
+					<option value="42">강원</option>
+					<option value="43">충북</option>
+					<option value="44">충남</option>
+					<option value="45">전북</option>
+					<option value="46">전남</option>
+					<option value="47">경북</option>
+					<option value="48">경남</option>
+					<option value="50">제주</option>
+				</select>
+				
+				<button id="find-attr-btn" class="btn btn-dark my-0" style="height:22px; border: 0; padding-top:0; padding-bottom:0;">조회</button>
+			</div>
 		</div>
 
 		<!-- =================================== 명소 구분/지역 드롭다운 종료 =================================== -->
@@ -101,7 +113,7 @@
         
         <!-- =================================== 날씨 영역 시작 =================================== -->
 
-      	<jsp:include page="/WEB-INF/views/weather/weather.jsp"></jsp:include>
+      	<jsp:include page="/WEB-INF/views/attractionboard/weatherCardView.jsp"></jsp:include>
 
         <!-- =================================== 날씨 영역 끝 =================================== -->
 	
@@ -112,18 +124,16 @@
     <script>
         // 지도 로딩속도 향상을 위한 코드
         kakao.maps.disableHD();
-
+        
         // 지도 로딩 시 명소정보 고정영역 숨기기
         $("#attraction-info").hide();
+        $("#weather-info-area").hide();
 
         // 지도 로딩 시 후기작성 폼 고정영역 숨기기
         $("#write-review-wrapper").hide();
         
         // 지도 로딩 시 리뷰영역 폼 고정영역 숨기기
         $("#select-review-wrapper").hide();
-        
-        // 지도 로딩 시 날씨 영역 폼 고정영역 숨기기
-        $("#data-area").hide();
         
         // 선택된 마커(명소)의 contentId를 담을 변수(ajax 요청을 위해...)
         let selectedMarker = "";
@@ -352,8 +362,8 @@
 	        center: new kakao.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표 
 	        level: 13 // 지도의 확대 레벨 
 	    });
-	
-	    
+		
+   		
 	    // 폴리곤 클릭 시 마커 표시하는 메소드
 	    function markersOnMap(jsonFileForMarker){
 	    	
@@ -367,6 +377,7 @@
 	         markers.forEach(function (marker) { marker.setMap(null); });
 	         markers.length = 0 // 마커 배열 초기화
 	        
+	         
 	        $.getJSON(jsonFileForMarker, function (json) {
 	            data = json.response.body.items.item; // json 파일 data 변수에 담기
 	
@@ -374,7 +385,6 @@
 	            var lng = ''; // 경도를 담을 변수
 	
 	            var clickedOverlay = null; // 클릭된 오버레이 전역변수로 선언
-	            
 
 	            $.each(data, function (index, val) {
 	                lat = Number(data[index].mapy); // 각 명소의 위도정보 from json
@@ -394,88 +404,73 @@
 	                
 	                markers[index].setMap(map);
 	                
-	                // 마커 클릭 시 커스텀 오버레이 표시 및 클릭한 좌표로 화면 이동
+	                // 마커 클릭 시 클릭한 좌표로 화면 이동
 	                kakao.maps.event.addListener(marker, 'click', function () {
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-	                	// 날씨 영역 띄우기
-	                	/* 날씨  */
-const url = 'https://api.openweathermap.org/data/2.5/forecast';
-const lat2 = '?lat=' + lat; // 위도
-const lon = '&lon=' + lng; // 경도
-const appid = '&appid=' + '0a1fbf1d8c578d046a104c8faae7f7c4';
-const units = '&units='+'metric'
-
-$.getJSON(url+lat2+lon+appid+units,function(data){
-    
-	    var $ctime = data.list[0].dt_txt; // 날짜 및 시간
-	    var $minTemp = data.list[0].main.temp_min; // 최저온도
-	    var $maxTemp = data.list[0].main.temp_max; // 최고온도
-	    var $cTemp = data.list[0].main.temp; // 표준온도
-	    var $now = new Date($.now()); // 현재 시간
-	    var $cDate = $now.getFullYear() + '/' + ($now.getMonth()+1) +'/'+ $now.getDate()+ '/' + 
-	    $now.getHours() +':'+ $now.getMinutes(); // 연도, 달, 일,
-
-	    
-	    for(var i =0;i<37;i++){
-	        var $wtime = data.list[i].dt_txt; // 시간
-	        var $wtemp= data.list[i].main.temp; // 표준온도
-	        var $wfeels_like= data.list[i].main.feels_like; // 체감온도
-	        var $whumidity= data.list[i].main.humidity; // 습도
-	        var $maxTemp = data.list[i].main.temp_max; // 최고온도
-	        var $minTemp = data.list[i].main.temp_min; // 최저온도
-	        var $wicon = '<img src="http://openweathermap.org/img/wn/'+
-	            data.list[i].weather[0].icon +'.png" >' // 아이콘
-	        var $description = data.list[i].weather[0].description;
-
-	        var tableHtml = 
-	                        '<ul style="width:150px; list-style: none; padding-left:10px;" >'+
-	                        
-	                        '<div style="width:150px;  border-radius:1.0rem; background-color:navy; color:white;">'+
-	                         
-	                      	  '<li style="width:150px; padding-top:5px; font-weight:bold; ">' +
-	                                '<div style="text-align: center;">'+$wtime+'</div>'+
-	                            '</li>'+
-	                            
-	                            '<li">' +
-	                            '<div style="text-align: center; border-top:1px solid white; border-bottom:1px solid white; background-color:lightblue;">' + $wicon + '</div>'+
-	                            '</li>'+
-
-	                            '<li style="padding-top:10px; padding-bottom:10px; font-weight:bold;">' +
-	                                '<div style="text-align: center;">'+ $description + '</div>'+
-	                            '</li>'+
-	                            
-	                            '<li">'+
-	                            '<div>'+'온도 : ' + $wtemp + '</div>'+
-	                            '</li>'+
-	                            
-	                            '<li">'+
-	                                '<div>'+ '체감온도 : '+ $wfeels_like + '</div>'+
-	                            '</li>'+
-	                            
-	                            '<li style="padding-bottom:5px;">'+
-	                                '<div>'+ '습도 : '+ $whumidity + '</div>'+
-	                            '</li">'+
-	                            
-	                        '</div>'+
-	                        
-	                        '</ul>';
-	                            
-	                            $('.data-area').append(tableHtml);
-	                        }
-	    
-	});
+	   					
+					// 날씨 api 시작
+					var tiempo = new Array();
+					var days = new Array();
+					var icons = new Array();
+					
+					// 마커 클릭 시 매번 마커 초기화
+					document.getElementById("weather-info").innerHTML = " ";
+					
+	                $.getJSON('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' 
+	    					 + lng + '&exclude=current&appid=ab504b375f2e984221e8e5471b13095c&units=metric', function (data) {
 	                	
-	                    $("#data-area").fadeIn(100);
-
-
-
-
-
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
+				        var ctime = data.daily[0].dt; // 현재 시간을 유닉스 형태로 저장
+				        var minTemp = data.daily[0].temp.min;
+				        var maxTemp = data.daily[0].temp.max;
+				
+				        var now = new Date($.now()); // 현재 시간 얻어오기
+				        var cDate = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate() ;
+				        
+				        for (var i = 0; i < 4; i++) {
+				            var wtime = data.daily[i].dt;
+				            var thisDate = new Date(wtime*1000);
+				
+				            function dayLabel(){
+				                var week = new Array ('(일)','(월)','(화)','(수)','(목)','(금)','(토)');
+				                var today = thisDate;
+				                var todayLabel = week[today.getDay()];
+				                
+				                return todayLabel;
+				            }
+				
+				            var maxTemp = Math.round(data.daily[i].temp.max);
+				            var minTemp = Math.round(data.daily[i].temp.min);
+				            var wicon = '<img src="http://openweathermap.org/img/wn/' +
+				                data.daily[i].weather[0].icon + '.png" >';
+				            
+				            
+				            tiempo.push(minTemp +'℃/' + maxTemp + '℃');
+										days.push((now.getMonth() + 1) + '/' + (now.getDate()+i) + ' ' + dayLabel());
+										icons.push(
+				                '<ul style="width:50px; list-style: none; display: inline-block; margin-left: 10px; margin-right: 10px; padding-inline-start: 0px;">' +
+				                '<li">' +
+				                '<div style="text-align: center; font-size: 12px;">' + (now.getMonth() + 1) + '/' + (now.getDate()+i) + dayLabel() + '</div>' +
+				                '</li>' +
+				                '<li">' +
+				                '<div style="text-align: center; font-size: 12px;">' + wicon + '</div>' +
+				                '</li>' +
+				                '<li">' +
+				                '<div style="text-align: center; font-size: 10px;">' + minTemp +'℃/' + maxTemp + '℃</div>' +
+				                '</li>' +
+				                '</ul>'
+				            );
+										
+				        }
+				        
+				        for( let i = 0 ; i < icons.length ; i++){
+				        	$("#weather-info").append(icons[i]);
+				        }
+				        
+				    });
+	                
+	                
+					// 날씨 api 종료
+					
+					
 	                    if (clickedOverlay) {
 	                        clickedOverlay.setMap(null);
 	                    }
@@ -491,6 +486,8 @@ $.getJSON(url+lat2+lon+appid+units,function(data){
 	                    }
 	
 	                    $("#attraction-info").fadeIn(100);
+	                    $("#weather-info-area").fadeIn(100);
+	                    
 	
 	                   // 마커 클릭 시 부드럽게 마커의 위치로 이동
 	                    var moveLatLng = new kakao.maps.LatLng(data[index].mapy, data[index].mapx);
@@ -610,6 +607,8 @@ $.getJSON(url+lat2+lon+appid+units,function(data){
 	            				replacedAttrInfo = replacedAttrInfo.replaceAll("<br>", " ");
 	            				replacedAttrInfo = replacedAttrInfo.replaceAll("</b>", " ");
 	            				replacedAttrInfo = replacedAttrInfo.replaceAll("\\", " ");
+	            				replacedAttrInfo = replacedAttrInfo.replaceAll("</u>", " ");
+	            				replacedAttrInfo = replacedAttrInfo.replaceAll("<u>", " ");
 	            				document.getElementById("attr-info").innerText = replacedAttrInfo;
 	            				
 	            				// 명소 상세페이지로 이동
@@ -642,7 +641,8 @@ $.getJSON(url+lat2+lon+appid+units,function(data){
 	                // 커스텀 오버레이 및 후기작성 폼 지도영역 클릭하여 닫는 메소드
 	                kakao.maps.event.addListener(map, 'click', function () {
 	                    $("#attraction-info").fadeOut(100);
-	
+	                    $("#weather-info-area").fadeOut(100);
+	                    
 	                    $("#write-review-wrapper").fadeOut(100);
 	                    
 	                    $("#select-review-wrapper").fadeOut(100);

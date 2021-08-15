@@ -6,7 +6,7 @@ public class ReviewPagination {
 	private int listCount; // 게시글 전체 수
 
 	private int limit = 10; // 한 페이지에 보여질 게시글 수
-	private int pageSize = 10; // 보여질 페이지 번호 개수
+	private int pageSize = 5; // 보여질 페이지 번호 개수
 
 	private int maxPage; // 게시글 목록의 마지막 페이지 번호
 	private int startPage; // 보여지는 페이지 번호 중 시작 번호

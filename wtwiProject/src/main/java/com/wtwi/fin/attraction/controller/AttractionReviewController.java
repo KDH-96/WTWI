@@ -27,51 +27,51 @@ import com.wtwi.fin.member.controller.MemberController;
 
 @Controller
 @RequestMapping("/review/*")
-@SessionAttributes({"loginMember"})
+@SessionAttributes({ "loginMember" })
 @RestController
 public class AttractionReviewController {
 
 	@Autowired
 	private ReviewService service;
-	
+
 	// 리뷰 목록 조회
 	@RequestMapping("{selectedMarker}/list")
 	@ResponseBody
 	public List<Object> selectReview(@PathVariable("selectedMarker") int attractionNo,
-			@RequestParam(value="cp", required=false, defaultValue = "1") int cp,
-			Model model, ReviewPagination pg) {
-		
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+			ReviewPagination pg) {
+
 		pg.setAttractionNo(attractionNo);
 		pg.setCurrentPage(cp);
-		
+
 		ReviewPagination reviewPagination = null;
-		List<Review> reviewList =null;
-		
+		List<Review> reviewList = null;
+
 		reviewPagination = service.getPagination(pg);
-		
+
 		System.out.println("reviewPagination : " + reviewPagination.getAttractionNo());
-		
+
 		reviewList = service.selectBoardList(reviewPagination);
-		
+
 		List<Object> pgReviewList = new ArrayList<Object>();
-		
+
 		pgReviewList.add(reviewPagination);
 		pgReviewList.add(reviewList);
-		
+
 		return pgReviewList;
 	}
-	
-	
-	/** 리뷰 작성
+
+	/**
+	 * 리뷰 작성
+	 * 
 	 * @param insertReview
 	 * @return result
 	 */
 	@ResponseBody
-	@RequestMapping(value="insert", method=RequestMethod.POST)
+	@RequestMapping(value = "insert", method = RequestMethod.POST)
 	public int insertReview(@ModelAttribute Review insertReview) {
 		int result = service.insertReview(insertReview);
 		return result;
 	}
-	
-	
+
 }

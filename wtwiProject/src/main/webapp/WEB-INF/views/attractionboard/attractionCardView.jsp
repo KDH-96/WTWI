@@ -45,10 +45,10 @@
 }
 
 #attr-info{
-	height: 145px;
+	height: 300px; /* 145px */
 	overflow: hidden;
-  	text-overflow: ellipsis;
-  	white-space: normal;
+  	/* text-overflow: ellipsis;
+  	white-space: normal; */
 }
 </style>
 </head>
