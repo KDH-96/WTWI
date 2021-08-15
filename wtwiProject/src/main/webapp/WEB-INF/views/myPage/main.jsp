@@ -141,7 +141,7 @@
 	margin-bottom: 30px;
 	border-radius: 30px;
 	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-	padding: 10px;
+	padding: 20px;
 }
 
 .climate-container {
