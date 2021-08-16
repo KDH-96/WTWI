@@ -98,7 +98,7 @@
 .loginImg-container {
 	height: 100%;
 	width: 100%;
-	background-image:url("https://source.unsplash.com/featured/?mountain-trip");
+	background-image:url("https://source.unsplash.com/featured/?scenery");
 	background-size: cover;
 	border-top-left-radius: 70px;
 	border-bottom-left-radius: 70px;	
@@ -120,7 +120,14 @@
   box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
 }
 .text-dark { color: #343a40!important; }
+a{
+	text-decoration: none !important;
 
+}
+.btn-social-login:hover {
+	text-decoration: none !important;
+	color: white !important;
+}
 
 
 </style>

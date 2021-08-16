@@ -293,7 +293,7 @@ public class MypageServiceImpl implements MypageService {
         String clientSecret = this.naverSns.getClientSecret();//애플리케이션 클라이언트 시크릿값";
         StringBuffer response = new StringBuffer();
         try {
-            String text = URLEncoder.encode("국내여행", "UTF-8"); //검색어";
+            String text = URLEncoder.encode("여행명소", "UTF-8"); //검색어";
             String apiURL = "https://openapi.naver.com/v1/search/news.json?query="+ text + "&display=10&start=1&sort=date&bloggername=the_trip"; // 뉴스의 json 결과
        //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text; // 블로그의 xml 결과 
             URL url = new URL(apiURL);
@@ -347,7 +347,7 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public List<Review> getAttractionSrc(List<Review> reviewList) {
 		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon";
-	      String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+	      String serviceKey = "DHk4yd104VmwtFzoXL%2FaSUlkcYnhFtx9HXNr3Lv1PAMGEGcycENblBxYxe8VLsQpvNXgAUwBeoN5otWGxWkhIg%3D%3D";
 	      String MobileOS = "ETC";
 	      String MobileApp = "WhereTheWeatherIs";
 	      String type = "json";
@@ -372,7 +372,7 @@ public class MypageServiceImpl implements MypageService {
 	  	      // *** 필요한 정보들은 item에 k:v 형태로 담겨있음
 	  	      // ***********************************************************************
 	  	      if(item.get("firstimage") == null) {
-	  	    	  reviewList.get(i).setSrc(null);
+	  	    	  reviewList.get(i).setSrc("http://tong.visitkorea.or.kr/cms/resource_photo/20/791720_image2_1.jpg");
 	  	      } else {	  	    	  
 	  	    	  String src = item.get("firstimage").getAsString();
 	  	    	  reviewList.get(i).setSrc(src);

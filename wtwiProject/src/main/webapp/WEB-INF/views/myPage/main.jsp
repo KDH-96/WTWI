@@ -42,7 +42,7 @@
 .recommend-container {
 	display: flex;
 	width: 100%;
-	height: 400px;
+	height: 450px;
 	align-items: center;
 	justify-content: space-between;
 	margin: 0px 10px 30px 0px;
@@ -65,14 +65,18 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 10px;
+	margin-top: 20px;
 }
 
 .attrImage {
-	height: 200px;
+	height: 220px;
+	border-top-left-radius: 30px;
+	border-top-right-radius: 30px;
 }
 
 .attrNm {
+	font-size: 18px;
+	font-weight: bold;
 	width: inherit;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -83,7 +87,18 @@
 	display: -webkit-box;
 	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
+	position: relative; 
 }
+
+
+.attrNm:after {
+ content: ''; 
+ display: block; 
+ width: 100%; 
+ height: 3px;
+ left : -2px;
+ background: orange; 
+ }
 
 .attrStar {
 	margin-top: 10px;
@@ -99,7 +114,7 @@
 	text-align: center;
 	word-wrap: break-word;
 	display: -webkit-box;
-	-webkit-line-clamp: 2;
+	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
 	margin: 10px 10px 0px 10px;
 }
@@ -126,7 +141,7 @@
 }
 
 #map {
-	width: 50%;
+	width: 45%;
 	height: 100%;
 	border-top-left-radius: 30px;
 	border-bottom-left-radius: 30px;
@@ -134,6 +149,7 @@
 
 .my-container {
 	display: flex;
+	justify-content: space-between;
 	align-items: center;
 	width: 100%;
 	height: 200px;
@@ -145,18 +161,36 @@
 }
 
 .climate-container {
-	width: 50%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 55%;
 	
 }
 .climate-container ul{
 	list-style: none;
+	height: 50%;
 	display: flex;
+	justify-content: center;
+	padding: 20px;
 }
 
 .climate-container li {
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 	align-items: center;
+}
+
+.climate-container li:not(:last-child){
+	border-right: 1px solid rgba(0,0,0,0.3);
+	padding: 0px 15px;
+}
+
+.climate-container li:last-child{
+	padding-left: 15px;
 }
 
 .weather {
@@ -173,6 +207,80 @@
 	display: none;
 }
 
+.btn-social-login, .article {
+	text-decoration: none;
+}
+
+.btn-social-login:hover {
+	text-decoration: none;
+	color: white;
+}
+.article:hover {
+	text-decoration: none;
+	color: inherit;
+	font-weight: bold;
+}
+.nickName, .newline{
+	display: flex;
+	align-items: center;
+	margin-right: 30px;
+}
+
+.hello {
+	display: flex;
+	flex-direction: column;
+	width: 40%;
+	align-items: center;
+	justify-content: center;
+	margin-top: 20px;
+	border-right: 1px solid rgba(0,0,0,0.3);
+}
+.news {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 90%;
+	margin-top: 20px;
+}
+.news ul {
+	widht: 100%;
+}
+.hello__weather-area {
+	display: flex;
+	align-items: center;
+}
+.hello__text-area {
+	display: flex;
+	text-align: center;
+	flex-direction: column;
+}
+.fa-newspaper {
+	margin-right: 5px;
+}
+.climate-place__area {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 10px;
+}
+.climate-place{
+	font-weight: bold
+}
+.days { 
+position: relative; 
+} 
+.days:after {
+ content: ''; 
+ display: block; 
+ width: 100%; 
+ height: 3px; 
+ position: absolute; 
+ left : 1px;
+ background: orange; 
+ }
+
+
+
 </style>
 </head>
 
@@ -185,17 +293,21 @@
 		<div class="myPage-main__list">
 			<div class="my-container">
 				<div class="hello">
-					<h3>${loginMember.memberNick }님,좋은 하루입니다 :)</h3>
-					<span>현재 계신 곳의 날씨는?</span>
-					<span id="feelsLike"></span>
-					<img class="weather" alt="#" src="#">
+					<h4 class="nickName">${loginMember.memberNick }님, 좋은 하루입니다 :)</h4>
+					<div class="hello__weather-area">
+						<div class="hello__text-area">
+							<span>현재 계신 곳의 날씨는?</span>
+							<span id="feelsLike"></span>
+						</div>
+						<img class="weather" alt="#" src="#">
+					</div>
 				</div>
 				<div class="news">
 					<c:if test="${!empty news}">
-						<h4>오늘의 여행 뉴스</h4>
+						<h4 class="newline"><i class="far fa-newspaper"></i>오늘의 여행 뉴스</h4>
 						<ul>						
 							<c:forEach items="${news }" var="news" varStatus="n" begin="0" end="4" >
-								<li><a href="${news.link }">${news.title }</a></li>	
+								<li><a class="article" href="${news.link }">${news.title }</a></li>	
 							</c:forEach>
 						</ul>
 					</c:if>
@@ -209,14 +321,15 @@
 							<div class="attraction_list">
 								<span class="attrNm">${board.attractionNm }</span>
 								<div class="attrStar">
-									<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-										class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-										class="fas fa-star"></i>
+									<i class="fas fa-star fa-lg"></i> 
+									<i class="fas fa-star fa-lg"></i> 
+									<i class="fas fa-star fa-lg"></i> 
+									<i class="fas fa-star fa-lg"></i> 
+									<i class="fas fa-star fa-lg"></i>
 								</div>
 								<span class="attrReview">${board.reviewContent }</span>
 							</div>
-							<i onclick="getInfo(${board.latitude},${board.longitude});"
-								class="fas fa-chevron-down fa-2x"></i>
+							<i onclick="getInfo(${board.latitude},${board.longitude},'${board.attractionNm}');" class="fas fa-chevron-down fa-2x"></i>
 						</div>
 					</c:forEach>
 				</div>
@@ -224,6 +337,10 @@
 			<div class="info-container hidden">
 				<div id="map"></div>
 				<div class="climate-container">
+					<div class="climate-place__area">
+						<h4 class="climate-place"></h4>
+						<span>오늘을 포함한 향후 <span class="days">5일간</span>의 날씨예보입니다 :)</span>
+					</div>
 					<ul class="climate-container__ul"></ul>
 				</div>
 
@@ -265,10 +382,11 @@
     
     	navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
     
-    	function getInfo(latitude, longitude){
+    	function getInfo(latitude, longitude, place){
     		
     		$(".info-container").removeClass("hidden");
     		
+    		console.log(place);
     		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
     		var options = { //지도를 생성할 때 필요한 기본 옵션
     			center: new kakao.maps.LatLng(latitude, longitude), //지도의 중심좌표.
@@ -318,6 +436,8 @@
 	           			        var li = $("<li>");
 	           			        li.append(day).append(icon).append(feels_like).append(humidity).append(description);
 	           			     	$(".climate-container__ul").append(li);
+	           			     	$(".climate-place").text(place+"의");
+	           			     	
            					}
 
            				})
