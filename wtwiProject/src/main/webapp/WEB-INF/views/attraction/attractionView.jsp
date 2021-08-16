@@ -53,7 +53,7 @@
       #attr-weatherAddr-div{
       	height: 100%;
       	width: 63%;
-      	display: inline-blocl;
+      	display: inline-block;
       	float : left;
       }
       #attr-weather-info-div{
@@ -303,11 +303,6 @@
 	        // 배열에 잘 담겼는지 확인 완료
 	        //console.log(tiempo);
 	        //console.log(days);
-	
-	        // 오늘 날짜로 입력
-			    $("#date-span").text(days[0]);
-			    $("#attr-date-choice-right").html(icons[0]);	
-			    
 	    });
 
 	    /** 지도에 명소 위치 표시 + 주변 명소 마커 뿌리기 **************************************************************/

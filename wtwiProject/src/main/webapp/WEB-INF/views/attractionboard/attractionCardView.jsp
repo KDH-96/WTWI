@@ -222,7 +222,6 @@ position: absolute;
 						"reviewContent" : reviewContent,
 						"attractionNo" : attractionNo,
 						"memberNo" : loginMemberNo},
-						
 				success : function(result){
 					console.log("통신 성공"); // 리뷰 삽입 성공
 					if(result == 1) {
@@ -233,7 +232,6 @@ position: absolute;
 			        	for(let i=0; i<ratingList; i++){
 							if(document.getElementsByName("rating")[i].checked == true) {
 								document.getElementsByName("rating")[i].checked = false;
-								
 							}
 						}
 						

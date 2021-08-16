@@ -54,16 +54,6 @@
 }
 
 /* 별점 영역 끝 */
-#image-wrapper {
-	margin: auto;
-	width: 280px;
-	height: 80px;
-	background-color: gray;
-}
-
-#img-area1 {
-	margin-left: 25px;
-}
 
 #text-area {
 	height: 200px;
@@ -89,13 +79,17 @@
 	float: right;
 }
 
+#write-title{
+	margin-top: 25px;
+}
+
 /* 후기작성 폼 끝 */
 </style>
 </head>
 <body>
 	<div id="write-review-wrapper">
         <div class="card">
-            <div>
+            <div id="write-title">
                 <span style="line-height: 50px; font-size: 20px; margin-left: 15px;">리뷰 작성</span>
             </div>
             <hr>
@@ -114,17 +108,6 @@
             </div>
             <!-- 별점 영역 끝 -->
             <hr>
-            <!-- 이미지 영역 시작 -->
-            <div id="image-wrapper">
-            	<div id="image-area">
-            		<img id="img" />
-            	</div>
-            	
-				<input type="file" id="img0" name="carousel"> <button type="reset" id="reset">취소</button>
-								
-            </div>
-            <!-- 이미지 영역 끝 -->
-            <hr>
             <div id="text-area-wrapper">
                 <textarea class="form-control" aria-label="With textarea" id="text-area" rows="20"></textarea>
             </div>
@@ -135,13 +118,5 @@
             </div>
         </div>
 	</div>
-	
-	<script>
-		document.getElementById("reset").addEventListener("click", function(){
-			console.log("성공");
-			
-		});
-	
-	</script>
 </body>
 </html>

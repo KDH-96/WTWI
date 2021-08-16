@@ -2,6 +2,8 @@ package com.wtwi.fin.attraction.model.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.wtwi.fin.attraction.model.vo.Review;
 import com.wtwi.fin.attraction.model.vo.ReviewPagination;
 

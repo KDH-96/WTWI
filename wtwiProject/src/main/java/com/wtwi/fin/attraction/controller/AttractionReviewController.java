@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thoughtworks.qdox.model.Member;
@@ -63,13 +66,13 @@ public class AttractionReviewController {
 	
 	
 	// 설화꺼
-	@RequestMapping(value = "reviewList" , method = RequestMethod.POST)
+	@RequestMapping(value = "{attractionNo}/reviewList" , method = RequestMethod.POST)
 	@ResponseBody
-	public List<Object>  selectReviewList(String selectedNo, 
+	public List<Object>  selectReviewList(@PathVariable("attractionNo") int attractionNo, 
 	                     @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 	                     ReviewPagination pg) {
 	   
-	   int attractionNo = Integer.parseInt(selectedNo);
+	   //int attractionNo = Integer.parseInt(selectedNo);
 	   //System.out.println("ajax로 넘어온 attractionNo : " + attractionNo);
 	   
 	   pg.setLimit(5);
@@ -108,8 +111,8 @@ public class AttractionReviewController {
 	@ResponseBody
 	@RequestMapping(value = "insert", method = RequestMethod.POST)
 	public int insertReview(@ModelAttribute Review insertReview) {
+		System.out.println("리뷰 성공 : " + insertReview);
 		int result = service.insertReview(insertReview);
 		return result;
 	}
-
 }
