@@ -21,7 +21,9 @@
             height: 100vh;
         }
         .searchPw-main {
-            width: 50%;
+            display: flex;
+			width: 70%;
+			height: 60vh;
         }
         .searchPw-container {
             display: flex;
@@ -50,6 +52,7 @@
         }
 
         .searchPw-input label {
+        	margin-top: 10px;
             width: 150px;
         }
 
@@ -103,6 +106,19 @@
         .searchPw-btnArea a:first-child {
             margin-bottom: 10px;
         }
+        .img-container {
+			height: 100%;
+			width: 50%;
+		}
+		
+		.loginImg-container {
+			height: 100%;
+			width: 100%;
+			background-image:url("https://source.unsplash.com/featured/?scenery");
+			background-size: cover;
+			border-top-left-radius: 70px;
+			border-bottom-left-radius: 70px;	
+		}
     </style>
 </head>
 
@@ -111,6 +127,9 @@
 <body class="searchPw-body">
 
     <main class="searchPw-main">
+    	<div class="img-container">
+			<div class="loginImg-container"></div>
+		</div>
 
         <div class="searchPw-container">
 

@@ -21,13 +21,16 @@
             height: 100vh;
         }
         .searchId-main {
-            width: 50%;
+            display: flex;
+			width: 70%;
+			height: 60vh;
         }
         .searchId-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            width: 50%;
         }
 
         .searchId-title {
@@ -53,6 +56,7 @@
         }
 
         .searchId-input label {
+        	margin-top: 10px;
             width: 100px;
         }
         .searchId-btnArea {
@@ -68,6 +72,19 @@
         .searchId-btnArea button:first-child {
             margin-bottom: 10px;
         }
+        .img-container {
+			height: 100%;
+			width: 50%;
+		}
+		
+		.loginImg-container {
+			height: 100%;
+			width: 100%;
+			background-image:url("https://source.unsplash.com/featured/?scenery");
+			background-size: cover;
+			border-top-left-radius: 70px;
+			border-bottom-left-radius: 70px;	
+		}
     </style>
 </head>
 
@@ -76,7 +93,9 @@
 <body class="searchId-body">
 
     <main class="searchId-main">
-
+		<div class="img-container">
+			<div class="loginImg-container"></div>
+		</div>
         <div class="searchId-container">
 
             <div class="searchId-title">
