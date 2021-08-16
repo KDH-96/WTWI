@@ -43,15 +43,23 @@
         /* 헤더 영역 시작 */
         header {
             height: 170px;
-            background-color: rgb(38, 21, 42);
+            background-color: white;
             /* animation: slide_right 1.2s linear forwards; */
         } 
 
         #logo-area {
             margin-left: 60%;
-            width: 150px;
-            height: 100%;
+            width: 170px;
+            height: 120px;
             box-sizing: border-box;
+            border-radius: 1.0rem;
+            box-shadow: 1px 1px 2px black, 0 0 10px black;
+            text-align : center;
+			
+        }
+        #logo-area img{
+			width : 90%;        
+			height : 100%;        
         }
 
 /*         @keyframes slide_right {
@@ -65,6 +73,22 @@
                 opacity: 1;
             }
         } */
+        
+        
+        #header2{
+         text-align : center;
+         position:absolute;
+         top:10px;
+         left:700px;
+        }
+        
+        #logo-name{
+          color: white;
+         font-size : 30px;
+		 text-shadow: 1px 1px 2px black, 0 0 25px orange, 0 0 5px orange;
+        }
+        
+        
 
         /* 헤더 영역 끝 */
 
@@ -78,7 +102,7 @@
         .nav-scroller {
             height: 50px;
             background-color: white;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.6);
             /* animation: slide_right 1.2s linear forwards; */
         }
 
@@ -174,10 +198,8 @@
             height: 100%;
         }
 
-
-
         body {
-            margin-top: 210px;
+            padding-top: 210px;
         }
     </style>
 
@@ -188,15 +210,15 @@
     <div class="fixed-top" id="header-area">
 
         <header class="row flex-nowrap justify-content-between align-items-center">
-            <div class="col-4 pt-1">
+            <div class="col-4">
                 <div id="logo-area">
-                    <a href="${contextPath}/main"><img src="${contextPath}/resources/images/파이널 로고33.jpg"></a>
+                    <a href="${contextPath}/main"><img src="${contextPath}/resources/images/final.jpg"></a>
                 </div>
             </div>
 
 
             <div class="col-4 pt-1 search-box" id="header2" >
-
+				<p id="logo-name">Where The Weather Is </p>
                 <select class="form-control" name="" id="" style="width: 150px; float: left;">
                     <option value="오늘의 날씨" style="height: 100%;">오늘의 날씨</option>
                     <option value="오늘의 날씨" style="height: 100%;">오늘의 날씨</option>
