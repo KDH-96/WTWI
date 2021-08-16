@@ -33,7 +33,7 @@ public class ReviewServiceImpl implements ReviewService{
 	
 	// 리뷰 목록 조회
 	@Override
-	public List<Review> selectBoardList(ReviewPagination reviewPagination) {
+	public List<Review> selectReviewList(ReviewPagination reviewPagination) {
 		return dao.selectReviewList(reviewPagination);
 	}
 
