@@ -80,11 +80,6 @@ public class AttractionController {
 		   userLatitude = 37.568477;
 		   userLongitude = 126.981611;
 	   }
-	   
-	   System.out.println("기본 위/경도 : 37.568477 / 126.981611");
-	   System.out.println("유저의 위도 : " + userLatitude);
-	   System.out.println("유저의 경도 : " + userLongitude);
-	   
    }
 
    /***
@@ -114,12 +109,12 @@ public class AttractionController {
     		   * &radius=1000 &listYN=Y
     		   */
     		  
-    		  
-    		  System.out.println("안바뀌었으면 37.568477");
-    		  System.out.println(userLatitude);
+    		  //System.out.println("안바뀌었으면 37.568477");
+    		  //System.out.println(userLatitude);
     		  
     		  String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList";
-    		  String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+    		  //String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+    		  String serviceKey = "JJM5cLUSlymmHuS%2FvQxZDLCIejOz9ypIpBRrNY1RdktshpYCM1Fx2KvlmUG8qzp%2B2msPzwhNKLhOtP3NiHt13g%3D%3D";
     		  String MobileOS = "ETC";
     		  String MobileApp = "WhereTheWeatherIs";
     		  String arrange = "E"; // 가까운 거리부터 정렬
@@ -171,6 +166,8 @@ public class AttractionController {
     		  model.addAttribute("pagination", pg);
     		  model.addAttribute("radius" , radius);
     		  model.addAttribute("attrList", attrList);
+    		  model.addAttribute("userLatitude", userLatitude);
+    		  model.addAttribute("userLongitude", userLongitude);
     		  
     		  return "attraction/attractionList";
     		   
@@ -180,7 +177,7 @@ public class AttractionController {
 		      int areaCode = Integer.parseInt(search.getAreaCode());
 
 		      String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList";
-		      String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+		      String serviceKey = "JJM5cLUSlymmHuS%2FvQxZDLCIejOz9ypIpBRrNY1RdktshpYCM1Fx2KvlmUG8qzp%2B2msPzwhNKLhOtP3NiHt13g%3D%3D";
 		      String MobileApp = "WhereTheWeatherIs";
 		      String type = "json";
 		      String arrange = "P";
@@ -259,7 +256,7 @@ public class AttractionController {
          }
 
          String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword";
-         String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+         String serviceKey = "JJM5cLUSlymmHuS%2FvQxZDLCIejOz9ypIpBRrNY1RdktshpYCM1Fx2KvlmUG8qzp%2B2msPzwhNKLhOtP3NiHt13g%3D%3D";
          String MobileApp = "WhereTheWeatherIs";
          String MobileOS = "ETC";
          String arrange = "O";
@@ -314,7 +311,7 @@ public class AttractionController {
       public String attractionList(@RequestParam("areaCode") String paramAreaCode , @RequestParam("attrType") String paramAttrType) {
 
          //System.out.println("컨트롤러 첫줄에서 keyword가 있는지 확인 : " + keyword);
-         System.out.println("넘어온 지역코드 : " + paramAttrType);
+         //System.out.println("넘어온 지역코드 : " + paramAttrType);
          Gson gson = new Gson();
          
          /* 준석
@@ -368,7 +365,7 @@ public class AttractionController {
                + "&MobileOS=" + MobileOS + "&arrange=" + arrange + "&contentTypeId=" + contentTypeId + "&contentTypeId=" + contentTypeId
                + "&areaCode=" + areaCode + "&listYN=" + listYN +"&_type=" + type;
          
-         System.out.println(jsonFile);
+         //System.out.println(jsonFile);
          
          return jsonFile;
 
@@ -382,7 +379,7 @@ public class AttractionController {
          @ModelAttribute Attraction attr) {
 
       String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon";
-      String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+      String serviceKey = "JJM5cLUSlymmHuS%2FvQxZDLCIejOz9ypIpBRrNY1RdktshpYCM1Fx2KvlmUG8qzp%2B2msPzwhNKLhOtP3NiHt13g%3D%3D";
       String MobileOS = "ETC";
       String MobileApp = "WhereTheWeatherIs";
       String type = "json";
@@ -402,48 +399,38 @@ public class AttractionController {
             + "&_type=" + type;
 
       String result = makingResult(req);
-      // *** result에 json 객체가
-      // 담겨있음.****************************************************************************
 
-      // JSON 형태의 문자열을 JsonObject로 변경하여 값을 꺼내쓸 수 있는 형태로 변환
       JsonObject convertedObj = new Gson().fromJson(result.toString(), JsonObject.class);
       JsonObject response = new Gson().fromJson(convertedObj.get("response").toString(), JsonObject.class);
       JsonObject body = new Gson().fromJson(response.get("body").toString(), JsonObject.class);
       JsonObject items = new Gson().fromJson(body.get("items").toString(), JsonObject.class);
       JsonObject item = new Gson().fromJson(items.get("item").toString(), JsonObject.class);
 
-      // *** 필요한 정보들은 item에 k:v 형태로 담겨있음
-      // ***********************************************************************
-      System.out.println("아이템 확인 : " + item);
-
-      // 변경된 JsonObject에서 값 추출
-      // JsonObject.get("key") == (Object)value (Object타입의 밸류 -> 형변환이나 toString을 통해
-      // 문자열로 변환하면됨)
-
-      // 받아오지 못하는 경우가 있기 때문에 필드 기본값을 지정
-      // attraction의 PK인 attractionNo은 파라미터로 받아옴
-
       Set<String> itemKeys = item.keySet(); // 키들을 set에 담기
 
-      
       for (String key : itemKeys) {
-
-         System.out.println(key + " : " + item.get(key)); // k : v 형태로 출력
-
-         // key에따라 형변환하여 알맞은 변수에 대입
          attr = makingAttr(key, item, attr);
       }
-      
       try {
 		String attraction = new ObjectMapper().writeValueAsString(attr);
 		model.addAttribute("attraction", attraction);
 
       } catch (JsonProcessingException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
       }
       
+      /******* 여기서부터 준석의 리뷰 코드 *******/
+      // 명소별 평균점수
+      double avgPoint = service.getAvgPoint(attractionNo);
+      attr.setAvgPoint(avgPoint);
+      // 명소별 총 리뷰 수
+      int totalReviewCount = service.getReviewCount(attractionNo);
+      attr.setTotalReviewCount(totalReviewCount);
+      
+      // 리뷰 코드 끝
+
       model.addAttribute("attr" , attr);
+      
 
       //** 상세조회한 명소 반경 5키로 미터의 다른 명소들 20개 -> 상세조회 지도에 뿌릴 것 *******//
 	  
@@ -466,7 +453,7 @@ public class AttractionController {
       
       
       String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon";
-      String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+      String serviceKey = "JJM5cLUSlymmHuS%2FvQxZDLCIejOz9ypIpBRrNY1RdktshpYCM1Fx2KvlmUG8qzp%2B2msPzwhNKLhOtP3NiHt13g%3D%3D";
       String MobileOS = "ETC";
       String MobileApp = "WhereTheWeatherIs";
       String type = "json";
@@ -478,8 +465,6 @@ public class AttractionController {
        * defaultYN=Y
        * &firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=
        * Y
-       * 
-
        */
 
       String req = url + "?ServiceKey=" + serviceKey + "&MobileOS=" + MobileOS + "&MobileApp=" + MobileApp
@@ -491,24 +476,12 @@ public class AttractionController {
       // *** result에 json 객체가
       // 담겨있음.****************************************************************************
 
-      // JSON 형태의 문자열을 JsonObject로 변경하여 값을 꺼내쓸 수 있는 형태로 변환
       JsonObject convertedObj = new Gson().fromJson(result.toString(), JsonObject.class);
       JsonObject response = new Gson().fromJson(convertedObj.get("response").toString(), JsonObject.class);
       JsonObject body = new Gson().fromJson(response.get("body").toString(), JsonObject.class);
       JsonObject items = new Gson().fromJson(body.get("items").toString(), JsonObject.class);
       JsonObject item = new Gson().fromJson(items.get("item").toString(), JsonObject.class);
 
-      // *** 필요한 정보들은 item에 k:v 형태로 담겨있음
-      // ***********************************************************************
-      System.out.println("아이템 확인 : " + item);
-
-      // 변경된 JsonObject에서 값 추출
-      // JsonObject.get("key") == (Object)value (Object타입의 밸류 -> 형변환이나 toString을 통해
-      // 문자열로 변환하면됨)
-
-      // 받아오지 못하는 경우가 있기 때문에 필드 기본값을 지정
-      // attraction의 PK인 attractionNo은 파라미터로 받아옴
-      
       // 명소별 평균점수
       double avgPoint = service.getAvgPoint(attractionNo);
       attr.setAvgPoint(avgPoint);
@@ -516,7 +489,6 @@ public class AttractionController {
       // 명소별 총 리뷰 수
       int totalReviewCount = service.getReviewCount(attractionNo);
       attr.setTotalReviewCount(totalReviewCount);
-      
       
       // 명소별 평균점수도 담기!!!!!!!!!!!
       Set<String> itemKeys = item.keySet(); // 키들을 set에 담기
@@ -538,7 +510,7 @@ public class AttractionController {
       
       
 
-      System.out.println(jsonString);
+      //System.out.println(jsonString);
 
       return jsonString;
 
@@ -555,21 +527,23 @@ public class AttractionController {
    /********************************************************************************************************************/
    // 상세조회코드 가져옴
    @RequestMapping(value="insertToDB", method=RequestMethod.POST )
-   public void insertToDB(@RequestParam("test") String inputMsg) {
+   public void insertToDB(@RequestParam("number") String inputMsg) {
       
       int inputNumber = Integer.parseInt(inputMsg);
       System.out.println(inputNumber);
 
       String req1 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList"
       		+ "?serviceKey=%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D"
-      		+ "&pageNo=1&numOfRows=7000&MobileApp=AppTest&MobileOS=ETC&arrange=B"
-      		+ "&contentTypeId=" + inputNumber
+      		+ "&pageNo=" + inputNumber
+      		+ "&numOfRows=2000&MobileApp=AppTest&MobileOS=ETC&arrange=B"
+      		+ "&contentTypeId=12"
             + "&listYN=Y&_type=json";
       
       String result = makingResult(req1);
       // 모든 관광지 정보가 result에 담김 
       // -> 12는 지역별로 / 14는 전체 꺼내서 저장 (2021.08.09기준)
       // 15,25,28,32,38,39 모두 db에 저장 (2021.08.12기준)
+      // 모두 삭제 후 다시 DB에 저장 (2021.08.15기준)
       
       JsonObject convertedObj = new Gson().fromJson(result.toString(), JsonObject.class);
       JsonObject response = new Gson().fromJson(convertedObj.get("response").toString(), JsonObject.class);
@@ -657,12 +631,49 @@ public class AttractionController {
           case "createdtime" : createdTime = Long.parseLong(jobj.get(key).toString().replaceAll("\"", ""));break; 
           case "firstimage" : attractionPhoto = jobj.get(key).toString().replaceAll("\"",""); break; 
           case "firstimage2" : attractionPhoto2 = jobj.get(key).toString().replaceAll("\"", ""); break; 
-          case "homepage" : attractionHomePage = jobj.get(key).toString().replaceAll("\"", ""); break;
+          case "homepage" : /*attractionHomePage = jobj.get(key).toString().replaceAll("\"", "");*/
+        	  String rawHomepage = jobj.get(key).toString().replaceAll("\"", "");
+        	  int startStr = rawHomepage.indexOf("\\");
+        	  int endStr = rawHomepage.indexOf("\\", rawHomepage.indexOf("\\")+1);
+        	  attractionHomePage = rawHomepage.substring(startStr+1, endStr);
+    		  if(attractionHomePage.indexOf("h") == -1) { // 홈페이지 주소가 뽑아져 나오지 않을때
+    			  String secRawHomepage = rawHomepage.replace("\\" + attractionHomePage + "\\", "");
+    			  int secStartStr = secRawHomepage.indexOf("\\");
+    			  int secEndStr = secRawHomepage.indexOf("\\", secRawHomepage.indexOf("\\")+1);
+    			  attractionHomePage = secRawHomepage.substring(secStartStr+1, secEndStr);
+    		  }; 
+        	  break;
           case "mapx" : longitude = Double.parseDouble(jobj.get(key).toString().replaceAll("\"", "")); break;
           case "mapy" : latitude = Double.parseDouble(jobj.get(key).toString().replaceAll("\"", "")); break;
           case "mlevel" : mLevel = Integer.parseInt(jobj.get(key).toString().replaceAll("\"", ""));break; 
           case "modifiedtime" : modifiedTime = Long.parseLong(jobj.get(key).toString().replaceAll("\"", ""));break; 
-          case "overview" : attractionInfo = jobj.get(key).toString().replaceAll("\"","");break; 
+          case "overview" : /*attractionInfo = jobj.get(key).toString().replaceAll("\"", "");*/
+        	  	String rawAttractionInfo = jobj.get(key).toString().replaceAll("\"","");
+        	  	System.out.println(rawAttractionInfo);
+        	  	
+          		rawAttractionInfo.replaceAll("\n", " ");
+          		rawAttractionInfo.replaceAll("\n ", " ");
+          		rawAttractionInfo.replaceAll(" \n", " ");
+          		rawAttractionInfo.replaceAll(" \n ", " ");
+          		rawAttractionInfo.replaceAll("\\n", " ");
+          		rawAttractionInfo.replaceAll("\\n ", " ");
+          		rawAttractionInfo.replaceAll(" \\n", " ");
+          		rawAttractionInfo.replaceAll(" \\n ", " ");
+          		rawAttractionInfo.replaceAll("\"\n\"", " ");
+          		rawAttractionInfo.replaceAll("\"\n \"", " ");
+          		rawAttractionInfo.replaceAll("\"\\n \"", " ");
+          		rawAttractionInfo.replaceAll("\"\\n\"", " ");
+          		rawAttractionInfo.replaceAll(" "+ "\\n ", " ");
+          		
+          		rawAttractionInfo.replaceAll("\"\\n\"", " ");
+          		rawAttractionInfo.replaceAll("\"\\n\"", " ");
+          		rawAttractionInfo.replaceAll("<br />", " ");
+          		rawAttractionInfo.replaceAll("<br>", " ");
+          		rawAttractionInfo.replaceAll("</b>", " ");
+          		attractionInfo = rawAttractionInfo;
+          		//System.out.println(attractionInfo);
+          		
+          		break; 
           case "sigungucode" : sigunguCode = Integer.parseInt(jobj.get(key).toString().replaceAll("\"", ""));break; 
           case "tel" : attractionPhone = jobj.get(key).toString().replaceAll("\"", "");break; 
           case "title" : attractionNm = jobj.get(key).toString().replaceAll("\"", "");break; 
@@ -738,12 +749,12 @@ public class AttractionController {
    public JsonArray makingArray(int contentTypeId , Attraction attr) {
 
 	  String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList";
-	  String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+	  String serviceKey = "JJM5cLUSlymmHuS%2FvQxZDLCIejOz9ypIpBRrNY1RdktshpYCM1Fx2KvlmUG8qzp%2B2msPzwhNKLhOtP3NiHt13g%3D%3D";
 	  String MobileOS = "ETC";
 	  String MobileApp = "WhereTheWeatherIs";
 	  String arrange = "E"; // 가까운 거리부터 정렬
 	  double longitude = attr.getLongitude();
-	  System.out.println(longitude);
+	  //System.out.println(longitude);
 	  double latitude = attr.getLatitude();
 	  int radius = 5000; // (거리반경, max 20000m)
 	  String type = "json";

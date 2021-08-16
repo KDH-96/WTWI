@@ -181,6 +181,13 @@
                </div>
              </form>
              </div>
+             
+             <%-- DB삽입용 버튼 
+             <form action="insertToDB" method="POST">
+             		<input type="text" name="number">
+             		<button>입력</button>
+             </form>
+             --%>
 			</div>
 			
 			<!-- 오른쪽 지도 또는 명소가 보여질 div -->
@@ -189,8 +196,14 @@
          
 						<%-- 지도 넣으려던 자리 --%>
 						<div id="map-div">
-								<h3>(종로어딘가-고정) 근처의 인기 명소입니다</h3>
+								<div id="mapwrap" class="mapwrap-div"> 
+						    		<!-- 지도가 표시될 div -->
+						    		<c:if test= "${!empty userLongitude}">
+											<div id="map" style="width:100%;height:350px;"></div>
+						    		</c:if>
+								</div>
 						</div>
+						<%-- 지도 넣으려던 자리 끝 --%>
 						
 						<div id="cardArea-div">
 							<c:choose>
@@ -298,8 +311,60 @@
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
       crossorigin="anonymous"></script>
+      
+   		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e9f2b3228a237afc810c6514cece7e38"></script>
+			<script>
+			
+			var attrList = ${attrList}; 
+			var userLatitude = ${userLatitude};
+			var userLongitude = ${userLongitude};
+			
+			console.log(userLatitude);
+			console.log(attrList);
+		
+			var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
+	    mapOption = { 
+	        center: new kakao.maps.LatLng(userLatitude, userLongitude), // 지도의 중심좌표
+	        level: 4 // 지도의 확대 레벨
+	    };
 
+			var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	 
+			// 마커를 표시할 위치와 title 객체 배열입니다 
+
+      var attrArray = new Array();
+      
+      for (i = 0 ; i < attrList.length ; i ++){
+    	  attrArray.push(
+    			  {title : attrList[i].attractionNm ,
+    				 latlng : new kakao.maps.LatLng(attrList[i].latitude, attrList[i].longitude)
+    			  }
+    		)
+      }
+
+   		// 마커 이미지의 이미지 주소입니다
+      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+          
+      for (var i = 0; i < attrArray.length; i ++) {
+          
+          // 마커 이미지의 이미지 크기 입니다
+          var imageSize = new kakao.maps.Size(24, 35); 
+          
+          // 마커 이미지를 생성합니다    
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+          
+          // 마커를 생성합니다
+          var marker = new kakao.maps.Marker({
+              map: map, // 마커를 표시할 지도
+              position: attrArray[i].latlng, // 마커를 표시할 위치
+              title : attrArray[i].attractionNm, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+              image : markerImage // 마커 이미지 
+          });
+      }
    
+   </script>
+ 
+ 
    <script>
    
    
