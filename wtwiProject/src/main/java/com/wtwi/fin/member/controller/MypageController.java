@@ -2,9 +2,13 @@ package com.wtwi.fin.member.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.bag.SynchronizedSortedBag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,7 @@ import com.wtwi.fin.qnaboard.model.vo.QnaBoard;
 import com.wtwi.fin.member.model.service.MypageService;
 import com.wtwi.fin.member.model.vo.Chat;
 import com.wtwi.fin.member.model.vo.Member;
+import com.wtwi.fin.member.model.vo.News;
 
 @Controller
 @RequestMapping(value = "/myPage/*", method = RequestMethod.GET)
@@ -40,36 +45,21 @@ public class MypageController {
 
 	@RequestMapping(value = "main", method = RequestMethod.GET)
 	public String main(@ModelAttribute("loginMember") Member loginMember, Model model) {
-		
+		List<News> news = service.getNaverNews();
 		List<Review> reviewList = service.selectReviewList(loginMember.getMemberNo());
+		reviewList = service.getAttractionSrc(reviewList);
 		model.addAttribute("reviewList", reviewList);
-
+		model.addAttribute("news", news);
 		return "myPage/main";
 
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	public String getInfo(@RequestParam("latitude") String latitude, @RequestParam("longitude") String longitude, String check) {
-
-		String result = "";
-		String apiId = "fab85c55ea80aa78f7d32ab07532fe33";   
-		URL url;
-		try {
-			BufferedReader bf;
-			if(check.equals("all")) {
-				url = new URL(" https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&exclude=current,hourly,minutely&units=metric&appid="+ apiId);				
-				bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-				result = bf.readLine();
-			} else {
-				url = new URL(" https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid="+ apiId);				
-				bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-				result = bf.readLine();
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		String result = service.getWeatherInfo(latitude, longitude, check);
+		
 		return result;
 
 	}
@@ -257,5 +247,7 @@ public class MypageController {
 		model.addAttribute("pagination", pagination);
 		return "myPage/chatBoard";
 	}
+	
+	
 
 }

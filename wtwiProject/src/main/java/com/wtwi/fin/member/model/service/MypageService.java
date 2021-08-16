@@ -11,6 +11,7 @@ import com.wtwi.fin.member.model.vo.Search;
 import com.wtwi.fin.qnaboard.model.vo.QnaBoard;
 import com.wtwi.fin.member.model.vo.Chat;
 import com.wtwi.fin.member.model.vo.Member;
+import com.wtwi.fin.member.model.vo.News;
 
 public interface MypageService {
 	
@@ -185,6 +186,22 @@ public interface MypageService {
 	 * @return
 	 */
 	List<Review> selectSearchReviewBoardList(Search search, Pagination pagination);
+
+	/** 추천 명소 날씨 가져오기
+	 * @return
+	 */
+	String getWeatherInfo(String latitude, String longitude, String check);
+
+	/** 네이버 뉴스 가져오기
+	 * @return
+	 */
+	List<News> getNaverNews();
+
+	/** 추천 명소 사진 가져오기
+	 * @param reviewList
+	 * @return
+	 */
+	List<Review> getAttractionSrc(List<Review> reviewList);
 
 	
 

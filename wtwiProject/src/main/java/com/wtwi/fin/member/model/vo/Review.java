@@ -19,9 +19,16 @@ public class Review {
 	private int likeCount;
 	private int dislikeCount;
 	private int imageCount;
+	private String src;
 	private List<ReviewImage> atList;
 	
 	
+	public String getSrc() {
+		return src;
+	}
+	public void setSrc(String src) {
+		this.src = src;
+	}
 	public int getLikeCount() {
 		return likeCount;
 	}
@@ -112,8 +119,9 @@ public class Review {
 				+ ", reviewCreateDt=" + reviewCreateDt + ", reviewStatus=" + reviewStatus + ", attractionNo="
 				+ attractionNo + ", attractionNm=" + attractionNm + ", latitude=" + latitude + ", longitude="
 				+ longitude + ", memberNo=" + memberNo + ", likeCount=" + likeCount + ", dislikeCount=" + dislikeCount
-				+ ", imageCount=" + imageCount + ", atList=" + atList + "]";
+				+ ", imageCount=" + imageCount + ", src=" + src + ", atList=" + atList + "]";
 	}
+	
 	
 	
 	
