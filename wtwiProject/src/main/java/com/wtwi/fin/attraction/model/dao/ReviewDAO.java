@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.wtwi.fin.attraction.model.vo.Review;
-import com.wtwi.fin.attraction.model.vo.ReviewImage;
 import com.wtwi.fin.attraction.model.vo.ReviewPagination;
 
 @Repository
@@ -49,6 +48,15 @@ public class ReviewDAO {
 	 */
 	public int insertReview(Review insertReview) {
 		return sqlSession.insert("reviewMapper.insertReview", insertReview);
+	}
+
+
+	/** 리뷰 삭제
+	 * @param reviewNo
+	 * @return result
+	 */
+	public int deleteReview(int reviewNo) {
+		return sqlSession.update("reviewMapper.deleteReview", reviewNo);
 	}
 	
 }

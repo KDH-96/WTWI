@@ -98,7 +98,6 @@ public class AttractionReviewController {
 	   //System.out.println("pgReviewList : " + pgReviewList.toString() );
 	   
 	   return pgReviewList;
-
 	}
 	
 
@@ -113,6 +112,20 @@ public class AttractionReviewController {
 	public int insertReview(@ModelAttribute Review insertReview) {
 		System.out.println("리뷰 성공 : " + insertReview);
 		int result = service.insertReview(insertReview);
+		return result;
+	}
+	
+	
+	
+	
+	/** 리뷰 삭제
+	 * @param reviewNo
+	 * @return result
+	 */
+	@ResponseBody
+	@RequestMapping(value = "delete")
+	public int deleteReview(int reviewNo) {
+		int result = service.deleteReview(reviewNo);
 		return result;
 	}
 }

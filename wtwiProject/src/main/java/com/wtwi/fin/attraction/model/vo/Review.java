@@ -1,7 +1,6 @@
 package com.wtwi.fin.attraction.model.vo;
 
 import java.sql.Date;
-import java.util.List;
 
 public class Review {
 
@@ -12,12 +11,12 @@ public class Review {
 	private int attractionNo;
 	private int memberNo;
 	private String memberNick;
-	private List<ReviewImage> atList;
-	
+	private String reviewStatus;
+
 	public Review() { }
 
 	public Review(int reviewNo, double reviewPoint, String reviewContent, Date reviewCreateDt, int attractionNo,
-			int memberNo, String memberNick, List<ReviewImage> atList) {
+			int memberNo, String memberNick, String reviewStatus) {
 		super();
 		this.reviewNo = reviewNo;
 		this.reviewPoint = reviewPoint;
@@ -26,7 +25,7 @@ public class Review {
 		this.attractionNo = attractionNo;
 		this.memberNo = memberNo;
 		this.memberNick = memberNick;
-		this.atList = atList;
+		this.reviewStatus = reviewStatus;
 	}
 
 	public int getReviewNo() {
@@ -85,19 +84,19 @@ public class Review {
 		this.memberNick = memberNick;
 	}
 
-	public List<ReviewImage> getAtList() {
-		return atList;
+	public String getReviewStatus() {
+		return reviewStatus;
 	}
 
-	public void setAtList(List<ReviewImage> atList) {
-		this.atList = atList;
+	public void setReviewStatus(String reviewStatus) {
+		this.reviewStatus = reviewStatus;
 	}
 
 	@Override
 	public String toString() {
 		return "Review [reviewNo=" + reviewNo + ", reviewPoint=" + reviewPoint + ", reviewContent=" + reviewContent
 				+ ", reviewCreateDt=" + reviewCreateDt + ", attractionNo=" + attractionNo + ", memberNo=" + memberNo
-				+ ", memberNick=" + memberNick + ", atList=" + atList + "]";
+				+ ", memberNick=" + memberNick + ", reviewStatus=" + reviewStatus + "]";
 	}
 
 }
