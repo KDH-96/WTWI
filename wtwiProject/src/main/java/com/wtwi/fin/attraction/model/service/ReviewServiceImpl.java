@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.wtwi.fin.attraction.model.dao.ReviewDAO;
 import com.wtwi.fin.attraction.model.vo.Review;
-import com.wtwi.fin.attraction.model.vo.ReviewImage;
 import com.wtwi.fin.attraction.model.vo.ReviewPagination;
 
 
@@ -26,11 +25,7 @@ public class ReviewServiceImpl implements ReviewService{
 	public ReviewPagination getPagination(ReviewPagination pg) {
 
 		// 1) 명소별 전체 리뷰 수 조회
-		System.out.println("전달할 페이지네이션 객체 : " + pg.getAttractionNo());
-		
 		ReviewPagination selectPg = dao.getListcount(pg.getAttractionNo());
-		
-		System.out.println("셀렉트 pg : " + selectPg);
 		
 		// 2) pagination 계산 결과 생성 후 반환
 		return new ReviewPagination(pg.getCurrentPage(), selectPg.getListCount(), pg.getAttractionNo());
@@ -70,5 +65,11 @@ public class ReviewServiceImpl implements ReviewService{
 		}
 
 		return result;
+	}
+
+	// 리뷰 삭제
+	@Override
+	public int deleteReview(int reviewNo) {
+		return dao.deleteReview(reviewNo);
 	}
 }

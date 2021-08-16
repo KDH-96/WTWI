@@ -47,6 +47,9 @@
 	</div>
 	
 	<script>
+		// 수정 전 리뷰 요소를 저장할 변수
+		let beforeReviewRow;
+		
 		// 리뷰목록 조회하는 메소드
 		function selectReviewList(e) {
 			e.preventDefault();
@@ -70,7 +73,6 @@
 				}
 				
 			});
-
 		}
 		
 		
@@ -98,27 +100,20 @@
 		
 		function createReviewList(pgReviewList){
 			console.log("통신 성공!");
-			
+						
 			reviewPagination = pgReviewList[0]; // 배열[0]에 들어있는 pagination관련 정보 변수저장
 			reviewList = pgReviewList[1]; // 배열[1]에 들어있는 리뷰 정보 변수저장
-
 			$("#reviewContent").empty(); // 리뷰 삽입될 객체 비우기$(".pagination")")
 			$(".pagination").empty();
-
 			if (reviewList.length == 0) { // 선택한 명소에 리뷰가 없을 경우
 				$("#reviewContent")
 						.append(
 								"<td colspan=20 style='padding:30px;'> 리뷰가 없습니다. </td>");
-
 			} else {
-
 				for (let i = 0; i < reviewList.length; i++) {
-
 					let star;
-
 					$("#reviewContent").append(
 							"<hr style='margin:0;'>");
-
 					switch (reviewList[i].reviewPoint) {
 					case 1:
 						star = "★☆☆☆☆";
@@ -136,7 +131,6 @@
 						star = "★★★★★";
 						break;
 					}
-
 					$("#reviewContent").append(
 							"<hr style='margin:0;'><div style='height: 10px'>");
 					$("#reviewContent").append(
@@ -148,16 +142,20 @@
 									+ " " + "</span>");
 					$("#reviewContent")
 							.append(
-									"<span style='padding:0px;'>"
-											+ reviewList[i].reviewCreateDt
-											+ "</span><br>");
+									"<span id='createDt' style='padding:0px;'>"
+											+ reviewList[i].reviewCreateDt + "</span>" + " ");
+					
+					if(memberNo == reviewList[i].memberNo) {
+						$("#reviewContent").append("<a href='#' class='badge badge-pill badge-primary mx-2' onclick='showUpdateReview(reviewList[" + i + "].reviewNo, this)'>수정</a>");
+						$("#reviewContent").append("<a href='#' class='badge badge-pill badge-danger mx-2' onclick='deleteReview(reviewList[" + i + "].reviewNo)'>삭제</a>");
+					}
+					
 					$("#reviewContent")
 							.append(
-									"<span style='padding:0px;'>"
+									"<br><span style='padding:0px;'>"
 											+ reviewList[i].reviewContent
 											+ "</span><br><div style='height: 10px'>");
 				}
-
 			}
 			
 			/* ajax 페이지네이션 */
@@ -190,7 +188,9 @@
 			}
 			
 		}
-	</script>
+		
+		
+
 
 </body>
 

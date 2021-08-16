@@ -256,9 +256,35 @@ position: absolute;
 				
 			});
 			
-		});	
-        
+		});
+		
+		
+		// 리뷰 삭제
+		function deleteReview(reviewNo){
+			if(confirm("정말로 삭제하시겠습니까?")){
+				
+				$.ajax({
+					url : "${contextPath}/review/delete",
+					data : {"reviewNo" : reviewNo},
+					success : function(result){
+						if(result > 0) {
+							$("#select-review-wrapper").fadeOut(100);
+				        	viewFlag = false;
+							swal({"icon" : "success", "title" : "리뷰 삭제 성공"});
+						}
+						
+					},
+					
+					error : function(){
+						swal({"icon" : "error", "title" : "리뷰 삭제 실패", "text" : "문제가 지속될 경우 관리자에게 문의해주세요."});
+					}
+				});
+				
+			}			
+			
+		}
+		
 	</script>
-	
+		
 </body>
 </html>

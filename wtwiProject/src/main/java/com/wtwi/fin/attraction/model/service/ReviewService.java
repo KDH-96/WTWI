@@ -27,4 +27,10 @@ public interface ReviewService {
 	 */
 	int insertReview(Review insertReview);
 
+	/** 리뷰 삭제
+	 * @param reviewNo
+	 * @return result
+	 */
+	int deleteReview(int reviewNo);
+
 }
