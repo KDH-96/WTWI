@@ -138,7 +138,7 @@
 					}
 
 					$("#reviewContent").append(
-							"<hr style='margin:0;'>");
+							"<hr style='margin:0;'><div style='height: 10px'>");
 					$("#reviewContent").append(
 							"<span style='padding:0px; color:orange;'>"
 									+ star + " " + "</span>");
@@ -150,19 +150,15 @@
 							.append(
 									"<span style='padding:0px;'>"
 											+ reviewList[i].reviewCreateDt
-											+ "</span>");
-					$("#reviewContent")
-							.append(
-									"<div style='width:50px; height:50px; background-color:gray;'></div>");
+											+ "</span><br>");
 					$("#reviewContent")
 							.append(
 									"<span style='padding:0px;'>"
 											+ reviewList[i].reviewContent
-											+ "</span>");
+											+ "</span><br><div style='height: 10px'>");
 				}
 
 			}
-			
 			
 			/* ajax 페이지네이션 */
 			/* 현재 페이지가 5 페이지 이하일 시 */
@@ -194,10 +190,6 @@
 			}
 			
 		}
-		
-		
-		
-		
 	</script>
 
 </body>
