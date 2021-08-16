@@ -51,7 +51,7 @@ public class AttractionReviewController {
 
 		System.out.println("reviewPagination : " + reviewPagination.getAttractionNo());
 
-		reviewList = service.selectBoardList(reviewPagination);
+		reviewList = service.selectReviewList(reviewPagination);
 
 		List<Object> pgReviewList = new ArrayList<Object>();
 

@@ -17,7 +17,7 @@ public interface ReviewService {
 	 * @param reviewPagination
 	 * @return reviewList
 	 */
-	List<Review> selectBoardList(ReviewPagination reviewPagination);
+	List<Review> selectReviewList(ReviewPagination reviewPagination);
 
 	/** 리뷰 삽입
 	 * @param insertReview

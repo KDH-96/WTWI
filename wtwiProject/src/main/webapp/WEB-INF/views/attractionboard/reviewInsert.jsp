@@ -57,28 +57,11 @@
 #image-wrapper {
 	margin: auto;
 	width: 280px;
-	height: 110px;
+	height: 80px;
 }
 
-#first-image {
+#img-area1 {
 	margin-left: 25px;
-}
-
-.image {
-	width: 60px;
-	height: 60px;
-	float: left;
-	margin-left: 12px;
-	margin-right: 12px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	background-color: lightgray;
-}
-
-#upload-image-btn {
-	float: right;
-	margin-top: 10px;
-	margin-right: 20px;
 }
 
 #text-area {
@@ -105,6 +88,7 @@
 	float: right;
 }
 
+
 /* 후기작성 폼 끝 */
 </style>
 </head>
@@ -130,12 +114,14 @@
             </div>
             <!-- 별점 영역 끝 -->
             <hr>
+            <!-- 이미지 영역 시작 -->
             <div id="image-wrapper">
-                <div class="image" id="first-image"></div>
-                <div class="image"></div>
-                <div class="image"></div>
-                <a href="#" class="badge badge-pill badge-primary" id="upload-image-btn">사진첨부</a>
+            
+            
+                <input type="file" id="real-input" class="image_inputType_file" accept="img/*" required multiple>
+				<button class="browse-btn">사진업로드</botton>
             </div>
+            <!-- 이미지 영역 끝 -->
             <hr>
             <div id="text-area-wrapper">
                 <textarea class="form-control" aria-label="With textarea" id="text-area" rows="20"></textarea>
@@ -147,5 +133,13 @@
             </div>
         </div>
 	</div>
+	
+	<script>
+		document.getElementById("browse-btn").addEventListener("click", function(){
+			document.getElementById("real-input").click();
+		});
+		
+	
+	</script>
 </body>
 </html>

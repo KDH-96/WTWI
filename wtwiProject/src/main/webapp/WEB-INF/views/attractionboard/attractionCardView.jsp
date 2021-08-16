@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,13 +52,33 @@
   	text-overflow: ellipsis;
   	white-space: normal;
 }
+
+#btn-wrap{
+	position: relative;
+}
+
+#chat-div{
+	float: right;
+	margin-right: 50px;
+	margin-bottom: 5px;
+}
+
+
+#btn-wrap > div > a{
+position: absolute;
+	top: 0;
+}
+
+#view-review-btn > a{
+	text-decoration: none;
+	color: gray;
+	margin-left: 20px;
+}
 </style>
 </head>
 <body>
 
-
 	<!-- =================================== 명소 상세정보 영역 시작 =================================== -->
-
 	<div id="attraction-info-area">
 		<div class="card" style="width: 18rem;" id="attraction-info">
 			<img src="#" class="card-img-top" alt="..." id="attr-image">
@@ -95,12 +117,16 @@
 						<td style="text-align:right; font-size: 13px;"><a id="to-attr-view" href="${contextPath}/attraction/view/" style="color:gray;">더 보기</a></td> <!-- 명소 상세조회 페이지로 이동하는 부분 -->
 					</tr>
 				</table>
-				</p>
-				<a href="#" class="badge badge-pill badge-primary" id="write-btn">리뷰작성</a>
-				<a href="#" class="badge badge-pill badge-info" id="chat-btn">1:1채팅</a>
-				<hr>
-				<div><a href="#" class="badge badge-pill badge-primary" id="view-btn" onclick="selectReviewList()"> 리뷰 보기</a></div>
+				<div id="btn-wrap">
+				<div style="float:left;">
+					<a href="#" class="badge badge-pill badge-primary" id="write-btn">리뷰작성</a>
+				</div>
+				<div id="chat-div">
+					<a href="#" class="badge badge-pill badge-info" id="chat-btn">1:1채팅</a>
+				</div>
+				</div>
 			</div>
+				<div id="view-review-btn"><a href="#" id="view-btn" onclick="selectReviewList(event)"> 리뷰 보기</a></div>
 		</div>
 	</div>
 	<!-- =================================== 명소 상세정보 영역 끝 =================================== -->
@@ -132,9 +158,10 @@
 		
 		
      	// 후기작성 버튼 클릭 시 후기작성 폼 등장하는 메소드
-        $("#write-btn").on("click", function () {
-	        $("#write-review-wrapper").fadeToggle(100);
-	        
+		$("#write-btn").on("click", function () {
+			
+		    $("#write-review-wrapper").fadeToggle(100);
+		    
 			if(writeFlag==false){
 				writeFlag = true; // 켜졌을 때
 				
@@ -146,18 +173,29 @@
 			} else {
 				writeFlag = false; // 꺼졌을 때
 			}
-        });
+		});
 		
-        // 취소버튼 클릭 시 후기작성 폼을 닫는 메소드
-        $("#cancel-btn").on("click", function () {
-        	if(wirteFlag = true) {
-	        	$("#write-review-wrapper").fadeOut(100);
-	        	writeFlag = false;
-        	}
-        });
+		// 취소버튼 클릭 시 후기작성 폼을 닫는 메소드
+		$("#cancel-btn").on("click", function () {
+			if(wirteFlag = true) {
+			    $("#write-review-wrapper").fadeOut(100);
+			    writeFlag = false;
+			}
+		});
         
         
-	
+		// 이미지 영역을 클릭할 때 파일 첨부 창이 뜨도록 설정하는 함수
+		$(function() {
+			$(".boardImg").on("click", function() {
+				var index = $(".boardImg").index(this);
+				console.log(index);
+				
+				$("#img" + index).click();
+			});
+
+		});
+		
+		
 		// 리뷰 작성
 		document.getElementById("review-write-btn").addEventListener("click", function(){
 			let attractionNo = document.getElementById("attr-no").value; // 클릭한 명소 번호 저장 변수
@@ -173,6 +211,9 @@
 					reviewPoint = document.getElementsByName("rating")[i].value;
 				}
 			}
+			
+			
+			
 			
 			reviewContent = document.getElementById("text-area").value;
 			

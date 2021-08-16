@@ -412,7 +412,7 @@
 					var days = new Array();
 					var icons = new Array();
 					
-					// 마커 클릭 시 매번 마커 초기화
+					// 마커 클릭 시 매번 날씨정보영역 초기화
 					document.getElementById("weather-info").innerHTML = " ";
 					
 	                $.getJSON('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' 
@@ -466,8 +466,6 @@
 				        }
 				        
 				    });
-	                
-	                
 					// 날씨 api 종료
 					
 					
