@@ -58,6 +58,7 @@
 	margin: auto;
 	width: 280px;
 	height: 80px;
+	background-color: gray;
 }
 
 #img-area1 {
@@ -88,7 +89,6 @@
 	float: right;
 }
 
-
 /* 후기작성 폼 끝 */
 </style>
 </head>
@@ -116,10 +116,12 @@
             <hr>
             <!-- 이미지 영역 시작 -->
             <div id="image-wrapper">
-            
-            
-                <input type="file" id="real-input" class="image_inputType_file" accept="img/*" required multiple>
-				<button class="browse-btn">사진업로드</botton>
+            	<div id="image-area">
+            		<img id="img" />
+            	</div>
+            	
+				<input type="file" id="img0" name="carousel"> <button type="reset" id="reset">취소</button>
+								
             </div>
             <!-- 이미지 영역 끝 -->
             <hr>
@@ -129,16 +131,16 @@
             <hr>
             <div>
                 <button type="button" class="btn btn-primary mx-3" id="review-write-btn">작성</button>
-                <button type="button" class="btn btn-secondary mx-3" id="cancel-btn">취소</button>
+                <button type="reset" class="btn btn-secondary mx-3" id="cancel-btn">취소</button>
             </div>
         </div>
 	</div>
 	
 	<script>
-		document.getElementById("browse-btn").addEventListener("click", function(){
-			document.getElementById("real-input").click();
+		document.getElementById("reset").addEventListener("click", function(){
+			console.log("성공");
+			
 		});
-		
 	
 	</script>
 </body>

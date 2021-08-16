@@ -527,8 +527,8 @@
 	    						}
 	            				
 	            				document.getElementById("attr-avgPoint").innerText = star;
-	            				document.getElementById("attr-avgPoint-num").innerText = " 평균 " + roundAvgPoint + "점";
-	            				document.getElementById("total-review-count").innerText = " / 리뷰 " + attrView.totalReviewCount + "건";
+	            				document.getElementById("attr-avgPoint-num").innerText = " 평균 " + roundAvgPoint + "점 / 5점";
+	            				document.getElementById("total-review-count").innerText = " | 리뷰 " + attrView.totalReviewCount + "건";
 	            				
 	            				
 	            				// 명소 이미지 출력을 위한 구문

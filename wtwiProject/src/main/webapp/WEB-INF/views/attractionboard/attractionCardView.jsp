@@ -126,7 +126,7 @@ position: absolute;
 				</div>
 				</div>
 			</div>
-				<div id="view-review-btn"><a href="#" id="view-btn" onclick="selectReviewList(event)"> 리뷰 보기</a></div>
+				<div id="view-review-btn" style="height: 50px;"><a href="#" id="view-btn" style="line-height: 50px;" onclick="selectReviewList(event)"> 리뷰 보기</a></div>
 		</div>
 	</div>
 	<!-- =================================== 명소 상세정보 영역 끝 =================================== -->
@@ -211,9 +211,7 @@ position: absolute;
 					reviewPoint = document.getElementsByName("rating")[i].value;
 				}
 			}
-			
-			
-			
+
 			
 			reviewContent = document.getElementById("text-area").value;
 			
@@ -256,7 +254,6 @@ position: absolute;
 				
 				error : function(){
 					console.log("통신 실패");
-					
 				}
 				
 			});
