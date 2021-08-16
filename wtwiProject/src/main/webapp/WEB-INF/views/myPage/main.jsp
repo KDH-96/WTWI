@@ -134,7 +134,7 @@
 
 .my-container {
 	display: flex;
-	flex-direction: column;
+	align-items: center;
 	width: 100%;
 	height: 200px;
 	background-color: #ffffff;
@@ -184,15 +184,28 @@
 	<main class="myPage-main">
 		<div class="myPage-main__list">
 			<div class="my-container">
-				<h3>${loginMember.memberNick }님,좋은 하루입니다 :)</h3>
-				<span>현재 계신 곳의 날씨는?</span>
-				<img class="weather" alt="#" src="#">
+				<div class="hello">
+					<h3>${loginMember.memberNick }님,좋은 하루입니다 :)</h3>
+					<span>현재 계신 곳의 날씨는?</span>
+					<span id="feelsLike"></span>
+					<img class="weather" alt="#" src="#">
+				</div>
+				<div class="news">
+					<c:if test="${!empty news}">
+						<h4>오늘의 여행 뉴스</h4>
+						<ul>						
+							<c:forEach items="${news }" var="news" varStatus="n" begin="0" end="4" >
+								<li><a href="${news.link }">${news.title }</a></li>	
+							</c:forEach>
+						</ul>
+					</c:if>
+				</div>
 			</div>
 			<c:if test="${!empty reviewList}">
 				<div class="recommend-container">
 					<c:forEach items="${reviewList }" var="board" varStatus="b" >
 						<div class="attraction">
-							<img class="attrImage" src="" alt="" onerror="this.src='/test/noImg.gif">
+							<img class="attrImage" src="${board.src }" alt="" onerror="this.src='/test/noImg.gif">
 							<div class="attraction_list">
 								<span class="attrNm">${board.attractionNm }</span>
 								<div class="attrStar">
@@ -232,10 +245,12 @@
        			type : "POST",
        			dataType : "JSON",
        			success : function(info){
-       				console.log(info);
+       	
+       				var description = info.weather[0].description;
        				var weather = info.weather[0].main;
        				var icon = "http://openweathermap.org/img/wn/"+ info.weather[0].icon +".png";
        				$(".weather").attr("src",icon);
+       				$("#feelsLike").text(description);
        			},
        			error : function(){ // ajax 통신 실패 시
     				console.log("통신 실패");

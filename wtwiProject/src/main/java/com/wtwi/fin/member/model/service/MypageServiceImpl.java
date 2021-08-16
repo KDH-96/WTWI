@@ -1,12 +1,30 @@
 package com.wtwi.fin.member.model.service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.bag.SynchronizedSortedBag;
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.github.scribejava.core.model.Response;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.wtwi.fin.attraction.controller.AttractionController;
+import com.wtwi.fin.auth.SNSValue;
 import com.wtwi.fin.freeboard.model.vo.Board;
 import com.wtwi.fin.freeboard.model.vo.Reply;
 import com.wtwi.fin.member.model.vo.Pagination;
@@ -17,11 +35,17 @@ import com.wtwi.fin.qnaboard.model.vo.QnaBoard;
 import com.wtwi.fin.member.model.dao.MypageDAO;
 import com.wtwi.fin.member.model.vo.Chat;
 import com.wtwi.fin.member.model.vo.Member;
+import com.wtwi.fin.member.model.vo.News;
 
 @Service
 public class MypageServiceImpl implements MypageService {
 	
+	@Autowired
+	private AttractionController attractionController;
 	
+	@Autowired
+	@Qualifier("naverSns")
+	private SNSValue naverSns;
 
 	@Autowired
 	private MypageDAO dao;
@@ -235,8 +259,127 @@ public class MypageServiceImpl implements MypageService {
 		
 		return dao.selectSearchReviewBoardList(search, pagination);
 	}
+	
+	// 추천 명소 날씨 가져오기
+	@Override
+	public String getWeatherInfo(String latitude, String longitude, String check) {
+		String result = "";
+		String apiId = "fab85c55ea80aa78f7d32ab07532fe33";   
+		URL url;
+		try {
+			BufferedReader bf;
+			if(check.equals("all")) {
+				url = new URL(" https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&exclude=current,hourly,minutely&units=metric&appid="+ apiId);				
+				bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+				result = bf.readLine();
+			} else {
+				url = new URL(" https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid="+ apiId);				
+				bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+				result = bf.readLine();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+	// 네이버 뉴스 가져오기
+	@Override
+	public List<News> getNaverNews() {
+		String result = "";
+		String clientId = this.naverSns.getClientId();//애플리케이션 클라이언트 아이디값";
+        String clientSecret = this.naverSns.getClientSecret();//애플리케이션 클라이언트 시크릿값";
+        StringBuffer response = new StringBuffer();
+        try {
+            String text = URLEncoder.encode("국내여행", "UTF-8"); //검색어";
+            String apiURL = "https://openapi.naver.com/v1/search/news.json?query="+ text + "&display=10&start=1&sort=date&bloggername=the_trip"; // 뉴스의 json 결과
+       //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text; // 블로그의 xml 결과 
+            URL url = new URL(apiURL);
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("X-Naver-Client-Id", clientId);
+            con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+            int responseCode = con.getResponseCode();
+            BufferedReader br;
+            if(responseCode==200) { // 정상 호출
+                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            } else {  // 에러 발생
+                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+            }
+            String inputLine;
+            while ((inputLine = br.readLine()) != null) {
+                response.append(inputLine);
+            }
+            br.close();
+            result = response.toString();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    
+
+		return parseJson(response.toString());
+	}
 
 	
+	public List<News> parseJson(String response) {
+		
+		
+		ObjectMapper mapper = new ObjectMapper();
+		List<News> news = new ArrayList<News>();
+		try {
+			JsonNode rootNode = mapper.readTree(response);
+			JsonNode newsArr= rootNode.get("items");
+			for(int i=0; i<newsArr.size(); i++ ) {
+				News article = new News();
+				article.setTitle(newsArr.get(i).get("title").asText());
+				article.setLink(newsArr.get(i).get("link").asText());
+				news.add(article);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return news;
+	}
+
+	@Override
+	public List<Review> getAttractionSrc(List<Review> reviewList) {
+		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon";
+	      String serviceKey = "%2FZJ4qEbEAOUpJeYCJrNhA7M4ZTjqF%2FVJw5NuHvS54FzJsEOkNVwFPQRkupaGtXRxUekRa1JaXdRO2tOkWsf4GA%3D%3D";
+	      String MobileOS = "ETC";
+	      String MobileApp = "WhereTheWeatherIs";
+	      String type = "json";
+
+	      for(int i =0; i<reviewList.size(); i++) {
+	    	  String req = url + "?ServiceKey=" + serviceKey + "&MobileOS=" + MobileOS + "&MobileApp=" + MobileApp
+	  	            + "&contentId=" + reviewList.get(i).getAttractionNo()
+	  	            + "&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y"
+	  	            + "&_type=" + type;
+
+	  	      String result = attractionController.makingResult(req);
+	  	      // *** result에 json 객체가
+	  	      // 담겨있음.****************************************************************************
+
+	  	      // JSON 형태의 문자열을 JsonObject로 변경하여 값을 꺼내쓸 수 있는 형태로 변환
+	  	      JsonObject convertedObj = new Gson().fromJson(result.toString(), JsonObject.class);
+	  	      JsonObject response = new Gson().fromJson(convertedObj.get("response").toString(), JsonObject.class);
+	  	      JsonObject body = new Gson().fromJson(response.get("body").toString(), JsonObject.class);
+	  	      JsonObject items = new Gson().fromJson(body.get("items").toString(), JsonObject.class);
+	  	      JsonObject item = new Gson().fromJson(items.get("item").toString(), JsonObject.class);
+
+	  	      // *** 필요한 정보들은 item에 k:v 형태로 담겨있음
+	  	      // ***********************************************************************
+	  	      if(item.get("firstimage") == null) {
+	  	    	  reviewList.get(i).setSrc(null);
+	  	      } else {	  	    	  
+	  	    	  String src = item.get("firstimage").getAsString();
+	  	    	  reviewList.get(i).setSrc(src);
+	  	      }
+	      }
+		return reviewList;
+	}
 	
 	
 }
