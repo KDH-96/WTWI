@@ -60,6 +60,44 @@ public class AttractionReviewController {
 
 		return pgReviewList;
 	}
+	
+	
+	// 설화꺼
+	@RequestMapping(value = "reviewList" , method = RequestMethod.POST)
+	@ResponseBody
+	public List<Object>  selectReviewList(String selectedNo, 
+	                     @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+	                     ReviewPagination pg) {
+	   
+	   int attractionNo = Integer.parseInt(selectedNo);
+	   //System.out.println("ajax로 넘어온 attractionNo : " + attractionNo);
+	   
+	   pg.setLimit(5);
+	   pg.setAttractionNo(attractionNo);
+	   pg.setCurrentPage(cp);
+
+	   ReviewPagination reviewPagination = null;
+	   List<Review> reviewList = null;
+
+	   reviewPagination = service.getPagination(pg);
+	   reviewPagination.setLimit(5);
+	   
+
+	   //System.out.println("reviewPagination : " + reviewPagination.getAttractionNo());
+
+	   reviewList = service.selectReviewList(reviewPagination);
+
+	   List<Object> pgReviewList = new ArrayList<Object>();
+
+	   pgReviewList.add(reviewPagination);
+	   pgReviewList.add(reviewList);
+	   
+	   //System.out.println("pgReviewList : " + pgReviewList.toString() );
+	   
+	   return pgReviewList;
+
+	}
+	
 
 	/**
 	 * 리뷰 작성
