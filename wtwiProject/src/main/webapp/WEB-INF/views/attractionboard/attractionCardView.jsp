@@ -239,19 +239,6 @@
 			    writeFlag = false;
 			}
 		});
-        
-        
-		// 이미지 영역을 클릭할 때 파일 첨부 창이 뜨도록 설정하는 함수
-		$(function() {
-			$(".boardImg").on("click", function() {
-				var index = $(".boardImg").index(this);
-				console.log(index);
-				
-				$("#img" + index).click();
-			});
-
-		});
-		
 		
 		// 리뷰 작성
 		document.getElementById("review-write-btn").addEventListener("click", function(){
