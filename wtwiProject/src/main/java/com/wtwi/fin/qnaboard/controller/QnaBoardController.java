@@ -151,9 +151,7 @@ public class QnaBoardController {
 				String tomail = "wtwimanager1@gmail.com"; // 받는 사람 이메일
 				String title = "문의게시판에 게시글이 등록되었습니다."; // 제목
 
-				String content ="<img src ='http://localhost:8080/wtwi/resources/images/%ED%8C%8C%EC%9D%B4%EB%84%90%20%EB%A1%9C%EA%B3%A022psd.jpg'>"+
-								"<br>"+
-								loginMember.getMemberNick()+"님 께서 문의 게시판에 게시글을 남기셨습니다."+
+				String content = loginMember.getMemberNick()+"님 께서 문의 게시판에 게시글을 남기셨습니다."+
 								"<br>"+
 								"확인하시고 답변 부탁 드립니다."+
 								"<br>"+
