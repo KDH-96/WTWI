@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%-- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+ --%>
 <c:set var="contextPath" scope="application" value="${pageContext.servletContext.contextPath}" />
 
 <!DOCTYPE html>
@@ -86,6 +87,22 @@
          disply : inline-block;
          margin-left : 10px;
       }
+      #homepageAtag{
+      	display: -webkit-box;
+      	display: -ms-flexbox;
+      	display: box;
+      	margin-top:1px;
+      	max-height:20px;
+      	width: 500px;
+      	overflow:hidden;
+      	vertical-align:top;
+      	text-overflow : ellipsis;
+      	word-break:break-all;
+      	-webkit-box-orient:vertical;
+      	-webkit-line-clamp:3;
+      	display:block;
+      	
+      }
       #attrInfo-div{
          margin-top : 30px;
          margin-bottom : 50px;
@@ -133,7 +150,11 @@
          <div class="list-wrapper">
          
                   <div id="cute-area-div"><br><br>★여행정보★</div>
-                  <div id="attrNm-div"><h1><strong>${attr.attractionNm}</strong></h1></div>
+                  <div id="attrNm-div"><h1 style="display : inline-block"><strong>${attr.attractionNm}</strong></h1> 
+                  	
+                  				<span id="attr-avgPoint" style="color:orange; font-size:22px;"></span>
+
+                  <br></div>
                   <div id="attrVirtual-content">
                         <div id="attr-photo-div">
                        <c:choose>
@@ -154,7 +175,7 @@
                               </div>
                               <div id="attr-addr-div" style="background-color : #f7f7f7" >
                                     <div style="margin-left : 30px; padding : 8px"><h4 style="display : inline-block"><strong>주소</strong></h4>
-                                       <br>${attr.attractionAddr} . . . . . . . . . . <a id="navi-link-a" class="link-dark" href="https://map.kakao.com/link/to/${attr.attractionNm},${attr.latitude},${attr.longitude}"><span><strong>카카오맵으로 길찾기</strong></span></a>
+                                       <br>${attr.attractionAddr} . . . . . . . . . . <a id="navi-link-a" class="link-dark" href="https://map.kakao.com/link/to/${attr.attractionNm},${attr.latitude},${attr.longitude}"><span><strong>카카오맵으로 길찾기</strong>  </span></a> <a href="#" class="badge badge-pill badge-info" id="chat-btn">1:1채팅</a>
                                     </div>
                               </div>
                               <div id="attr-phone-div" style="background-color : #f7f7f7">
@@ -164,13 +185,17 @@
                               </div>
                               <div id="attr-homepage-div" style="background-color : #f7f7f7">
                                     <div style="margin-left : 30px; padding : 8px">
-                                          <h4><strong>홈페이지</strong></h4>${attr.attractionHomePage}
+                                          <h4><strong>홈페이지</strong></h4>
+						                                          <a id="homepageAtag" href="${attr.attractionHomePage}">${attr.attractionHomePage}</a>
                                     </div>
                               </div>
                         </div>
                   </div>
                   
-                  <div id="attrInfo-div" >${attr.attractionInfo}</div>
+                  <%-- <div id="attrInfo-div" >${attr.attractionInfo}</div> --%>
+                  <div id="attrInfo-div" >
+                  	<span id="info-span"></span>
+                  </div>
                   
                   <div id="attrMap-div">
                         <div id="mapwrap"> 
@@ -202,11 +227,6 @@
                         <jsp:include page="/WEB-INF/views/attraction/reviewView.jsp" />
                   </div>          
                   
-                  <div id="btn-div">     
-                        <a href="list?cp=${param.cp}${keyword}" class="btn btn-primary float-right mr-2">목록으로</a>         
-                        <button class="form-control btn btn-primary" id="back-btn"
-                    style="width:100px; display: inline-block; background-color: black; border: black;">뒤로가기</button>
-              </div>
                
          </div>
          <!----------------------------------------------------------------------------------------------  content end -->
@@ -233,7 +253,32 @@
 
    <%-- 날씨 script --%>   
    <script>
+   
+   			//개행문자
+   			var attrInfo = "${attr.attractionInfo}";
+   			replacedAttrInfo = attrInfo.replaceAll("(\r\n|\r|\n|\n\r)"﻿, "&lt;br&gt;");
+   			
+   			$("#info-span").html(replacedAttrInfo);
+   			
                
+         var avgPoint = ${attr.avgPoint};
+         roundAvgPoint = Math.round(${attr.avgPoint}*10)/10;
+         
+         // 소수점에서 반올림하여 정수로 별점 결정(ex: 4.5 = 별점 5개)
+      	 let avgStar = Math.round(roundAvgPoint);
+         
+    		 switch(avgStar){
+					case 1: star = "★☆☆☆☆"; break;
+					case 2: star = "★★☆☆☆"; break;
+					case 3: star = "★★★☆☆"; break;
+					case 4: star = "★★★★☆"; break;
+					case 5: star = "★★★★★"; break;
+					default: star = "☆☆☆☆☆"; break;
+					}
+         
+         $("#attr-avgPoint").html(star + " " + roundAvgPoint );
+         
+         
          
    
          var attraction = ${attraction}; 
@@ -320,6 +365,7 @@
           };
        
          var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+         
          // 마커가 표시될 위치입니다 
          var markerPosition  = new kakao.maps.LatLng(latitude, longitude); 
          // 마커를 생성합니다
@@ -331,6 +377,25 @@
          // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
          // marker.setMap(null); 
          
+         var infowindow = new kakao.maps.InfoWindow({
+        	  content : "Aaa"
+          });
+         
+         function makeOverListener(map, marker, infowindow) {
+	     	    return function() {
+	     	        infowindow.open(map, marker);
+	     	    };
+		     	}
+	    		// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+	       function makeOutListener(infowindow) {
+	           return function() {
+	               infowindow.close();
+	           };
+	       	}
+	    		
+          kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+          kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+	          
          
          /****************************************************************************/
          
@@ -383,6 +448,14 @@
                  position: position,
                  image: image
              });
+             
+             infowindow = new kakao.maps.InfoWindow({
+	        	  content : "Aaa"
+	          });
+         kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+         kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+	          
+        
              return marker;  
          }   
          // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가하는 함수입니다
@@ -447,7 +520,7 @@
                  // 마커이미지와 마커를 생성합니다
                  var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
                      marker = createMarker(array39[i], markerImage);  
-         
+         						
                  // 생성된 마커를 주차장 마커 배열에 추가합니다
                  carparkMarkers.push(marker);        
              }                
@@ -509,7 +582,18 @@
          } 
          
          
-         
+			// 채팅버튼 클릭 시 채팅 기능 작동
+         $("#chat-btn").on("click", function(){
+            
+            if(memberNo==""){
+               swal({
+                  icon: "warning",
+                  title: "회원만 이용 가능합니다."
+               })
+            } else { 
+               document.getElementById("chat-btn").href = "${contextPath}/chat/openChatRoom/"+attraction.attractionNo;
+            }
+         });
          
          
          
