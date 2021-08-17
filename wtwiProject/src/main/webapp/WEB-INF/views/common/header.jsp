@@ -166,6 +166,7 @@
 
         .nav li a:hover {
             color: orange;
+            text-shadow: 0 0 .1em, 0 0 .6em;
         }
 
         .nav li a:before {
@@ -207,7 +208,7 @@
         <header class="row flex-nowrap justify-content-between align-items-center">
             <div class="col-1">
                 <div id="logo-area">
-                    <a href="${contextPath}/main"><img src="${contextPath}/resources/images/로고renewal3.JPG"></a>
+                    <a href="${contextPath}/main"><img src="${contextPath}/resources/images/로고 renewal2.jpg"></a>
                 </div>
             </div>
 
@@ -252,6 +253,7 @@
                     <li><a class="p-2" href="${contextPath}/attraction/list">명소</a></li>
                     <li><a class="p-2" href="${contextPath}/freeboard/list">자유게시판</a></li>
                     <li><a class="p-2" href="${contextPath}/qnaboard/list">문의게시판</a></li>
+                    <li><a class="p-2" href="${contextPath}/info">About Us</a></li>
             </nav>
         </div>
 

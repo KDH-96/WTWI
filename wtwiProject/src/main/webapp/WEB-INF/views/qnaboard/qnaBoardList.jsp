@@ -106,8 +106,8 @@
 	color: red;
 	padding-left:5px;
 	font-style:italic;
-	font-size: 7px;
-	line-height: 20px;
+	font-size: 9px;
+	line-height: 17px;
 }
 
 .blink {

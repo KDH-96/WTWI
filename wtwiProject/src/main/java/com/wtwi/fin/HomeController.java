@@ -27,5 +27,9 @@ public class HomeController {
 		return "main";
 	}
 	
+	@RequestMapping(value="info", method=RequestMethod.GET)
+	public String info() {
+		return "info";
+	}
 }
  
