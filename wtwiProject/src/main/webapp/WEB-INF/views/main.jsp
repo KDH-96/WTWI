@@ -166,7 +166,7 @@
     				document.getElementById("attr-image").src = attrView.attractionPhoto;
     				
     				// 명소 이름 출력을 위한 구문
-						document.getElementById("attr-title").innerText = attrView.attractionNm;
+					document.getElementById("attr-title").innerText = attrView.attractionNm;
     				
     				// 명소 이름 클릭 시 상세조회 페이지로 이동하는 구문
     				document.getElementById("attr-title").href = "${contextPath}/attraction/view/" + attrView.attractionNo;
