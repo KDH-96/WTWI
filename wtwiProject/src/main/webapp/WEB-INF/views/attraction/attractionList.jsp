@@ -336,12 +336,12 @@
       
       for (i = 0 ; i < attrList.length ; i ++){
     	  attrArray.push(
-    			  {title : attrList[i].attractionNm ,
+    			  {content : '<div style="padding:5px;">' + attrList[i].attractionNm + '</div>' ,
     				 latlng : new kakao.maps.LatLng(attrList[i].latitude, attrList[i].longitude)
     			  }
     		)
       }
-
+      
    		// 마커 이미지의 이미지 주소입니다
       var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
           
@@ -360,6 +360,24 @@
               title : attrArray[i].attractionNm, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
               image : markerImage // 마커 이미지 
           });
+          var infowindow = new kakao.maps.InfoWindow({
+        	  content : attrArray[i].content 
+          });
+          kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+          kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+          
+      }
+   		// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+      function makeOverListener(map, marker, infowindow) {
+    	    return function() {
+    	        infowindow.open(map, marker);
+    	    };
+    	}
+   		// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+      function makeOutListener(infowindow) {
+          return function() {
+              infowindow.close();
+          };
       }
    
    </script>
