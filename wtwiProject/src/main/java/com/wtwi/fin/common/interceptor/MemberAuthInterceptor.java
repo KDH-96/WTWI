@@ -26,7 +26,7 @@ public class MemberAuthInterceptor extends HandlerInterceptorAdapter{
 		
 		
 		 if(member != null){
-			 if(member.getMemberGrade().equals("B")) {
+			 if(member.getMemberGrade().equals("B") || member.getMemberGrade().equals("F") || member.getMemberGrade().equals("G") || member.getMemberGrade().equals("K")|| member.getMemberGrade().equals("N")) {
 				 request.getSession().setAttribute("dest", dest);
 				 return true;				 
 			 } else {				 

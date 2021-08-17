@@ -23,9 +23,6 @@
 	margin-bottom: 100px;
 }
 
-.myPage-sideBar {
-     margin-top: 300px;
- }
 .myPage-main {
 	width: 100%;
 	margin-top: 40px;
@@ -92,11 +89,12 @@
 
 
 .attrNm:after {
+position: absolute;
  content: ''; 
- display: block; 
  width: 100%; 
- height: 2px;
+ height: 1px;
  left : -2px;
+ bottom: 0px;
  background: orange; 
  }
 
@@ -229,6 +227,10 @@
 	margin-right: 30px;
 }
 
+.newline {
+	margin-right: 70px;
+}
+
 .hello {
 	display: flex;
 	flex-direction: column;
@@ -279,7 +281,7 @@ position: relative;
  height: 3px; 
  position: absolute; 
  left : 1px;
- background: orange; 
+ background: #97B0FB; 
  }
 
 

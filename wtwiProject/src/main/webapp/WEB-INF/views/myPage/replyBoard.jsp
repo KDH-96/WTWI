@@ -30,7 +30,6 @@ a:hover {
 .myPage-body {
 	display: flex;
 	align-items: center;
-	height: 100vh;
 }
 
 .myPage-main {
@@ -39,6 +38,7 @@ a:hover {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin-top: 100px;
 }
 
 .myPage-main h2 {
@@ -144,7 +144,7 @@ a:hover {
 
 							<!-- 작성한 게시글이 없을 때 -->
 							<tr>
-								<td colspan="6">작성한 댓글이 없습니다.</td>
+								<td class="align-middle" colspan="6">작성한 댓글이 없습니다.</td>
 							</tr>
 
 						</c:when>
@@ -154,18 +154,18 @@ a:hover {
 
 								<tr>
 									<!-- 글번호 -->
-									<th scope="row">
+									<th class="align-middle" scope="row">
 										<a href="${contextPath }/freeboard/${board.freeNo}?cp=1"><i class="far fa-file-alt"></i></a>
 									
 									</th>
 
 
 									<!-- 댓글 내용 -->
-									<td class="boardTitle">
+									<td class="boardTitle align-middle">
 										<a href="${contextPath}/?cp=${pagination.currentPage}">${board.freeReplyContent}</a>
 									</td>
 									<%-- 작성일자 --%>
-									<td><fmt:formatDate var="createDate"
+									<td class="align-middle"><fmt:formatDate var="createDate"
 											value="${board.freeReplyCreateDate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
 											var="today" value="<%=new java.util.Date()%>"
 											pattern="yyyy-MM-dd" /> <c:choose>
@@ -231,7 +231,7 @@ a:hover {
 								<li><a class="focus-page">${p }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageURL}?cp=${p}${searchStr}"">${p}</a></li>
+								<li><a class="focus-page" href="${pageURL}?cp=${p}${searchStr}"">${p}</a></li>
 							</c:otherwise>
 						</c:choose>
 

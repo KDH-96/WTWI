@@ -28,7 +28,6 @@
         .myPage-body {
             display: flex;
             align-items: center;
-            height: 100vh;
         }
         .myPage-main {
             width: 100%;
@@ -36,6 +35,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            margin-top: 100px;
         }
         .myPage-main h2{
             margin-bottom: 30px;
@@ -197,7 +197,7 @@
 									</th>
 									<!-- 명소이름 -->
 									<th scope="row" class="content"> 
-										<a href="#"> ${board.attractionNm}</a>
+										<a href="${contextPath }/attraction/view/${board.attractionNo}"> ${board.attractionNm}</a>
 									</th>
 									
 									<%-- 후기내용 --%>
@@ -281,7 +281,7 @@
 								<li><a class="focus-page">${p }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageURL}?cp=${p}${searchStr}"">${p}</a></li>
+								<li><a class="focus-page" href="${pageURL}?cp=${p}${searchStr}"">${p}</a></li>
 							</c:otherwise>
 						</c:choose>
 

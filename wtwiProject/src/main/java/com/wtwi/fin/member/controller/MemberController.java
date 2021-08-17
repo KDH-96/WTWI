@@ -327,7 +327,7 @@ public class MemberController {
 		} else {
 			swalSetMessage(ra, "error", "내 정보 수정 실패", null);
 		}
-		return "redirect:/myPage/update";
+		return "redirect:/member/update";
 	}
 
 	public static void swalSetMessage(RedirectAttributes ra, String icon, String title, String text) {
