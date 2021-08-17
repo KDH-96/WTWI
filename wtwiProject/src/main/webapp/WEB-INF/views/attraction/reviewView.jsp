@@ -165,8 +165,7 @@ btn-dark {
         </div>
 		</div>
 		<div class="text-div">
-				<input type="text" class="review-input-text" id="reviewContent" placeholder ="리뷰를 작성해 주세요(
-자)">
+				<input type="text" class="review-input-text" id="reviewContent" placeholder ="리뷰를 작성해 주세요(150자)">
         <button type="button" class="btn btn-dark" id = "review-insert-btn" onclick="addreview();">등록</button>
 				<div id="test_cnt" style="float: right; margin-right:30px;">(0 / 150)</div>
 		</div>
@@ -208,6 +207,8 @@ btn-dark {
 	let beforereviewRow;
 	
 	reviewList();
+	
+
 	
 	// 리뷰 등록
 	function addreview(){
@@ -254,6 +255,7 @@ btn-dark {
 							icon: "success",
 							title: "댓글이 작성되었습니다."
 						});
+						
 						$("#reviewContent").val("");
 						reviewList();
 						reviewCount();
@@ -366,8 +368,9 @@ btn-dark {
 			if(reviewList.length == 0){
 				var li = $("<li>").addClass("review-row");
 				var div = $("<div>").addClass("review-div");
-				var span = $("<span>").addClass("no-review-span").text("아직 작성된 리뷰가 없습니다. 첫 번째 리뷰를 작성해주세요..★★★★★ ");
-		    li.append(div).append(span);
+//				var span = $("<span>").addClass("no-review-span").text("아직 작성된 리뷰가 없습니다. 첫 번째 리뷰를 작성해주세요..★★★★★ ");
+//		    li.append(div).append(span);
+		    li.append(div);
 		    $(".reviewList").append(li);
 				
 			}else{
@@ -540,7 +543,8 @@ btn-dark {
         }
     });
 	
-	
+    
+    
 	// 리뷰 수정 취소 시 원래대로 돌아가기
 	function updateCancel(el){
 		$(el).parent().parent().html(beforeReviewRow);
