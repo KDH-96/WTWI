@@ -37,42 +37,89 @@
 	margin-left: 25px;
 }
 
+.star-rating {
+	display: flex;
+	flex-direction: row-reverse;
+	font-size: 2.25rem;
+	line-height: 2.5rem;
+	justify-content: space-around;
+	padding: 0 0.2em;
+	text-align: center;
+	width: 5em;
+}
 
-#attr-info-table *{
+.star-rating input {
+	display: none;
+}
+
+.star-rating label {
+	-webkit-text-fill-color: transparent;
+	/* Will override color (regardless of order) */
+	-webkit-text-stroke-width: 2.3px;
+	-webkit-text-stroke-color: darkg;
+	cursor: pointer;
+}
+
+.star-rating :checked ~label {
+	-webkit-text-fill-color: gold;
+}
+
+.star-rating label:hover, .star-rating label:hover ~label {
+	-webkit-text-fill-color: #fff58c;
+}
+
+/* 별점 영역 끝 */
+#image-wrapper {
+	margin: auto;
+	width: 380px;
+	height: 150px;
+}
+
+#attr-info-table * {
 	font-size: 12px;
 }
 
-#attr-title{
+#attr-title {
 	margin-bottom: 0;
 }
 
-#attr-info{
+#attr-info {
 	height: 145px;
 	overflow: hidden;
-  	text-overflow: ellipsis;
-  	white-space: normal;
+	text-overflow: ellipsis;
+	white-space: normal;
 }
 
-#btn-wrap{
+#btn-wrap {
 	position: relative;
 }
 
-#chat-div{
+#chat-div {
 	float: right;
 	margin-right: 50px;
 	margin-bottom: 5px;
 }
 
-
-#btn-wrap > div > a{
-position: absolute;
+#btn-wrap>div>a {
+	position: absolute;
 	top: 0;
 }
 
-#view-review-btn > a{
+#view-review-btn>a {
 	text-decoration: none;
 	color: gray;
 	margin-left: 20px;
+}
+
+.reviewUpdateContent {
+	resize: none;
+	width: 345px;
+}
+
+.spaceDiv{
+	width: 200px;
+	height: 10px;
+	display: inline-block;
 }
 </style>
 </head>
@@ -211,7 +258,6 @@ position: absolute;
 					reviewPoint = document.getElementsByName("rating")[i].value;
 				}
 			}
-
 			
 			reviewContent = document.getElementById("text-area").value;
 			
@@ -237,6 +283,9 @@ position: absolute;
 						
 						// 리뷰 작성 성공 시 리뷰 내용란 공백으로 변경
 			        	document.getElementById("text-area").value = "";
+						
+						// 명소정보 새로고침
+						viewAttrInfo();
 						
 						// 스왈 알림(리뷰작성 성공)
 			        	swal({"icon" : "success",
@@ -270,18 +319,100 @@ position: absolute;
 						if(result > 0) {
 							$("#select-review-wrapper").fadeOut(100);
 				        	viewFlag = false;
+				        	
+				        	// 명소 정보 새로고침
+				        	viewAttrInfo();
+				        	
 							swal({"icon" : "success", "title" : "리뷰 삭제 성공"});
 						}
-						
 					},
 					
 					error : function(){
 						swal({"icon" : "error", "title" : "리뷰 삭제 실패", "text" : "문제가 지속될 경우 관리자에게 문의해주세요."});
 					}
 				});
-				
 			}			
+		}
+		
+		
+
+		let beforeReviewRow; // 수정 전 리뷰 요소를 저장할 변수 선언
+		
+		// 리뷰 수정
+		function showUpdateReview(reviewNo, el){
 			
+			if( $(".reviewUpdateContent").length > 0) {
+				$(".reviewUpdateContent").eq(0).parent().html(beforeReviewRow);
+			}
+			
+			// 리뷰 수정화면 출력 전 요소를 저장
+			beforeReviewRow = $(el).parent().parent().html();
+			
+			var beforeContent = $(el).parent().next().html();
+			
+			// 이전 댓글 내용의 크로스사이트 스크립트 처리 해제, 개행문자 변경
+			beforeContent = beforeContent.replace(/&amp;/g, "&");   
+			beforeContent = beforeContent.replace(/&lt;/g, "<");   
+			beforeContent = beforeContent.replace(/&gt;/g, ">");   
+			beforeContent = beforeContent.replace(/&quot;/g, "\"");   
+			beforeContent = beforeContent.replace(/<br>/g, "\n");   
+			
+			
+			// 기존 댓글영역 삭제 및 textarea 추가
+			$(el).parent().next().remove();
+			var textarea = $("<textarea>").addClass("reviewUpdateContent").attr("rows", "2").val(beforeContent);
+			$(el).parent().after(textarea);
+			
+			
+			// 수정 버튼
+			var updateReview = $("<button>").addClass("btn btn-sm btn-primary mx-2").text("완료").attr("onclick", "updateReview(" + reviewNo + ", this)");
+			
+			// 취소 버튼
+			var cancelBtn = $("<button>").addClass("btn btn-sm btn-danger mx-2").text("취소").attr("onclick", "updateCancel(this)");
+			var spaceDiv = $("<div>").addClass("spaceDiv");
+			
+			var reviewBtnArea = $(el).parent();
+			
+			$(reviewBtnArea).empty();
+			$(reviewBtnArea).append(spaceDiv); 
+			$(reviewBtnArea).append(updateReview); 
+			$(reviewBtnArea).append(cancelBtn); 
+			
+		}
+		
+		// 리뷰 수정 취소 시 원래대로 돌아가기
+		function updateCancel(el){
+			$(el).parent().parent().html(beforeReviewRow);
+		}
+		
+		// 리뷰 수정
+		function updateReview(reviewNo, el) {
+			
+			const reviewContent = $(el).parent().next().val();
+			
+			$.ajax({
+				url : "${contextPath}/review/update",
+				type : "POST",
+				data : {"reviewNo" : reviewNo,
+						"reviewContent" : reviewContent},
+				success : function(result){
+					if(result > 0) {
+						// 명소정보 새로고침
+						viewAttrInfo();
+						
+						$("#select-review-wrapper").fadeOut(100);
+						viewFlag = false;
+						
+						// 스왈 알림(리뷰작성 성공)
+			        	swal({"icon" : "success",
+			        		  "title" : "리뷰를 수정하였습니다."});
+						
+					}
+				},
+				error : function(){
+					swal({"icon" : "error", "title" : "리뷰 삭제 실패", "text" : "문제가 지속될 경우 관리자에게 문의해주세요."});
+				}
+			});
 		}
 		
 	</script>

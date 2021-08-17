@@ -47,6 +47,12 @@
 		WHERE REVIEW_NO = #{reviewNo}
 	</update>
 	
+	<!-- 리뷰 수정 -->
+	<update id="updateReview" parameterType="Review">
+		UPDATE REVIEW SET REVIEW_CONTENT = #{reviewContent}
+		WHERE REVIEW_NO = #{reviewNo}
+	</update>
+	
 	<!-- ********************************************************************************* -->
 	<!-- 관리자 -->
 	<!-- 전체 리뷰 수 조회 -->

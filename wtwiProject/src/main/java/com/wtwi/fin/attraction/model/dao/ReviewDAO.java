@@ -58,5 +58,14 @@ public class ReviewDAO {
 	public int deleteReview(int reviewNo) {
 		return sqlSession.update("reviewMapper.deleteReview", reviewNo);
 	}
+
+
+	/** 리뷰 수정
+	 * @param updateReview
+	 * @return result
+	 */
+	public int updateReview(Review updateReview) {
+		return sqlSession.update("reviewMapper.updateReview", updateReview);
+	}
 	
 }

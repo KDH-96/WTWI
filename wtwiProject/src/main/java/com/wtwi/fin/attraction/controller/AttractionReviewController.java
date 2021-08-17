@@ -116,6 +116,19 @@ public class AttractionReviewController {
 	}
 	
 	
+	/** 리뷰 수정
+	 * @param updateReview
+	 * @return result
+	 */
+	@ResponseBody
+	@RequestMapping(value="update", method=RequestMethod.POST)
+	public int updateReview(@ModelAttribute Review updateReview) {
+		System.out.println(updateReview);
+		int result = service.updateReview(updateReview);
+		return result;
+	}
+	
+	
 	
 	
 	/** 리뷰 삭제

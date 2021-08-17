@@ -3,104 +3,117 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <style>
-    .free-review{
-        width: 1200px;
-    }
-    .free-review-date{
-        font-size: 12px;
-    }
-    .free-review-area{
-    	display: inline-block;
-    }
-    .reviewPoint{
-    	color : orange;
-    }
-    #rWriter{
-    	color : black;
-    }
-    .review-div{
-    	background-color : #f7f7f7;
-    }
-    #reviewListArea{
-    	margin-block-start: 0;
-    	    padding-inline-start: 0;
-    }
-    .review-row{
-    	list-style: none;
-    }
-    
-    .reviewWrite{
-    	margin-top : 50px;
-    }
-    . btn-dark{
-    	
-    }
-    
-    
-    /*insert 영역 css*/
-		
-		/* 별점 영역 시작 */
-		#star {
-			margin-left: 25px;
-		}
-		
-		.star-rating {
-			display: flex;
-			flex-direction: row-reverse;
-			font-size: 1.5rem;
-			line-height: 2.5rem;
-			justify-content: space-around;
-			padding: 0 0.2em;
-			text-align: center;
-			width: 5em;
-		}
-		
-		.star-rating input {
-			display: none;
-		}
-		
-		.star-rating label {
-			-webkit-text-fill-color: transparent;
-			/* Will override color (regardless of order) */
-			-webkit-text-stroke-width: 2.3px;
-			-webkit-text-stroke-color: darkg;
-			cursor: pointer;
-		}
-		
-		.star-rating :checked ~label {
-			-webkit-text-fill-color: gold;
-		}
-		
-		.star-rating label:hover, .star-rating label:hover ~label {
-			-webkit-text-fill-color: #fff58c;
-		}
-		.text-div{
-			width : 100%;
-			float : clear;
-			display : inline-block;		
-		}
-		.review-input-text{
-			width : 95%;
-		}
-		.star-file-div{
-			float : left;
-			display : inline-block;	
-			margin-top : 5px;	
-		}
-		.star-rating{
-			float : left;
-		}
-		.file-input-div{
-			float : right;
-			margin-left : 30px;
-			margin-top : 4px;
-		}
-		#review-insert-btn{
-			float : right;
-		}
-		
-		/* 별점 영역 끝 */
+.free-review {
+	width: 1200px;
+}
 
+.free-review-date {
+	font-size: 12px;
+}
+
+.free-review-area {
+	display: inline-block;
+}
+
+.reviewPoint {
+	color: orange;
+}
+
+#rWriter {
+	color: black;
+}
+
+.review-div {
+	background-color: #f7f7f7;
+}
+
+#reviewListArea {
+	margin-block-start: 0;
+	padding-inline-start: 0;
+}
+
+.review-row {
+	list-style: none;
+}
+
+.reviewWrite {
+	margin-top: 50px;
+}
+
+.
+btn-dark {
+	
+}
+
+.reviewUpdateContent {
+	resize: none;
+	width: 95%;
+}
+
+/*insert 영역 css*/
+
+/* 별점 영역 시작 */
+#star {
+	margin-left: 25px;
+}
+
+.star-rating {
+	display: flex;
+	flex-direction: row-reverse;
+	font-size: 1.5rem;
+	line-height: 2.5rem;
+	justify-content: space-around;
+	padding: 0 0.2em;
+	text-align: center;
+	width: 5em;
+}
+
+.star-rating input {
+	display: none;
+}
+
+.star-rating label {
+	-webkit-text-fill-color: transparent;
+	/* Will override color (regardless of order) */
+	-webkit-text-stroke-width: 2.3px;
+	-webkit-text-stroke-color: darkg;
+	cursor: pointer;
+}
+
+.star-rating :checked ~label {
+	-webkit-text-fill-color: gold;
+}
+
+.star-rating label:hover, .star-rating label:hover ~label {
+	-webkit-text-fill-color: #fff58c;
+}
+
+.text-div {
+	width: 100%;
+	float: clear;
+	display: inline-block;
+}
+
+.review-input-text {
+	width: 93%;
+	height: 37px;
+}
+
+.star-file-div {
+	float: left;
+	display: inline-block;
+	margin-top: 5px;
+}
+
+.star-rating {
+	float: left;
+}
+
+#review-insert-btn {
+	float: right;
+}
+
+/* 별점 영역 끝 */
 </style>
 <div id="review-area ">
 
@@ -119,8 +132,8 @@
 					
 					<c:if test="${review.memberNo == loginMember.memberNo}">
 					<div class="reviewBtnArea">
-						<button class="btn btn-primary btn-sm ml-1" id="updatereview" onclick="showUpdateReview(${review.reviewNo}, this)">수정</button>
-						<button class="btn btn-primary btn-sm ml-1" id="deletereview" onclick="deleteReview(${review.reviewNo})">삭제</button>
+						<button class="btn btn-primary btn-sm" id="updatereview" onclick="showUpdateReview(${review.reviewNo}, this)">수정</button>
+						<button class="btn btn-primary btn-sm" id="deletereview" onclick="deleteReview(${review.reviewNo})">삭제</button>
 					</div>
 					</c:if>
 				</li>
@@ -149,17 +162,13 @@
                 <input type="radio" id="1-star" name="rating" value="1" v-model="ratings" />
                 <label for="1-star" class="star" id="star">★</label>
     		</div>
-    		<div class="file-input-div" id="image-wrapper">
-						<input type="file">
         </div>
 		</div>
 		<div class="text-div">
 				<input type="text" class="review-input-text" id="reviewContent" placeholder ="리뷰를 작성해 주세요(150자)">
-        <button type="button" id = "review-insert-btn" onclick="addreview();">등록</button>
+        <button type="button" class="btn btn-dark" id = "review-insert-btn" onclick="addreview();">등록</button>
 		</div>
 
-	</div>
-	
 </div>
 
 
@@ -364,8 +373,8 @@
 	        if(item.memberNo == loginMemberNo){
 	            
 	            // ** 추가되는 댓글에 onclick 이벤트를 부여하여 버튼 클릭 시 수정, 삭제를 수행할 수 있는 함수를 이벤트 핸들러로 추가함. 
-	            var showUpdate = $("<button>").addClass("btn btn-sm btn-dark").text("수정").attr("onclick", "showUpdatereview("+item.reviewNo+", this)");
-	            var deleteReview = $("<button>").addClass("btn btn-sm btn-dark").text("삭제").attr("onclick", "deleteReview("+item.reviewNo+")");
+	            var showUpdate = $("<button>").addClass("btn btn-sm btn-dark mx-2").text("수정").attr("onclick", "showUpdateReview("+item.reviewNo+", this)");
+	            var deleteReview = $("<button>").addClass("btn btn-sm btn-dark mx-2").text("삭제").attr("onclick", "deleteReview("+item.reviewNo+")");
 	            
 	            reviewPoint.append(showUpdate).append(deleteReview);
 	        }
@@ -416,128 +425,98 @@
 	
 	
 	
-	// 댓글 수정 폼
-	function showUpdatereview(reviewNo, el){
+	// 리뷰 삭제
+	function deleteReview(reviewNo){
+		if(confirm("정말로 삭제하시겠습니까?")){
+			
+			$.ajax({
+				url : "${contextPath}/review/delete",
+				data : {"reviewNo" : reviewNo},
+				success : function(result){
+					if(result > 0) {
+						reviewList();			        	
+						swal({"icon" : "success", "title" : "리뷰 삭제 성공"});
+					}
+				},
+				
+				error : function(){
+					swal({"icon" : "error", "title" : "리뷰 삭제 실패", "text" : "문제가 지속될 경우 관리자에게 문의해주세요."});
+				}
+			});
+		}			
+	}
+	
+	
+
+	let beforeReviewRow; // 수정 전 리뷰 요소를 저장할 변수 선언
+	
+	// 리뷰 수정
+	function showUpdateReview(reviewNo, el){
 		
-		// 이미 열려있는 수정 폼 닫기
-		if($(".updateReviewContent").length>0){
-			$(".updateReviewContent").eq(0).parent().html(beforereviewRow);
+		if( $(".reviewUpdateContent").length > 0) {
+			$(".reviewUpdateContent").eq(0).parent().html(beforeReviewRow);
 		}
 		
-		// 수정폼 출력 전 요소 저장
-		beforereviewRow = $(el).parent().parent().parent().parent().html();
+		// 리뷰 수정화면 출력 전 요소를 저장
+		beforeReviewRow = $(el).parent().parent().html();
 		
-		// 수정 전 내용
-		var beforeContent = $(el).parent().parent().prev().children().html();
+		var beforeContent = $(el).parent().next().html();
+		
+		// 이전 댓글 내용의 크로스사이트 스크립트 처리 해제, 개행문자 변경
 		beforeContent = beforeContent.replace(/&amp;/g, "&");   
 		beforeContent = beforeContent.replace(/&lt;/g, "<");   
 		beforeContent = beforeContent.replace(/&gt;/g, ">");   
 		beforeContent = beforeContent.replace(/&quot;/g, "\"");   
 		beforeContent = beforeContent.replace(/<br>/g, "\n");   
 		
-		// 기존 댓글 내용 삭제 후 textarea추가
-		$(el).parent().parent().prev().remove();
-		var textarea = $("<textarea>").addClass("updatereviewContent").attr("rows", "3").attr("style", "width:75%").val(beforeContent);
-		$(el).parent().parent().before(textarea);
 		
-		// 수정버튼
-		var updatereview = $("<button>").addClass("btn btn-outline-secondary ml-1").text("수정").attr("onclick", "updatereview("+freereviewNo+", this)");
+		// 기존 댓글영역 삭제 및 textarea 추가
+		$(el).parent().next().remove();
+		var textarea = $("<textarea>").addClass("reviewUpdateContent").attr("rows", "2").val(beforeContent);
+		$(el).parent().after(textarea);
+		
+		
+		// 수정 버튼
+		var updateReview = $("<button>").addClass("btn btn-sm btn-dark mx-2").text("완료").attr("onclick", "updateReview(" + reviewNo + ", this)");
 		
 		// 취소 버튼
-		var updatereviewCancel = $("<button>").addClass("btn btn-outline-secondary ml-1 mt-4").text("취소").attr("onclick", "updatereviewCancel(this)");
+		var cancelBtn = $("<button>").addClass("btn btn-sm btn-dark mx-2").text("취소").attr("onclick", "updateCancel(this)");
 		
-		var reviewBtnArea = $(el).parent().parent();
+		var reviewBtnArea = $(el).parent();
 		
 		$(reviewBtnArea).empty();
-		$(reviewBtnArea).append(updatereview); 
-		$(reviewBtnArea).append(updatereviewCancel); 
-	}
-	
-	// 댓글 수정 취소 버튼 클릭 시
-	function updatereviewCancel(el){
-		$(el).parent().parent().parent().html(beforereviewRow);
-	}
-	
-	// 댓글 수정
-	function updatereview(freereviewNo, el){
+		$(reviewBtnArea).append(updateReview); 
+		$(reviewBtnArea).append(cancelBtn); 
 		
-		const freereviewContent = $(el).parent().prev().val();
+	}
 	
+	// 리뷰 수정 취소 시 원래대로 돌아가기
+	function updateCancel(el){
+		$(el).parent().parent().html(beforeReviewRow);
+	}
+	
+	// 리뷰 수정
+	function updateReview(reviewNo, el) {
+		
+		const reviewContent = $(el).parent().next().val();
+		
 		$.ajax({
-			url: "${contextPath}/freereview/updatereview",
-			type: "POST",
-			data: {"freereviewNo": freereviewNo,
-				   "freereviewContent": freereviewContent},
-				   
-			success: function(result){
-				
-				if(result>0){
-					selectreviewList();
-					swal({
-						icon: "success",
-						title: "댓글이 수정되었습니다."
-					});
+			url : "${contextPath}/review/update",
+			type : "POST",
+			data : {"reviewNo" : reviewNo,
+					"reviewContent" : reviewContent},
+			success : function(result){
+				if(result > 0) {
+					reviewList();
+					
+					// 스왈 알림(리뷰작성 성공)
+		        	swal({"icon" : "success",
+		        		  "title" : "리뷰를 수정하였습니다."});
+					
 				}
 			},
-			error: function(e){
-				console.log(e);
-			}
-		});
-	}
-	
-	// 댓글 삭제 알림창
-	function deletereviewAlert(freereviewNo){
-		
-		swal({
-			icon: "warning",
-			title: "댓글을 삭제하시겠습니까?",
-			buttons: ["취소", "삭제"],
-			dangerMode: true,
-		}).then((willDelete) => {
-			if (willDelete) {
-				deletereview(freereviewNo);
-			} 
-		});
-	}
-	
-	// 댓글 삭제
-	function deleteReview(attractionNo){
-		
-		$.ajax({
-			url: "${contextPath}/review/deleteRpview",
-			data: {"attractionNo": attractionNo},
-			type: "POST",
-			
-			success: function(result){
-				
-				if(result>0){
-					selectreviewList();
-					reviewCount();
-					swal({
-						icon: "success",
-						title: "댓글이 삭제되었습니다."
-					});
-				}
-			},
-			error: function(e){
-				console.log(e);
-			}
-		});
-	}
-	
-	// 댓글 수 갱신
-	function reviewCount(){
-		
-		$.ajax({
-			url: "reviewCount",
-			data: {"attractionNo": attractionNo},
-			type: "POST",
-			
-			success: function(reviewCount){
-				$("#reviewCount").text(reviewCount);
-			},
-			error: function(e){
-				console.log(e);
+			error : function(){
+				swal({"icon" : "error", "title" : "리뷰 삭제 실패", "text" : "문제가 지속될 경우 관리자에게 문의해주세요."});
 			}
 		});
 	}
