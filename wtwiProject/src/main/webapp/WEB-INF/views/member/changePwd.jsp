@@ -56,6 +56,12 @@
             width: 40%;
             margin: 0px 3px;
         }
+        .checkArea {
+        	display: flex;
+        	justify-content: flex-start;
+        	margin-top: 5px;
+        	padding-right: 3px;
+        }
        
     </style>
 </head>
@@ -84,9 +90,7 @@
                     <input type="password" class="placeholder form-control" id="newPwd1" name="newPwd1" 
                     placeholder="영어 대소문자, 숫자, 특수문자(선택) 조합 8자 이상" required>
                 </div>
-                <div class="col-md-6 offset-md-3">
-					<span id="checkPwd1">&nbsp;</span>
-				</div>
+
             </div>
             <div class="row mb-3 form-row">
                 <div class="col-md-3">
@@ -96,7 +100,7 @@
                     <input type="password" class="form-control" id="newPwd2" name="newPwd2" 
                     placeholder="영어 대소문자, 숫자, 특수문자(선택) 조합 8자 이상" required>
                 </div>
-                <div class="col-md-6 offset-md-3">
+                <div class="col-md-6 offset-md-3 checkArea">
 					<span id="checkPwd2">&nbsp;</span>
 				</div>
             </div>
@@ -134,18 +138,26 @@
 		    const pwd1 = $("#newPwd1").val();
 		    const pwd2 = $("#newPwd2").val();
 		    
-		    if(pwd1.trim() == "" && pwd2.trim() == "") {
-		        $("#checkPwd1").html("&nbsp;");
-		        $("#checkPwd2").html("&nbsp;");
-		        checkObj.pwd2 = false;
-		    } else if(pwd1 == pwd2){
+		    const regExp = /^[a-zA-Z\d\_\#\-]{8,20}$/; 
+			const newPwd1 = $("#newPwd1").val().trim();
+			const newPwd2 = $("#newPwd2").val().trim();
+			 
+			 if(!regExp.test(newPwd1)){
+		         $("#checkPwd2").text("유효한 형식의 비밀번호를 입력해주세요.").css("color", "red");
+			 }  else{
+				 
+			    if(pwd1.trim() == "" && pwd2.trim() == "") {
+			        $("#checkPwd1").html("&nbsp;");
+			        $("#checkPwd2").html("&nbsp;");
+			    } else if(pwd1 == pwd2){
+			    
+			         $("#checkPwd2").text("새 비밀번호가 일치합니다. 변경을 진행해주세요.").css("color", "green");
+			    } else{
+			         $("#checkPwd2").text("새 비밀번호가 일치하지 않습니다. 확인 후 이용해주세요.").css("color", "red");
+			    }
+				 
+			 }
 		    
-		         $("#checkPwd2").text("비밀번호 일치").css("color", "green");
-		        checkObj.pwd2 = true;
-		    } else{
-		         $("#checkPwd2").text("비밀번호 불일치").css("color", "red");
-		         checkObj.pwd2 = false;
-		    }
 
 
 		})

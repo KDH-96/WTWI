@@ -19,11 +19,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flow-over: scroll;
+            margin-top: 100px;
 
         }
         .signUp-main {
+        	display: flex;
+        	justify-content: center;
+        	align-items: center;
             width: 70%;
-            height: 80%;;
         }
         .signUp-input {
             display: flex;
@@ -56,13 +60,41 @@
             justify-content: center;
             align-items: center;
         }
-        .signUp-btnArea button{
+        .signUp-btnArea a, .signUp-btnArea button{
             width: 45%;
             margin: 0px 3px;
         }
         .placeholder{
             font-size: 11px;
         }
+        
+		.img-container {
+			height: 100%;
+			width: 40%;
+		}
+		
+		.loginImg-container {
+			height: 800px;
+			width: 100%;
+			background-image:url("https://source.unsplash.com/featured/?scenery");
+			background-size: cover;
+			border-top-left-radius: 70px;
+			border-bottom-left-radius: 70px;	
+		}
+		.form-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 65%;
+		}
+		
+		.signup {
+			padding-bottom: 40px;
+		}
+		#smsCheck{
+			width: 100%;
+		}
+        
     </style>
 </head>
 
@@ -71,124 +103,129 @@
 <body class="signUp-body">
 
     <main class="signUp-main">
-        <div class="py-5 text-center">
-            <h2>회원 가입</h2>
-        </div>
+    	<div class="img-container">
+			<div class="loginImg-container"></div>
+		</div>
+        <div class="form-container">
+        	<div class="text-center signup">
+            	<h2>회원 가입</h2>
+        	</div>
     
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <form method="POST" action="${contextPath }/member/signUpAction" class="needs-validation" name="signUpForm" onsubmit="return validate();">
-    
-    
-    
-                    <div class="row mb-3 form-row">
-                        <div class="col-md-3">
-                            <label for="id">* 아이디</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="text" class="placeholder form-control" name="memberId" id="id" maxlength="12" placeholder="아이디를 입력하세요" autocomplete="off" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6 offset-md-3">
-							<span id="checkId">&nbsp;</span>
-					</div>
-    
-    
-                    <!-- 비밀번호 -->
-                    <div class="row mb-3 form-row">
-                        <div class="col-md-3">
-                            <label for="pwd1">* 비밀번호</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="password" class="placeholder form-control" id="pwd1" name="memberPw" 
-                            placeholder="영어 대소문자, 숫자, 특수문자(선택) 조합 8자 이상" maxlength="20" placeholder="비밀번호를 입력하세요" required>
-                        </div>
-                        <div class="col-md-6 offset-md-3">
-							<span id="checkPwd1">&nbsp;</span>
+	        <div class="row ">
+	            <div>
+	                <form method="POST" action="${contextPath }/member/signUpAction" class="needs-validation" name="signUpForm" onsubmit="return validate();">
+	    
+	    
+	    
+	                    <div class="row mb-3 form-row">
+	                        <div class="col-md-3">
+	                            <label for="id">* 아이디</label>
+	                        </div>
+	                        <div class="col-md-9">
+	                            <input type="text" class="placeholder form-control" name="memberId" id="id" maxlength="12" placeholder="아이디를 입력하세요" autocomplete="off" required>
+	                        </div>
+	                    </div>
+	                    <div class="col-md-6 offset-md-3">
+								<span id="checkId">&nbsp;</span>
 						</div>
-
-                    </div>
-    
-                    <!-- 비밀번호 확인 -->
-                    <div class="row mb-3 form-row">
-                        <div class="col-md-3">
-                            <label for="pwd2">* 비밀번호 확인</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="password" class="placeholder form-control" id="pwd2" 
-                            placeholder="영어 대소문자, 숫자, 특수문자(선택) 조합 8자 이상" maxlength="20" placeholder="비밀번호 확인" required>
-                        </div>
-                        <div class="col-md-6 offset-md-3">
-							<span id="checkPwd2">&nbsp;</span>
-						</div>
-                    </div>
-    
-                    <!-- 닉네임 -->
-                    <div class="row mb-3 form-row">
-                        <div class="col-md-3">
-                            <label for="nickName">* 닉네임</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" id="nickName" name="memberNick" required>
-                        </div>
-                        <div class="col-md-6 offset-md-3">
-							<span id="checkNickName">&nbsp;</span>
-						</div>
-                    </div>
-
-                    <!-- 이메일 -->
-                    <div class="row mb-3 form-row">
-                        <div class="col-md-3">
-                            <label for="email">* Email</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="email" class="form-control" id="email" name="memberEmail" autocomplete="off" required>
-                        </div>
-                    </div>
-    
-                    <!-- 전화번호 -->
-                    <div class="signUp-input form-group">
-                        <div class="col-md-3">
-							<label for="phone1">* 전화번호</label>
-						</div>
-                        <div class="signUp-phoneArea">
-                            <div>
-                                <select class="custom-select" id="phone1" name="phone" required>
-                                    <option>010</option>
-                                    <option>011</option>
-                                    <option>016</option>
-                                    <option>017</option>
-                                    <option>019</option>
-                                </select>
-                                <input type="number" class="form-control phone" id="phone2" name="phone" required>
-                                <input type="number" class="form-control phone" id="phone3" name="phone" required>
-                            </div>
-                            <div>
-                                <button type="button" class="btn btn-light" id="smsSend">인증번호 전송</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!--전화번호 인증확인-->
-                    <div class="row mb-3 form-row">
-                        <div class="col-md-3">
-                            <label for="smsCheck">* 번호인증</label>
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" id="smsNum" name="smsNum" autocomplete="off" required>
-                        </div>
-                        <div class="col-md-3">
-                            <button type="button" class="btn btn-light" id="smsCheck">인증 확인</button>
-                        </div>
-                    </div>
-    
-    
-                    <hr class="mb-4">
-                    <div class="signUp-btnArea">
-                        <button class="btn btn-secondary btn-md " type="submit">메인으로 돌아가기</button>
-                        <button class="btn btn-primary btn-md " type="submit">가입하기</button>
-                    </div>
-                </form>
-            </div>
+	    
+	    
+	                    <!-- 비밀번호 -->
+	                    <div class="row mb-3 form-row">
+	                        <div class="col-md-3">
+	                            <label for="pwd1">* 비밀번호</label>
+	                        </div>
+	                        <div class="col-md-9">
+	                            <input type="password" class="placeholder form-control" id="pwd1" name="memberPw" 
+	                            placeholder="영어 대소문자, 숫자, 특수문자(선택) 조합 8자 이상" maxlength="20" placeholder="비밀번호를 입력하세요" required>
+	                        </div>
+	                        <div class="col-md-6 offset-md-3">
+								<span id="checkPwd1">&nbsp;</span>
+							</div>
+	
+	                    </div>
+	    
+	                    <!-- 비밀번호 확인 -->
+	                    <div class="row mb-3 form-row">
+	                        <div class="col-md-3">
+	                            <label for="pwd2">* 비밀번호 확인</label>
+	                        </div>
+	                        <div class="col-md-9">
+	                            <input type="password" class="placeholder form-control" id="pwd2" 
+	                            placeholder="영어 대소문자, 숫자, 특수문자(선택) 조합 8자 이상" maxlength="20" placeholder="비밀번호 확인" required>
+	                        </div>
+	                        <div class="col-md-6 offset-md-3">
+								<span id="checkPwd2">&nbsp;</span>
+							</div>
+	                    </div>
+	    
+	                    <!-- 닉네임 -->
+	                    <div class="row mb-3 form-row">
+	                        <div class="col-md-3">
+	                            <label for="nickName">* 닉네임</label>
+	                        </div>
+	                        <div class="col-md-9">
+	                            <input type="text" class="form-control" id="nickName" name="memberNick" required>
+	                        </div>
+	                        <div class="col-md-6 offset-md-3">
+								<span id="checkNickName">&nbsp;</span>
+							</div>
+	                    </div>
+	
+	                    <!-- 이메일 -->
+	                    <div class="row mb-3 form-row">
+	                        <div class="col-md-3">
+	                            <label for="email">* Email</label>
+	                        </div>
+	                        <div class="col-md-9">
+	                            <input type="email" class="form-control" id="email" name="memberEmail" autocomplete="off" required>
+	                        </div>
+	                    </div>
+	    
+	                    <!-- 전화번호 -->
+	                    <div class="signUp-input form-group">
+	                        <div class="col-md-3">
+								<label for="phone1">* 전화번호</label>
+							</div>
+	                        <div class="signUp-phoneArea">
+	                            <div>
+	                                <select class="custom-select" id="phone1" name="phone" required>
+	                                    <option>010</option>
+	                                    <option>011</option>
+	                                    <option>016</option>
+	                                    <option>017</option>
+	                                    <option>019</option>
+	                                </select>
+	                                <input type="number" class="form-control phone" id="phone2" name="phone" required>
+	                                <input type="number" class="form-control phone" id="phone3" name="phone" required>
+	                            </div>
+	                            <div>
+	                                <button type="button" class="btn btn-light" id="smsSend">인증번호 전송</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <!--전화번호 인증확인-->
+	                    <div class="row mb-3 form-row">
+	                        <div class="col-md-3">
+	                            <label for="smsCheck">* 번호인증</label>
+	                        </div>
+	                        <div class="col-md-6">
+	                            <input type="text" class="form-control" id="smsNum" name="smsNum" autocomplete="off" required>
+	                        </div>
+	                        <div class="col-md-3">
+	                            <button type="button" class="btn btn-light" id="smsCheck">인증 확인</button>
+	                        </div>
+	                    </div>
+	    
+	    
+	                    <hr class="mb-4">
+	                    <div class="signUp-btnArea">
+	                        <a class="btn btn-warning btn-md " type="submit" href="${contextPath}/main"">메인으로 돌아가기</a>
+	                        <button class="btn btn-dark btn-md " type="submit">가입하기</button>
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
         </div>
     </main>
     

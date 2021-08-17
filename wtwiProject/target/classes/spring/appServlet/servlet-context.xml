@@ -111,11 +111,17 @@
 	<!-- Interceptor(권한 처리) 적용 -->
 	<task:annotation-driven/>
 	<interceptors> 
+		
+	  <!-- 로그인 권한 처리 -->
 	  <interceptor> 
 	   <!-- 적용 url -->
 	   <mapping path="/myPage/**" /> 
 	   <mapping path="/member/logout" /> 
-	   <mapping path="/chat/**" /> 
+	   <mapping path="/member/update" /> 
+	   <mapping path="/member/secession" /> 
+	   <mapping path="/member/changPwd" /> 
+	   <mapping path="/chat/openChatRoom" /> 
+	   <mapping path="/chat/room" /> 
 	   <mapping path="/freeboard/insertForm" /> 
 	   <mapping path="/freeboard/updateForm" /> 
 	   <mapping path="/qnaboard/insertForm" /> 
@@ -127,6 +133,8 @@
 	   <beans:bean id="loginInterceptor" class="com.wtwi.fin.common.interceptor.LoginInterceptor" />  
 	
 	  </interceptor> 
+	  
+	  <!-- 관리자 권한 처리 -->
 	  <interceptor> 
 	   <!-- 적용 url -->
 	   <mapping path="/admin/**" /> 
@@ -134,7 +142,20 @@
 	   <!-- 예외처리 
 	   <exclude-mapping path="/main"/>  -->
 	   <!-- 적용 interceptor -->   
-	   <beans:bean id="AuthInterceptor" class="com.wtwi.fin.common.interceptor.AuthInterceptor" />  
+	   <beans:bean id="AdminAuthInterceptor" class="com.wtwi.fin.common.interceptor.AdminAuthInterceptor" />  
+	
+	  </interceptor> 
+	  
+	  <!-- 회원정보수정 권한 처리(매니저는 회원정보수정 불가) -->
+	  <interceptor> 
+	   <!-- 적용 url -->
+	   <mapping path="/member/update" /> 
+	   <mapping path="/member/secession" /> 
+	   <mapping path="/member/changPwd" /> 
+	   <!-- 예외처리 
+	   <exclude-mapping path="/main"/>  -->
+	   <!-- 적용 interceptor -->   
+	   <beans:bean id="MemberInterceptor" class="com.wtwi.fin.common.interceptor.MemberAuthInterceptor" />  
 	
 	  </interceptor> 
 	</interceptors>

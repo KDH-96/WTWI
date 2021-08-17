@@ -66,11 +66,11 @@
         }
 
         .searchId-btnArea {
-            width: 60%;
+            width: 100%;
         }
 
-        .searchId-btnArea button:first-child {
-            margin-bottom: 10px;
+        .searchId-btnArea a {
+            margin-top: 10px;
         }
         .img-container {
 			height: 100%;
@@ -102,10 +102,6 @@
                 <h2>아이디 찾기</h2>
             </div>
 
-            <div class="searchId-pageArea">
-                <a class="btn btn-secondary" href="${contextPath}/member/searchIdForm"">아이디 찾기</a>
-                <a class="btn btn-secondary" href="${contextPath}/member/searchPwForm"">비밀번호 찾기</a>
-            </div>
 
             <div class="searchId-form">
                   <div class="searchId-input form-group">
@@ -113,8 +109,9 @@
                     <input type="email" class="form-control" id="email" name="memberEmail">
                   </div>
                   <div class="searchId-btnArea">
-                      <button type="button" class="btn btn-primary" id="searchId">아이디 찾기</button>
-                      <a type="button" class="btn btn-primary" href="${contextPath}">메인으로</a>
+                      <button type="button" class="btn btn-dark" id="searchId">아이디 찾기</button>
+                	  <a class="btn btn-secondary" href="${contextPath}/member/searchPwForm"">비밀번호 찾기</a>
+                      <a type="button" class="btn btn-warning" href="${contextPath}/main">메인으로</a>
                   </div>
             </div>
 
@@ -128,30 +125,35 @@
 
     $("#searchId").on("click", function(){
     const memberEmail = $("#email").val();
-    
-        $.ajax({
-            url : "${contextPath}/member/searchId",  // 요청 주소(필수로 작성!)
-            data : {"memberEmail" : memberEmail,}, // 전달하려는 값(파라미터)
-            type : "post",
-            success : function(id){
-            	if(id == ""){
-            		swal("아이디 찾기 실패", "기입한 이메일에 해당하는 아이디가 없습니다.", "error");
-            	} else {
-	            	console.log(id);
-            		$(".searchId-input").html(""); 
-            		var inputArea = $("<div>").addClass(['searchId-input', 'form-group']);
-            		var result = $("<span>").text("회원가입 시 사용한 아이디는 [ "+id+" ] 입니다.");
-				    inputArea.append(result);
-            		$(".searchId-form").prepend(inputArea);
-            	}
-                	
-            },// 비동기 통신 성공 시 동작 
-            error: function(e){
-                // 매개변수 e : 예외 발생 시 Exception 객체를 전달 받을 변수
-                console.log("ajax 통신 실패");
-                console.log(e);
-            } // 비동기 통신 실패 시 동작
-        })
+    if($("#email").val().trim() == "") {
+         		swal("입력란 공란 오류", "가입 당시 이메일을 기입해주세요.", "error");    	
+    	} else{
+    		$.ajax({
+                url : "${contextPath}/member/searchId",  // 요청 주소(필수로 작성!)
+                data : {"memberEmail" : memberEmail}, // 전달하려는 값(파라미터)
+                type : "post",
+                success : function(id){
+                	if(id == ""){
+                		swal("아이디 찾기 실패", "해당하는 아이디가 없거나, 소셜로그인 회원입니다.", "error");
+                	} else {
+    	            	console.log(id);
+                		$(".searchId-input").html(""); 
+                		var inputArea = $("<div>").addClass(['searchId-input', 'form-group']);
+                		var result = $("<span>").text("회원가입 시 사용한 아이디는 [ "+id+" ] 입니다.");
+    				    inputArea.append(result);
+                		$(".searchId-form").prepend(inputArea);
+                	}
+                    	
+                },// 비동기 통신 성공 시 동작 
+                error: function(e){
+                    // 매개변수 e : 예외 발생 시 Exception 객체를 전달 받을 변수
+                    console.log("ajax 통신 실패");
+                    console.log(e);
+                } // 비동기 통신 실패 시 동작
+            })
+    		
+    	}
+        
     })
     </script>
 </body>

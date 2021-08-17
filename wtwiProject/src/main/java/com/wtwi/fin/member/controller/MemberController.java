@@ -327,7 +327,7 @@ public class MemberController {
 		} else {
 			swalSetMessage(ra, "error", "내 정보 수정 실패", null);
 		}
-		return "redirect:/myPage/main";
+		return "redirect:/myPage/update";
 	}
 
 	public static void swalSetMessage(RedirectAttributes ra, String icon, String title, String text) {
@@ -384,7 +384,7 @@ public class MemberController {
 	@RequestMapping(value="searchId", method=RequestMethod.POST)
 	public String searchId(String memberEmail) {
 		Member member = service.searchId(memberEmail);
-		System.out.println(member);
+
 		String memberId = null;
 		if(member != null) {
 			memberId = member.getMemberId();

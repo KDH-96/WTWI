@@ -32,7 +32,7 @@
 .login-main {
 	display: flex;
 	width: 70%;
-	height: 60vh;
+	height: 80%;
 }
 
 .login-container {

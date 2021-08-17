@@ -37,7 +37,9 @@
             <li class="list-group-item list-group-item-action"><a href="${contextPath }/myPage/reply">내가 쓴 댓글</a></li>
             <li class="list-group-item list-group-item-action"><a href="${contextPath }/myPage/report">신고내역</a></li>
             <li class="list-group-item list-group-item-action"><a href="${contextPath }/myPage/chat">1:1 문의내역</a></li>
-            <li class="list-group-item list-group-item-action"><a href="${contextPath }/member/secession">회원탈퇴</a></li>
+            <c:if test="${loginMember.memberGrade != 'M'}">
+	            <li class="list-group-item list-group-item-action"><a href="${contextPath }/member/secession">회원탈퇴</a></li>   
+       		</c:if>
         </ul>
     </div>
     <%-- 로그인 실패와 같은 메세지가 서버로 부터 전달되어 온 경우 출력 --%>
