@@ -132,9 +132,11 @@ public class QnaBoardController {
 								RedirectAttributes ra) throws Exception {
 		// 회원 정보 얻어오기
 		board.setMemberNo(loginMember.getMemberNo());
+		board.setMemberGrade(loginMember.getMemberGrade());
 		board.setQnaStatus(qnaStatus);
 		
-		
+		System.out.println(board);
+		System.out.println(loginMember);
 		System.out.println("전 : " + board.getQnaStatus());
 		if(board.getQnaStatus()==null) {
 			board.setQnaStatus("Y");
@@ -293,28 +295,6 @@ public class QnaBoardController {
 		}
 		return path;
 	}
-	
-	// 게시글 이전 다음상세 조회
-	/*
-	 * @RequestMapping(value="/detail", method = RequestMethod.GET) private String
-	 * qnaBoardPreView(@ModelAttribute("preNo") int preNo,
-	 * 
-	 * @RequestParam(value="cp", required=false, defaultValue = "1") int cp,
-	 * 
-	 * @ModelAttribute("loginMember") Member loginMember, Model model,
-	 * RedirectAttributes ra, HttpServletRequest request) {
-	 * 
-	 * QnaBoard board = null; System.out.println(board);
-	 * 
-	 * 
-	 * 
-	 * if(board!=null) { List<QnaReply> rList = replyService.selectList(preNo);
-	 * 
-	 * model.addAttribute("board", board); model.addAttribute("rList", rList);
-	 * 
-	 * return "qnaboard/qnaBoardView"; }else { MemberController.swalSetMessage(ra,
-	 * "error", "존재하지 않는 게시글입니다", null); return "redirect:list"; } }
-	 */
 	
 	
 }

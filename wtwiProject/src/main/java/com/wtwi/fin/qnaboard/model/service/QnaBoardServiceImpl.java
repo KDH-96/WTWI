@@ -191,13 +191,7 @@ public class QnaBoardServiceImpl implements QnaBoardService{
 	public QnaBoard selectqnaPreBoard2(int qnaNo) {
 		return dao.selectPreBoard2(qnaNo);
 	}
-	
-	
 
-
-
-	
-	
 	
 	
 	
