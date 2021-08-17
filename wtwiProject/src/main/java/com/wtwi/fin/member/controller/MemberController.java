@@ -71,13 +71,21 @@ public class MemberController {
 	
 	
 	@RequestMapping(value="auth/{snsService}/callback", method=RequestMethod.GET) 
-	public String snsLoginCallback(@PathVariable("snsService") String snsService, Model model, @RequestParam("code") String code/*access Token 발급을 위한 code가 들어옴*/, RedirectAttributes ra,
+	public String snsLoginCallback(@PathVariable("snsService") String snsService, Model model, 
+								   @RequestParam(value="code", required=false, defaultValue= "0") String code/*access Token 발급을 위한 code가 들어옴*/, 
+								   RedirectAttributes ra,
 								   HttpSession session) throws Exception{
 		
 		SNSValue sns = null;
 		Member member = null;
 		Member snsMember = null;
 		String redirect = "";
+		
+		// 0) 페이스북 - 필수 동의 항목(이메일, 별명)에 동의하지 않았을 때 로그인 화면으로 돌리기
+		if(code.equals("0")) {
+			swalSetMessage(ra, "error", "로그인 실패", "필수 동의항목에 체크해주세요.");
+			return "redirect:/member/login";
+		}
 		
 		// 1) code를 이용해 accessToken 발급 -> 사용자 계정 정보 가져오기
 		// 1-1) 카카오
@@ -98,7 +106,7 @@ public class MemberController {
 			SNSLogin snsLogin = new SNSLogin(sns);
 			snsMember = snsLogin.getUserProfile(code);
 			
-			// 1-2) 필수 동의 항목(이메일, 별명)에 동의하지 않았을 때 메인으로 돌리고 강제 로그아웃
+			// 1-2) 필수 동의 항목(이메일, 별명)에 동의하지 않았을 때 로그인으로 돌리고 강제 로그아웃
 			if(snsMember.getMemberEmail() == null) {
 				snsLogin.socialLogout(snsMember);
 				swalSetMessage(ra, "error", "로그인 실패", "필수 동의항목에 체크해주세요.");

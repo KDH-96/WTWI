@@ -115,6 +115,12 @@
 	   <!-- 적용 url -->
 	   <mapping path="/myPage/**" /> 
 	   <mapping path="/member/logout" /> 
+	   <mapping path="/chat/**" /> 
+	   <mapping path="/freeboard/insertForm" /> 
+	   <mapping path="/freeboard/updateForm" /> 
+	   <mapping path="/qnaboard/insertForm" /> 
+	   <mapping path="/qnaboard/updateForm" /> 
+	   <mapping path="/reportBoard/**" /> 
 	   <!-- 예외처리 
 	   <exclude-mapping path="/main"/>  -->
 	   <!-- 적용 interceptor -->   
@@ -124,6 +130,7 @@
 	  <interceptor> 
 	   <!-- 적용 url -->
 	   <mapping path="/admin/**" /> 
+	   <mapping path="/qnaboard/insertFormRE" /> 
 	   <!-- 예외처리 
 	   <exclude-mapping path="/main"/>  -->
 	   <!-- 적용 interceptor -->   

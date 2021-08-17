@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +24,7 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
 import com.wtwi.fin.member.model.vo.Member;
+
 
 public class SNSLogin {
 	private OAuth20Service oauthService;
@@ -44,28 +46,41 @@ public class SNSLogin {
 	}
 	
 	
-	// 네이버, 구글, 카카오 로그아웃
+	// 소셜 로그아웃
 	public void socialLogout(Member loginMember) throws Exception {
 		
 		String sendUrl = "";
 		String prop1 = "";
 		String prop2 = "";
+		String method = "";
 		
+		// 페이스북 ID 얻어오기
+		String facebookEmail = loginMember.getMemberEmail();
+		String facebookId = StringUtils.remove(facebookEmail, "@facebook.com");
+
 		switch(loginMember.getMemberGrade()) {
+
 		case "G" : sendUrl= "https://accounts.google.com/o/oauth2/revoke?token="+loginMember.getAccessToken(); 
 				   prop1 = "Content-Type";
-				   prop2 = "application/x-www-form-urlencoded"; break;
+				   prop2 = "application/x-www-form-urlencoded"; 
+				   method = "POST"; break;
 		case "K" : sendUrl ="https://kapi.kakao.com/v1/user/unlink"; 
-				   prop1="Authorization";
-				   prop2="Bearer " + loginMember.getAccessToken(); break;
+				   prop1 = "Authorization";
+				   prop2 = "Bearer " + loginMember.getAccessToken(); 
+				   method = "POST"; break;
+		case "F" : sendUrl ="https://graph.facebook.com/v2.7/"+facebookId+"/permissions?access_token="+loginMember.getAccessToken(); 
+				   prop1 = "Content-Type";
+				   prop2 = "application/x-www-form-urlencoded"; 
+				   method = "DELETE"; break;
 		case "N" : sendUrl = this.sns.getLogoutUrl() + "&client_id="+sns.getClientId()+"&client_secret="+sns.getClientSecret()+"&access_token="+loginMember.getAccessToken();
-				   prop1="service_provider";
-				   prop2="NAVER"; break;
+				   prop1 = "service_provider";
+				   prop2 = "NAVER"; 
+				   method = "POST"; break;
 		}
 
 	    URL url = new URL(sendUrl);
 	    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-	    connection.setRequestMethod("POST"); 
+	    connection.setRequestMethod(method); 
 	    connection.setRequestProperty(prop1, prop2);
 	    connection.setDoOutput(true);
 
@@ -76,7 +91,6 @@ public class SNSLogin {
 	    //요청 실행후 dataOutputStream을 close
 	    wr.close();
 	    connection.getResponseCode();
-
 	    if (connection != null) {
 	      connection.disconnect();
 	    }
