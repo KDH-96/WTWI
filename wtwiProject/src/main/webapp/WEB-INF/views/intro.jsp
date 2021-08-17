@@ -36,6 +36,7 @@
         body {
             font-weight: 700;
         }
+        
 
         .welcome-section {
             position: absolute;
@@ -48,7 +49,9 @@
         }
 
         .content-wrap {
-            position: absolute;
+            position: fixed;
+        	width:1000px;
+        	text-shadow: 1px 1px 9px orange, 9px 9px 9px black;
             top: 20%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -71,18 +74,24 @@
             margin-right: 0;
         }
 
-        .enter-button {
+        a {
             position: absolute;
             display: block;
             text-align: center;
-            font-size: 2em;
-            text-decoration: none;
+            font-size: 3em;
             color: #F5BB4E;
             opacity: 1;
             left: 460px;
-            top: 250px;
+            top: 240px;
             margin-top: 30px;
             transition: all 1s ease 3s;
+        }
+        
+        .content-wrap a{
+            text-decoration: none;
+        }
+        a:hover{
+        	color:black;
         }
  
         .content-hidden .fly-in-text li {
@@ -183,6 +192,7 @@
                 <li>A</li>
                 <li>D</li>
                 <li>Y</li>
+                &nbsp;
                 &nbsp;
                 &nbsp;
                 &nbsp;
