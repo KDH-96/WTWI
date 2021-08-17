@@ -42,18 +42,16 @@
 	      
         /* 헤더 영역 시작 */
         header {
-            height: 170px;
+            height: 140px;
             background-color: white;
             /* animation: slide_right 1.2s linear forwards; */
         } 
 
         #logo-area {
-            margin-left: 60%;
+            margin-left: 30%;
             width: 170px;
-            height: 120px;
+            height: 110px;
             box-sizing: border-box;
-            border-radius: 1.0rem;
-            box-shadow: 1px 1px 2px black, 0 0 10px black;
             text-align : center;
 			
         }
@@ -77,16 +75,13 @@
         
         #header2{
          text-align : center;
-         position:absolute;
-         top:10px;
-         left:700px;
+         margin-left : 25%;
+        }
+        #header2 img{
+		width : 100%;        
+        height: 100px;
         }
         
-        #logo-name{
-          color: white;
-         font-size : 30px;
-		 text-shadow: 1px 1px 2px black, 0 0 25px orange, 0 0 5px orange;
-        }
         
         
 
@@ -199,7 +194,7 @@
         }
 
         body {
-            padding-top: 210px;
+            padding-top: 190px;
         }
     </style>
 
@@ -210,34 +205,15 @@
     <div class="fixed-top" id="header-area">
 
         <header class="row flex-nowrap justify-content-between align-items-center">
-            <div class="col-4">
+            <div class="col-1">
                 <div id="logo-area">
-                    <a href="${contextPath}/main"><img src="${contextPath}/resources/images/final.jpg"></a>
+                    <a href="${contextPath}/main"><img src="${contextPath}/resources/images/로고renewal3.JPG"></a>
                 </div>
             </div>
 
 
-            <div class="col-4 pt-1 search-box" id="header2" >
-				<p id="logo-name">Where The Weather Is </p>
-                <select class="form-control" name="" id="" style="width: 150px; float: left;">
-                    <option value="오늘의 날씨" style="height: 100%;">오늘의 날씨</option>
-                    <option value="오늘의 날씨" style="height: 100%;">오늘의 날씨</option>
-                    <option value="오늘의 날씨" style="height: 100%;">오늘의 날씨</option>
-                </select>
-
-                <input class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-                    type="text" style="width: 300px; float: left;">
-
-                <div class="input-group-prepend" style="width: 45px; height: 35px; float: left;">
-                    <button type="button" class="btn btn-secondary" style="width: 100%; height: 100%;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" fill="currentColor"
-                            class="bi bi-search" viewBox="0 0 20 25">
-                            <path
-                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                        </svg>
-                    </button>
-                </div>
-
+            <div class="col-2" id="header2" >
+				<img src="${contextPath}/resources/images/가운데로고 최종.jpg">
             </div>
 
 
@@ -278,6 +254,8 @@
                     <li><a class="p-2" href="${contextPath}/qnaboard/list">문의게시판</a></li>
             </nav>
         </div>
+
+
 
     </div>
 

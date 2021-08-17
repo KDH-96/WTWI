@@ -242,4 +242,5 @@
     WHERE A.QNA_NO = #{qnaNo}
 
 	</select>
+	
 </mapper>
