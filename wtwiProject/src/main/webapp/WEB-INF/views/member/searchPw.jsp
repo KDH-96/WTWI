@@ -33,11 +33,11 @@
         }
 
         .searchPw-title {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .searchPw-pageArea {
-            margin-bottom: 20px;
+            margin-bottom: 40px;
         }
         .searchPw-form {
             display: flex;
@@ -96,14 +96,14 @@
         .searchPw-btnArea {
             display: flex;
             flex-direction: column;
-            margin-top: 20px;
+            margin-top: 40px;
         }
 
         .searchPw-btnArea {
-            width: 60%;
+            width: 100%;
         }
 
-        .searchPw-btnArea a:first-child {
+        .searchPw-btnArea a:not(:last-child){
             margin-bottom: 10px;
         }
         .img-container {
@@ -137,10 +137,6 @@
                 <h2>비밀번호 찾기</h2>
             </div>
 
-            <div class="searchPw-pageArea">
-                <a class="btn btn-secondary" href="${contextPath}/member/searchIdForm"">아이디 찾기</a>
-                <a class="btn btn-secondary" href="${contextPath}/member/searchPwForm"">비밀번호 찾기</a>
-            </div>
 
             <form action="#" class="searchPw-form">
                 <div class="searchPw-input form-group">
@@ -183,8 +179,9 @@
                 </div>
                 
                   <div class="searchPw-btnArea">
-                      <a type="submit" class="btn btn-primary" href="${contextPath}/member/login"">로그인하기</a>
-                      <a type="button" class="btn btn-primary" href="${contextPath}">메인으로</a>
+                      <a type="submit" class="btn btn-dark" href="${contextPath}/member/login"">로그인하기</a>
+                      <a class="btn btn-secondary" href="${contextPath}/member/searchIdForm"">아이디 찾기</a>
+                      <a type="button" class="btn btn-warning" href="${contextPath}/main">메인으로</a>
                   </div>
             </form>
 

@@ -10,7 +10,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.wtwi.fin.member.model.vo.Member;
 
 @Component
-public class AuthInterceptor extends HandlerInterceptorAdapter{
+public class AdminAuthInterceptor extends HandlerInterceptorAdapter{
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -24,7 +24,6 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 		
 		Member member = (Member)session.getAttribute("loginMember");
 		
-		System.out.println(member);
 		
 		 if(member != null){
 			 if(member.getMemberGrade().equals("A")) {
