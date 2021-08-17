@@ -654,7 +654,8 @@
 		    			
 		    			// 마커 클릭 시 선택했던 별점 초기화
 		    			$("input:radio[name='rating']").prop('checked', false);
-		    			
+		    			// 마커 클릭 시 입력했던 글자수 초기화
+		    			$('#test_cnt').html("(0 / 150)");
 		    			
 		    			// 마커 클릭 시 리뷰란에 작성중인 내용 삭제
 		    			document.getElementById("text-area").value = '';

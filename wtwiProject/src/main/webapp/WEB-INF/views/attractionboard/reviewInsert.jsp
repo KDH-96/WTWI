@@ -122,6 +122,7 @@
 	
 	<script>
 		$(document).ready(function() {
+			
 		    $("#text-area").on("keyup", function() {
 		        $('#test_cnt').html("(" + $(this).val().length + " / 150)");
 		 	
@@ -139,6 +140,7 @@
 		            $(this).val($(this).val().substring(0, 150));
 		            $("#test_cnt").html("(150 / 150)");
 		        }
+		        
 		    });
 		});
 
