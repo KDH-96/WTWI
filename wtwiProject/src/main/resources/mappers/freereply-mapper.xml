@@ -81,4 +81,11 @@
 		WHERE FREE_REPLY_NO = #{freeReplyNo}
 	</update>
 	
+	<!-- 관리자 페이지 댓글 수정(37) -->
+	<update id="updateFreeReply" parameterType="FreeReply">
+		UPDATE FREE_REPLY SET
+		FREE_REPLY_CONTENT = #{freeReplyContent}
+		WHERE FREE_REPLY_NO = #{freeReplyNo}
+	</update>
+	
 </mapper>

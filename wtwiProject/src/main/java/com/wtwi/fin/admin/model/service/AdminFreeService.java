@@ -67,5 +67,11 @@ public interface AdminFreeService {
 	 */
 	int changeFreeReplyStatus(Reply reply);
 
+	/** 관리자 페이지 댓글 수정(37)
+	 * @param reply
+	 * @return result
+	 */
+	int updateFreeReply(Reply reply);
+
 
 }

@@ -75,6 +75,12 @@ public class AdminFreeServiceImpl implements AdminFreeService{
 	public int changeFreeReplyStatus(Reply reply) {
 		return dao.changeFreeReplyStatus(reply);
 	}
+
+	// 관리자 페이지 댓글 수정(37)
+	@Override
+	public int updateFreeReply(Reply reply) {
+		return dao.updateFreeReply(reply);
+	}
 	
 	
 	

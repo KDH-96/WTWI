@@ -96,6 +96,7 @@
          </div>
 
          <div class="h-div"><h2><span id="listTitle">댓글 조회</span></h2></div>
+         
          <div class="list-wrapper">
           <table class="table">
             <thead class="thead-dark">
@@ -103,6 +104,7 @@
                   <th scope="col">댓글번호</th>
                   <th scope="col">작성자(회원번호)</th>
                   <th scope="col">내용</th>
+                  <th scope="col">수정</th>
                   <th scope="col">작성일</th>
                   <th scope="col">상위댓글번호</th>
                   <th scope="col">상태</th>
@@ -114,6 +116,7 @@
                 <td>${r.freeReplyNo}</td>
                 <td>${r.memberNick}(${r.memberNo})</td>
                 <td>${r.freeReplyContent}</td>
+                <td><button onclick="replyUpdateForm('${r.freeReplyContent}', ${r.freeReplyNo},this)">수정</button></td>
                 <fmt:formatDate var="replyCreateDate" value="${r.freeReplyCreateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
                 <td>${replyCreateDate}</td>
                 <td>${r.parentReplyNo}</td>
@@ -212,11 +215,33 @@
 <form action="#" method="POST" name="requestForm">
 	<input type="hidden" name="freeNo" value="${board.freeNo}">
 	<input type="hidden" name="cp" value="${param.cp}">
+	<input type="hidden" name="freeReplyNo" value="">
+	<input type="hidden" name="freeReplyContent" value="">
 </form>
 <script>
-function fnRequest(addr){
-	document.requestForm.action = addr;
-	document.requestForm.submit();
+function fnRequest(){
+	
+	if(arguments.length==1){
+		document.requestForm.action = arguments[0];
+		document.requestForm.submit();
+	}
+	else if(arguments.length==2){
+		document.requestForm.action = arguments[0];
+		document.requestForm.freeReplyNo.value = arguments[1];
+		document.requestForm.freeReplyContent.value = $(".replyContent").val();
+		document.requestForm.submit();
+	}
+}
+
+function replyUpdateForm(beforeReplyContent, freeReplyNo, el){
+	if($(".replyContent").length > 0){
+		$(".replyContent").parent().html(beforeReplyContent);
+	}
+	$(el).parent().prev().html("");
+	$(el).parent().prev().append("<textarea class=\"replyContent\">"+beforeReplyContent+"</textarea>");
+	
+	// 수정 버튼의 onclick 속성 변경
+	$(el).attr("onclick", "fnRequest('updateReply', "+freeReplyNo+")");
 }
 
 
