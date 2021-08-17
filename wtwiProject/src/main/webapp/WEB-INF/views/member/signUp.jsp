@@ -94,7 +94,10 @@
 		#smsCheck{
 			width: 100%;
 		}
-        
+        .orange {
+			background-color: orange !important;
+			color: white;
+		}
     </style>
 </head>
 
@@ -124,10 +127,10 @@
 	                        <div class="col-md-9">
 	                            <input type="text" class="placeholder form-control" name="memberId" id="id" maxlength="12" placeholder="아이디를 입력하세요" autocomplete="off" required>
 	                        </div>
+		                    <div class="col-md-6 offset-md-3">
+									<span id="checkId">&nbsp;</span>
+							</div>
 	                    </div>
-	                    <div class="col-md-6 offset-md-3">
-								<span id="checkId">&nbsp;</span>
-						</div>
 	    
 	    
 	                    <!-- 비밀번호 -->
@@ -220,7 +223,7 @@
 	    
 	                    <hr class="mb-4">
 	                    <div class="signUp-btnArea">
-	                        <a class="btn btn-warning btn-md " type="submit" href="${contextPath}/main"">메인으로 돌아가기</a>
+	                        <a class="btn btn-primary orange white border-0" type="submit" href="${contextPath}/main"">메인으로 돌아가기</a>
 	                        <button class="btn btn-dark btn-md " type="submit">가입하기</button>
 	                    </div>
 	                </form>

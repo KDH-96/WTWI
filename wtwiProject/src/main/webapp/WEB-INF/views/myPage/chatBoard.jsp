@@ -30,7 +30,6 @@ a:hover {
 .myPage-body {
 	display: flex;
 	align-items: center;
-	height: 100vh;
 }
 
 .myPage-main {
@@ -39,6 +38,7 @@ a:hover {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin-top: 100px;
 }
 
 .myPage-main h2 {
@@ -87,12 +87,6 @@ a:hover {
 }
 
 
-.content {		
-  	virtical-align: middle;
-  	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
 #searchForm {
 	display: flex;
 	justify-content: center;
@@ -120,6 +114,12 @@ a:hover {
 .searchForm-container button {
 	width: 50%;
 }
+
+.qnatable td{
+	virtical-align: middle !important;
+}
+
+
 </style>
 </head>
 
@@ -137,7 +137,7 @@ a:hover {
 		<h2>1:1 문의내역</h2>
 
 		<div>
-			<table class="table">
+			<table class="table qnatable">
 				<colgroup>
 					<col width="5%"/>
                     <col width="30%"/>
@@ -175,24 +175,24 @@ a:hover {
 
 								<tr>
 									<!-- 글번호 -->
-									<th scope="row"><i class="far fa-comment-dots"></i></th>
+									<th class="align-middle" scope="row"><i class="far fa-comment-dots"></i></th>
 
 									<%-- 담당자 --%>
 									<c:choose>
 										<c:when test="${loginMember.memberGrade == 'M' }">
-											<td>${board.memberNick}</td>
+											<td class="align-middle">${board.memberNick}</td>
 										</c:when>
 										<c:otherwise>
-											<td class="content">${board.attractionNm}</td>										
+											<td class="content align-middle" >${board.attractionNm}</td>										
 										</c:otherwise>
 									</c:choose>
 
 									<!-- 내용 -->
-									<td class="content">
+									<td class="content boardTitle">
 									<a href="${contextPath}/chat/room/${board.chatRoomNo}">${board.chatContent}</a>
 									</td>
 									<%-- 작성일자 --%>
-									<td><fmt:formatDate var="createDate"
+									<td class="align-middle"><fmt:formatDate var="createDate"
 											value="${board.chatCreateDt}" pattern="yyyy-MM-dd" /> <fmt:formatDate
 											var="today" value="<%=new java.util.Date()%>"
 											pattern="yyyy-MM-dd" /> <c:choose>
@@ -258,7 +258,7 @@ a:hover {
 								<li><a class="focus-page">${p }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageURL}?cp=${p}${searchStr}"">${p}</a></li>
+								<li><a class="focus-page" href="${pageURL}?cp=${p}${searchStr}"">${p}</a></li>
 							</c:otherwise>
 						</c:choose>
 

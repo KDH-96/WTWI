@@ -138,6 +138,7 @@ public class MemberController {
 			// 1-6) 권한 처리 확인 후 이전페이지로 이동
 			String dest = (String)session.getAttribute("dest");
 			redirect = (dest == null) ? "/main" : dest;
+
 		}
 		
 		return "redirect:" + redirect;
@@ -263,8 +264,7 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
-	public String logout(SessionStatus status, @RequestHeader("referer") String referer, 
-						@ModelAttribute("loginMember") Member loginMember) {
+	public String logout(SessionStatus status, @ModelAttribute("loginMember") Member loginMember) {
 		
 		SNSValue sns = null;
 		try {
@@ -327,7 +327,7 @@ public class MemberController {
 		} else {
 			swalSetMessage(ra, "error", "내 정보 수정 실패", null);
 		}
-		return "redirect:/myPage/update";
+		return "redirect:/member/update";
 	}
 
 	public static void swalSetMessage(RedirectAttributes ra, String icon, String title, String text) {
@@ -365,18 +365,20 @@ public class MemberController {
 	@RequestMapping(value = "secessionAction", method = RequestMethod.POST)
 	public String secession(@ModelAttribute("loginMember") Member loginMember,
 			@RequestParam(value="currentPwd", required = false) String currentPwd, RedirectAttributes ra, SessionStatus status) {
-
+		
 		int result = service.secession(currentPwd, loginMember);
-
 		String path = "redirect:";
 		if (result > 0) {
 			swalSetMessage(ra, "success", "회원탈퇴가 완료되었습니다.", null);
 			status.setComplete();
 			path += "/";
+			
 		} else {
 			swalSetMessage(ra, "error", "회원탈퇴를 실패하였습니다.", null);
 			path += "secession";
 		}
+		
+		
 		return path;
 	}
 	

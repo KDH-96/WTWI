@@ -73,7 +73,7 @@
             	</c:if>
             </div>
             <div class="secession-btnArea">
-                <button class="btn btn-primary btn-md " type="button"  onclick="deleteRequest();">회원탈퇴 신청</button>
+                <button class="btn btn-dark btn-md " type="button"  onclick="deleteRequest();">회원탈퇴 신청</button>
             </div>
         </form>
     </main>

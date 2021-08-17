@@ -30,15 +30,16 @@ a:hover {
 .myPage-body {
 	display: flex;
 	align-items: center;
-	height: 100vh;
 }
 
 .myPage-main {
 	width: 100%;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin-top: 100px;
 }
 
 .myPage-main h2 {
@@ -194,7 +195,7 @@ a:hover {
 
 							<!-- 작성한 게시글이 없을 때 -->
 							<tr>
-								<td colspan="6">아직 작성한 게시글이 없습니다</td>
+								<td class="align-middle" colspan="6">아직 작성한 게시글이 없습니다</td>
 							</tr>
 
 						</c:when>
@@ -204,19 +205,19 @@ a:hover {
 
 								<tr>
 									<!-- 글번호 -->
-									<th scope="row">${board.freeNo}</th>
+									<th class="align-middle" scope="row">${board.freeNo}</th>
 
 									<%-- 카테고리 --%>
-									<td>${board.freeCategoryName}</td>
+									<td class="align-middle">${board.freeCategoryName}</td>
 
 									<!-- 글 제목 -->
-									<td class="boardTitle"><a
+									<td class="boardTitle align-middle"><a
 										href="${contextPath}/freeboard/${board.freeNo}?cp=${pagination.currentPage}">${board.freeTitle}</a>
 										<c:if test="${board.replyCount!=0}">
 											<span>[${board.replyCount}]</span>
 										</c:if></td>
 									<%-- 작성일 --%>
-									<td><fmt:formatDate var="createDate"
+									<td class="align-middle"><fmt:formatDate var="createDate"
 											value="${board.freeCreateDate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
 											var="today" value="<%=new java.util.Date()%>"
 											pattern="yyyy-MM-dd" /> <c:choose>
@@ -233,10 +234,10 @@ a:hover {
 										</c:choose></td>
 
 									<!-- 좋아요수 -->
-									<td>${board.likeCount}</td>
+									<td class="align-middle">${board.likeCount}</td>
 
 									<!-- 조회수 -->
-									<td>${board.freeReadCount}</td>
+									<td class="align-middle">${board.freeReadCount}</td>
 								</tr>
 
 							</c:forEach>

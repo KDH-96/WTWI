@@ -15,17 +15,59 @@
 
     <title>마이페이지 - 사이드바</title>
     <style>
+    	.myPage-body {
+    		position: relative;
+    	}
       .myPage-sideBar {
             display: flex;
             flex-direction: column;
+            position: fixed;
+		   top: 50%;
+		   left: 1%;
+		            
         }
+        
+        .myPage-main {
+        	margin-left: 250px;
+        }
+        a{
+			text-decoration: none !important;
+		
+		}
+		a:hover {
+			text-decoration: none !important;
+			font-weight: bold;
+		}
+		.inherit a, table a:hover {
+			color: inherit;
+		}
+		
+		.list-group {
+			width: 80%;
+			border-radius: 20px;
+		}
+		.list-group-item{
+			width: 100%;
+			text-align: center;
+		}
+		
+		.focus-page {
+			background-color: orange;
+			color: white;
+		}
+		.focus-page:hover {
+			text-decoration: none !important;
+			cursor: pointer;
+			color: white;
+			font-weight: bold;
+		}
     </style>
 </head>
 
 <body class="myPage-body">
 
      <div class="myPage-sideBar col-sm-2 ">
-        <ul class="list-group">
+        <ul class="list-group inherit">
             <li class="list-group-item list-group-item-action"><a href="${contextPath }/myPage/main">마이페이지 메인</a></li>
        		<c:if test="${loginMember.memberGrade != 'M'}">
 	            <li class="list-group-item list-group-item-action"><a href="${contextPath }/member/update">내 정보 수정</a></li>            

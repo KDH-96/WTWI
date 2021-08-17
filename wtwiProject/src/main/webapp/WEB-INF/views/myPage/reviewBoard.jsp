@@ -28,7 +28,6 @@
         .myPage-body {
             display: flex;
             align-items: center;
-            height: 100vh;
         }
         .myPage-main {
             width: 100%;
@@ -36,6 +35,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            margin-top: 100px;
         }
         .myPage-main h2{
             margin-bottom: 30px;
@@ -140,7 +140,6 @@
                     <col width="20%"/>
                     <col width="35%"/>
                     <col width="13%"/>
-                    <col width="17%"/>
                     <col width="10%"/>
 				</colgroup>
 				<thead>
@@ -157,20 +156,6 @@
 								<c:otherwise>
 									<a href="reviewBoard">별점 <i
 										class="fas fa-caret-down order-check"></i></a>
-								</c:otherwise>
-							</c:choose>
-						</th>
-	                    <th scope="col">
-							<c:choose>
-								<c:when test="${param.order!='like'}">
-									<a href="reviewBoard?order=like${searchStr}">추천수 
-										<i class="fas fa-caret-down"></i>
-									</a>
-								</c:when>
-								<c:otherwise>
-									<a href="reviewBoard">추천수 
-										<i class="fas fa-caret-down order-check"></i>
-									</a>
 								</c:otherwise>
 							</c:choose>
 						</th>
@@ -197,7 +182,7 @@
 									</th>
 									<!-- 명소이름 -->
 									<th scope="row" class="content"> 
-										<a href="#"> ${board.attractionNm}</a>
+										<a href="${contextPath }/attraction/view/${board.attractionNo}"> ${board.attractionNm}</a>
 									</th>
 									
 									<%-- 후기내용 --%>
@@ -205,11 +190,7 @@
 									
 									<!-- 별점 -->
 									<td><!-- 아이콘 -->${board.reviewPoint }</td>
-									
-									<!-- 추천수 -->
-									<td><i class="far fa-thumbs-up"></i> ${board.likeCount }
-									<i class="far fa-thumbs-down"></i> ${board.dislikeCount }</td>
-									
+	
 									<%-- 작성일 --%>
 									<td>
 										
@@ -281,7 +262,7 @@
 								<li><a class="focus-page">${p }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageURL}?cp=${p}${searchStr}"">${p}</a></li>
+								<li><a class="focus-page" href="${pageURL}?cp=${p}${searchStr}"">${p}</a></li>
 							</c:otherwise>
 						</c:choose>
 

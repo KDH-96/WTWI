@@ -119,6 +119,10 @@
 			border-top-left-radius: 70px;
 			border-bottom-left-radius: 70px;	
 		}
+		.orange {
+			background-color: orange !important;
+			color: white;
+		}
     </style>
 </head>
 
@@ -181,7 +185,7 @@
                   <div class="searchPw-btnArea">
                       <a type="submit" class="btn btn-dark" href="${contextPath}/member/login"">로그인하기</a>
                       <a class="btn btn-secondary" href="${contextPath}/member/searchIdForm"">아이디 찾기</a>
-                      <a type="button" class="btn btn-warning" href="${contextPath}/main">메인으로</a>
+                      <a type="button" class="btn btn-primary orange white border-0" href="${contextPath}/main">메인으로</a>
                   </div>
             </form>
 
@@ -222,6 +226,10 @@
 			                         success : function(result){
 			                        	 if(result > 0){
 			     			                swal("인증 성공!", "문자로 임시비밀번호를 전송하였습니다.", "success");
+			     			               $(phone[1]).val("");
+			     			               $(phone[2]).val("");
+			     			               $("#memberId").val("");
+			     			               $("#smsNum").val("");
 			                        	 } else {
 			     			                swal("인증 실패", "문제가 계속될 시 대표전화로 문의주세요.", "error");
 			                        	 }

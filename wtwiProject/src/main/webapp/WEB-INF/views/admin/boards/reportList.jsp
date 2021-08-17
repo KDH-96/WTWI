@@ -34,6 +34,14 @@
 	.sv {
 	 	width: 100%;
 	}
+	a {
+		text-decoration: none !important;
+	}
+	
+	a:hover {
+		text-decoration: none !important;
+		color: inherit !important;
+	}
 </style>
       <div id="contentArea">
 			<jsp:include page="boardSelect.jsp"></jsp:include>
@@ -57,7 +65,6 @@
                    <col width="20%"/>
                    <col width="15%"/>
                    <col width="20%"/>
-                   <col width="15%"/>
 			</colgroup>
             <thead class="thead-dark">
                <tr>

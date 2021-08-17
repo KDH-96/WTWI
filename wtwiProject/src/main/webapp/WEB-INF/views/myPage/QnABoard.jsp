@@ -28,7 +28,6 @@
         .myPage-body {
             display: flex;
             align-items: center;
-            height: 100vh;
         }
         .myPage-main {
             width: 100%;
@@ -36,6 +35,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            margin-top: 100px;
         }
         .myPage-main h2{
             margin-bottom: 30px;
@@ -109,6 +109,23 @@
 		.searchForm-container button {
 			width: 50%;
 		}
+		.answerBox {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.answerCheck {
+			border: 2px solid orange;
+			padding: 2px 4px;
+			border-radius: 5px;
+		}
+		
+		.answerCheck:hover {
+			background-color: orange;
+			color: white;
+			font-weight: bold;
+			transition: 0.1s ease-in-out;
+		}
 </style>
 </head>
 
@@ -164,17 +181,17 @@
 							
 								<tr>
 									<!-- 글번호 -->
-									<th scope="row">${board.qnaNo}</th>
+									<th class="align-middle" scope="row">${board.qnaNo}</th>
 									
 									<%-- 카테고리 --%>
-									<td>${board.qnaCategoryNm}</td>
+									<td class="align-middle">${board.qnaCategoryNm}</td>
 									
 									<!-- 글 제목 -->
-									<td class="boardTitle">
+									<td class="boardTitle align-middle">
 										<a href="${board.qnaNo}?cp=${pagination.currentPage}${searchStr}">${board.qnaTitle }</a>
 									</td>
 									<%-- 작성일 --%>
-									<td>
+									<td class="align-middle">
 										
 										<fmt:formatDate var="createDate" value="${board.qnaCreateDt}"  pattern="yyyy-MM-dd"/>                          
 										<fmt:formatDate var="today" value="<%= new java.util.Date() %>"  pattern="yyyy-MM-dd"/>                          
@@ -195,11 +212,11 @@
 									
 									<!-- 답변여부 -->
 									<c:choose>
-										<c:when test="${board.qnaNo != board.qnaPno }">
-											<td>답변대기</td>
+										<c:when test="${board.qnaPno == ''}">
+											<td class="align-middle">답변대기</td>
 										</c:when>
 										<c:otherwise>
-											<td>답변완료</td>										
+											<td class="answerBox align-middle"><a class="answerCheck" href="${contextPath }/qnaboard/${board.qnaPno}?cp=1">답변완료</a></td>										
 										</c:otherwise>
 									</c:choose>
 
@@ -252,7 +269,7 @@
 								<li><a class="focus-page">${p }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageURL}?cp=${p}${searchStr}"">${p}</a></li>
+								<li><a class="focus-page" href="${pageURL}?cp=${p}${searchStr}"">${p}</a></li>
 							</c:otherwise>
 						</c:choose>
 
