@@ -61,7 +61,7 @@
       	display: inline-block;
       	float : left;
       	width: 240px;
-      	height : 220px;   
+      	height : 215px;   
       }
       .my-2{
       	display: inline-block;
@@ -78,17 +78,35 @@
       }
       .card-body{
       	width : 240px;
-      	height : 30px;
+      	height : 50px;
       }
+
       .card-text{
-      	text-align : center;
-      	margin : auto;
+      	
+      	display: -webkit-box;
+      	display: -ms-flexbox;
+      	display: box;
+      	margin-top:1px;
+      	max-height:20px;
+      	width: 220px;
+      	overflow:hidden;
+      	vertical-align:top;
+      	text-overflow:ellipsis;
+      	word-break:break-all;
+      	-webkit-box-orient:vertical;
+      	-webkit-line-clamp:3;
+      	display:block;
+      	white-space:nowrap;
+      	text-align:center;
+      	
+      
+      	
       }			
       /* 페이지네이션 */
       #pagination-div{
+      	width:100%;
       	display : inline-block;
       	margin-top : 20px;
-      	margin-left : 300px;
       }
       #page-link{
       	background-color : black;
@@ -225,8 +243,8 @@
                                    <img class="card-img-top" src="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg">
                              </c:otherwise>
                        </c:choose>
-				         				<div class="card-body">
-				         						<p class="card-text">${attraction.attractionNm}</p>
+				         				<div class="card-body" style="padding : 8px;">
+				         						<p class="card-text" >${attraction.attractionNm}</p>
 				         				</div>	
 		         					</div>
 		         				</c:forEach>
@@ -260,7 +278,12 @@
 		                	<%-- 현재 페이지가 5 페이지 이하일 시 --%>
 		                	<c:if test="${pagination.currentPage <= pagination.pageSize}">
 		                		<li class="page-item disabled">
-		                			<a class="page-link" id="page-link-1" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+		                			<a class="page-link" id="page-link-1" href="#" aria-label="Previous"><span aria-hidden="">&laquo;</span></a>
+		                		</li>
+		                	</c:if>
+		                	<c:if test="${pagination.currentPage <= pagination.pageSize}">
+		                		<li class="page-item disabled">
+		                			<a class="page-link" id="page-link-1" href="#" aria-label="Previous"><span aria-hidden="">&laquo;</span></a>
 		                		</li>
 		                	</c:if>
 		                	<%-- 현재 페이지가 5 페이지 초과일 시 --%>
