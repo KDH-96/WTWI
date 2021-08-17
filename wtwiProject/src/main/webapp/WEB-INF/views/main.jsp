@@ -386,8 +386,22 @@
               		jsonFileForMarker = jsonFile;
               		console.log("통신 성공");
               		
+              		$.getJSON(jsonFileForMarker, function (json) {
+        	            data = json.response.body.items.item; // json 파일 data 변수에 담기
+              		
+		           		var lat = Number(data[0].mapy); // 위도를 담을 변수
+		           		var lng = Number(data[0].mapx); // 경도를 담을 변수
+		           		 
+			            var moveLatLng = new kakao.maps.LatLng(lat, lng);
+		           		
+		           		// 명소 타입과 지역 선택 후 조회버튼 클릭 시 해당 지역으로 이동 및 확대
+		                map.panTo(moveLatLng);
+		                
+              		})
+              		
               		// 지역별로 API요청주소가 담긴 jsonFileForMarker로 지역별 조회수 top 30 명소 추출
     	          	markersOnMap(jsonFileForMarker);
+		            map.setLevel(11);
                           
               	},
               	
@@ -416,7 +430,6 @@
             }
 
             // 시도별 폴리곤 지도에 생성 자리
-            //polygon.setMap(map);
 			
             // 테스트(폴리곤을 배열에 담에서 출력)
             polygons.push(polygon);
@@ -434,7 +447,6 @@
             				"attrType" : attrType}, // 클릭한 폴리곤의 지역 코드
             		type : "POST",
                   	success : function(jsonFile){
-                  		console.log("명소타입 : " + attrType);
                   		
                   		areaCode = areaCode;
                   		jsonFileForMarker = jsonFile;
@@ -454,7 +466,6 @@
             });
             
             // 다각형에 mouseover 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 변경
-            // 지역명을 표시하는 커스텀오버레이를 지도위에 표시
             kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
                 polygon.setOptions({ fillColor: '#09f' });
                 map.setCursor('pointer');
@@ -518,8 +529,6 @@
 	         markers.forEach(function (marker) { marker.setMap(null); });
 	         markers.length = 0 // 마커 배열 초기화
 	         
-	        
-	        
 	         
 	        $.getJSON(jsonFileForMarker, function (json) {
 	            data = json.response.body.items.item; // json 파일 data 변수에 담기
@@ -630,7 +639,7 @@
 	                    $("#weather-info-area").fadeIn(100);
 	                    
 	
-	                   // 마커 클릭 시 부드럽게 마커의 위치로 이동
+	                    // 마커 클릭 시 부드럽게 마커의 위치로 이동
 	                    var moveLatLng = new kakao.maps.LatLng(data[index].mapy, data[index].mapx);
 	                    map.panTo(moveLatLng);
 	                    
@@ -642,6 +651,10 @@
 	                    // 마커 클릭 시 리뷰작성 폼 닫기
 	                    $("#write-review-wrapper").fadeOut(100);
 		    			writeFlag = false;
+		    			
+		    			// 마커 클릭 시 선택했던 별점 초기화
+		    			$("input:radio[name='rating']").prop('checked', false);
+		    			
 		    			
 		    			// 마커 클릭 시 리뷰란에 작성중인 내용 삭제
 		    			document.getElementById("text-area").value = '';
@@ -662,9 +675,7 @@
 	                kakao.maps.event.addListener(map, 'click', function () {
 	                    $("#attraction-info").fadeOut(100);
 	                    $("#weather-info-area").fadeOut(100);
-	                    
 	                    $("#write-review-wrapper").fadeOut(100);
-	                    
 	                    $("#select-review-wrapper").fadeOut(100);
 	                });
 	                
