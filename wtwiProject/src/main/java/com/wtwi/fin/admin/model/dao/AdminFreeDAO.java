@@ -100,4 +100,12 @@ public class AdminFreeDAO {
 		return sqlSession.update("freereplyMapper.changeFreeReplyStatus", reply);
 	}
 
+	/** 관리자 페이지 댓글 수정(37)
+	 * @param reply
+	 * @return result
+	 */
+	public int updateFreeReply(Reply reply) {
+		return sqlSession.update("freereplyMapper.updateFreeReply", reply);
+	}
+
 }

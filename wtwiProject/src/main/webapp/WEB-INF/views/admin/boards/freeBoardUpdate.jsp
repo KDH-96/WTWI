@@ -6,7 +6,6 @@
 </style>
 <jsp:include page="../common/header.jsp"></jsp:include>
 <div class="container">
-
          <div class="h-div">
          	<h2><span id="listTitle">게시글 수정</span></h2>
          </div>

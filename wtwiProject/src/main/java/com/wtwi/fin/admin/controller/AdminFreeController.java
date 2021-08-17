@@ -201,7 +201,7 @@ public class AdminFreeController {
 		List<Category> category = boardService.selectCategory();
 		
 		// 게시글 상세 조회
-		Board board = boardService.selectBoard(freeNo);
+		Board board = service.selectFreeboard(freeNo);
 
 		model.addAttribute("category", category);
 		model.addAttribute("board", board);
@@ -237,7 +237,27 @@ public class AdminFreeController {
 		return path;
 	}
 	
-	
-	
+	// 관리자페이지 댓글 수정(37)
+	@RequestMapping(value="updateReply", method=RequestMethod.POST)
+	public String updateReply(Reply reply,
+							  RedirectAttributes ra,
+							  HttpServletRequest request) {
+		
+		//System.out.println(reply.getFreeReplyNo());
+		//System.out.println(reply.getFreeReplyContent());
+		
+		int result = service.updateFreeReply(reply);
+		
+		String path;
+		if(result>0) { // 수정 성공
+			path = "redirect:"+reply.getFreeNo();
+			MemberController.swalSetMessage(ra, "success", "댓글이 수정되었습니다.", null);
+			
+		} else { // 수정 실패
+			path = "redirect:"+request.getHeader("referer");
+			MemberController.swalSetMessage(ra, "error", "댓글 수정에 실패하였습니다.", null);
+		}
+		return path;
+	}
 	
 }

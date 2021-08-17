@@ -272,6 +272,10 @@
 					<when test="sk=='category'">
 						FREE_CATEGORY_NO = #{sc} AND (FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
 					</when>
+					<when test="sk=='reply'">
+						FREE_NO IN(SELECT FREE_NO FROM FREE_REPLY_LIST
+                            	   WHERE FREE_REPLY_CONTENT LIKE #{val})
+					</when>
 				</choose>
 			</when>
 			<otherwise>
@@ -302,6 +306,10 @@
 					</when>
 					<when test="sk=='category'">
 						FREE_CATEGORY_NO = #{sc} AND (FREE_TITLE LIKE #{val} OR FREE_CONTENT LIKE #{val})
+					</when>
+					<when test="sk=='reply'">
+						FREE_NO IN(SELECT FREE_NO FROM FREE_REPLY_LIST
+                            	   WHERE FREE_REPLY_CONTENT LIKE #{val})
 					</when>
 				</choose>
 			</when>

@@ -120,6 +120,7 @@
                     	<option value="content">내용</option>
                     	<option value="author">작성자</option>
                     	<option value="category">카테고리</option>
+                    	<option value="reply">댓글</option>
                      </select>
                       <select name="sc" class="form-control col-2 ml-1" style="display: none; " id="formCategory">
                    		<option value="1">잡담</option>

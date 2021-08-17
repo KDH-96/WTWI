@@ -68,7 +68,7 @@
         }
         .isNew > i{
         	font-size: 8px;
-        	font-weight: 800;
+        	font-weight: 1000;
         	color: #da2c3d;
         }
     </style>
@@ -120,6 +120,12 @@
 
 <script>
 
+
+(function(){
+	$(".chat-view").scrollTop($(".chat-view")[0].scrollHeight);
+})();
+
+
 //var audio = new Audio("/resources/audio/audio.mp3");
 
 // 로그인했을 경우 /chat 요청 주소를 통해 통신할 수 있는 WebSocket 객체 생성
@@ -148,7 +154,7 @@ $("#send").on("click", function(){
 					"memberEmail": memberEmail,
 					"memberNick": memberNick,
 					"chatContent": chatContent,
-					"chatRoomNo": chatRoomNo};
+					"chatRoomNo": chatRoomNo };
 		
 		chattingSock.send(JSON.stringify(obj));
 		$("#inputChatting").val("");
