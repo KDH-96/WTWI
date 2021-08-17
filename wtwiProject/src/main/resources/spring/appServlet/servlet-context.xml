@@ -116,7 +116,6 @@
 	  <interceptor> 
 	   <!-- 적용 url -->
 	   <mapping path="/myPage/**" /> 
-	   <mapping path="/member/logout" /> 
 	   <mapping path="/member/update" /> 
 	   <mapping path="/member/secession" /> 
 	   <mapping path="/member/changPwd" /> 

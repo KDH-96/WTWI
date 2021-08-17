@@ -212,7 +212,7 @@
 									
 									<!-- 답변여부 -->
 									<c:choose>
-										<c:when test="${board.qnaPno == null }">
+										<c:when test="${board.qnaPno == ''}">
 											<td class="align-middle">답변대기</td>
 										</c:when>
 										<c:otherwise>

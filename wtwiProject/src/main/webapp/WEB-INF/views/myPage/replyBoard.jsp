@@ -155,15 +155,13 @@ a:hover {
 								<tr>
 									<!-- 글번호 -->
 									<th class="align-middle" scope="row">
-										<a href="${contextPath }/freeboard/${board.freeNo}?cp=1"><i class="far fa-file-alt"></i></a>
+										<a href="${contextPath }/freeboard/${board.freeNo}?cp=1"><i class="far fa-file-alt"></i> 이동</a>
 									
 									</th>
 
 
 									<!-- 댓글 내용 -->
-									<td class="boardTitle align-middle">
-										<a href="${contextPath}/?cp=${pagination.currentPage}">${board.freeReplyContent}</a>
-									</td>
+									<td class="boardTitle align-middle">${board.freeReplyContent}</td>
 									<%-- 작성일자 --%>
 									<td class="align-middle"><fmt:formatDate var="createDate"
 											value="${board.freeReplyCreateDate}" pattern="yyyy-MM-dd" /> <fmt:formatDate

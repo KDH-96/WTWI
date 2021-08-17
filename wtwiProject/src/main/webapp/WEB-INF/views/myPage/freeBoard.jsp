@@ -290,7 +290,7 @@ a:hover {
 								<li><a class="focus-page">${p }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a class="focus-page" href="${pageURL}?cp=${p}${searchStr}${order}">${p}</a></li>
+								<li><a href="${pageURL}?cp=${p}${searchStr}${order}">${p}</a></li>
 							</c:otherwise>
 						</c:choose>
 

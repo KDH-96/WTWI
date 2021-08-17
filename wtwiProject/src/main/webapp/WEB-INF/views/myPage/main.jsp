@@ -85,6 +85,7 @@
 	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
 	position: relative; 
+	margin: 0px 10px;
 }
 
 

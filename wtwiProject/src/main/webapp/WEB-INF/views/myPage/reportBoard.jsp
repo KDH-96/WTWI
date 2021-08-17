@@ -141,6 +141,7 @@ a:hover {
 				<colgroup>
 					<col width="10%"/>
                     <col width="13%"/>
+                    <col width="13%"/>
                     <col width="30%"/>
                     <col width="30%"/>
                     <col width="13%"/>
@@ -149,6 +150,7 @@ a:hover {
 					<tr>
 						<th scope="col">게시글로 이동</th>
 	                    <th scope="col">유형</th>
+	                    <th scope="col">카테고리</th>
 	                    <th scope="col">신고제목</th>
 	                    <th scope="col">신고내용</th>
 	                    <th scope="col">신고일자</th>
@@ -171,10 +173,18 @@ a:hover {
 								<tr>
 									<!-- 글번호 -->
 									<th class="align-middle" scope="row">
-										<a href="${contextPath}/freeboard/${board.reportTypeNo}?cp=1"><i class="far fa-bell"></i></a>
+										<a href="${contextPath}/freeboard/${board.reportTypeNo}?cp=1"><i class="far fa-bell"></i> 이동</a>
 									</th>
 
 									<%-- 유형(게시글/댓글) --%>
+									<c:if test="${board.reportType == 1}">								
+										<td class="align-middle">게시글</td>
+									</c:if>
+									<c:if test="${board.reportType == 2}">								
+										<td class="align-middle">댓글</td>
+									</c:if>
+									
+									<%-- 카테고리 --%>
 									<td class="align-middle">${board.reportCategoryNm}</td>
 
 									<!-- 해당 게시글 -->

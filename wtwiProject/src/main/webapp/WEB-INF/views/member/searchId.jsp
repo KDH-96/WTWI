@@ -85,6 +85,11 @@
 			border-top-left-radius: 70px;
 			border-bottom-left-radius: 70px;	
 		}
+		.orange {
+			background-color: orange !important;
+			color: white;
+		}
+		
     </style>
 </head>
 
@@ -111,7 +116,7 @@
                   <div class="searchId-btnArea">
                       <button type="button" class="btn btn-dark" id="searchId">아이디 찾기</button>
                 	  <a class="btn btn-secondary" href="${contextPath}/member/searchPwForm"">비밀번호 찾기</a>
-                      <a type="button" class="btn btn-warning" href="${contextPath}/main">메인으로</a>
+                      <a type="button" class="btn btn-primary orange white border-0" href="${contextPath}/main">메인으로</a>
                   </div>
             </div>
 
