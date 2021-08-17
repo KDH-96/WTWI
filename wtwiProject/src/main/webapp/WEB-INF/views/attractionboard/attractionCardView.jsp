@@ -374,7 +374,6 @@
 			}			
 		}
 		
-		
 
 		let beforeReviewRow; // 수정 전 리뷰 요소를 저장할 변수 선언
 		
@@ -401,7 +400,8 @@
 			// 기존 댓글영역 삭제 및 textarea 추가
 			$(el).parent().next().remove();
 			var textarea = $("<textarea>").addClass("reviewUpdateContent").attr("rows", "2").val(beforeContent);
-			$(el).parent().after(textarea);
+			var numberLimit = $('<div id="update_cnt" style="float: right; margin-right:30px;">').text("(" + beforeContent.length + " / 150)");
+			$(el).parent().after(numberLimit).after(textarea);
 			
 			// 수정 버튼
 			var updateReview = $("<button>").addClass("btn btn-sm btn-primary mx-2").text("완료").attr("onclick", "updateReview(" + reviewNo + ", this)");
@@ -419,10 +419,33 @@
 			
 		}
 		
+		// 수정 시에도 글자수 세기 적용
+		$(document).on("keyup", ".reviewUpdateContent", function() {
+	        $('#update_cnt').html("(" + $(this).val().length + " / 150)");
+	 	
+	        if($(this).val().length < 100){
+	            $("#update_cnt").css("color", "green");
+	        
+	    	} else if($(this).val().length < 130) {
+	            $("#update_cnt").css("color", "orange");
+	            
+	        } else {
+	            $("#update_cnt").css("color", "red");
+	        }
+	        
+	        if($(this).val().length > 150) {
+	            $(this).val($(this).val().substring(0, 150));
+	            $("#update_cnt").html("(150 / 150)");
+	        }
+	        
+    	});
+		
+		
 		// 리뷰 수정 취소 시 원래대로 돌아가기
 		function updateCancel(el){
 			$(el).parent().parent().html(beforeReviewRow);
 		}
+		
 		
 		// 리뷰 수정
 		function updateReview(reviewNo, el) {
@@ -435,6 +458,8 @@
 				data : {"reviewNo" : reviewNo,
 						"reviewContent" : reviewContent},
 				success : function(result){
+					
+					
 					if(result > 0) {
 						// 명소정보 새로고침
 						viewAttrInfo();
@@ -449,7 +474,7 @@
 					}
 				},
 				error : function(){
-					swal({"icon" : "error", "title" : "리뷰 삭제 실패", "text" : "문제가 지속될 경우 관리자에게 문의해주세요."});
+					swal({"icon" : "error", "title" : "리뷰 수정 실패"});
 				}
 			});
 		}
