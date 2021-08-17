@@ -165,7 +165,8 @@ btn-dark {
         </div>
 		</div>
 		<div class="text-div">
-				<input type="text" class="review-input-text" id="reviewContent" placeholder ="리뷰를 작성해 주세요(150자)">
+				<input type="text" class="review-input-text" id="reviewContent" placeholder ="리뷰를 작성해 주세요(
+자)">
         <button type="button" class="btn btn-dark" id = "review-insert-btn" onclick="addreview();">등록</button>
 				<div id="test_cnt" style="float: right; margin-right:30px;">(0 / 150)</div>
 		</div>
@@ -195,6 +196,8 @@ btn-dark {
 	        }
 	    });
 	});
+	
+	
 	
 	
   
@@ -499,7 +502,8 @@ btn-dark {
 		// 기존 댓글영역 삭제 및 textarea 추가
 		$(el).parent().next().remove();
 		var textarea = $("<textarea>").addClass("reviewUpdateContent").attr("rows", "2").val(beforeContent);
-		$(el).parent().after(textarea);
+		var numberLimit = $('<div id="update_cnt" style="float: right; margin-right:30px;">').text("(" + beforeContent.length + " / 150)");
+		$(el).parent().after(numberLimit).after(textarea);
 		
 		
 		// 수정 버튼
@@ -515,6 +519,27 @@ btn-dark {
 		$(reviewBtnArea).append(cancelBtn); 
 		
 	}
+	
+	
+    $(document).on("keyup", ".reviewUpdateContent", function() {
+        $('#update_cnt').html("(" + $(this).val().length + " / 150)");
+ 	
+        if($(this).val().length < 100){
+            $("#update_cnt").css("color", "green");
+        
+    	} else if($(this).val().length < 130) {
+            $("#update_cnt").css("color", "orange");
+            
+        } else {
+            $("#update_cnt").css("color", "red");
+        }
+        
+        if($(this).val().length > 150) {
+            $(this).val($(this).val().substring(0, 150));
+            $("#update_cnt").html("(150 / 150)");
+        }
+    });
+	
 	
 	// 리뷰 수정 취소 시 원래대로 돌아가기
 	function updateCancel(el){
