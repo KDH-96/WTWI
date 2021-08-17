@@ -22,7 +22,6 @@
 		<result property="listCount" column="CNT"/>
 	</resultMap>
 	
-	
 	<!-- 명소별 전체 리뷰 수 조회 -->
 	<select id="getListCount" parameterType="_int" resultMap="pg_rm">
 		SELECT COUNT(*) CNT FROM REVIEW_LIST WHERE ATTRACTION_NO = #{attractionNo}
@@ -49,7 +48,9 @@
 	
 	<!-- 리뷰 수정 -->
 	<update id="updateReview" parameterType="Review">
-		UPDATE REVIEW SET REVIEW_CONTENT = #{reviewContent}
+		UPDATE REVIEW SET
+		REVIEW_CONTENT = #{reviewContent},
+		REVIEW_CREATE_DT = SYSDATE
 		WHERE REVIEW_NO = #{reviewNo}
 	</update>
 	

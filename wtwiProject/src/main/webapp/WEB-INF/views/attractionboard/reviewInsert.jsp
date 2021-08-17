@@ -110,6 +110,7 @@
             <hr>
             <div id="text-area-wrapper">
                 <textarea class="form-control" aria-label="With textarea" id="text-area" rows="20"></textarea>
+                <div id="test_cnt" style="float: right; margin-right:10px;">(0 / 150)</div>
             </div>
             <hr>
             <div>
@@ -118,5 +119,29 @@
             </div>
         </div>
 	</div>
+	
+	<script>
+		$(document).ready(function() {
+		    $("#text-area").on("keyup", function() {
+		        $('#test_cnt').html("(" + $(this).val().length + " / 150)");
+		 	
+		        if($(this).val().length < 100){
+		            $("#test_cnt").css("color", "green");
+		        
+		    	} else if($(this).val().length < 130) {
+		            $("#test_cnt").css("color", "orange");
+		            
+		        } else {
+		            $("#test_cnt").css("color", "red");
+		        }
+		        
+		        if($(this).val().length > 150) {
+		            $(this).val($(this).val().substring(0, 150));
+		            $("#test_cnt").html("(150 / 150)");
+		        }
+		    });
+		});
+
+	</script>
 </body>
 </html>

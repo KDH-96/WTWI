@@ -156,7 +156,7 @@ function addReply(){
 
 // 댓글 목록 조회
 function selectReplyList(){
-	
+
 	$.ajax({
 		
 		url: "${contextPath}/freereply/selectReplyList",
