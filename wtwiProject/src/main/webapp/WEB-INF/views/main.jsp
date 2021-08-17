@@ -643,6 +643,9 @@
 	                    $("#write-review-wrapper").fadeOut(100);
 		    			writeFlag = false;
 		    			
+		    			// 마커 클릭 시 리뷰란에 작성중인 내용 삭제
+		    			document.getElementById("text-area").value = '';
+		    			
 		    			// 마커 클릭 시 리뷰조회 폼 닫기
 		    			$("#select-review-wrapper").fadeOut(100);
 		    			viewFlag = false;

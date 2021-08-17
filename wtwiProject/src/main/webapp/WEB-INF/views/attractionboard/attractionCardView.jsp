@@ -206,6 +206,16 @@
 		
      	// 후기작성 버튼 클릭 시 후기작성 폼 등장하는 메소드
 		$("#write-btn").on("click", function () {
+
+			if(loginMemberNo == "") {
+				swal({
+					"icon" : "error",
+					"title" : "로그인 후 이용해주세요"
+				});
+				
+				return;
+			}
+			
 			
 		    $("#write-review-wrapper").fadeToggle(100);
 		    
@@ -245,6 +255,7 @@
 		
 		// 리뷰 작성
 		document.getElementById("review-write-btn").addEventListener("click", function(){
+			
 			let attractionNo = document.getElementById("attr-no").value; // 클릭한 명소 번호 저장 변수
 			let reviewPoint = 0; // 별점 저장 변수
 			let reviewContent = ''; // 리뷰 내용 저장 변수
@@ -355,14 +366,13 @@
 			beforeContent = beforeContent.replace(/&lt;/g, "<");   
 			beforeContent = beforeContent.replace(/&gt;/g, ">");   
 			beforeContent = beforeContent.replace(/&quot;/g, "\"");   
-			beforeContent = beforeContent.replace(/<br>/g, "\n");   
+			beforeContent = beforeContent.replace(/<br>/g, "\n");
 			
 			
 			// 기존 댓글영역 삭제 및 textarea 추가
 			$(el).parent().next().remove();
 			var textarea = $("<textarea>").addClass("reviewUpdateContent").attr("rows", "2").val(beforeContent);
 			$(el).parent().after(textarea);
-			
 			
 			// 수정 버튼
 			var updateReview = $("<button>").addClass("btn btn-sm btn-primary mx-2").text("완료").attr("onclick", "updateReview(" + reviewNo + ", this)");
