@@ -125,6 +125,147 @@
         // 지도 로딩속도 향상을 위한 코드
         kakao.maps.disableHD();
         
+        // 명소 정보 조회 메소드 전역변수 선언
+        var viewAttrInfo = (function(){
+        	
+        	// 해당 명소에 대한 상세페이지 정보 조회
+    		//attraction/view/명소상세글 번호
+    		//console.log(selectedMarker);
+    		$.ajax({
+    			url : "${contextPath}/attraction/view/" + selectedMarker,
+    			data : selectedMarker,
+    			type : "POST",
+    			dataType : "JSON",
+    			success : function(attrView){
+    				
+    				// ======================== 우측 고정 영역에 명소 정보 출력
+						// 명소 평점을 출력하기 위한 구문
+    				document.getElementById("attr-avgPoint").innerText = "";
+    				
+    				// 평점 소수점 둘째 자리가지 표현
+    				let roundAvgPoint = Math.round(attrView.avgPoint * 100) / 100;
+    				
+    				// 소수점에서 반올림하여 정수로 별점 결정(ex: 4.5 = 별점 5개)
+      				let avgStar = Math.round(roundAvgPoint);
+    				
+    				switch(avgStar){
+					case 1: star = "★☆☆☆☆"; break;
+					case 2: star = "★★☆☆☆"; break;
+					case 3: star = "★★★☆☆"; break;
+					case 4: star = "★★★★☆"; break;
+					case 5: star = "★★★★★"; break;
+					default: star = "☆☆☆☆☆"; break;
+					}
+    				
+    				document.getElementById("attr-avgPoint").innerText = star;
+    				document.getElementById("attr-avgPoint-num").innerText = " 평균 " + roundAvgPoint + "점 / 5점";
+    				document.getElementById("total-review-count").innerText = " | 리뷰 " + attrView.totalReviewCount + "건";
+    				
+    				
+    				// 명소 이미지 출력을 위한 구문
+    				document.getElementById("attr-image").src = attrView.attractionPhoto;
+    				
+    				// 명소 이름 출력을 위한 구문
+						document.getElementById("attr-title").innerText = attrView.attractionNm;
+    				
+    				// 명소 이름 클릭 시 상세조회 페이지로 이동하는 구문
+    				document.getElementById("attr-title").href = "${contextPath}/attraction/view/" + attrView.attractionNo;
+    				
+    				// 명소 번호 안보이게 요소에 삽입(reviewInsert.jap 에서 사용하기 위해...)
+    				document.getElementById("attr-no").value = attrView.attractionNo;
+    				
+    				// 명소 연락처 출력을 위한 구문
+    				document.getElementById("attr-phone").innerText = "";
+    				
+	   				if(attrView.attractionPhone != null) {
+	   					document.getElementById("attr-phone").innerText = "◎ " + attrView.attractionPhone;
+	   					
+	   				}else {
+	   					document.getElementById("attr-phone").innerText = "";
+	   				}                    				
+    				
+    				// 드롭다운 버튼의 값들을 저장할 변수 선언 및 할당
+    				let attrIdArr = document.getElementsByName("attr-type");
+    				
+    				// 명소 구분 출력을 위한 구문
+    				for(let i=0; i<attrIdArr.length; i++){
+    					if(attrView.attractionTypeNo == attrIdArr[i].id){
+    						
+    						// 명소 id(숫자)에 따라 명소의 구분 출력(드롭다운 버튼과 연동)
+    						document.getElementById("attr-type").innerText = "";
+    						document.getElementById("attr-type").innerText = "◎ " + attrIdArr[i].innerText;
+    						
+    						//console.log("일치");
+    						break;
+    					}
+    				}
+    				
+    				// 명소 주소 출력을 위한 구문
+    				document.getElementById("attr-addr").innerText = "◎ " + attrView.attractionAddr;
+    				
+    				
+    				// 명소 홈페이지 출력을 위한 가공 시작
+    				let rawHomepage = attrView.attractionHomePage;
+    				
+						// 시작지점                    				
+    				let startStr =rawHomepage.indexOf("\\");
+				
+						// 종료지점
+    				let endStr = rawHomepage.indexOf("\\", rawHomepage.indexOf("\\")+1);
+			
+    				let homepage = "";
+    				
+    				homepage = rawHomepage.substring(startStr+1, endStr);
+    				
+    				// 홈페이지 이름 비정상적인 곳에 대해 홈페이지 주소만 뽑기 위한 구문
+    				if(homepage.indexOf("h") == -1) { // 홈페이지 주소가 뽑아져 나오지 않았을 때
+    					let secRawHomepage = rawHomepage.replace("\\" + homepage + "\\", "")
+    					let secStartStr = secRawHomepage.indexOf("\\");
+    					let secEndStr = secRawHomepage.indexOf("\\", secRawHomepage.indexOf("\\")+1);
+    					homepage = secRawHomepage.substring(secStartStr+1, secEndStr);
+    				}
+    				
+    				// 명소 홈페이지 주소 출력을 위한 구문
+    				document.getElementById("attr-homepage").innerHTML = "◎ " + "<a href='" + homepage + "' target=_blank' > 홈페이지로 이동 </a>";
+    				
+    				// 명소 정보 출력을 위한 구문
+    				// 명소 정보 중 개행문자 처리하여 출력
+    				replacedAttrInfo = attrView.attractionInfo.replaceAll("\\n", " ");
+    				replacedAttrInfo = replacedAttrInfo.replaceAll("<br />", " ");
+    				replacedAttrInfo = replacedAttrInfo.replaceAll("<br>", " ");
+    				replacedAttrInfo = replacedAttrInfo.replaceAll("<br>", " ");
+    				replacedAttrInfo = replacedAttrInfo.replaceAll("</b>", " ");
+    				replacedAttrInfo = replacedAttrInfo.replaceAll("\\", " ");
+    				replacedAttrInfo = replacedAttrInfo.replaceAll("</u>", " ");
+    				replacedAttrInfo = replacedAttrInfo.replaceAll("<u>", " ");
+    				document.getElementById("attr-info").innerText = replacedAttrInfo;
+    				
+    				// 명소 상세페이지로 이동
+    				document.getElementById("to-attr-view").href = "${contextPath}/attraction/view/" + attrView.attractionNo;
+    				
+    				// 채팅버튼 클릭 시 채팅 기능 작동
+                    $("#chat-btn").on("click", function(){
+                       
+                       if(memberNo==""){
+                          swal({
+                             icon: "warning",
+                             title: "회원만 이용 가능합니다."
+                          })
+                       } else { 
+                          document.getElementById("chat-btn").href = "${contextPath}/chat/openChatRoom/"+attrView.attractionNo;
+                       }
+                    });
+    				
+    			}, // ajax 통신 성공 시 실행되는 코드 종료지점
+    			
+    			error : function(){ // ajax 통신 실패 시
+    				console.log("통신 실패");
+    			}
+    			
+    		}); // ajax 종료 지점
+        	
+        });
+        
         // 지도 로딩 시 명소정보 고정영역 숨기기
         $("#attraction-info").hide();
         $("#weather-info-area").hide();
@@ -376,6 +517,8 @@
 	         // 마커 배열 초기화 및 각 마커 화면에서 제거
 	         markers.forEach(function (marker) { marker.setMap(null); });
 	         markers.length = 0 // 마커 배열 초기화
+	         
+	        
 	        
 	         
 	        $.getJSON(jsonFileForMarker, function (json) {
@@ -399,6 +542,7 @@
 	                    
 	                });
 	            	
+	                
 	                // 마커들을 담는 배열에 모든 명소의 마커 추가
 	                markers.push(marker);
 	                
@@ -468,7 +612,6 @@
 				    });
 					// 날씨 api 종료
 					
-					
 	                    if (clickedOverlay) {
 	                        clickedOverlay.setMap(null);
 	                    }
@@ -495,143 +638,19 @@
 	                    // 마커 클릭 시 선택된 명소의 contentId 변수에 담기(명소 상세조회 ajax 요청을 위해...)
 	                    selectedMarker = data[index].contentid;
 	                    
+						
+	                    // 마커 클릭 시 리뷰작성 폼 닫기
+	                    $("#write-review-wrapper").fadeOut(100);
+		    			writeFlag = false;
+		    			
+		    			// 마커 클릭 시 리뷰조회 폼 닫기
+		    			$("#select-review-wrapper").fadeOut(100);
+		    			viewFlag = false;
 	                    
-	                	// 해당 명소에 대한 상세페이지 정보 조회
-	            		//attraction/view/명소상세글 번호
-	            		//console.log(selectedMarker);
-
-	            		$.ajax({
-	            			url : "${contextPath}/attraction/view/" + selectedMarker,
-	            			data : selectedMarker,
-	            			type : "POST",
-	            			dataType : "JSON",
-	            			success : function(attrView){
-	            				
-	            				// ======================== 우측 고정 영역에 명소 정보 출력
-	   							// 명소 평점을 출력하기 위한 구문
-	            				document.getElementById("attr-avgPoint").innerText = "";
-	            				
-	            				// 평점 소수점 둘째 자리가지 표현
-	            				let roundAvgPoint = Math.round(attrView.avgPoint * 100) / 100;
-	            				
-	            				// 소수점에서 반올림하여 정수로 별점 결정(ex: 4.5 = 별점 5개)
-		          				let avgStar = Math.round(roundAvgPoint);
-	            				
-	            				switch(avgStar){
-	    						case 1: star = "★☆☆☆☆"; break;
-	    						case 2: star = "★★☆☆☆"; break;
-	    						case 3: star = "★★★☆☆"; break;
-	    						case 4: star = "★★★★☆"; break;
-	    						case 5: star = "★★★★★"; break;
-	    						default: star = "☆☆☆☆☆"; break;
-	    						}
-	            				
-	            				document.getElementById("attr-avgPoint").innerText = star;
-	            				document.getElementById("attr-avgPoint-num").innerText = " 평균 " + roundAvgPoint + "점 / 5점";
-	            				document.getElementById("total-review-count").innerText = " | 리뷰 " + attrView.totalReviewCount + "건";
-	            				
-	            				
-	            				// 명소 이미지 출력을 위한 구문
-	            				document.getElementById("attr-image").src = attrView.attractionPhoto;
-	            				
-	            				// 명소 이름 출력을 위한 구문
-	   							document.getElementById("attr-title").innerText = attrView.attractionNm;
-	            				
-	            				// 명소 이름 클릭 시 상세조회 페이지로 이동하는 구문
-	            				document.getElementById("attr-title").href = "${contextPath}/attraction/view/" + attrView.attractionNo;
-	            				
-	            				// 명소 번호 안보이게 요소에 삽입(reviewInsert.jap 에서 사용하기 위해...)
-	            				document.getElementById("attr-no").value = attrView.attractionNo;
-	            				
-	            				// 명소 연락처 출력을 위한 구문
-	            				document.getElementById("attr-phone").innerText = "";
-	            				
-				   				if(attrView.attractionPhone != null) {
-				   					document.getElementById("attr-phone").innerText = "◎ " + attrView.attractionPhone;
-				   					
-				   				}else {
-				   					document.getElementById("attr-phone").innerText = "";
-				   				}                    				
-	            				
-	            				// 드롭다운 버튼의 값들을 저장할 변수 선언 및 할당
-	            				let attrIdArr = document.getElementsByName("attr-type");
-	            				
-	            				// 명소 구분 출력을 위한 구문
-	            				for(let i=0; i<attrIdArr.length; i++){
-	            					if(attrView.attractionTypeNo == attrIdArr[i].id){
-	            						
-	            						// 명소 id(숫자)에 따라 명소의 구분 출력(드롭다운 버튼과 연동)
-	            						document.getElementById("attr-type").innerText = "";
-	            						document.getElementById("attr-type").innerText = "◎ " + attrIdArr[i].innerText;
-	            						
-	            						//console.log("일치");
-	            						break;
-	            					}
-	            				}
-	            				
-	            				// 명소 주소 출력을 위한 구문
-	            				document.getElementById("attr-addr").innerText = "◎ " + attrView.attractionAddr;
-	            				
-	            				
-	            				// 명소 홈페이지 출력을 위한 가공 시작
-	            				let rawHomepage = attrView.attractionHomePage;
-	            				
-	   							// 시작지점                    				
-	            				let startStr =rawHomepage.indexOf("\\");
-	   					
-	   							// 종료지점
-	            				let endStr = rawHomepage.indexOf("\\", rawHomepage.indexOf("\\")+1);
-	   				
-	            				let homepage = "";
-	            				
-	            				homepage = rawHomepage.substring(startStr+1, endStr);
-	            				
-	            				// 홈페이지 이름 비정상적인 곳에 대해 홈페이지 주소만 뽑기 위한 구문
-	            				if(homepage.indexOf("h") == -1) { // 홈페이지 주소가 뽑아져 나오지 않았을 때
-	            					let secRawHomepage = rawHomepage.replace("\\" + homepage + "\\", "")
-	            					let secStartStr = secRawHomepage.indexOf("\\");
-	            					let secEndStr = secRawHomepage.indexOf("\\", secRawHomepage.indexOf("\\")+1);
-	            					homepage = secRawHomepage.substring(secStartStr+1, secEndStr);
-	            				}
-	            				
-	            				// 명소 홈페이지 주소 출력을 위한 구문
-	            				document.getElementById("attr-homepage").innerHTML = "◎ " + "<a href='" + homepage + "' target=_blank' > 홈페이지로 이동 </a>";
-	            				
-	            				// 명소 정보 출력을 위한 구문
-	            				// 명소 정보 중 개행문자 처리하여 출력
-	            				replacedAttrInfo = attrView.attractionInfo.replaceAll("\\n", " ");
-	            				replacedAttrInfo = replacedAttrInfo.replaceAll("<br />", " ");
-	            				replacedAttrInfo = replacedAttrInfo.replaceAll("<br>", " ");
-	            				replacedAttrInfo = replacedAttrInfo.replaceAll("<br>", " ");
-	            				replacedAttrInfo = replacedAttrInfo.replaceAll("</b>", " ");
-	            				replacedAttrInfo = replacedAttrInfo.replaceAll("\\", " ");
-	            				replacedAttrInfo = replacedAttrInfo.replaceAll("</u>", " ");
-	            				replacedAttrInfo = replacedAttrInfo.replaceAll("<u>", " ");
-	            				document.getElementById("attr-info").innerText = replacedAttrInfo;
-	            				
-	            				// 명소 상세페이지로 이동
-	            				document.getElementById("to-attr-view").href = "${contextPath}/attraction/view/" + attrView.attractionNo;
-	            				
-	            				// 채팅버튼 클릭 시 채팅 기능 작동
-                                $("#chat-btn").on("click", function(){
-                                   
-                                   if(memberNo==""){
-                                      swal({
-                                         icon: "warning",
-                                         title: "회원만 이용 가능합니다."
-                                      })
-                                   } else { 
-                                      document.getElementById("chat-btn").href = "${contextPath}/chat/openChatRoom/"+attrView.attractionNo;
-                                   }
-                                });
-	            				
-	            			}, // ajax 통신 성공 시 실행되는 코드 종료지점
-	            			
-	            			error : function(){ // ajax 통신 실패 시
-	            				console.log("통신 실패");
-	            			}
-	            			
-	            		}); // ajax 종료 지점
+	                    
+	                    // 리뷰 정보 호출하는 함수 호출(ajax)
+	                    viewAttrInfo();
+	                    
 	                  
 	                }); // 마커 클릭 시 발생하는 이벤트 종료 지점
 	
