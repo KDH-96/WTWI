@@ -120,11 +120,11 @@
 
 <script>
 
-
 (function(){
-	$(".chat-view").scrollTop($(".chat-view")[0].scrollHeight);
-})();
 
+	$(".chat-view").scrollTop($(".chat-view")[0].scrollHeight);
+
+})();
 
 //var audio = new Audio("/resources/audio/audio.mp3");
 
