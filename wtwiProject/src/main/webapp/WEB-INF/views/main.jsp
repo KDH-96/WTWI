@@ -448,7 +448,6 @@
             		type : "POST",
                   	success : function(jsonFile){
                   		
-                  		areaCode = areaCode;
                   		jsonFileForMarker = jsonFile;
                   		console.log("통신 성공");
                   		
@@ -521,9 +520,6 @@
 	    	
 	    	 var position;
 	         var data;
-	         
-	         document.getElementById("contentTypeS").value = attrType;
-	         document.getElementById("areaCode").value = areaCode;
 	         
 	         // 마커 배열 초기화 및 각 마커 화면에서 제거
 	         markers.forEach(function (marker) { marker.setMap(null); });
