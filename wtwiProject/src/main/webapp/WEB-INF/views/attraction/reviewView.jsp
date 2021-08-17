@@ -167,12 +167,36 @@ btn-dark {
 		<div class="text-div">
 				<input type="text" class="review-input-text" id="reviewContent" placeholder ="리뷰를 작성해 주세요(150자)">
         <button type="button" class="btn btn-dark" id = "review-insert-btn" onclick="addreview();">등록</button>
+				<div id="test_cnt" style="float: right; margin-right:30px;">(0 / 150)</div>
 		</div>
 
 </div>
 
 
 <script>
+	// 글자수 세기
+	$(document).ready(function() {
+	    $("#reviewContent").on("keyup", function() {
+	        $('#test_cnt').html("(" + $(this).val().length + " / 150)");
+	 	
+	        if($(this).val().length < 100){
+	            $("#test_cnt").css("color", "green");
+	        
+	    	} else if($(this).val().length < 130) {
+	            $("#test_cnt").css("color", "orange");
+	            
+	        } else {
+	            $("#test_cnt").css("color", "red");
+	        }
+	        
+	        if($(this).val().length > 150) {
+	            $(this).val($(this).val().substring(0, 150));
+	            $("#test_cnt").html("(150 / 150)");
+	        }
+	    });
+	});
+	
+	
   
 	var attraction = ${attraction}; 
 	var attractionNo = attraction.attractionNo;
@@ -208,6 +232,11 @@ btn-dark {
 					icon: "warning",
 					title: "글을 작성해 주세요."
 				});
+			} else if(reviewPoint < 1){
+				swal({
+					icon: "warning",
+					title: "별점을 입력해 주세요."
+				});			
 			} else{
 				$.ajax({
 					url : "${contextPath}/review/insert",
@@ -325,9 +354,6 @@ btn-dark {
 			$("#reviewListArea").empty();
 			$("#review-pagination").empty();
 			
-		
-		
-		
 			// pgReviewList 0번 인덱스에는 페이지네이션 / 1번 인덱스에는 리뷰리스트 들어있음
 			var reviewPagination = pgReviewList[0];
 			var reviewList = pgReviewList[1];
@@ -378,11 +404,11 @@ btn-dark {
 	            
 	            reviewPoint.append(showUpdate).append(deleteReview);
 	        }
-	         // 리뷰 요소 하나로 합치기
-	        li.append(div).append(reviewBtnArea);
-	         // 합쳐진 리뷰를 화면에 배치
-	        $("#reviewListArea").append(li);
-			});
+		         // 리뷰 요소 하나로 합치기
+		        li.append(div).append(reviewBtnArea);
+		         // 합쳐진 리뷰를 화면에 배치
+		        $("#reviewListArea").append(li);
+				});
 			
 			}
 		
