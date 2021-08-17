@@ -121,6 +121,9 @@ public class ChatServiceImpl implements ChatService {
 		// XSS 방지
 		cm.setChatContent(BoardServiceImpl.replaceParameter(cm.getChatContent()));
 
+		// 개행문자 처리
+		cm.setChatContent(cm.getChatContent().replaceAll("(\\\\r\\\\n|\\\\r|\\\\n|\\\\n\\\\r)", "<br>"));
+
 		int result = 0;
 		
 		// 25-1) 상대방이 현재 채팅에 참가중
