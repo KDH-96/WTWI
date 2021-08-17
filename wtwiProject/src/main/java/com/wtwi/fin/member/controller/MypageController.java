@@ -47,7 +47,7 @@ public class MypageController {
 	public String main(@ModelAttribute("loginMember") Member loginMember, Model model) {
 		List<News> news = service.getNaverNews();
 		List<Review> reviewList = service.selectReviewList(loginMember.getMemberNo());
-		reviewList = service.getAttractionSrc(reviewList);
+		//reviewList = service.getAttractionSrc(reviewList);
 		model.addAttribute("reviewList", reviewList);
 		model.addAttribute("news", news);
 		return "myPage/main";
