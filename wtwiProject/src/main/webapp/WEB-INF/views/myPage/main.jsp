@@ -95,7 +95,7 @@
  content: ''; 
  display: block; 
  width: 100%; 
- height: 3px;
+ height: 2px;
  left : -2px;
  background: orange; 
  }
@@ -116,7 +116,7 @@
 	display: -webkit-box;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
-	margin: 10px 10px 0px 10px;
+	margin: 20px 10px 0px 10px;
 }
 
 .fa-chevron-down {
@@ -209,6 +209,9 @@
 
 .btn-social-login, .article {
 	text-decoration: none;
+}
+.article-li {
+	height: 30px;
 }
 
 .btn-social-login:hover {
@@ -307,7 +310,7 @@ position: relative;
 						<h4 class="newline"><i class="far fa-newspaper"></i>오늘의 여행 뉴스</h4>
 						<ul>						
 							<c:forEach items="${news }" var="news" varStatus="n" begin="0" end="4" >
-								<li><a class="article" href="${news.link }">${news.title }</a></li>	
+								<li class="article-li"><a class="article" href="${news.link }">${news.title }</a></li>	
 							</c:forEach>
 						</ul>
 					</c:if>

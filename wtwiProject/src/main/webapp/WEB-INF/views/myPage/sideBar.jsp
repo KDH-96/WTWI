@@ -26,7 +26,7 @@
 
      <div class="myPage-sideBar col-sm-2 ">
         <ul class="list-group">
-            <li class="list-group-item list-group-item-action"><a href="${contextPath }/myPage/main">내 정보</a></li>
+            <li class="list-group-item list-group-item-action"><a href="${contextPath }/myPage/main">마이페이지 메인</a></li>
        		<c:if test="${loginMember.memberGrade != 'M'}">
 	            <li class="list-group-item list-group-item-action"><a href="${contextPath }/member/update">내 정보 수정</a></li>            
        		</c:if>
