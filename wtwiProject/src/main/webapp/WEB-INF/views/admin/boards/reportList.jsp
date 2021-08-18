@@ -42,6 +42,9 @@
 		text-decoration: none !important;
 		color: inherit !important;
 	}
+	th {
+		text-align: center;
+	}
 </style>
       <div id="contentArea">
 			<jsp:include page="boardSelect.jsp"></jsp:include>
@@ -68,13 +71,13 @@
 			</colgroup>
             <thead class="thead-dark">
                <tr>
-                  <th scope="col">번호</th>
-                  <th scope="col">확인</th>
-                  <th scope="col">신고유형</th>
-                  <th scope="col">신고카테고리</th>
-                  <th scope="col">신고제목</th>
-                  <th scope="col">신고내용</th>                  
-                  <th scope="col">신고처리</th>
+                  <th class="text-center" scope="col">번호</th>
+                  <th class="text-center" scope="col">확인</th>
+                  <th class="text-center" scope="col">신고유형</th>
+                  <th class="text-center" scope="col">신고카테고리</th>
+                  <th class="text-center" scope="col">신고제목</th>
+                  <th class="text-center" scope="col">신고내용</th>                  
+                  <th class="text-center" scope="col">신고처리</th>
                </tr>
             </thead>
             <tbody>

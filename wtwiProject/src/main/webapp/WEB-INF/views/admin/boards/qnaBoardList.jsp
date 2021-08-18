@@ -10,13 +10,13 @@
           <table class="table">
             <thead class="thead-dark">
               <tr>
-                  <th scope="col">번호</th>
-                  <th scope="col">말머리</th>
-                  <th scope="col">제목</th>
-                  <th scope="col">작성자</th>
-                  <th scope="col">작성일</th>
-                  <th scope="col">비밀글</th>
-                  <th scope="col">답변상태</th>
+                  <th class="text-center" scope="col">번호</th>
+                  <th class="text-center" scope="col">말머리</th>
+                  <th class="text-center" scope="col">제목</th>
+                  <th class="text-center" scope="col">작성자</th>
+                  <th class="text-center" scope="col">작성일</th>
+                  <th class="text-center" scope="col">비밀글</th>
+                  <th class="text-center" scope="col">답변상태</th>
               </tr>
             </thead>
             <tbody>
