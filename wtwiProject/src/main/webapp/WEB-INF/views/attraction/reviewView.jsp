@@ -253,7 +253,7 @@ btn-dark {
 					success : function(result){
 						swal({
 							icon: "success",
-							title: "댓글이 작성되었습니다."
+							title: "리뷰가 작성되었습니다."
 						});
 						
 						$("#reviewContent").val("");
