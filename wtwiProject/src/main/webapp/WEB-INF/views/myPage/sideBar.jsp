@@ -22,13 +22,13 @@
             display: flex;
             flex-direction: column;
             position: fixed;
-		   top: 50%;
+		   top: 40%;
 		   left: 1%;
 		            
         }
         
         .myPage-main {
-        	margin-left: 250px;
+        	margin-left: 290px;
         }
         a{
 			text-decoration: none !important;

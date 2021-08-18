@@ -24,7 +24,7 @@
 }
 
 .myPage-main {
-	width: 100%;
+	width: 80%;
 	margin-top: 40px;
 }
 

@@ -73,9 +73,7 @@ public class SMSController {
 	@RequestMapping(value="searchPw", method=RequestMethod.POST)
 	public int searchPw(Member inputMember) {
 		int result = 0;
-		
 		Member member = service.selectPhone(inputMember);
-		
 		if(member != null) {
 			String api_key = "NCS12NM3LKSYPLKI";
 			String api_secret = "VQMFOYNFRLZNHFMOTW9UWCCEPMFHKL5Y";
@@ -84,8 +82,8 @@ public class SMSController {
 			
 			// 4 params(to, from, type, text) are mandatory. must be filled
 			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("to", "010-9799-2724");    // 수신전화번호
-			params.put("from", member.getMemberPhone());    // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
+			params.put("to", member.getMemberPhone());    // 수신전화번호
+			params.put("from", "010-9799-2724");    // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
 			params.put("type", "SMS");
 			params.put("text", "Where the Weather is... 인증번호는" + "["+checkNum+"]" + "입니다.");
 			params.put("app_version", "test app 1.2"); // application name and version
