@@ -14,7 +14,7 @@
 - OS
   - Windows 10
 - DevTools
-  - Spring Tool Suite 4, VSCode
+  - Spring Tool Suite 4, VSCode, JAVA8
 - DB
   - Oracle 11g/SQL Developer
 - Server
