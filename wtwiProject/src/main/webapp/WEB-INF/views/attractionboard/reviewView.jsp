@@ -50,9 +50,6 @@
 <body>
 	<div id="select-review-wrapper">
 		<div id="reviewContent"></div>	
-	
-		<hr>
-
 		<div class="row d-flex justify-content-center">
 			<nav aria-label="Page navigation example">
 				<ul class="pagination" id="review-pagination">
