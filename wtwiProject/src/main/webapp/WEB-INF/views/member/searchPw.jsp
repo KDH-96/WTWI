@@ -206,7 +206,7 @@
 	        $.ajax({
 	            url : "${contextPath}/coolSMS/searchPw",  // 요청 주소(필수로 작성!)
 	            data : {"memberPhone" : memberPhone,
-	            		"memberId" : memberId}, // 전달하려는 값(파라미터)
+	            		"memberId" : memberId},// 전달하려는 값(파라미터)
 	            type : "post",
 	            success : function(result){
 	            	if(result == 1) {

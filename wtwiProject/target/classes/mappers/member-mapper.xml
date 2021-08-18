@@ -133,10 +133,8 @@
   		WHERE  MEMBER_STATUS = 'Y'
   		AND MEMBER_GRADE = 'B'
   		AND MEMBER_PHONE = #{memberPhone}
-  		<!-- 비밀번호를 찾기 위한 아이디가 있을 때만 WHERE 조건절 추가 -->
-		<if test="memberId != null">
-			AND MEMBER_ID = #{memberId}
-		</if>
+		AND MEMBER_ID = #{memberId}
+
   	</select>
   	
   	<!--  스프링 시큐리티 인증 -->
