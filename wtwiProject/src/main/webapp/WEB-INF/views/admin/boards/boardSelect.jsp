@@ -57,7 +57,7 @@
       <!-- ===============================영역구분선=============================== -->
    <div id="contentContainer">
          <div id="h-menu">
-            <div class="h-div"><h2><span id="listTitle">여따 내용</span> 리스트</h2></div>
+            <div class="h-div"><h2><span id="listTitle">게시판</span> 선택</h2></div>
             <div class="board-menu">
                <form method="GET" action="${contextPath}/admin/boardList" id="boardSelect">
                   <select name="bo">

@@ -122,7 +122,9 @@ public class ChatServiceImpl implements ChatService {
 		cm.setChatContent(BoardServiceImpl.replaceParameter(cm.getChatContent()));
 
 		// 개행문자 처리
+		//System.out.println("개행문자 처리 전 : "+cm.getChatContent());
 		cm.setChatContent(cm.getChatContent().replaceAll("(\\\\r\\\\n|\\\\r|\\\\n|\\\\n\\\\r)", "<br>"));
+		//System.out.println("개행문자 처리 후 : "+cm.getChatContent());
 
 		int result = 0;
 		
