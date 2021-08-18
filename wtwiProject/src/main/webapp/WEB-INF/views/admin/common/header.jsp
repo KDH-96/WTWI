@@ -99,7 +99,7 @@
     <div class="header">
         <div class="header-logobox">
             <a href="${contextPath}/main">
-                <img src="파이널 로고22psd.jpg" id="header-logo">
+                <img src="${contextPath}/resources/images/가운데로고 최종.jpg" id="header-logo">
             </a>
         </div>
         <div class="header-rightside">
