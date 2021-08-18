@@ -74,7 +74,14 @@
     </style>
 <jsp:include page="../common/header.jsp" />
 <div class="container">
-    <h3 class="my-4 font-weight-bold">${attractionName} 담당자에게 문의하기</h3>
+	<c:choose>
+		<c:when test="${loginMember.memberGrade=='M'}">
+	    	<h3 class="my-4 font-weight-bold">${attractionName} 문의 답변하기</h3>
+	    </c:when>
+		<c:otherwise>
+	    	<h3 class="my-4 font-weight-bold">${attractionName} 담당자에게 문의하기</h3>
+		</c:otherwise>
+	</c:choose>
     <div class="chat-area mt-2">
         <ul class="chat-view">
         	<c:forEach items="${cmList}" var="msg">
