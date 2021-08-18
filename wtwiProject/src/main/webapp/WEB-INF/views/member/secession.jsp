@@ -32,8 +32,12 @@
             text-align: center;
         }
 
-        .myPage-pwUpdate__form {
-            width: 60%;
+        .myPage-secession__form {
+            width: 40%;
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		}
         }
         .myPage-pwUpdate__form div{
             display: flex;
@@ -48,7 +52,16 @@
             width: 40%;
             margin: 0px 3px;
         }
-       
+       	.input-form{
+       		width: 100%;
+       		display: flex;
+       		align-items: center;
+       	}
+       	.currPwd{
+       		display: flex;
+       		justify-content: center;
+       		align-items: center;
+       	}
     </style>
 </head>
 
@@ -62,9 +75,9 @@
 
         <h2>회원 탈퇴</h2>
         <form action="${contextPath }/member/secessionAction" class="myPage-secession__form"" method="POST" >
-            <div class="row mb-3 form-row">
+            <div class="row mb-3 form-row input-form">
             	<c:if test="${loginMember.memberGrade == 'B' }">
-	                <div class="col-md-3">
+	                <div class="col-md-3 currPwd">
 	                    <label for="currentPwd">현재 비밀번호</label>
 	                </div>
 	                <div class="col-md-6">
