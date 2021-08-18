@@ -292,6 +292,7 @@ public class MemberController {
 				break;
 			} 
 		}
+		
 		status.setComplete();
 		swalSetMessage(ra, "success", "로그아웃 완료", null);
 

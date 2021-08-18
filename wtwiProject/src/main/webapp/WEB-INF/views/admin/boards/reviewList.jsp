@@ -59,13 +59,13 @@
 			</colgroup>
             <thead class="thead-dark">
                <tr>
-                  <th scope="col">번호</th>
-                  <th scope="col">명소id</th>
-                  <th scope="col">리뷰내용</th>
-                  <th scope="col">작성자</th>
-                  <th scope="col">작성일</th>
-                  <th scope="col">별점</th>                  
-                  <th scope="col">상태</th>
+                  <th class="text-center" scope="col">번호</th>
+                  <th class="text-center" scope="col">명소id</th>
+                  <th class="text-center" scope="col">리뷰내용</th>
+                  <th class="text-center" scope="col">작성자</th>
+                  <th class="text-center" scope="col">작성일</th>
+                  <th class="text-center" scope="col">별점</th>                  
+                  <th class="text-center" scope="col">상태</th>
                </tr>
             </thead>
             <tbody>
