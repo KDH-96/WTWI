@@ -120,6 +120,18 @@
       
       
       
+        #what-is-good{
+            height: 100px;
+            font-size: 50px;
+      		 font-weight: bold;
+        }
+        
+        #what-is-good-info{
+            color: orange;
+            opacity: 0;
+            text-shadow: 1px 1px 9px rgb(73,189,220), 5px 5px 2px black;
+        }
+      
       
       
         #interface-area{
@@ -307,6 +319,15 @@
         </div>
     
         
+        <br>
+        <br>
+        <br>
+        
+        <div id="what-is-good">
+            <p id="what-is-good-info">
+                그럼 이 사이트는 어떻게 좋을까요??
+            </p>
+        </div>
         
         <br>
         <br>
@@ -357,7 +378,7 @@
                 </p>
             </div>
             <div id="second-img">
-                <img id="img2" src="${contextPath}/resources/images/info/채팅.jpg">
+                <img id="img2" src="${contextPath}/resources/images/info/채팅2.png">
             </div>
             
         </div>
@@ -459,6 +480,21 @@
                 }); 
             });
         });
+        
+        $(document).ready(function() {
+            $(window).scroll( function(){
+            $('#what-is-good-info').each( function(i){
+                
+                var bottom_of_element = $(this).offset().top + $(this).outerHeight();
+                var bottom_of_window = $(window).scrollTop() + $(window).height();
+                
+                if( bottom_of_window > bottom_of_element ){
+                    $(this).animate({'opacity':'1'},1000);
+                }
+                
+                    }); 
+                });
+            });
 
 
         $(document).ready(function() {
