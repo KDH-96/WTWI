@@ -128,12 +128,12 @@
          width : 50%;
          float : left;
       }
-         #mapwrap{position:relative;overflow:hidden;}
+          #mapwrap{position:relative;overflow:hidden;}
          .category, .category *{margin:0;padding:0;color:#000;}   
          .category {position:absolute;overflow:hidden;top:10px;left:10px;width:155px;height:50px;z-index:10;border:1px solid black;font-family:'Malgun Gothic','맑은 고딕',sans-serif;font-size:12px;text-align:center;background-color:#fff;}
          .category .menu_selected {background:#FF5F4A;color:#fff;border-left:1px solid #915B2F;border-right:1px solid #915B2F;margin:0 -1px;} 
          .category li{list-style:none;float:left;width:50px;height:45px;padding-top:5px;cursor:pointer;} 
-         .category .ico_comm {display:block;margin:0 auto 2px;width:22px;height:26px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png') no-repeat;} 
+         .category .ico_comm {display:block;margin:0 auto 2px;width:22px;height:26px;background:url('https://github.com/Jun-Seok-K/coja/blob/master/attraction_icon.png?raw=true') no-repeat;} 
          .category .ico_coffee {background-position:-10px 0;}  
          .category .ico_store {background-position:-10px -36px;}   
          .category .ico_carpark {background-position:-10px -72px;} 
@@ -422,7 +422,7 @@
          // 편의점 마커가 표시될 좌표 배열입니다 : 문화시설 -> array14
          // 주차장 마커가 표시될 좌표 배열입니다 : 맛집 -> array39 (carparkPositions) 
          
-         var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';  
+         var markerImageSrc = 'https://github.com/Jun-Seok-K/coja/blob/master/attraction_icon.png?raw=true';  
                // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
              coffeeMarkers = [], // 커피숍 마커 객체를 가지고 있을 배열입니다
              storeMarkers = [], // 편의점 마커 객체를 가지고 있을 배열입니다
@@ -432,7 +432,7 @@
          createStoreMarkers(); // 편의점 마커를 생성하고 편의점 마커 배열에 추가합니다
          createCarparkMarkers(); // 주차장 마커를 생성하고 주차장 마커 배열에 추가합니다
          
-         var src12 = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+         var src12 = "https://github.com/Jun-Seok-K/coja/blob/master/attraction_icon.png?raw=true";
 
          changeMarker('coffee'); // 지도에 커피숍 마커가 보이도록 설정합니다    
          
