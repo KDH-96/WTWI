@@ -88,20 +88,20 @@
          margin-left : 10px;
       }
       #homepageAtag{
-      	display: -webkit-box;
-      	display: -ms-flexbox;
-      	display: box;
-      	margin-top:1px;
-      	max-height:20px;
-      	width: 500px;
-      	overflow:hidden;
-      	vertical-align:top;
-      	text-overflow : ellipsis;
-      	word-break:break-all;
-      	-webkit-box-orient:vertical;
-      	-webkit-line-clamp:3;
-      	display:block;
-      	
+         display: -webkit-box;
+         display: -ms-flexbox;
+         display: box;
+         margin-top:1px;
+         max-height:20px;
+         width: 500px;
+         overflow:hidden;
+         vertical-align:top;
+         text-overflow : ellipsis;
+         word-break:break-all;
+         -webkit-box-orient:vertical;
+         -webkit-line-clamp:3;
+         display:block;
+         
       }
       #attrInfo-div{
          margin-top : 30px;
@@ -151,8 +151,8 @@
          
                   <div id="cute-area-div"><br><br>★여행정보★</div>
                   <div id="attrNm-div"><h1 style="display : inline-block"><strong>${attr.attractionNm}</strong></h1> 
-                  	
-                  				<span id="attr-avgPoint" style="color:orange; font-size:22px;"></span>
+                     
+                              <span id="attr-avgPoint" style="color:orange; font-size:22px;"></span>
 
                   <br></div>
                   <div id="attrVirtual-content">
@@ -186,7 +186,7 @@
                               <div id="attr-homepage-div" style="background-color : #f7f7f7">
                                     <div style="margin-left : 30px; padding : 8px">
                                           <h4><strong>홈페이지</strong></h4>
-						                                          <a id="homepageAtag" href="${attr.attractionHomePage}">${attr.attractionHomePage}</a>
+                                                            <a id="homepageAtag" href="${attr.attractionHomePage}">${attr.attractionHomePage}</a>
                                     </div>
                               </div>
                         </div>
@@ -194,7 +194,7 @@
                   
                   <%-- <div id="attrInfo-div" >${attr.attractionInfo}</div> --%>
                   <div id="attrInfo-div" >
-                  	<span id="info-span"></span>
+                     <span id="info-span"></span>
                   </div>
                   
                   <div id="attrMap-div">
@@ -254,27 +254,27 @@
    <%-- 날씨 script --%>   
    <script>
    
-   			//개행문자
-   			var attrInfo = "${attr.attractionInfo}";
-   			replacedAttrInfo = attrInfo.replaceAll("(\r\n|\r|\n|\n\r)"﻿, "&lt;br&gt;");
-   			
-   			$("#info-span").html(replacedAttrInfo);
-   			
+            //개행문자
+            var attrInfo = "${attr.attractionInfo}";
+            replacedAttrInfo = attrInfo.replaceAll("(\r\n|\r|\n|\n\r)" , "&lt;br&gt;");
+            
+            $("#info-span").html(replacedAttrInfo);
+            
                
          var avgPoint = ${attr.avgPoint};
          roundAvgPoint = Math.round(${attr.avgPoint}*10)/10;
          
          // 소수점에서 반올림하여 정수로 별점 결정(ex: 4.5 = 별점 5개)
-      	 let avgStar = Math.round(roundAvgPoint);
+          let avgStar = Math.round(roundAvgPoint);
          
-    		 switch(avgStar){
-					case 1: star = "★☆☆☆☆"; break;
-					case 2: star = "★★☆☆☆"; break;
-					case 3: star = "★★★☆☆"; break;
-					case 4: star = "★★★★☆"; break;
-					case 5: star = "★★★★★"; break;
-					default: star = "☆☆☆☆☆"; break;
-					}
+           switch(avgStar){
+               case 1: star = "★☆☆☆☆"; break;
+               case 2: star = "★★☆☆☆"; break;
+               case 3: star = "★★★☆☆"; break;
+               case 4: star = "★★★★☆"; break;
+               case 5: star = "★★★★★"; break;
+               default: star = "☆☆☆☆☆"; break;
+               }
          
          $("#attr-avgPoint").html(star + " " + roundAvgPoint );
          
@@ -377,25 +377,24 @@
          // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
          // marker.setMap(null); 
          
-         var infowindow = new kakao.maps.InfoWindow({
-        	  content : "Aaa"
-          });
+         // 인포윈도우 표시를 위한 전역변수 선언
+         var infowindow;
          
          function makeOverListener(map, marker, infowindow) {
-	     	    return function() {
-	     	        infowindow.open(map, marker);
-	     	    };
-		     	}
-	    		// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
-	       function makeOutListener(infowindow) {
-	           return function() {
-	               infowindow.close();
-	           };
-	       	}
-	    		
+               return function() {
+                   infowindow.open(map, marker);
+               };
+              }
+             // 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+          function makeOutListener(infowindow) {
+              return function() {
+                  infowindow.close();
+              };
+             }
+             
           kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
           kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-	          
+             
          
          /****************************************************************************/
          
@@ -443,18 +442,18 @@
              return markerImage;            
          }
          // 좌표와 마커이미지를 받아 마커를 생성하여 리턴하는 함수입니다
-         function createMarker(position, image) {
+         function createMarker(position, image, content) {
              var marker = new kakao.maps.Marker({
                  position: position,
                  image: image
              });
              
              infowindow = new kakao.maps.InfoWindow({
-	        	  content : "Aaa"
-	          });
+                content : content
+             });
          kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
          kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-	          
+             
         
              return marker;  
          }   
@@ -469,7 +468,7 @@
                      };     
                  // 마커이미지와 마커를 생성합니다
                  var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
-                     marker = createMarker(array12[i], markerImage);  
+                     marker = createMarker(array12[i], markerImage, attrList12[i].title);  
                  // 생성된 마커를 커피숍 마커 배열에 추가합니다
                  coffeeMarkers.push(marker);
              }     
@@ -493,7 +492,7 @@
               
                  // 마커이미지와 마커를 생성합니다
                  var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
-                     marker = createMarker(array14[i], markerImage);  
+                     marker = createMarker(array14[i], markerImage, attrList14[i].title);  
          
                  // 생성된 마커를 편의점 마커 배열에 추가합니다
                  storeMarkers.push(marker);    
@@ -519,8 +518,8 @@
               
                  // 마커이미지와 마커를 생성합니다
                  var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
-                     marker = createMarker(array39[i], markerImage);  
-         						
+                     marker = createMarker(array39[i], markerImage, attrList39[i].title);  
+                           
                  // 생성된 마커를 주차장 마커 배열에 추가합니다
                  carparkMarkers.push(marker);        
              }                
@@ -582,7 +581,7 @@
          } 
          
          
-			// 채팅버튼 클릭 시 채팅 기능 작동
+         // 채팅버튼 클릭 시 채팅 기능 작동
          $("#chat-btn").on("click", function(){
             
             if(memberNo==""){
