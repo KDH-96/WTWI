@@ -60,7 +60,7 @@ public class SNSLogin {
 
 		switch(loginMember.getMemberGrade()) {
 
-		case "G" : sendUrl= "https://accounts.google.com/o/oauth2/revoke?token="+loginMember.getAccessToken(); 
+		case "G" : sendUrl= "http://accounts.google.com/o/oauth2/revoke?token="+loginMember.getAccessToken(); 
 				   prop1 = "Content-Type";
 				   prop2 = "application/x-www-form-urlencoded"; 
 				   method = "POST"; break;

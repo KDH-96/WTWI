@@ -19,20 +19,17 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 		
 		HttpSession session = request.getSession();
 		Member member = (Member)session.getAttribute("loginMember");
-
-		 if(member != null){return true;}
-	        
-	        else{
+		 if(member != null){
+			 return true;
+		 } else{
 	            String destUri = request.getRequestURI();
 	            String destQuery = request.getQueryString();
 	            String dest = (destQuery == null) ? destUri : destUri+"?"+destQuery;
 	            dest = dest.substring(5);
 	            request.getSession().setAttribute("dest", dest);
-	            System.out.println(dest);
-	  
 	            response.sendRedirect("/wtwi/member/login");
 	            return false;
-	        }
+	       }
 		
 	}
 	

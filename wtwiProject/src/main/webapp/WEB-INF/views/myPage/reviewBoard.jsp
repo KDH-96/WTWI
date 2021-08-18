@@ -127,7 +127,7 @@
 	</c:if>
 
 	<main class="myPage-main">
-		<h2>명소 후기</h2>
+		<h2>내가 쓴 게시글</h2>
 		<div class="myPage-postBtnArea">
 			<a href="${contextPath }/myPage/post" class="btn btn-light">자유게시판</a>
 			<a href="${contextPath }/myPage/qnaBoard" class="btn btn-light">문의게시판</a>

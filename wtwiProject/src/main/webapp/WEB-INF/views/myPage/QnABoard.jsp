@@ -188,7 +188,7 @@
 									
 									<!-- 글 제목 -->
 									<td class="boardTitle align-middle">
-										<a href="${board.qnaNo}?cp=${pagination.currentPage}${searchStr}">${board.qnaTitle }</a>
+										<a href="${contextPath }/qnaboard/${board.qndNo}">${board.qnaTitle }</a>
 									</td>
 									<%-- 작성일 --%>
 									<td class="align-middle">

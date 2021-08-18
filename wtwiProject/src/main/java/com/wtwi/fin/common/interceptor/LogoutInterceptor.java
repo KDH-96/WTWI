@@ -10,7 +10,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.wtwi.fin.member.model.vo.Member;
 
 @Component
-public class MemberAuthInterceptor extends HandlerInterceptorAdapter{
+public class LogoutInterceptor extends HandlerInterceptorAdapter{
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -26,20 +26,13 @@ public class MemberAuthInterceptor extends HandlerInterceptorAdapter{
 		
 		
 		 if(member != null){
-			 if(member.getMemberGrade().equals("B") || member.getMemberGrade().equals("F") || member.getMemberGrade().equals("G") || member.getMemberGrade().equals("K")|| member.getMemberGrade().equals("N")) {
-				 request.getSession().setAttribute("dest", dest);
-				 return true;				 
-			 } else {				 
-				 response.sendRedirect("/wtwi/main");				 
-				 return false;
-			 }
+			 return true;
 		 }
-	        
 	        else {
-	        	request.getSession().setAttribute("dest", dest);
-	            response.sendRedirect("/wtwi/member/login");
+	        	request.getSession().setAttribute("dest", "이미 로그아웃이 완료된 상태입니다.");
+	            response.sendRedirect("/wtwi/main");
 	            return false;
-	        }
+		     }
 		
 	}
 	

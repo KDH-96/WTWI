@@ -133,6 +133,18 @@
 	
 	  </interceptor> 
 	  
+	  <!-- 로그아웃 권한 처리 -->
+	  <interceptor> 
+	   <!-- 적용 url -->
+	   <mapping path="/member/logout" />  
+	   <!-- 예외처리 
+	   <exclude-mapping path="/main"/>  -->
+	   <!-- 적용 interceptor -->   
+	   <beans:bean id="LogoutInterceptor" class="com.wtwi.fin.common.interceptor.LogoutInterceptor" />  
+	
+	  </interceptor> 
+
+
 	  <!-- 관리자 권한 처리 -->
 	  <interceptor> 
 	   <!-- 적용 url -->
@@ -145,18 +157,7 @@
 	
 	  </interceptor> 
 	  
-	  <!-- 회원정보수정 권한 처리(매니저는 회원정보수정 불가) -->
-	  <interceptor> 
-	   <!-- 적용 url -->
-	   <mapping path="/member/update" /> 
-	   <mapping path="/member/secession" /> 
-	   <mapping path="/member/changPwd" /> 
-	   <!-- 예외처리 
-	   <exclude-mapping path="/main"/>  -->
-	   <!-- 적용 interceptor -->   
-	   <beans:bean id="MemberInterceptor" class="com.wtwi.fin.common.interceptor.MemberAuthInterceptor" />  
-	
-	  </interceptor> 
+	  
 	</interceptors>
 	
 </beans:beans>
