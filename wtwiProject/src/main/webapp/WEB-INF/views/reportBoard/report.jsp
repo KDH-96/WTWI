@@ -73,6 +73,16 @@
 .report-btnArea button:first-child {
 	margin-bottom: 10px;
 }
+.form-group {
+	display: flex;
+	width: 60%;
+}
+.form-group label{
+	width: 40%;
+}
+.categoryBox {
+	margin-bottom: 30px;
+}
 </style>
 </head>
 
@@ -87,26 +97,28 @@
 			<div class="report-title">
 				<h2>신고</h2>
 			</div>
-			<form action="${contextPath }/reportBoard/reportAction" method="POST" onsubmit="return validate();">
-				<div>
-					<input type="radio" name="reportCategoryNo" value="1" autocomplete="off" checked> 
-					<label for="4">도배글</label>
-				</div>
-				<div>
-					<input type="radio" name="reportCategoryNo" value="2" autocomplete="off"> 
-					<label for="5">광고/홍보</label>
-				</div>
-				<div>
-					<input type="radio" name="reportCategoryNo" value="3" autocomplete="off"> 
-					<label for="6">저작권법위반</label>
-				</div>
-				<div>
-					<input type="radio" name="reportCategoryNo" value="4" autocomplete="off"> 
-					<label for="7">성희롱</label>
-				</div>
-				<div>
-					<input type="radio" name="reportCategoryNo" value="4" autocomplete="off"> 
-					<label for="7">욕설/비방</label>
+			<form action="${contextPath }/reportBoard/reportAction" class="report-form" method="POST" onsubmit="return validate();">
+				<div class="categoryBox">
+					<div>
+						<input type="radio" name="reportCategoryNo" value="1" autocomplete="off" checked> 
+						<label for="4">도배글</label>
+					</div>
+					<div>
+						<input type="radio" name="reportCategoryNo" value="2" autocomplete="off"> 
+						<label for="5">광고/홍보</label>
+					</div>
+					<div>
+						<input type="radio" name="reportCategoryNo" value="3" autocomplete="off"> 
+						<label for="6">저작권법위반</label>
+					</div>
+					<div>
+						<input type="radio" name="reportCategoryNo" value="4" autocomplete="off"> 
+						<label for="7">성희롱</label>
+					</div>
+					<div>
+						<input type="radio" name="reportCategoryNo" value="4" autocomplete="off"> 
+						<label for="7">욕설/비방</label>
+					</div>
 				</div>
 
 				<div class="form-group">
@@ -118,9 +130,9 @@
 						class="form-control" id="reportContent" name="reportContent">
 				</div>
 				<div class="report-btnArea">
-					<button type="submit" class="btn btn-primary" id="report">신고
+					<button type="submit" class="btn btn-dark" id="report">신고
 						제출</button>
-					<a type="button" class="btn btn-primary" href="${contextPath}">취소</a>
+					<a type="button" class="btn btn-light" href="${contextPath}/freeboard/${freeNo}">취소</a>
 				</div>
 				<input type="hidden" name="reportType" value="${type }">
 				<input type="hidden" name="reportTypeNo" value="${freeNo }">

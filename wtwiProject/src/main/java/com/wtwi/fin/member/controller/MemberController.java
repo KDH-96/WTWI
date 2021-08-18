@@ -133,11 +133,14 @@ public class MemberController {
 		// 1-5) 회원이라면 로그인 실행
 		} else { 
 			member.setAccessToken(snsMember.getAccessToken());
-			model.addAttribute("loginMember", member);
+			model.addAttribute("loginMember", member);	
 			swalSetMessage(ra, "success", "로그인 성공!", null);
+			
 			// 1-6) 권한 처리 확인 후 이전페이지로 이동
 			String dest = (String)session.getAttribute("dest");
 			redirect = (dest == null) ? "/main" : dest;
+			
+			session.removeAttribute("dest");
 
 		}
 		
@@ -257,31 +260,40 @@ public class MemberController {
 		}
 		String dest = (String)session.getAttribute("dest");
 		String redirect = (dest == null) ? "/main" : dest;
-		
-		
+		session.removeAttribute("dest");
 		return "redirect:" + redirect;
 
 	}
 
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
-	public String logout(SessionStatus status, @ModelAttribute("loginMember") Member loginMember) {
+	public String logout(SessionStatus status, @ModelAttribute("loginMember") Member loginMember, RedirectAttributes ra) {
 		
 		SNSValue sns = null;
-		try {
-			if(loginMember.getMemberGrade().equals("N")){
-				// 네이버는 로그아웃 주소에 clientId, clientSecret이 들어가기 때문에 naver 정보를 넣어서 넘겨줌
-				sns = naverSns;
-				SNSLogin snsLogin = new SNSLogin(sns);
-				snsLogin.socialLogout(loginMember);
-
-			} else {
-				SNSLogin snsLogin = new SNSLogin();
-				snsLogin.socialLogout(loginMember);
+		
+		switch(loginMember.getMemberGrade()) {
+		case "N" :
+		case "G" :
+		case "F" :
+		case "K" : 
+			try {
+				if(loginMember.getMemberGrade().equals("N")){
+					// 네이버는 로그아웃 주소에 clientId, clientSecret이 들어가기 때문에 naver 정보를 넣어서 넘겨줌
+					sns = naverSns;
+					SNSLogin snsLogin = new SNSLogin(sns);
+					snsLogin.socialLogout(loginMember);
+					break;
+				} else {
+					SNSLogin snsLogin = new SNSLogin();
+					snsLogin.socialLogout(loginMember);
+					break;
+				} 
+			}catch(Exception e) {
+				e.printStackTrace();
+				break;
 			} 
-		}catch(Exception e) {
-			e.printStackTrace();
 		}
 		status.setComplete();
+		swalSetMessage(ra, "success", "로그아웃 완료", null);
 
 		return "redirect:/main";
 	}
