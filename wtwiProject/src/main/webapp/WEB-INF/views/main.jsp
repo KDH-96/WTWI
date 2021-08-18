@@ -206,11 +206,11 @@
     				
     				// 명소 홈페이지 출력을 위한 가공 시작
     				let rawHomepage = attrView.attractionHomePage;
-    				
-						// 시작지점                    				
+    				/* 
+					// 시작지점                    				
     				let startStr =rawHomepage.indexOf("\\");
 				
-						// 종료지점
+					// 종료지점
     				let endStr = rawHomepage.indexOf("\\", rawHomepage.indexOf("\\")+1);
 			
     				let homepage = "";
@@ -224,9 +224,10 @@
     					let secEndStr = secRawHomepage.indexOf("\\", secRawHomepage.indexOf("\\")+1);
     					homepage = secRawHomepage.substring(secStartStr+1, secEndStr);
     				}
+    				 */
     				
     				// 명소 홈페이지 주소 출력을 위한 구문
-    				document.getElementById("attr-homepage").innerHTML = "◎ " + "<a href='" + homepage + "' target=_blank' > 홈페이지로 이동 </a>";
+    				document.getElementById("attr-homepage").innerHTML = "◎ " + "<a href='" + rawHomepage + "' target=_blank' > 홈페이지로 이동 </a>";
     				
     				// 명소 정보 출력을 위한 구문
     				// 명소 정보 중 개행문자 처리하여 출력
@@ -510,7 +511,7 @@
         
         
 	    var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
-	        center: new kakao.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표 
+	        center: new kakao.maps.LatLng(35.2683, 127.6358), // 지도의 중심좌표 
 	        level: 13 // 지도의 확대 레벨 
 	    });
 		
